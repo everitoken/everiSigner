@@ -10,3 +10,11 @@ Official browser extension from [everiToken](https://everitoken.io) for signing.
 - material ui
 - styled components
 - parcel
+
+## Todos
+
+- [x] add evtjs
+- [ ] add redux
+- [ ] add redux saga
+- [ ] add router
+- [ ] migrate scatter
