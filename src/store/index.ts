@@ -1,8 +1,16 @@
 import { applyMiddleware, compose, createStore } from "redux";
 import createSagaMiddleware from "redux-saga";
+import { persistStore, persistReducer } from "redux-persist";
+import { syncStorage } from "redux-persist-webextension-storage";
 
 import rootReducer from "./reducer";
 import rootSaga from "./saga";
+import { WINDOW_HEIGHT } from "../style";
+
+const persistConfig = {
+  key: "root",
+  storage: syncStorage
+};
 
 export default function configureStore() {
   const sagaMiddleware = createSagaMiddleware();
@@ -15,13 +23,17 @@ export default function configureStore() {
   }
 
   const enhancer = compose(applyMiddleware(...middlewares));
-  const store = createStore(rootReducer, enhancer);
+  const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-  if (process.env.NODE_ENV === `development`) {
+  const store = createStore(persistedReducer, enhancer);
+  let persistor = persistStore(store);
+
+  if (process.env.NODE_ENV === "development") {
     window.store = store;
+    window.persistor = persistor;
   }
 
   sagaMiddleware.run(rootSaga);
 
-  return store;
+  return { store, persistor };
 }

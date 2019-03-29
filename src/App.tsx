@@ -1,12 +1,15 @@
 import * as React from "react";
+import Evt from "evtjs";
 import Dom from "react-dom";
+import { connect } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 import createStore from "./store";
 import { Provider } from "react-redux";
 import styled from "styled-components";
 import Button from "@material-ui/core/Button";
-import Evt from "evtjs";
 import "./main.css";
 import { WINDOW_HEIGHT, WINDOW_WIDTH, padding } from "./style";
+import { AppState } from "./store/reducer";
 
 interface PropTypes {
   msg: string;
@@ -23,26 +26,34 @@ const Container = styled.div`
   box-sizing: border-box;
 `;
 
-const store = createStore();
+const { store, persistor } = createStore();
+const AccountCount = (props: { count: number }) => <p>{props.count}</p>;
+const ConnectedAccountCount = connect(({ accounts }: AppState) => ({
+  count: accounts.length
+}))(AccountCount);
 
 class App extends React.PureComponent<PropTypes, StateProps> {
   state = {
     key: "Waiting for the key"
   };
   async componentDidMount() {
-    const key = await Evt.EvtKey.randomPrivateKey();
-    this.setState({ key: key.toString() });
+    // const key = await Evt.EvtKey.randomPrivateKey();
+    // this.setState({ key: key.toString() });
   }
   render() {
     return (
       <Provider store={store}>
-        <Container>
-          <Button variant="contained" color="primary">
-            Hello
-          </Button>
-          <p>Parcel browser extension in typescript {this.props.msg}</p>
-          <p>Key: {this.state.key}</p>
-        </Container>
+        <PersistGate loading={null} persistor={persistor}>
+          <Container>
+            <Button variant="contained" color="primary">
+              Hello
+            </Button>
+            <p>Parcel browser extension in typescript {this.props.msg}</p>
+            <ConnectedAccountCount />
+
+            {/* <p>Key: {this.state.key}</p> */}
+          </Container>
+        </PersistGate>
       </Provider>
     );
   }
