@@ -14,8 +14,10 @@
   "author": "Fei Liu <liu.feiwood@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@material-ui/core": "^3.9.3",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "styled-components": "^4.2.0"
   },
   "devDependencies": {
     "@types/react": "^16.8.10",
