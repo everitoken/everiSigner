@@ -18,6 +18,6 @@ Official browser extension from [everiToken](https://everitoken.io) for signing.
 - [x] add evtjs
 - [x] add redux
 - [x] add redux saga
-- [ ] add redux-persist
+- [x] add redux-persist
 - [ ] add router
 - [ ] migrate scatter

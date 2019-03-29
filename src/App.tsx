@@ -27,7 +27,7 @@ const Container = styled.div`
 `;
 
 const { store, persistor } = createStore();
-const AccountCount = (props: { count: number }) => <p>{props.count}</p>;
+const AccountCount = (props: { count: number }) => <p>Account count: {props.count}</p>;
 const ConnectedAccountCount = connect(({ accounts }: AppState) => ({
   count: accounts.length
 }))(AccountCount);
