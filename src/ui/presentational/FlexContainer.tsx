@@ -15,7 +15,7 @@ const FlexContainer = styled.div`
 `;
 
 class Comp extends React.PureComponent<PropTypes> {
-  defaultProps = { withPadding: false };
+  static defaultProps = { withPadding: false };
   render() {
     return <FlexContainer {...this.props}>{this.props.children}</FlexContainer>;
   }
