@@ -1,5 +1,7 @@
 import * as React from "react";
 import Dom from "react-dom";
+import createStore from "./store";
+import { Provider } from "react-redux";
 import styled from "styled-components";
 import Button from "@material-ui/core/Button";
 import Evt from "evtjs";
@@ -21,6 +23,8 @@ const Container = styled.div`
   box-sizing: border-box;
 `;
 
+const store = createStore();
+
 class App extends React.PureComponent<PropTypes, StateProps> {
   state = {
     key: "Waiting for the key"
@@ -31,13 +35,15 @@ class App extends React.PureComponent<PropTypes, StateProps> {
   }
   render() {
     return (
-      <Container>
-        <Button variant="contained" color="primary">
-          Hello
-        </Button>
-        <p>Parcel browser extension in typescript {this.props.msg}</p>
-        <p>Key: {this.state.key}</p>
-      </Container>
+      <Provider store={store}>
+        <Container>
+          <Button variant="contained" color="primary">
+            Hello
+          </Button>
+          <p>Parcel browser extension in typescript {this.props.msg}</p>
+          <p>Key: {this.state.key}</p>
+        </Container>
+      </Provider>
     );
   }
 }
