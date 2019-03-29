@@ -19,5 +19,5 @@ Official browser extension from [everiToken](https://everitoken.io) for signing.
 - [x] add redux
 - [x] add redux saga
 - [x] add redux-persist
-- [ ] add router
+- [x] add router
 - [ ] migrate scatter

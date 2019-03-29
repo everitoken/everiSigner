@@ -1,48 +1,52 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import styled from "styled-components";
-import Button from "@material-ui/core/Button";
-import { WINDOW_HEIGHT, WINDOW_WIDTH, padding } from "../style";
-import { AppState } from "../store/reducer";
+import {
+  withRouter,
+  BrowserRouter as Router,
+  Route,
+  Link
+} from "react-router-dom";
+import Home from "./layout/Home";
+import About from "./layout/About";
+import Footer from "./layout/Footer";
+import FlexContainer from "./presentational/FlexContainer";
 
-interface PropTypes {}
-
-interface StateProps {
-  key: string;
-}
-
-const Container = styled.div`
-  overflow: hidden;
-  width: ${WINDOW_WIDTH}px;
-  height: ${WINDOW_HEIGHT}px;
-  padding: ${padding.standard}px;
-  box-sizing: border-box;
-`;
-
-const AccountCount = (props: { count: number }) => (
-  <p>Account count: {props.count}</p>
-);
-const ConnectedAccountCount = connect(({ accounts }: AppState) => ({
-  count: accounts.length
-}))(AccountCount);
-
-class App extends React.PureComponent<PropTypes, StateProps> {
-  state = {
-    key: "Waiting for the key"
-  };
-  async componentDidMount() {
-    // const key = await Evt.EvtKey.randomPrivateKey();
-    // this.setState({ key: key.toString() });
+class HackRedirect extends React.PureComponent<any> {
+  componentDidMount() {
+    this.props.history.push("/");
   }
   render() {
+    return <span />;
+  }
+}
+
+// this is need because when browser load extension for the first time, it doesn't give a fully qualified url.
+// therefore we need to force redirect to "home"
+const HackRedirectWithRouter = withRouter(HackRedirect);
+
+class App extends React.PureComponent {
+  render() {
     return (
-      <Container>
-        <Button variant="contained" color="primary">
-          Hello
-        </Button>
-        <ConnectedAccountCount />
-        <p>Key: {this.state.key}</p>
-      </Container>
+      <FlexContainer>
+        <Router>
+          <HackRedirectWithRouter />
+          <FlexContainer withPadding>
+            <Route exact path="/" component={Home} />
+            <Route path="/about" component={About} />
+          </FlexContainer>
+          <hr />
+          <div>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/about">About</Link>
+              </li>
+            </ul>
+          </div>
+          <Footer />
+        </Router>
+      </FlexContainer>
     );
   }
 }
