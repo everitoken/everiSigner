@@ -15,7 +15,7 @@ const Container = styled.div`
   flex: 1;
 `;
 
-class SetupAccount extends React.PureComponent<PropTypes> {
+class GetStarted extends React.PureComponent<PropTypes> {
   render() {
     return (
       <Container>
@@ -35,7 +35,7 @@ class SetupAccount extends React.PureComponent<PropTypes> {
           color="primary"
           variant="contained"
           size="large"
-          onClick={() => this.props.history.push("/about")}
+          onClick={() => this.props.history.push("/wallet/mode")}
         >
           GET STARTED
         </Button>
@@ -44,4 +44,4 @@ class SetupAccount extends React.PureComponent<PropTypes> {
   }
 }
 
-export default withRouter(SetupAccount);
+export default withRouter(GetStarted);
