@@ -21,3 +21,7 @@ Official browser extension from [everiToken](https://everitoken.io) for signing.
 - [x] add redux-persist
 - [x] add router
 - [ ] migrate scatter
+
+## Resources
+
+- [Message passing](https://developer.chrome.com/apps/messaging)

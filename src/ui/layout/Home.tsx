@@ -5,11 +5,18 @@ import Button from "@material-ui/core/Button";
 import { WINDOW_HEIGHT, WINDOW_WIDTH, padding } from "../../style";
 import { AppState } from "../../store/reducer";
 import logo from "../../assets/logo@2x.png";
+import authentication from "../../store/reducer/authentication";
+import GetStarted from "./GetStarted";
 
 interface PropTypes {}
 
 interface StateProps {
   key: string;
+}
+function send(msg: string) {
+  return new Promise((resolve: any, reject: any) => {
+    chrome.runtime.sendMessage(msg, response => resolve(response));
+  });
 }
 
 const Container = styled.div`
@@ -20,12 +27,18 @@ const Container = styled.div`
   box-sizing: border-box;
 `;
 
-const AccountCount = (props: { count: number }) => (
-  <p>Account count: {props.count}</p>
+const AccountCount = (props: { count: number; status: string }) => (
+  <React.Fragment>
+    <p>Account count: {props.count}</p>
+    <p>Authentication status: {props.status}</p>
+  </React.Fragment>
 );
-const ConnectedAccountCount = connect(({ accounts }: AppState) => ({
-  count: accounts.length
-}))(AccountCount);
+const ConnectedAccountCount = connect(
+  ({ accounts, authentication }: AppState) => ({
+    count: accounts.length,
+    status: authentication.status
+  })
+)(AccountCount);
 
 class Home extends React.PureComponent<PropTypes, StateProps> {
   state = {
@@ -36,7 +49,11 @@ class Home extends React.PureComponent<PropTypes, StateProps> {
     // this.setState({ key: key.toString() });
   }
   handleClick = () => {
-    chrome.tabs.create({ url: `${window.location.href}/extension/index.html` });
+    // chrome.tabs.create({ url: `${window.location.href}/extension/index.html` });
+    send("fei");
+  };
+  handleResetState = () => {
+    window.persistor.purge();
   };
   render() {
     return (
@@ -49,11 +66,36 @@ class Home extends React.PureComponent<PropTypes, StateProps> {
         <ConnectedAccountCount />
         <p>Key: {this.state.key}</p>
         <Button variant="contained" color="primary" onClick={this.handleClick}>
-          Hello
+          Button
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={this.handleResetState}
+        >
+          Reset state
         </Button>
       </React.Fragment>
     );
   }
 }
 
-export default Home;
+type StartPropTypes = {
+  isAccountSetup: boolean;
+};
+
+class Start extends React.PureComponent<StartPropTypes> {
+  render() {
+    if (this.props.isAccountSetup) {
+      return <Home />;
+    }
+
+    return <GetStarted />;
+  }
+}
+
+const mapStateToProps = ({ authentication }: AppState) => ({
+  isAccountSetup: authentication.status != "uninitialized"
+});
+
+export default connect(mapStateToProps)(Start);
