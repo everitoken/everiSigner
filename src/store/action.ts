@@ -35,6 +35,18 @@ export const takeOffPlane = (name: string): PlaneTakeoffType => ({
   payload: name
 });
 
+export const passwordSet = (hash: string): PasswordSetType => ({
+  type: PASSWORD_SET,
+  payload: hash
+});
+
+export const accountCreate = (
+  account: Types.AccountType
+): AccountCreateType => ({
+  type: ACCOUNT_CREATE,
+  payload: account
+});
+
 export type StoreActionTypes =
   | AccountCreateType
   | PasswordSetType

@@ -1,3 +1,5 @@
+import * as bcrypt from "bcryptjs";
+
 export const isPasswordValid = (password: string, passwordRepeat: string) => {
   if (password.length < 8) {
     return {
@@ -16,3 +18,11 @@ export const isPasswordValid = (password: string, passwordRepeat: string) => {
     payload: null
   };
 };
+
+export const hashPassword = (password: string): string => {
+  const salt = bcrypt.genSaltSync(10);
+  return bcrypt.hashSync(password, salt);
+};
+
+export const verifyPassword = (password: string, hash: string): boolean =>
+  bcrypt.compareSync(password, hash);

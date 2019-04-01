@@ -14,9 +14,9 @@ interface StateProps {
   key: string;
 }
 function send(msg: string) {
-  return new Promise((resolve: any, reject: any) => {
-    chrome.runtime.sendMessage(msg, response => resolve(response));
-  });
+  // return new Promise((resolve: any, reject: any) => {
+  //   chrome.runtime.sendMessage(msg, response => resolve(response));
+  // });
 }
 
 const Container = styled.div`

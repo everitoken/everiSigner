@@ -16,6 +16,7 @@
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
+    "bcryptjs": "^2.4.3",
     "evtjs": "^5.3.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -28,7 +29,10 @@
     "styled-components": "^4.2.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/chrome": "^0.0.81",
     "@types/lodash": "^4.14.123",
+    "@types/node": "^11.12.2",
     "@types/react": "^16.8.10",
     "@types/react-dom": "^16.8.3",
     "@types/react-redux": "^7.0.5",
