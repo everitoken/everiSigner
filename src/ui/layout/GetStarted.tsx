@@ -35,7 +35,7 @@ class GetStarted extends React.PureComponent<PropTypes> {
           color="primary"
           variant="contained"
           size="large"
-          onClick={() => this.props.history.push("/wallet/mode")}
+          onClick={() => this.props.history.push("/wallet-mode-decision")}
         >
           GET STARTED
         </Button>

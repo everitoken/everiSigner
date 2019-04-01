@@ -8,9 +8,10 @@ import {
 import Home from "./layout/Home";
 import About from "./layout/About";
 import Footer from "./layout/Footer";
-import WalletMode from "./layout/Wallet/Mode";
+import WalletModeDecision from "./layout/WalletModeDecision";
 import WalletCreate from "./layout/Wallet/create";
-import WalletImport from "./layout/wallet/Import";
+import WalletImport from "./layout/WalletImport";
+import SetPassword from "./layout/SetPassword";
 import FlexContainer from "./presentational/FlexContainer";
 
 class HackRedirect extends React.PureComponent<any> {
@@ -35,9 +36,13 @@ class App extends React.PureComponent {
           <FlexContainer withPadding>
             <Route exact path="/" component={Home} />
             <Route path="/about" component={About} />
-            <Route path="/wallet/mode" component={WalletMode} />
-            <Route path="/wallet/create" component={WalletCreate} />
-            <Route path="/wallet/import" component={WalletImport} />
+            <Route
+              path="/wallet-mode-decision"
+              component={WalletModeDecision}
+            />
+            <Route path="/wallet-create" component={WalletCreate} />
+            <Route path="/wallet-setpassword" component={SetPassword} />
+            <Route path="/wallet-import" component={WalletImport} />
           </FlexContainer>
           <hr />
           <div>
@@ -49,10 +54,13 @@ class App extends React.PureComponent {
                 <Link to="/about">About</Link>
               </li>
               <li>
-                <Link to="/wallet/create">Wallet/create</Link>
+                <Link to="/wallet-create">Wallet-create</Link>
               </li>
               <li>
-                <Link to="/wallet/import">Wallet/import</Link>
+                <Link to="/wallet-import">Wallet-import</Link>
+              </li>
+              <li>
+                <Link to="/wallet-setpassword">Wallet-setpassword</Link>
               </li>
             </ul>
           </div>

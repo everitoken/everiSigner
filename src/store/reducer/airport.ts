@@ -7,7 +7,7 @@ const defaultState: StateType = {};
 
 export default (
   state: StateType = defaultState,
-  action: actions.ActionTypes
+  action: actions.StoreActionTypes
 ): StateType => {
   switch (action.type) {
     case actions.PLANE_LAND:

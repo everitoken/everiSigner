@@ -1,8 +1,8 @@
 import * as React from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
-import { WithRouterType } from "../../../types";
-import logo from "../../../assets/logo@2x.png";
+import { WithRouterType } from "../../types";
+import logo from "../../assets/logo@2x.png";
 import Card from "@material-ui/core/Card";
 import Button from "@material-ui/core/Button";
 import CardContent from "@material-ui/core/CardContent";
@@ -22,6 +22,7 @@ const Container = styled.div`
 class WalletDecision extends React.PureComponent<PropTypes> {
   render() {
     const { history } = this.props;
+
     return (
       <Container>
         <img
@@ -44,7 +45,7 @@ class WalletDecision extends React.PureComponent<PropTypes> {
             <Button
               variant="outlined"
               color="secondary"
-              onClick={() => history.push("/wallet/import")}
+              onClick={() => history.push("/wallet-import")}
             >
               Import wallet
             </Button>
@@ -64,7 +65,7 @@ class WalletDecision extends React.PureComponent<PropTypes> {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => history.push("/wallet/create")}
+              onClick={() => history.push("/wallet-setpassword")}
             >
               Create wallet
             </Button>

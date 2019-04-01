@@ -1,9 +1,9 @@
 import * as Types from "../types";
 
-export const ACCOUNT_CREATE = "ACCOUNT_CREATE";
-export const PASSWORD_SET = "PASSWORD_SET";
-export const PLANE_LAND = "PLANE_LAND";
-export const PLANE_TAKEOFF = "PLANE_TAKEOFF";
+export const ACCOUNT_CREATE = "store/ACCOUNT_CREATE";
+export const PASSWORD_SET = "store/PASSWORD_SET";
+export const PLANE_LAND = "store/PLANE_LAND";
+export const PLANE_TAKEOFF = "store/PLANE_TAKEOFF";
 
 export interface AccountCreateType {
   type: typeof ACCOUNT_CREATE;
@@ -35,8 +35,7 @@ export const takeOffPlane = (name: string): PlaneTakeoffType => ({
   payload: name
 });
 
-
-export type ActionTypes =
+export type StoreActionTypes =
   | AccountCreateType
   | PasswordSetType
   | PlaneLandType
