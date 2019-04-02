@@ -1003,6 +1003,11 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
+"@types/sjcl@^1.0.28":
+  version "1.0.28"
+  resolved "https://registry.yarnpkg.com/@types/sjcl/-/sjcl-1.0.28.tgz#4693eb6943e385e844a70fb25b4699db286c7214"
+  integrity sha1-RpPraUPjhehEpw+yW0aZ2yhschQ=
+
 "@types/styled-components@^4.1.12":
   version "4.1.12"
   resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-4.1.12.tgz#62c19bd1aa37b1a904d36c179a0fec66c24ac99c"
@@ -6599,6 +6604,11 @@ simple-swizzle@^0.2.2:
   integrity sha1-pNprY1/8zMoz9w0Xy5JZLeleVXo=
   dependencies:
     is-arrayish "^0.3.1"
+
+sjcl@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/sjcl/-/sjcl-1.0.8.tgz#f2ec8d7dc1f0f21b069b8914a41a8f236b0e252a"
+  integrity sha512-LzIjEQ0S0DpIgnxMEayM1rq9aGwGRG4OnZhCdjx7glTaJtf4zRfpg87ImfjSJjoW9vKpagd82McDOwbRT5kQKQ==
 
 slice-ansi@^2.1.0:
   version "2.1.0"

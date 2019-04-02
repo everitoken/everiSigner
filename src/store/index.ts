@@ -5,6 +5,7 @@ import { localStorage } from "redux-persist-webextension-storage";
 
 import rootReducer from "./reducer";
 import rootSaga from "./saga";
+import { encrypt, decrypt } from "../service/PasswordService";
 
 const persistConfig = {
   key: "root",

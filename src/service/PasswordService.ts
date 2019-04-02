@@ -1,4 +1,5 @@
 import * as bcrypt from "bcryptjs";
+import sjcl from "sjcl";
 
 export const isPasswordValid = (password: string, passwordRepeat: string) => {
   if (password.length < 8) {
@@ -26,3 +27,32 @@ export const hashPassword = (password: string): string => {
 
 export const verifyPassword = (password: string, hash: string): boolean =>
   bcrypt.compareSync(password, hash);
+
+export const encrypt = (password: string, payload: {}): string => {
+  const { iv, salt, ct } = JSON.parse(
+    sjcl.encrypt(password, JSON.stringify(payload), { mode: "gcm" })
+  );
+
+  return JSON.stringify({ iv, salt, ct });
+};
+
+export const decrypt = (password: string, raw: string) => {
+  const payload = JSON.stringify(
+    Object.assign(JSON.parse(raw), { mode: "gcm" })
+  );
+
+  const clearText = sjcl.decrypt(password, payload);
+
+  try {
+    const data = JSON.parse(clearText);
+    return {
+      success: true,
+      data
+    };
+  } catch (e) {
+    return {
+      success: false,
+      errMsg: e.message
+    };
+  }
+};
