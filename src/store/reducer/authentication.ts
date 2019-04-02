@@ -4,7 +4,6 @@ import * as actions from "../action";
 type StateType = AuthenticationType;
 
 const defaultState: StateType = {
-  status: "uninitialized",
   password: null
 };
 
@@ -16,10 +15,10 @@ export default (
     case actions.PASSWORD_SET:
       return {
         ...state,
-        status: "passwordSet",
         password: action.payload
       };
-
+    case actions.PASSWORD_REMOVE:
+      return defaultState;
     default:
       return state;
   }

@@ -2,6 +2,7 @@ import * as Types from "../types";
 
 export const ACCOUNT_CREATE = "store/ACCOUNT_CREATE";
 export const PASSWORD_SET = "store/PASSWORD_SET";
+export const PASSWORD_REMOVE = "store/PASSWORD_REMOVE";
 export const PLANE_LAND = "store/PLANE_LAND";
 export const PLANE_TAKEOFF = "store/PLANE_TAKEOFF";
 
@@ -13,6 +14,10 @@ export interface AccountCreateType {
 export interface PasswordSetType {
   type: typeof PASSWORD_SET;
   payload: string;
+}
+
+export interface PasswordRemoveType {
+  type: typeof PASSWORD_REMOVE;
 }
 
 export interface PlaneLandType {
@@ -40,6 +45,10 @@ export const passwordSet = (hash: string): PasswordSetType => ({
   payload: hash
 });
 
+export const passwordRemove = (): PasswordRemoveType => ({
+  type: PASSWORD_REMOVE
+});
+
 export const accountCreate = (
   account: Types.AccountType
 ): AccountCreateType => ({
@@ -50,5 +59,6 @@ export const accountCreate = (
 export type StoreActionTypes =
   | AccountCreateType
   | PasswordSetType
+  | PasswordRemoveType
   | PlaneLandType
   | PlaneTakeoffType;

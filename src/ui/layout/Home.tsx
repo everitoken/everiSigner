@@ -95,7 +95,7 @@ class Start extends React.PureComponent<StartPropTypes> {
 }
 
 const mapStateToProps = ({ authentication }: AppState) => ({
-  isAccountSetup: authentication.status != "uninitialized"
+  isAccountSetup: authentication.password !== null
 });
 
 export default connect(mapStateToProps)(Start);

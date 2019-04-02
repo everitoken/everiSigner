@@ -5,7 +5,6 @@ export interface AccountType {
 }
 
 export interface AuthenticationType {
-  status: string;
   password?: string;
 }
 
@@ -21,17 +20,22 @@ export type PasswordReceiveBgMsgSendType = {
   payload: string;
 };
 
-export type PopupInitializedBgMsgSendType = {
-  type: "popup/initialized";
+export type PopupStartedBgMsgSendType = {
+  type: "popup/started";
   payload: null;
+};
+
+export type PopupStartPasswordTimerType = {
+  type: "popup/startPasswordTimer";
 };
 
 export type BgMsgSendTypes =
   | PasswordReceiveBgMsgSendType
-  | PopupInitializedBgMsgSendType;
+  | PopupStartPasswordTimerType
+  | PopupStartedBgMsgSendType;
 
 export type BgMsgResponseTypes = {
-  type: "background/passwordSaved" | string;
+  type: "background/passwordSaved" | "background/password" | string;
   payload:
     | {
         success: true;

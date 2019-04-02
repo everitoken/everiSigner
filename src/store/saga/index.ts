@@ -1,31 +1,26 @@
 import * as storeActions from "../action";
 import * as uiActions from "../../ui/action";
-import { take, fork, call, put } from "redux-saga/effects";
+import { select, take, fork, call, put } from "redux-saga/effects";
 import { eventChannel, END } from "redux-saga";
 import * as PasswordService from "../../service/PasswordService";
-import { Portal } from "@material-ui/core";
 import { BgMsgResponseTypes } from "../../types";
+import { get } from "lodash";
+import { getPasswordHash } from "../getter";
 
 let backgroundPort = null;
+const log = (msg: string) => {
+  const background = chrome.extension.getBackgroundPage();
+  background.console.log("popup: ", msg);
+};
 
-/**
- * Block on background message to be able to program in a sync style
- * 
- * Usage:
-    console.log("before take");
-    const action = yield call(
-      waitBackgroundResponse,
-      "background/passwordSaved"
-    );
-    console.log("release take", JSON.stringify(action, null, 4));
- */
 function* waitBackgroundResponse(type: string) {
   const action: uiActions.BackgroundReceiveMessageType = yield take(
     (a: any) =>
       a.type === uiActions.RECEIVE_BACKGROUND_MESSAGE && a.payload.type === type
   );
-  return action;
+  return action.payload;
 }
+
 function* createAccountHandler() {
   while (true) {
     const action = yield take(storeActions.ACCOUNT_CREATE);
@@ -42,7 +37,7 @@ function* setPasswordHandler() {
     // hash password with bcrypt
     const hash = PasswordService.hashPassword(uiAction.payload);
 
-    // store hash in store and store "passwordset" in store
+    // store hash in store and store "passwordSet" in store
     yield put(storeActions.passwordSet(hash));
 
     // send password to background.js
@@ -64,6 +59,7 @@ function* backgroundChannelHandler(port: chrome.runtime.Port) {
       yield put(uiActions.receiveBackgroundMessage(message));
     }
   } finally {
+    console.log("closed", "feifiefei");
   }
 }
 
@@ -72,6 +68,7 @@ function* setupMessagingChannel(port: chrome.runtime.Port) {
     port.onMessage.addListener(emitter);
 
     port.onDisconnect.addListener(() => {
+      console.log("on disconnect");
       emitter(END);
     });
 
@@ -85,10 +82,46 @@ function* setupMessagingChannel(port: chrome.runtime.Port) {
 function* rootSaga() {
   if (backgroundPort === null) {
     backgroundPort = chrome.runtime.connect({ name: "background" });
-    backgroundPort.postMessage({ type: "popup/initialized" });
+    // setup background channel, this needs to be called before waiting on any background message
+    yield fork(backgroundChannelHandler, backgroundPort);
+
+    // tell background that pop up is started
+    backgroundPort.postMessage({ type: "popup/started" });
+
+    // At initialize phase need to perform a handshake. The background.js will let popup know
+    // what is the current state.
+    // 1. background.js has a password
+    //    1.1 verify password with hash and store in the state
+    // 2. background.js doesn't have a password
+    //    2.1 if local has a password hash, popup should be locked
+    //    2.2 if local doesn't have a password hash, popup app is not initialized with a password
+    const bgMsgPassword: BgMsgResponseTypes = yield call(
+      waitBackgroundResponse,
+      "background/password"
+    );
+
+    const password = get(bgMsgPassword.payload, "data.password", null);
+    log(JSON.stringify(password));
+
+    if (password !== null) {
+      // verify password from background against local password hash
+      const passwordHash = yield select(getPasswordHash);
+      const isPasswordValid = PasswordService.verifyPassword(
+        password,
+        passwordHash
+      );
+
+      if (!isPasswordValid) {
+        // if not lock
+        yield put(storeActions.passwordRemove());
+      } else {
+        log("password valid");
+        // start password lock timer
+        backgroundPort.postMessage({ type: "popup/startPasswordTimer" });
+      }
+    }
   }
 
-  yield fork(backgroundChannelHandler, backgroundPort);
   yield fork(createAccountHandler);
   yield fork(setPasswordHandler);
 }

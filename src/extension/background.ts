@@ -2,33 +2,56 @@ import { BackgroundReceiveMessageType } from "../ui/action";
 import {
   BgMsgSendTypes,
   BgMsgResponseTypes,
-  PasswordReceiveBgMsgSendType
+  PasswordReceiveBgMsgSendType,
+  PopupStartedBgMsgSendType,
+  PopupStartPasswordTimerType
 } from "../types";
 
 // * store password
 // * keep timeout to lock popup
 
 let password = null;
+let timerHandler = null;
+const TIMEOUT = 1000 * 60 * 5;
+const setPassword = (newPassword: string) => {
+  password = newPassword;
+};
+const removePassword = () => {
+  password = null;
+};
 
 // Handle popup state
 // it is only start communicating after popup.html is initialized
-let popupInitialized = false;
-const initializePopup = () => {
-  popupInitialized = true;
+let popupStarted = false;
+const popupStart = () => {
+  popupStarted = true;
   return undefined;
 };
-const isPopupInitialized = () => {
-  return popupInitialized === true;
+const isPopupStarted = () => {
+  return popupStarted === true;
 };
 const resetPopup = () => {
-  popupInitialized = false;
+  popupStarted = false;
   return undefined;
+};
+const startPasswordTimer = () => {
+  if (timerHandler) {
+    clearTimeout(timerHandler);
+    timerHandler = null;
+  }
+
+  console.log("password timeout timer started");
+
+  timerHandler = setTimeout(() => {
+    removePassword();
+    clearTimeout(timerHandler);
+    timerHandler = null;
+  }, TIMEOUT);
 };
 
 // popup is closed
 const disconnectHandler = (port: chrome.runtime.Port) => {
   // TODO or trigger a count down
-  password = null;
   resetPopup();
   port.disconnect();
 };
@@ -56,9 +79,25 @@ const passwordReceiveHandler = (
   message: PasswordReceiveBgMsgSendType,
   postMessage: PostMessageType
 ) => {
-  password = message.payload;
+  setPassword(message.payload);
   console.log("password is set to ", password);
   postMessage(responseSuccessCreator("background/passwordSaved"));
+};
+
+const popupStartedHandler = (
+  message: PopupStartedBgMsgSendType,
+  postMessage: PostMessageType
+) => {
+  console.log("popupStartedHandler", password);
+  postMessage(responseSuccessCreator("background/password", { password }));
+};
+
+const passwordTimerHandler = (
+  message: PopupStartPasswordTimerType,
+  postMessage: PostMessageType
+) => {
+  startPasswordTimer();
+  postMessage(responseSuccessCreator("background/passwordTimerSet"));
 };
 
 const handleMessage = (
@@ -69,6 +108,11 @@ const handleMessage = (
     case "popup/passwordReceive":
       passwordReceiveHandler(message, postMessage);
       break;
+    case "popup/started":
+      popupStartedHandler(message, postMessage);
+      break;
+    case "popup/startPasswordTimer":
+      passwordTimerHandler(message, postMessage);
 
     default:
       postMessage(
@@ -88,13 +132,12 @@ chrome.runtime.onConnect.addListener(function(port) {
   const postMessage: PostMessageType = msg => port.postMessage(msg);
   port.onMessage.addListener((message: BgMsgSendTypes) => {
     // listen on "popup/initialized" event
-    if (message.type === "popup/initialized") {
-      initializePopup();
-      return;
+    if (message.type === "popup/started") {
+      popupStart();
     }
 
     // don't do anything if popup is not initialized
-    if (!isPopupInitialized()) {
+    if (!isPopupStarted()) {
       return;
     }
 
