@@ -4,7 +4,7 @@ import { take, fork, call, put } from "redux-saga/effects";
 import { eventChannel, END } from "redux-saga";
 import * as PasswordService from "../../service/PasswordService";
 import { Portal } from "@material-ui/core";
-
+let backgroundPort = null;
 function* createAccountHandler() {
   while (true) {
     const action = yield take(storeActions.ACCOUNT_CREATE);
@@ -25,7 +25,11 @@ function* setPasswordHandler() {
     yield put(storeActions.passwordSet(hash));
 
     // send password to background.js
-    console.log(uiAction);
+    // console.log(uiAction);
+    backgroundPort.postMessage({
+      type: "popup/passwordReceive",
+      payload: uiAction.payload
+    });
   }
 }
 
@@ -36,7 +40,7 @@ function* backgroundChannelHandler(port: chrome.runtime.Port) {
     while (true) {
       let message = yield take(chan);
 
-      console.log(message);
+      console.log("received background message: ", message);
     }
   } finally {
   }
@@ -54,13 +58,16 @@ function* setupMessagingChannel(port: chrome.runtime.Port) {
 
     return () => {
       port.disconnect();
+      backgroundPort = null;
     };
   });
 }
 
 function* rootSaga() {
-  const backgroundPort = chrome.runtime.connect({ name: "background" });
-  backgroundPort.postMessage({ payload: "popup.initialized" });
+  if (backgroundPort === null) {
+    backgroundPort = chrome.runtime.connect({ name: "background" });
+    backgroundPort.postMessage({ type: "popup/initialized" });
+  }
 
   yield fork(backgroundChannelHandler, backgroundPort);
   yield fork(createAccountHandler);

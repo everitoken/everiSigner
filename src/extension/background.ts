@@ -1,12 +1,17 @@
-// background.ts
+import { BackgroundReceiveMessageType } from "../ui/action";
+import {
+  BgMsgSendTypes,
+  BgMsgResponseTypes,
+  PasswordReceiveBgMsgSendType
+} from "../types";
 
-// Responsibilities
-//   * store password
-//   * keep timeout to lock popup
+// * store password
+// * keep timeout to lock popup
 
 let password = null;
 
 // Handle popup state
+// it is only start communicating after popup.html is initialized
 let popupInitialized = false;
 const initializePopup = () => {
   popupInitialized = true;
@@ -28,24 +33,72 @@ const disconnectHandler = (port: chrome.runtime.Port) => {
   port.disconnect();
 };
 
-const handleMessage = (message: any, port: chrome.runtime.Port) => {
-  port.postMessage({ payload: Math.random() });
+type PostMessageType = (msg: BgMsgResponseTypes) => void;
+
+// response creator helper
+const responseSuccessCreator = (
+  type: string,
+  data: {} = {}
+): BgMsgResponseTypes => ({
+  type,
+  payload: { success: true, data }
+});
+
+const responseErrorCreator = (
+  type: string,
+  errMsg: string
+): BgMsgResponseTypes => ({
+  type,
+  payload: { success: false, errMsg }
+});
+
+const passwordReceiveHandler = (
+  message: PasswordReceiveBgMsgSendType,
+  postMessage: PostMessageType
+) => {
+  password = message.payload;
+  console.log("password is set to ", password);
+  postMessage(responseSuccessCreator("background/passwordSaved"));
 };
 
+const handleMessage = (
+  message: BgMsgSendTypes,
+  postMessage: PostMessageType
+) => {
+  switch (message.type) {
+    case "popup/passwordReceive":
+      passwordReceiveHandler(message, postMessage);
+      break;
+
+    default:
+      postMessage(
+        responseErrorCreator(
+          "background/unsupportedType",
+          `Unsupported type ${message.type}`
+        )
+      );
+
+      break;
+  }
+};
+
+// setup communication channel
 chrome.runtime.onConnect.addListener(function(port) {
   console.assert(port.name == "background");
-  port.onMessage.addListener(function(message) {
-    console.log(popupInitialized);
-    if (message.payload === "popup.initialized") {
+  const postMessage: PostMessageType = msg => port.postMessage(msg);
+  port.onMessage.addListener((message: BgMsgSendTypes) => {
+    // listen on "popup/initialized" event
+    if (message.type === "popup/initialized") {
       initializePopup();
     }
-    console.log(popupInitialized);
 
+    // don't do anything if popup is not initialized
     if (!isPopupInitialized()) {
       return;
     }
 
-    handleMessage(message, port);
+    // start handling message based on types
+    handleMessage(message, postMessage);
   });
 
   port.onDisconnect.addListener(disconnectHandler);
