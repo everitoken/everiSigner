@@ -90,6 +90,7 @@ chrome.runtime.onConnect.addListener(function(port) {
     // listen on "popup/initialized" event
     if (message.type === "popup/initialized") {
       initializePopup();
+      return;
     }
 
     // don't do anything if popup is not initialized

@@ -1,3 +1,5 @@
+import { BgMsgResponseTypes } from "../types";
+
 export const SET_PASSWORD = "ui/SET_PASSWORD";
 export const RECEIVE_BACKGROUND_MESSAGE = "background/RECEIVE_MESSAGE";
 
@@ -8,7 +10,7 @@ export type SetPasswordType = {
 
 export type BackgroundReceiveMessageType = {
   type: typeof RECEIVE_BACKGROUND_MESSAGE;
-  payload: any;
+  payload: BgMsgResponseTypes;
 };
 
 export type UiActionTypes = SetPasswordType;
@@ -20,7 +22,7 @@ export const setPassword = (password: string): UiActionTypes => ({
 });
 
 export const receiveBackgroundMessage = (
-  msg: any
+  msg: BgMsgResponseTypes
 ): BackgroundReceiveMessageType => ({
   type: RECEIVE_BACKGROUND_MESSAGE,
   payload: msg

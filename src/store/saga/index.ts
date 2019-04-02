@@ -4,7 +4,28 @@ import { take, fork, call, put } from "redux-saga/effects";
 import { eventChannel, END } from "redux-saga";
 import * as PasswordService from "../../service/PasswordService";
 import { Portal } from "@material-ui/core";
+import { BgMsgResponseTypes } from "../../types";
+
 let backgroundPort = null;
+
+/**
+ * Block on background message to be able to program in a sync style
+ * 
+ * Usage:
+    console.log("before take");
+    const action = yield call(
+      waitBackgroundResponse,
+      "background/passwordSaved"
+    );
+    console.log("release take", JSON.stringify(action, null, 4));
+ */
+function* waitBackgroundResponse(type: string) {
+  const action: uiActions.BackgroundReceiveMessageType = yield take(
+    (a: any) =>
+      a.type === uiActions.RECEIVE_BACKGROUND_MESSAGE && a.payload.type === type
+  );
+  return action;
+}
 function* createAccountHandler() {
   while (true) {
     const action = yield take(storeActions.ACCOUNT_CREATE);
@@ -25,7 +46,6 @@ function* setPasswordHandler() {
     yield put(storeActions.passwordSet(hash));
 
     // send password to background.js
-    // console.log(uiAction);
     backgroundPort.postMessage({
       type: "popup/passwordReceive",
       payload: uiAction.payload
@@ -38,9 +58,10 @@ function* backgroundChannelHandler(port: chrome.runtime.Port) {
 
   try {
     while (true) {
-      let message = yield take(chan);
+      let message: BgMsgResponseTypes = yield take(chan);
 
-      console.log("received background message: ", message);
+      // convert to redux action, so other watchers can "take" on
+      yield put(uiActions.receiveBackgroundMessage(message));
     }
   } finally {
   }
@@ -48,9 +69,7 @@ function* backgroundChannelHandler(port: chrome.runtime.Port) {
 
 function* setupMessagingChannel(port: chrome.runtime.Port) {
   return eventChannel(emitter => {
-    port.onMessage.addListener(msg => {
-      emitter(uiActions.receiveBackgroundMessage(msg));
-    });
+    port.onMessage.addListener(emitter);
 
     port.onDisconnect.addListener(() => {
       emitter(END);
