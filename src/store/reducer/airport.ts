@@ -13,7 +13,7 @@ export default (
     case actions.PLANE_LAND:
       return {
         ...state,
-        [action.payload.name]: action.payload
+        [action.payload.name]: action.payload.value
       };
 
     case actions.PLANE_TAKEOFF:

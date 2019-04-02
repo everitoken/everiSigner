@@ -30,20 +30,21 @@ function* createAccountHandler() {
 
 function* setPasswordHandler() {
   while (true) {
-    const uiAction: uiActions.SetPasswordType = yield take(
+    const action: uiActions.SetPasswordType = yield take(
       uiActions.SET_PASSWORD
     );
 
     // hash password with bcrypt
-    const hash = PasswordService.hashPassword(uiAction.payload);
+    const hash = PasswordService.hashPassword(action.payload);
 
-    // store hash in store and store "passwordSet" in store
+    // store hash in store
     yield put(storeActions.passwordSet(hash));
+    yield put(storeActions.landPlane("password", action.payload));
 
     // send password to background.js
     backgroundPort.postMessage({
       type: "popup/passwordReceive",
-      payload: uiAction.payload
+      payload: action.payload
     });
   }
 }
@@ -116,6 +117,7 @@ function* rootSaga() {
         yield put(storeActions.passwordRemove());
       } else {
         log("password valid");
+        yield put(storeActions.landPlane("password", password));
         // start password lock timer
         backgroundPort.postMessage({ type: "popup/startPasswordTimer" });
       }

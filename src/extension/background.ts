@@ -12,7 +12,7 @@ import {
 
 let password = null;
 let timerHandler = null;
-const TIMEOUT = 1000 * 60 * 5;
+const TIMEOUT = 1000 * 5 * 60 * 3;
 const setPassword = (newPassword: string) => {
   password = newPassword;
 };
@@ -96,6 +96,7 @@ const passwordTimerHandler = (
   message: PopupStartPasswordTimerType,
   postMessage: PostMessageType
 ) => {
+  // it is only started after you opened with a valid password
   startPasswordTimer();
   postMessage(responseSuccessCreator("background/passwordTimerSet"));
 };

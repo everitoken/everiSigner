@@ -5,14 +5,17 @@ import Button from "@material-ui/core/Button";
 import { WINDOW_HEIGHT, WINDOW_WIDTH, padding } from "../../style";
 import { AppState } from "../../store/reducer";
 import logo from "../../assets/logo@2x.png";
-import authentication from "../../store/reducer/authentication";
+import { get } from "lodash";
 import GetStarted from "./GetStarted";
+import { getStartScreenName } from "../../store/getter";
+import { StartScreenNameType } from "../../types";
 
 interface PropTypes {}
 
 interface StateProps {
   key: string;
 }
+
 function send(msg: string) {
   // return new Promise((resolve: any, reject: any) => {
   //   chrome.runtime.sendMessage(msg, response => resolve(response));
@@ -27,27 +30,7 @@ const Container = styled.div`
   box-sizing: border-box;
 `;
 
-const AccountCount = (props: { count: number; status: string }) => (
-  <React.Fragment>
-    <p>Account count: {props.count}</p>
-    <p>Authentication status: {props.status}</p>
-  </React.Fragment>
-);
-const ConnectedAccountCount = connect(
-  ({ accounts, authentication }: AppState) => ({
-    count: accounts.length,
-    status: authentication.status
-  })
-)(AccountCount);
-
 class Home extends React.PureComponent<PropTypes, StateProps> {
-  state = {
-    key: "Waiting for the key"
-  };
-  async componentDidMount() {
-    // const key = await Evt.EvtKey.randomPrivateKey();
-    // this.setState({ key: key.toString() });
-  }
   handleClick = () => {
     // chrome.tabs.create({ url: `${window.location.href}/extension/index.html` });
     send("fei");
@@ -63,8 +46,6 @@ class Home extends React.PureComponent<PropTypes, StateProps> {
           alt="logo"
           style={{ width: "15rem", alignSelf: "center", padding: 10 }}
         />
-        <ConnectedAccountCount />
-        <p>Key: {this.state.key}</p>
         <Button variant="contained" color="primary" onClick={this.handleClick}>
           Button
         </Button>
@@ -81,21 +62,22 @@ class Home extends React.PureComponent<PropTypes, StateProps> {
 }
 
 type StartPropTypes = {
-  isAccountSetup: boolean;
+  name: StartScreenNameType;
 };
 
 class Start extends React.PureComponent<StartPropTypes> {
   render() {
-    if (this.props.isAccountSetup) {
+    const { name } = this.props;
+    if (name === "HOME") {
       return <Home />;
+    }
+
+    if (name === "INPUT_PASSWORD") {
+      return <p>Input password</p>;
     }
 
     return <GetStarted />;
   }
 }
 
-const mapStateToProps = ({ authentication }: AppState) => ({
-  isAccountSetup: authentication.password !== null
-});
-
-export default connect(mapStateToProps)(Start);
+export default connect(getStartScreenName)(Start);

@@ -1,3 +1,4 @@
+export type StartScreenNameType = "GET_STARTED" | "HOME" | "INPUT_PASSWORD";
 export interface AccountType {
   id: string;
   name: string;

@@ -32,6 +32,8 @@ export default function configureStore() {
   if (process.env.NODE_ENV === "development") {
     window.store = store;
     window.persistor = persistor;
+    window.encrypt = encrypt;
+    window.decrypt = decrypt;
   }
 
   sagaMiddleware.run(rootSaga);
