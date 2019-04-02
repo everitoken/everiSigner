@@ -3,10 +3,9 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import Button from "@material-ui/core/Button";
 import { WINDOW_HEIGHT, WINDOW_WIDTH, padding } from "../../style";
-import { AppState } from "../../store/reducer";
 import logo from "../../assets/logo@2x.png";
-import { get } from "lodash";
 import GetStarted from "./GetStarted";
+import Login from "./LogIn";
 import { getStartScreenName } from "../../store/getter";
 import { StartScreenNameType } from "../../types";
 
@@ -72,8 +71,8 @@ class Start extends React.PureComponent<StartPropTypes> {
       return <Home />;
     }
 
-    if (name === "INPUT_PASSWORD") {
-      return <p>Input password</p>;
+    if (name === "LOGIN") {
+      return <Login />;
     }
 
     return <GetStarted />;

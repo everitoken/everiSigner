@@ -30,9 +30,10 @@ function* createAccountHandler() {
 
 function* setPasswordHandler() {
   while (true) {
-    const action: uiActions.SetPasswordType = yield take(
-      uiActions.SET_PASSWORD
-    );
+    const action: uiActions.SetPasswordType = yield take([
+      uiActions.SET_PASSWORD,
+      uiActions.LOG_IN
+    ]);
 
     // hash password with bcrypt
     const hash = PasswordService.hashPassword(action.payload);
@@ -60,7 +61,6 @@ function* backgroundChannelHandler(port: chrome.runtime.Port) {
       yield put(uiActions.receiveBackgroundMessage(message));
     }
   } finally {
-    console.log("closed", "feifiefei");
   }
 }
 
@@ -95,7 +95,7 @@ function* rootSaga() {
     //    1.1 verify password with hash and store in the state
     // 2. background.js doesn't have a password
     //    2.1 if local has a password hash, popup should be locked
-    //    2.2 if local doesn't have a password hash, popup app is not initialized with a password
+    //    2.2 if local doesn't have a password hash, app is not initialized with a password
     const bgMsgPassword: BgMsgResponseTypes = yield call(
       waitBackgroundResponse,
       "background/password"
