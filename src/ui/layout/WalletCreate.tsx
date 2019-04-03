@@ -11,6 +11,7 @@ import Container from "../presentational/FlexContainer";
 import * as PasswordService from "../../service/PasswordService";
 import * as uiActions from "../action";
 import { connect } from "react-redux";
+import AuthProtectedView from "./AuthProtectedView";
 
 type PropTypes = {
   setPassword: (password: string) => uiActions.UiActionTypes;
@@ -130,9 +131,23 @@ class WalletCreate extends React.Component<PropTypes, StateProps> {
   }
 }
 
-const connector = connect(
+const ConnectedComponent = connect(
   null,
   { setPassword: uiActions.setPassword }
-);
+)(WalletCreate);
 
-export default connector(WalletCreate);
+export default (props: any) => (
+  <AuthProtectedView>
+    {({ status }) => {
+      if (status === "unknown") {
+        return <ConnectedComponent {...props} />;
+      }
+
+      return (
+        <p>
+          Invalid state: Can't access this route with current application state.
+        </p>
+      );
+    }}
+  </AuthProtectedView>
+);

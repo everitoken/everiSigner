@@ -5,6 +5,21 @@ import { get } from "lodash";
 export const getPasswordHash = (state: AppState) =>
   state.authentication.password;
 
+export const getAuthenticatedStatus = (state: AppState) => {
+  const password = get(state, "airport.password", false);
+
+  if (password) {
+    return "password";
+  }
+
+  const passwordHash = state.authentication.password;
+
+  if (passwordHash) {
+    return "hash";
+  }
+
+  return "unknown";
+};
 /**
  * If there is a temp password, app is active
  * If there is only a password hash, app is locked
@@ -13,14 +28,13 @@ export const getPasswordHash = (state: AppState) =>
 export const getStartScreenName = (
   state: AppState
 ): { name: StartScreenNameType } => {
-  const password = get(state, "airport.password", false);
+  const authStatus = getAuthenticatedStatus(state);
 
-  if (password) {
+  if (authStatus === "password") {
     return { name: "HOME" };
   }
 
-  const passwordHash = state.authentication.password;
-  if (passwordHash) {
+  if (authStatus === "hash") {
     return { name: "LOGIN" };
   }
 
