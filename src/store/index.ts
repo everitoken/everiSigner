@@ -10,7 +10,7 @@ import { encrypt, decrypt } from "../service/PasswordService";
 const persistConfig = {
   key: "root",
   storage: localStorage,
-  blacklist: ["airport"]
+  blacklist: ["airport", "message"]
 };
 
 export default function configureStore() {

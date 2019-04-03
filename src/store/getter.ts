@@ -30,3 +30,5 @@ export const getStartScreenName = (
 export const mapInputPassword = (state: AppState) => ({
   passwordHash: getPasswordHash(state)
 });
+
+export const getSnackbarMessage = ({ message }: AppState) => message;

@@ -1,13 +1,4 @@
 export type StartScreenNameType = "GET_STARTED" | "HOME" | "LOGIN";
-export interface AccountType {
-  id: string;
-  name: string;
-  createdAt: Date;
-}
-
-export interface AuthenticationType {
-  password?: string;
-}
 
 // TODO: check native types
 export interface WithRouterType {

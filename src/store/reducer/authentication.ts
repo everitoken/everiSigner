@@ -1,7 +1,10 @@
-import { AuthenticationType } from "../../types";
 import * as actions from "../action";
 
-type StateType = AuthenticationType;
+type AuthenticationStateType = {
+  password?: string;
+};
+
+type StateType = AuthenticationStateType;
 
 const defaultState: StateType = {
   password: null

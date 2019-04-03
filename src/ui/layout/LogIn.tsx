@@ -1,4 +1,7 @@
 import * as React from "react";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import { connect } from "react-redux";
 import {
   FormControl,
   InputLabel,
@@ -6,26 +9,27 @@ import {
   InputAdornment,
   IconButton,
   Button,
-  Typography
+  Typography,
+  FormHelperText
 } from "@material-ui/core";
 
 import logo from "../../assets/logo@2x.png";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import { connect } from "react-redux";
 import * as uiActions from "../action";
 import { mapInputPassword } from "../../store/getter";
 import { verifyPassword } from "../../service/PasswordService";
+import Container from "../presentational/FlexContainer";
 
 type PropTypes = {
   passwordHash: string;
   onUnlock: (password: string) => uiActions.LogIn;
 };
+
 type StateProps = {
   invalid: boolean;
   password: string;
   showPassword: boolean;
 };
+
 class Login extends React.PureComponent<PropTypes, StateProps> {
   state = {
     invalid: false,
@@ -52,14 +56,22 @@ class Login extends React.PureComponent<PropTypes, StateProps> {
   render() {
     return (
       <React.Fragment>
-        <img
-          src={logo}
-          alt="logo"
-          style={{ width: "15rem", alignSelf: "center", padding: 10 }}
-        />
-        <Typography variant="h6" align="center" color="textSecondary">
-          WELCOME BACK
-        </Typography>
+        <div>
+          <img
+            src={logo}
+            alt="logo"
+            style={{
+              width: "15rem",
+              alignSelf: "center",
+              padding: 10,
+              display: "flex",
+              margin: "0 auto"
+            }}
+          />
+          <Typography variant="h6" align="center" color="textSecondary">
+            WELCOME BACK
+          </Typography>
+        </div>
         <FormControl>
           <InputLabel htmlFor="password">Type password to unlock...</InputLabel>
           <Input

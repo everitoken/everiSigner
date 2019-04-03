@@ -1,7 +1,12 @@
-import { AccountType } from "../../types";
 import { ACCOUNT_CREATE, StoreActionTypes } from "../action";
 
-type StateType = AccountType[];
+type AccountStateType = {
+  id: string;
+  name: string;
+  createdAt: Date;
+};
+
+type StateType = AccountStateType[];
 
 export default (state: StateType = [], action: StoreActionTypes): StateType => {
   switch (action.type) {

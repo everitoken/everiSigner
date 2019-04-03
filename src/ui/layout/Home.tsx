@@ -32,7 +32,7 @@ const Container = styled.div`
 class Home extends React.PureComponent<PropTypes, StateProps> {
   handleClick = () => {
     // chrome.tabs.create({ url: `${window.location.href}/extension/index.html` });
-    send("fei");
+    // send("fei");
   };
   handleResetState = () => {
     window.persistor.purge();

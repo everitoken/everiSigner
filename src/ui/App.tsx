@@ -13,6 +13,10 @@ import WalletCreate from "./layout/Wallet/create";
 import WalletImport from "./layout/WalletImport";
 import SetPassword from "./layout/SetPassword";
 import FlexContainer from "./presentational/FlexContainer";
+import { connect } from "react-redux";
+import { getSnackbarMessage } from "../store/getter";
+import SnackbarMessage from "./presentational/SnackbarMessage";
+import { snackbarMessageDismiss } from "../store/action";
 
 class HackRedirect extends React.PureComponent<any> {
   componentDidMount() {
@@ -26,6 +30,11 @@ class HackRedirect extends React.PureComponent<any> {
 // this is need because when browser load extension for the first time, it doesn't give a fully qualified url.
 // therefore we need to force redirect to "home"
 const HackRedirectWithRouter = withRouter(HackRedirect);
+
+const ConnectedMessage = connect(
+  getSnackbarMessage,
+  { onClose: snackbarMessageDismiss }
+)(SnackbarMessage);
 
 class App extends React.PureComponent {
   render() {
@@ -43,6 +52,7 @@ class App extends React.PureComponent {
             <Route path="/wallet-create" component={WalletCreate} />
             <Route path="/wallet-setpassword" component={SetPassword} />
             <Route path="/wallet-import" component={WalletImport} />
+            <ConnectedMessage />
           </FlexContainer>
           <hr />
           <div>

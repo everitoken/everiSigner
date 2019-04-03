@@ -5,10 +5,18 @@ export const PASSWORD_SET = "store/PASSWORD_SET";
 export const PASSWORD_REMOVE = "store/PASSWORD_REMOVE";
 export const PLANE_LAND = "store/PLANE_LAND";
 export const PLANE_TAKEOFF = "store/PLANE_TAKEOFF";
-
+export const SNACKBAR_MESSAGE_SHOW = "SNACKBAR_MESSAGE_SHOW";
+export const SNACKBAR_MESSAGE_DISMISS = "SNACKBAR_MESSAGE_DISMISS";
+export interface SnackbarMessageShowType {
+  type: typeof SNACKBAR_MESSAGE_SHOW;
+  payload: { message: string; variant: string };
+}
+export interface SnackbarMessageDismissType {
+  type: typeof SNACKBAR_MESSAGE_DISMISS;
+}
 export interface AccountCreateType {
   type: typeof ACCOUNT_CREATE;
-  payload: Types.AccountType;
+  payload: Types.AccountStateType;
 }
 
 export interface PasswordSetType {
@@ -50,10 +58,22 @@ export const passwordRemove = (): PasswordRemoveType => ({
 });
 
 export const accountCreate = (
-  account: Types.AccountType
+  account: Types.AccountStateType
 ): AccountCreateType => ({
   type: ACCOUNT_CREATE,
   payload: account
+});
+
+export const snackbarMessageShow = (
+  message: string,
+  variant: string = "info"
+): SnackbarMessageShowType => ({
+  type: SNACKBAR_MESSAGE_SHOW,
+  payload: { message, variant }
+});
+
+export const snackbarMessageDismiss = (): SnackbarMessageDismissType => ({
+  type: SNACKBAR_MESSAGE_DISMISS
 });
 
 export type StoreActionTypes =
@@ -61,4 +81,6 @@ export type StoreActionTypes =
   | PasswordSetType
   | PasswordRemoveType
   | PlaneLandType
+  | SnackbarMessageShowType
+  | SnackbarMessageDismissType
   | PlaneTakeoffType;
