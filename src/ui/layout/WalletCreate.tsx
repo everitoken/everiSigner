@@ -12,6 +12,7 @@ import * as PasswordService from "../../service/PasswordService";
 import * as uiActions from "../action";
 import { connect } from "react-redux";
 import AuthProtectedView from "./AuthProtectedView";
+import InvalidRoute from "./InvalidRoute";
 
 type PropTypes = {
   setPassword: (password: string) => uiActions.UiActionTypes;
@@ -47,6 +48,10 @@ class WalletCreate extends React.Component<PropTypes, StateProps> {
   };
 
   handleSetPassword = () => {
+    if (!this.state.password || !this.state.passwordRepeat) {
+      return;
+    }
+
     const { success, payload } = PasswordService.isPasswordValid(
       this.state.password,
       this.state.passwordRepeat
@@ -143,11 +148,7 @@ export default (props: any) => (
         return <ConnectedComponent {...props} />;
       }
 
-      return (
-        <p>
-          Invalid state: Can't access this route with current application state.
-        </p>
-      );
+      return <InvalidRoute message="Invalid state: Can't access this route with current application state."/>;
     }}
   </AuthProtectedView>
 );

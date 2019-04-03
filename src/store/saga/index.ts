@@ -27,7 +27,7 @@ function setupPopupUnloadListener() {
   addEventListener(
     "unload",
     () => {
-      background.window.everisigner.startTimer(5000);
+      background.window.everisigner.startTimer();
     },
     true
   );
@@ -81,7 +81,6 @@ function* setupMessagingChannel(port: chrome.runtime.Port) {
     port.onMessage.addListener(emitter);
 
     port.onDisconnect.addListener(() => {
-      log("on disconnect");
       emitter(END);
     });
 

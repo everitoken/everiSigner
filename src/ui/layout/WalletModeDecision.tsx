@@ -65,7 +65,7 @@ class WalletDecision extends React.PureComponent<PropTypes> {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => history.push("/wallet-setpassword")}
+              onClick={() => history.push("/wallet-create")}
             >
               Create wallet
             </Button>
