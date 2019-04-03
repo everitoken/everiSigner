@@ -21,6 +21,18 @@ function* waitBackgroundResponse(type: string) {
   return action.payload;
 }
 
+function setupPopupUnloadListener() {
+  const background = chrome.extension.getBackgroundPage();
+
+  addEventListener(
+    "unload",
+    () => {
+      background.window.everisigner.startTimer(5000);
+    },
+    true
+  );
+}
+
 function* createAccountHandler() {
   while (true) {
     const action = yield take(storeActions.ACCOUNT_CREATE);
@@ -69,7 +81,7 @@ function* setupMessagingChannel(port: chrome.runtime.Port) {
     port.onMessage.addListener(emitter);
 
     port.onDisconnect.addListener(() => {
-      console.log("on disconnect");
+      log("on disconnect");
       emitter(END);
     });
 
@@ -81,6 +93,9 @@ function* setupMessagingChannel(port: chrome.runtime.Port) {
 }
 
 function* rootSaga() {
+  // do some cleanup on popup unload
+  yield call(setupPopupUnloadListener);
+
   if (backgroundPort === null) {
     backgroundPort = chrome.runtime.connect({ name: "background" });
     // setup background channel, this needs to be called before waiting on any background message

@@ -4,18 +4,18 @@ import {
   BgMsgResponseTypes,
   PasswordReceiveBgMsgSendType,
   PopupStartedBgMsgSendType,
-  PopupStartPasswordTimerType
+  PopupStartPasswordTimerType,
+  BgMethodsInterface
 } from "../types";
-
-// * store password
-// * keep timeout to lock popup
 
 let password = null;
 let timerHandler = null;
-const TIMEOUT = 1000 * 5 * 60 * 3;
+const TIMEOUT = 1000 * 60 * 15;
+
 const setPassword = (newPassword: string) => {
   password = newPassword;
 };
+
 const removePassword = () => {
   password = null;
 };
@@ -23,6 +23,7 @@ const removePassword = () => {
 // Handle popup state
 // it is only start communicating after popup.html is initialized
 let popupStarted = false;
+
 const popupStart = () => {
   popupStarted = true;
   return undefined;
@@ -34,25 +35,29 @@ const resetPopup = () => {
   popupStarted = false;
   return undefined;
 };
-const startPasswordTimer = () => {
-  if (timerHandler) {
-    clearTimeout(timerHandler);
-    timerHandler = null;
+
+const backgroundMethods: BgMethodsInterface = {
+  startTimer: (milliseconds: number = TIMEOUT) => {
+    if (timerHandler) {
+      clearTimeout(timerHandler);
+      timerHandler = null;
+    }
+
+    console.log("password timeout timer started");
+
+    timerHandler = setTimeout(() => {
+      removePassword();
+      clearTimeout(timerHandler);
+      timerHandler = null;
+    }, milliseconds);
   }
-
-  console.log("password timeout timer started");
-
-  timerHandler = setTimeout(() => {
-    removePassword();
-    clearTimeout(timerHandler);
-    timerHandler = null;
-  }, TIMEOUT);
 };
 
 // popup is closed
 const disconnectHandler = (port: chrome.runtime.Port) => {
   // TODO or trigger a count down
   resetPopup();
+  console.log("background", "disconnectHandler");
   port.disconnect();
 };
 
@@ -97,7 +102,7 @@ const passwordTimerHandler = (
   postMessage: PostMessageType
 ) => {
   // it is only started after you opened with a valid password
-  startPasswordTimer();
+  // startPasswordTimer();
   postMessage(responseSuccessCreator("background/passwordTimerSet"));
 };
 
@@ -112,7 +117,7 @@ const handleMessage = (
     case "popup/started":
       popupStartedHandler(message, postMessage);
       break;
-    case "popup/startPasswordTimer":
+    case "popup/startPasswordTimer": // currently unused
       passwordTimerHandler(message, postMessage);
 
     default:
@@ -148,3 +153,5 @@ chrome.runtime.onConnect.addListener(function(port) {
 
   port.onDisconnect.addListener(disconnectHandler);
 });
+
+window.everisigner = backgroundMethods;

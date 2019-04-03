@@ -47,3 +47,7 @@ export type BgMsgResponseTypes = {
         errMsg: string;
       };
 };
+
+export interface BgMethodsInterface {
+  startTimer: (milliseconds: number) => void;
+}
