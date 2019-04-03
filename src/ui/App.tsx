@@ -5,18 +5,18 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import Home from "./layout/Home";
+import Start from "./layout/Start";
 import About from "./layout/About";
 import Footer from "./layout/Footer";
 import WalletModeDecision from "./layout/WalletModeDecision";
-import WalletCreate from "./layout/Wallet/create";
 import WalletImport from "./layout/WalletImport";
-import SetPassword from "./layout/SetPassword";
+import WalletCreate from "./layout/WalletCreate";
 import FlexContainer from "./presentational/FlexContainer";
 import { connect } from "react-redux";
 import { getSnackbarMessage } from "../store/getter";
 import SnackbarMessage from "./presentational/SnackbarMessage";
 import { snackbarMessageDismiss } from "../store/action";
+import AccountCreate from "./layout/AccountCreate";
 
 class HackRedirect extends React.PureComponent<any> {
   componentDidMount() {
@@ -43,14 +43,14 @@ class App extends React.PureComponent {
         <Router>
           <HackRedirectWithRouter />
           <FlexContainer withPadding>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" component={Start} />
             <Route path="/about" component={About} />
             <Route
               path="/wallet-mode-decision"
               component={WalletModeDecision}
             />
+            <Route path="/account-create" component={AccountCreate} />
             <Route path="/wallet-create" component={WalletCreate} />
-            <Route path="/wallet-setpassword" component={SetPassword} />
             <Route path="/wallet-import" component={WalletImport} />
             <ConnectedMessage />
           </FlexContainer>
@@ -64,13 +64,13 @@ class App extends React.PureComponent {
                 <Link to="/about">About</Link>
               </li>
               <li>
-                <Link to="/wallet-create">Wallet-create</Link>
+                <Link to="/account-create">Account-create</Link>
               </li>
               <li>
                 <Link to="/wallet-import">Wallet-import</Link>
               </li>
               <li>
-                <Link to="/wallet-setpassword">Wallet-setpassword</Link>
+                <Link to="/wallet-create">Wallet-create</Link>
               </li>
             </ul>
           </div>

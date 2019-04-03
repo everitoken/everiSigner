@@ -1,9 +1,3 @@
-// record state of password into state
-
-// generate 12 words on the same page
-
-// generate a unique string K to be used as salt for bcrypt
-// store K into redux
 import * as React from "react";
 import IconButton from "@material-ui/core/IconButton";
 import Input from "@material-ui/core/Input";
@@ -15,7 +9,6 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { Typography, Button } from "@material-ui/core";
 import Container from "../presentational/FlexContainer";
 import * as PasswordService from "../../service/PasswordService";
-import { Dispatch } from "redux";
 import * as uiActions from "../action";
 import { connect } from "react-redux";
 
@@ -29,7 +22,7 @@ type StateProps = {
   passwordConfirmed: boolean;
   showPassword: boolean;
 };
-class SetPassword extends React.Component<PropTypes, StateProps> {
+class WalletCreate extends React.Component<PropTypes, StateProps> {
   state = {
     password: null,
     passwordRepeat: null,
@@ -129,7 +122,7 @@ class SetPassword extends React.Component<PropTypes, StateProps> {
             color="primary"
             onClick={this.handleSetPassword}
           >
-            Create
+            Create wallet
           </Button>
         </Container>
       </Container>
@@ -142,4 +135,4 @@ const connector = connect(
   { setPassword: uiActions.setPassword }
 );
 
-export default connector(SetPassword);
+export default connector(WalletCreate);
