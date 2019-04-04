@@ -43,7 +43,7 @@ const backgroundMethods: BgMethodsInterface = {
       timerHandler = null;
     }
 
-    console.log("password timeout timer started");
+    console.log("password timeout timer started with timeout:", milliseconds);
 
     timerHandler = setTimeout(() => {
       removePassword();

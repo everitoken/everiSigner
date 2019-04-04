@@ -71,7 +71,8 @@ class AccountCreate extends React.PureComponent<
     return (
       <Container justifyContent="space-around">
         <Typography component="p" color="textSecondary">
-          Some insight about the meaning of creating an account.
+          Specify an account name that is descriptive and easy to remember. It
+          can not exceed 25 characters.
         </Typography>
         <FormControl>
           <InputLabel htmlFor="account-name">
