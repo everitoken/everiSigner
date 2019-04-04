@@ -21,7 +21,7 @@ import Container from "../presentational/FlexContainer";
 
 type PropTypes = {
   passwordHash: string;
-  onUnlock: (password: string) => uiActions.LogIn;
+  onUnlock: (password: string) => uiActions.LogInType;
 };
 
 type StateTypes = {

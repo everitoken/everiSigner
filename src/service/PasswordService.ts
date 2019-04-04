@@ -3,6 +3,9 @@ import * as sjcl from "sjcl";
 import * as bip39 from "bip39";
 import englishWords from "../assets/wordlist/english";
 import chineseSimplifiedWords from "../assets/wordlist/chinese_simplified";
+import { AccountStateType } from "../store/reducer/accounts";
+import { passwordRemove } from "../store/action";
+import { get } from "lodash";
 
 const wordlists = {
   english: englishWords,
@@ -70,12 +73,32 @@ export const sha256 = (input: string): string => {
 };
 
 export const generateMnemonicWords = (
-  passwordHash: string,
+  password: string,
   wordlist: string
 ): string => {
-  const digest = sha256(passwordHash);
+  const digest = sha256(password);
   return bip39.entropyToMnemonic(digest, wordlists[wordlist]);
 };
 
 export const mnemonicToSeed = (password: string, words: string) =>
   bip39.mnemonicToSeedSync(words, "");
+
+export const encryptAccount = (
+  password: string,
+  account: AccountStateType
+): AccountStateType => ({
+  ...account,
+  words: encrypt(password, { data: account.words }),
+  privateKey: encrypt(password, { data: account.privateKey })
+});
+
+export const decryptAccount = (
+  password: string,
+  account: AccountStateType
+): AccountStateType => {
+  return {
+    ...account,
+    words: get(decrypt(password, account.words), "data.data", null),
+    privateKey: get(decrypt(password, account.privateKey), "data.data", null)
+  };
+};

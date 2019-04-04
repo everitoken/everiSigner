@@ -5,7 +5,8 @@ import { eventChannel, END } from "redux-saga";
 import * as PasswordService from "../../service/PasswordService";
 import { BgMsgResponseTypes } from "../../types";
 import { get } from "lodash";
-import { getPasswordHash } from "../getter";
+import { getPasswordHash, getPassword } from "../getter";
+import { AccountStateType } from "../reducer/accounts";
 
 let backgroundPort = null;
 const log = (msg: string) => {
@@ -35,8 +36,43 @@ function setupPopupUnloadListener() {
 
 function* createAccountHandler() {
   while (true) {
-    const action = yield take(storeActions.ACCOUNT_CREATE);
-    console.log("saga", action);
+    const action: uiActions.CreateDefaultAccountType = yield take(
+      uiActions.CREATE_DEFAULT_ACCOUNT
+    );
+
+    // construct seed
+    // 1. get password
+    const password: string | false = yield select(getPassword);
+
+    if (!password) {
+      alert("Invalid password, Default account creation failed");
+      return;
+    }
+
+    // 2. get mnemonic
+    const words = PasswordService.generateMnemonicWords(password, "english");
+
+    // 3. generate entropy
+    const seed = PasswordService.mnemonicToSeed(password, words);
+
+    // construct state
+    const account: AccountStateType = {
+      ...action.payload,
+      type: "default",
+      createdAt: new Date(),
+      privateKey: seed.toString("hex"),
+      words
+    };
+
+    yield put(
+      storeActions.accountCreate(
+        PasswordService.encryptAccount(password, account)
+      )
+    );
+
+    yield put(
+      storeActions.snackbarMessageShow("Successfully created default account.")
+    );
   }
 }
 
@@ -51,9 +87,6 @@ function* setPasswordHandler() {
 
     // hash password with bcrypt
     const hash = PasswordService.hashPassword(password);
-    log(
-      JSON.stringify(PasswordService.generateMnemonicWords(password, "english"))
-    );
 
     // store hash in store
     yield put(storeActions.passwordSet(hash));

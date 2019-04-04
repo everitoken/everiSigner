@@ -57,20 +57,28 @@ class App extends React.PureComponent {
           </FlexContainer>
           <hr />
           <div>
-            <ul>
-              <li>
+            <ul
+              style={{
+                listStyle: "none",
+                margin: 0,
+                padding: 0,
+                display: "flex",
+                flexWrap: "wrap"
+              }}
+            >
+              <li style={{ margin: 5 }}>
                 <Link to="/">Home</Link>
               </li>
-              <li>
+              <li style={{ margin: 5 }}>
                 <Link to="/about">About</Link>
               </li>
-              <li>
+              <li style={{ margin: 5 }}>
                 <Link to="/account-create">Account-create</Link>
               </li>
-              <li>
+              <li style={{ margin: 5 }}>
                 <Link to="/wallet-import">Wallet-import</Link>
               </li>
-              <li>
+              <li style={{ margin: 5 }}>
                 <Link to="/wallet-create">Wallet-create</Link>
               </li>
             </ul>

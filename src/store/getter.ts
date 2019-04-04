@@ -1,12 +1,17 @@
 import { AppState } from "./reducer";
 import { StartScreenNameType } from "../types";
 import { get } from "lodash";
+import { AccountStateType } from "./reducer/accounts";
+import { decryptAccount } from "../service/PasswordService";
 
 export const getPasswordHash = (state: AppState) =>
   state.authentication.password;
 
+export const getPassword = (state: AppState): string | false =>
+  get(state, "airport.password", false);
+
 export const getAuthenticatedStatus = (state: AppState) => {
-  const password = get(state, "airport.password", false);
+  const password = getPassword(state);
 
   if (password) {
     return "password";
@@ -46,3 +51,14 @@ export const mapInputPassword = (state: AppState) => ({
 });
 
 export const getSnackbarMessage = ({ message }: AppState) => message;
+
+export const getDefaultAccountDecrypted = (state: AppState) => {
+  const account = state.accounts.find(account => account.type === "default");
+  const password = getPassword(state);
+
+  if (!account || !password) {
+    return { account: null };
+  }
+
+  return { account: decryptAccount(password, account) };
+};

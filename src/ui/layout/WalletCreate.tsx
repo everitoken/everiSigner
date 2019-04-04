@@ -58,7 +58,6 @@ class WalletCreate extends React.Component<PropTypes, StateTypes> {
     );
 
     if (!success) {
-      alert(payload);
       return;
     }
 
