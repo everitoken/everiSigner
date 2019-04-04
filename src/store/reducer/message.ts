@@ -3,6 +3,7 @@ import {
   SNACKBAR_MESSAGE_DISMISS,
   StoreActionTypes
 } from "../action";
+import { PURGE } from "redux-persist/es/constants";
 
 const defaultState = {
   message: "",
@@ -12,7 +13,7 @@ const defaultState = {
 
 type VariantType = "info" | "warning" | "error" | "success";
 
-type MessageStageType = {
+export type MessageStageType = {
   message: string;
   variant: VariantType;
   open: boolean;
@@ -29,7 +30,11 @@ export default (
         message: action.payload.message,
         open: true
       };
+
     case SNACKBAR_MESSAGE_DISMISS:
+      return defaultState;
+
+    case PURGE:
       return defaultState;
 
     default:

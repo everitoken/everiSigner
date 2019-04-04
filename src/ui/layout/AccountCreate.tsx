@@ -10,7 +10,15 @@ import styled from "styled-components";
 
 import Container from "../presentational/FlexContainer";
 import { padding } from "../../style";
-import { FormControl, InputLabel, Input, Button } from "@material-ui/core";
+import {
+  FormControl,
+  InputLabel,
+  Input,
+  Button,
+  Chip
+} from "@material-ui/core";
+import AlertDialog from "../presentational/AlertDialog";
+import SeedWordsDisplay from "../presentational/SeedWordsDisplay";
 
 function TabContainer({ children }) {
   return (
@@ -36,6 +44,7 @@ type AccountCreatePropTypes = {
 type AccountCreateStateTypes = {
   account: string;
   invalid: boolean;
+  modalState: boolean;
 };
 
 class AccountCreate extends React.PureComponent<
@@ -44,7 +53,8 @@ class AccountCreate extends React.PureComponent<
 > {
   state = {
     account: "Untitled account",
-    invalid: false
+    invalid: false,
+    modalState: false
   };
   handleAccountChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = target;
@@ -59,42 +69,60 @@ class AccountCreate extends React.PureComponent<
   };
   handleOnCreate = () => {
     const isValid = this.isValid();
-    this.setState({ invalid: !isValid });
 
     if (!isValid) {
+      this.setState({ invalid: true });
       return;
     }
 
-    this.props.onClick(this.state.account);
+    this.setState({ modalState: true, invalid: false }, () => {
+      this.props.onClick(this.state.account);
+    });
+  };
+  handleModalClose = () => {
+    this.setState({ modalState: false });
   };
   render() {
     return (
-      <Container justifyContent="space-around">
-        <Typography component="p" color="textSecondary">
-          Specify an account name that is descriptive and easy to remember. It
-          can not exceed 25 characters.
-        </Typography>
-        <FormControl>
-          <InputLabel htmlFor="account-name">
-            Specify account name (less than 25 chars)
-          </InputLabel>
-          <Input
-            autoFocus
-            error={this.state.invalid}
-            id="account-name"
-            value={this.state.account}
-            onChange={this.handleAccountChange}
-          />
-        </FormControl>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          onClick={this.handleOnCreate}
+      <React.Fragment>
+        <AlertDialog
+          title="Account Seed"
+          open={this.state.modalState}
+          onClose={this.handleModalClose}
         >
-          Create Account
-        </Button>
-      </Container>
+          <Typography component="p" variant="body1">
+            Seed phrases for you account, please keep it safe.
+          </Typography>
+          <hr />
+          <SeedWordsDisplay words="Seed phrases for you account, please keep it safe" />
+        </AlertDialog>
+        <Container justifyContent="space-around">
+          <Typography component="p" color="textSecondary">
+            Specify an account name that is descriptive and easy to remember. It
+            can not exceed 25 characters.
+          </Typography>
+          <FormControl>
+            <InputLabel htmlFor="account-name">
+              Specify account name (less than 25 chars)
+            </InputLabel>
+            <Input
+              autoFocus
+              error={this.state.invalid}
+              id="account-name"
+              value={this.state.account}
+              onChange={this.handleAccountChange}
+            />
+          </FormControl>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={this.handleOnCreate}
+          >
+            Create Account
+          </Button>
+        </Container>
+      </React.Fragment>
     );
   }
 }

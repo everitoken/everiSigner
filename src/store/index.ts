@@ -5,7 +5,7 @@ import { localStorage } from "redux-persist-webextension-storage";
 
 import rootReducer from "./reducer";
 import rootSaga from "./saga";
-import { encrypt, decrypt } from "../service/PasswordService";
+import * as PasswordService from "../service/PasswordService";
 
 const persistConfig = {
   key: "root",
@@ -32,8 +32,7 @@ export default function configureStore() {
   if (process.env.NODE_ENV === "development") {
     window.store = store;
     window.persistor = persistor;
-    window.encrypt = encrypt;
-    window.decrypt = decrypt;
+    window.PasswordService = PasswordService;
   }
 
   sagaMiddleware.run(rootSaga);

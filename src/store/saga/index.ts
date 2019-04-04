@@ -47,17 +47,22 @@ function* setPasswordHandler() {
       uiActions.LOG_IN
     ]);
 
+    const { payload: password } = action;
+
     // hash password with bcrypt
-    const hash = PasswordService.hashPassword(action.payload);
+    const hash = PasswordService.hashPassword(password);
+    log(
+      JSON.stringify(PasswordService.generateMnemonicWords(password, "english"))
+    );
 
     // store hash in store
     yield put(storeActions.passwordSet(hash));
-    yield put(storeActions.landPlane("password", action.payload));
+    yield put(storeActions.landPlane("password", password));
 
     // send password to background.js
     backgroundPort.postMessage({
       type: "popup/passwordReceive",
-      payload: action.payload
+      payload: password
     });
   }
 }
@@ -92,54 +97,60 @@ function* setupMessagingChannel(port: chrome.runtime.Port) {
 }
 
 function* rootSaga() {
-  // do some cleanup on popup unload
-  yield call(setupPopupUnloadListener);
+  try {
+    // do some cleanup on popup unload
+    yield call(setupPopupUnloadListener);
 
-  if (backgroundPort === null) {
-    backgroundPort = chrome.runtime.connect({ name: "background" });
-    // setup background channel, this needs to be called before waiting on any background message
-    yield fork(backgroundChannelHandler, backgroundPort);
+    if (backgroundPort === null) {
+      backgroundPort = chrome.runtime.connect({ name: "background" });
+      // setup background channel, this needs to be called before waiting on any background message
+      yield fork(backgroundChannelHandler, backgroundPort);
 
-    // tell background that pop up is started
-    backgroundPort.postMessage({ type: "popup/started" });
+      // tell background that pop up is started
+      backgroundPort.postMessage({ type: "popup/started" });
 
-    // At initialize phase need to perform a handshake. The background.js will let popup know
-    // what is the current state.
-    // 1. background.js has a password
-    //    1.1 verify password with hash and store in the state
-    // 2. background.js doesn't have a password
-    //    2.1 if local has a password hash, popup should be locked
-    //    2.2 if local doesn't have a password hash, app is not initialized with a password
-    const bgMsgPassword: BgMsgResponseTypes = yield call(
-      waitBackgroundResponse,
-      "background/password"
-    );
-
-    const password = get(bgMsgPassword.payload, "data.password", null);
-    log(JSON.stringify(password));
-
-    if (password !== null) {
-      // verify password from background against local password hash
-      const passwordHash = yield select(getPasswordHash);
-      const isPasswordValid = PasswordService.verifyPassword(
-        password,
-        passwordHash
+      // At initialize phase need to perform a handshake. The background.js will let popup know
+      // what is the current state.
+      // 1. background.js has a password
+      //    1.1 verify password with hash and store in the state
+      // 2. background.js doesn't have a password
+      //    2.1 if local has a password hash, popup should be locked
+      //    2.2 if local doesn't have a password hash, app is not initialized with a password
+      const bgMsgPassword: BgMsgResponseTypes = yield call(
+        waitBackgroundResponse,
+        "background/password"
       );
 
-      if (!isPasswordValid) {
-        // if not lock
-        yield put(storeActions.passwordRemove());
-      } else {
-        log("password valid");
-        yield put(storeActions.landPlane("password", password));
-        // start password lock timer
-        backgroundPort.postMessage({ type: "popup/startPasswordTimer" });
+      const password = get(bgMsgPassword.payload, "data.password", null);
+      log(JSON.stringify(password));
+
+      const passwordHash = yield select(getPasswordHash);
+
+      if (password !== null && passwordHash !== null) {
+        // verify password from background against local password hash
+        const isPasswordValid = PasswordService.verifyPassword(
+          password,
+          passwordHash
+        );
+
+        if (!isPasswordValid) {
+          // if not lock
+          yield put(storeActions.passwordRemove());
+        } else {
+          log("password valid");
+          yield put(storeActions.landPlane("password", password));
+          // start password lock timer
+          backgroundPort.postMessage({ type: "popup/startPasswordTimer" });
+        }
       }
     }
-  }
 
-  yield fork(createAccountHandler);
-  yield fork(setPasswordHandler);
+    yield fork(createAccountHandler);
+    yield fork(setPasswordHandler);
+  } catch (e) {
+    // TODO consider restart saga
+    console.log("saga root error: ", e);
+  }
 }
 
 export default rootSaga;

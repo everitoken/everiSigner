@@ -1,4 +1,5 @@
 import * as actions from "../action";
+import { PURGE } from "redux-persist/es/constants";
 
 type AuthenticationStateType = {
   password?: string;
@@ -22,6 +23,10 @@ export default (
       };
     case actions.PASSWORD_REMOVE:
       return defaultState;
+
+    case PURGE:
+      return defaultState;
+
     default:
       return state;
   }

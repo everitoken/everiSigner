@@ -1,4 +1,6 @@
 import * as Types from "../types";
+import { PURGE } from "redux-persist/es/constants";
+import { AccountStateType } from "./reducer/accounts";
 
 export const ACCOUNT_CREATE = "store/ACCOUNT_CREATE";
 export const PASSWORD_SET = "store/PASSWORD_SET";
@@ -14,9 +16,12 @@ export interface SnackbarMessageShowType {
 export interface SnackbarMessageDismissType {
   type: typeof SNACKBAR_MESSAGE_DISMISS;
 }
+export interface PurgeType {
+  type: typeof PURGE;
+}
 export interface AccountCreateType {
   type: typeof ACCOUNT_CREATE;
-  payload: Types.AccountStateType;
+  payload: AccountStateType;
 }
 
 export interface PasswordSetType {
@@ -58,7 +63,7 @@ export const passwordRemove = (): PasswordRemoveType => ({
 });
 
 export const accountCreate = (
-  account: Types.AccountStateType
+  account: AccountStateType
 ): AccountCreateType => ({
   type: ACCOUNT_CREATE,
   payload: account
@@ -83,4 +88,5 @@ export type StoreActionTypes =
   | PlaneLandType
   | SnackbarMessageShowType
   | SnackbarMessageDismissType
+  | PurgeType
   | PlaneTakeoffType;

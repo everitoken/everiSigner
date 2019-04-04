@@ -1,5 +1,13 @@
 import * as bcrypt from "bcryptjs";
-import sjcl from "sjcl";
+import * as sjcl from "sjcl";
+import * as bip39 from "bip39";
+import englishWords from "../assets/wordlist/english";
+import chineseSimplifiedWords from "../assets/wordlist/chinese_simplified";
+
+const wordlists = {
+  english: englishWords,
+  chinese_simplified: chineseSimplifiedWords
+};
 
 export const isPasswordValid = (password: string, passwordRepeat: string) => {
   if (password.length < 8) {
@@ -56,3 +64,18 @@ export const decrypt = (password: string, raw: string) => {
     };
   }
 };
+
+export const sha256 = (input: string): string => {
+  return sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(input));
+};
+
+export const generateMnemonicWords = (
+  passwordHash: string,
+  wordlist: string
+): string => {
+  const digest = sha256(passwordHash);
+  return bip39.entropyToMnemonic(digest, wordlists[wordlist]);
+};
+
+export const mnemonicToSeed = (password: string, words: string) =>
+  bip39.mnemonicToSeedSync(words, "");

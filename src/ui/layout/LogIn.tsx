@@ -24,13 +24,13 @@ type PropTypes = {
   onUnlock: (password: string) => uiActions.LogIn;
 };
 
-type StateProps = {
+type StateTypes = {
   invalid: boolean;
   password: string;
   showPassword: boolean;
 };
 
-class Login extends React.PureComponent<PropTypes, StateProps> {
+class Login extends React.PureComponent<PropTypes, StateTypes> {
   state = {
     invalid: false,
     password: "",

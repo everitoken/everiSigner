@@ -18,13 +18,13 @@ type PropTypes = {
   setPassword: (password: string) => uiActions.UiActionTypes;
 };
 
-type StateProps = {
+type StateTypes = {
   password?: string;
   passwordRepeat?: string;
   passwordConfirmed: boolean;
   showPassword: boolean;
 };
-class WalletCreate extends React.Component<PropTypes, StateProps> {
+class WalletCreate extends React.Component<PropTypes, StateTypes> {
   state = {
     password: null,
     passwordRepeat: null,
@@ -148,7 +148,9 @@ export default (props: any) => (
         return <ConnectedComponent {...props} />;
       }
 
-      return <InvalidRoute message="Invalid state: Can't access this route with current application state."/>;
+      return (
+        <InvalidRoute message="Invalid state: Can't access this route with current application state." />
+      );
     }}
   </AuthProtectedView>
 );

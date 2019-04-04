@@ -6,7 +6,6 @@ import Container from "./ui/presentational/Container";
 
 import createStore from "./store";
 import App from "./ui/App";
-import "./main.css";
 
 const { store, persistor } = createStore();
 

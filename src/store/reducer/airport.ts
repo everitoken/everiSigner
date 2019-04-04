@@ -1,7 +1,8 @@
 import { omit } from "lodash";
 import * as actions from "../action";
+import { PURGE } from "redux-persist";
 
-type StateType = { [key: string]: { name: string; value: any } };
+export type StateType = { [key: string]: { name: string; value: any } };
 
 const defaultState: StateType = {};
 
@@ -19,6 +20,8 @@ export default (
     case actions.PLANE_TAKEOFF:
       return omit(state, action.payload);
 
+    case PURGE:
+      return defaultState;
     default:
       return state;
   }

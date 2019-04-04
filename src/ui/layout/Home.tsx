@@ -4,11 +4,11 @@ import logo from "../../assets/logo@2x.png";
 
 type PropTypes = {};
 
-type StateProps = {
+type StateTypes = {
   key: string;
 };
 
-class Home extends React.PureComponent<PropTypes, StateProps> {
+class Home extends React.PureComponent<PropTypes, StateTypes> {
   handleClick = () => {
     // chrome.tabs.create({ url: `${window.location.href}/extension/index.html` });
   };
