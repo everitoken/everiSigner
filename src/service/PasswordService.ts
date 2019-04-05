@@ -7,7 +7,9 @@ import { AccountStateType } from "../store/reducer/accounts";
 import { passwordRemove } from "../store/action";
 import { get } from "lodash";
 
-const wordlists = {
+type SupportedWordlist = "english" | "chinese_simplified";
+
+const wordlists: { [key in SupportedWordlist]: string[] } = {
   english: englishWords,
   chinese_simplified: chineseSimplifiedWords
 };
@@ -74,7 +76,7 @@ export const sha256 = (input: string): string => {
 
 export const generateMnemonicWords = (
   password: string,
-  wordlist: string
+  wordlist: SupportedWordlist
 ): string => {
   const digest = sha256(password);
   return bip39.entropyToMnemonic(digest, wordlists[wordlist]);
