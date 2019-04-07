@@ -1,19 +1,19 @@
-import * as React from "react";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import * as React from 'react'
+import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle'
 
 type PropTypes = {
-  title: string;
-  children: React.ReactNode;
-  open: boolean;
-  onClose: () => void;
-};
+  title: string
+  children: React.ReactNode
+  open: boolean
+  onClose: () => void
+}
 
-type StateTypes = {};
+type StateTypes = {}
 
 class AlertDialog extends React.Component<PropTypes, { open: boolean }> {
   render() {
@@ -35,8 +35,8 @@ class AlertDialog extends React.Component<PropTypes, { open: boolean }> {
           </Button>
         </DialogActions>
       </Dialog>
-    );
+    )
   }
 }
 
-export default AlertDialog;
+export default AlertDialog

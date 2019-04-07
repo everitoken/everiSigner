@@ -1,16 +1,16 @@
-import { combineReducers } from "redux";
-import accounts from "./accounts";
-import authentication from "./authentication";
-import airport from "./airport";
-import message from "./message";
+import { combineReducers } from 'redux'
+import accounts from './accounts'
+import authentication from './authentication'
+import airport from './airport'
+import message from './message'
 
 const rootReducer = combineReducers({
   airport,
   authentication,
   accounts,
-  message
-});
+  message,
+})
 
-export type AppState = ReturnType<typeof rootReducer>;
+export type AppState = ReturnType<typeof rootReducer>
 
-export default rootReducer;
+export default rootReducer

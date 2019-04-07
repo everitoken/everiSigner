@@ -1,15 +1,15 @@
-import * as actions from "../action";
-import { PURGE } from "redux-persist/es/constants";
+import * as actions from '../action'
+import { PURGE } from 'redux-persist/es/constants'
 
 type AuthenticationStateType = {
-  password?: string;
-};
+  password?: string
+}
 
-type StateType = AuthenticationStateType;
+type StateType = AuthenticationStateType
 
 const defaultState: StateType = {
-  password: null
-};
+  password: undefined,
+}
 
 export default (
   state: StateType = defaultState,
@@ -19,15 +19,15 @@ export default (
     case actions.PASSWORD_SET:
       return {
         ...state,
-        password: action.payload
-      };
+        password: action.payload,
+      }
     case actions.PASSWORD_REMOVE:
-      return defaultState;
+      return defaultState
 
     case PURGE:
-      return defaultState;
+      return defaultState
 
     default:
-      return state;
+      return state
   }
-};
+}

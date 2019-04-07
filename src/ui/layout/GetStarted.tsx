@@ -1,11 +1,11 @@
-import * as React from "react";
-import Button from "@material-ui/core/Button";
-import { withRouter } from "react-router-dom";
-import styled from "styled-components";
-import { WithRouterType } from "../../types";
-import logo from "../../assets/logo@2x.png";
+import * as React from 'react'
+import Button from '@material-ui/core/Button'
+import { withRouter } from 'react-router-dom'
+import styled from 'styled-components'
+import { WithRouterType } from '../../types'
+import logo from '../../assets/logo@2x.png'
 
-export type PropTypes = {} & WithRouterType;
+export type PropTypes = {} & WithRouterType
 
 const Container = styled.div`
   display: flex;
@@ -13,7 +13,7 @@ const Container = styled.div`
   justify-content: space-evenly;
   align-items: center;
   flex: 1;
-`;
+`
 
 class GetStarted extends React.PureComponent<PropTypes> {
   render() {
@@ -22,9 +22,9 @@ class GetStarted extends React.PureComponent<PropTypes> {
         <img
           src={logo}
           alt="logo"
-          style={{ width: "15rem", alignSelf: "center", padding: 10 }}
+          style={{ width: '15rem', alignSelf: 'center', padding: 10 }}
         />
-        <div style={{ textAlign: "center" }}>
+        <div style={{ textAlign: 'center' }}>
           <h1>Welcome to EveriSigner</h1>
           <p>
             Decentralized signature, identity and authentication system for
@@ -35,13 +35,13 @@ class GetStarted extends React.PureComponent<PropTypes> {
           color="primary"
           variant="contained"
           size="large"
-          onClick={() => this.props.history.push("/wallet-mode-decision")}
+          onClick={() => this.props.history.push('/wallet-mode-decision')}
         >
           GET STARTED
         </Button>
       </Container>
-    );
+    )
   }
 }
 
-export default withRouter(GetStarted);
+export default withRouter(GetStarted)

@@ -17,7 +17,7 @@
       "run_at": "document_end"
     }
   ],
-  "web_accessible_resources": ["./extension/inject.ts"],
+  "web_accessible_resources": ["./extension/inject.js"],
   "background": {
     "scripts": ["./extension/background.ts"]
   }

@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Link as MDLink, Typography, Button } from "@material-ui/core";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import * as React from 'react'
+import { Link as MDLink, Typography, Button } from '@material-ui/core'
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 
 const Container = styled.div`
   height: 50%;
@@ -10,9 +10,9 @@ const Container = styled.div`
   justify-content: space-evenly;
   align-items: center;
   text-align: center;
-`;
+`
 
-const RouterLink = (props: any) => <Link to="/" {...props} />;
+const RouterLink = (props: any) => <Link to="/" {...props} />
 
 export default (props: { message: string }) => (
   <Container>
@@ -25,4 +25,4 @@ export default (props: { message: string }) => (
       </Button>
     </MDLink>
   </Container>
-);
+)

@@ -1,15 +1,15 @@
-import * as React from "react";
-import { withRouter } from "react-router-dom";
-import styled from "styled-components";
-import { WithRouterType } from "../../types";
-import logo from "../../assets/logo@2x.png";
-import Card from "@material-ui/core/Card";
-import Button from "@material-ui/core/Button";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Typography from "@material-ui/core/Typography";
+import * as React from 'react'
+import { withRouter } from 'react-router-dom'
+import styled from 'styled-components'
+import { WithRouterType } from '../../types'
+import logo from '../../assets/logo@2x.png'
+import Card from '@material-ui/core/Card'
+import Button from '@material-ui/core/Button'
+import CardContent from '@material-ui/core/CardContent'
+import CardActions from '@material-ui/core/CardActions'
+import Typography from '@material-ui/core/Typography'
 
-export type PropTypes = {} & WithRouterType;
+export type PropTypes = {} & WithRouterType
 
 const Container = styled.div`
   display: flex;
@@ -17,18 +17,18 @@ const Container = styled.div`
   justify-content: space-evenly;
   align-items: center;
   flex: 1;
-`;
+`
 
 class WalletDecision extends React.PureComponent<PropTypes> {
   render() {
-    const { history } = this.props;
+    const { history } = this.props
 
     return (
       <Container>
         <img
           src={logo}
           alt="logo"
-          style={{ width: "8rem", alignSelf: "center", padding: 10 }}
+          style={{ width: '8rem', alignSelf: 'center', padding: 10 }}
         />
         <Card>
           <CardContent>
@@ -45,7 +45,7 @@ class WalletDecision extends React.PureComponent<PropTypes> {
             <Button
               variant="outlined"
               color="secondary"
-              onClick={() => history.push("/wallet-import")}
+              onClick={() => history.push('/wallet-import')}
             >
               Import wallet
             </Button>
@@ -65,15 +65,15 @@ class WalletDecision extends React.PureComponent<PropTypes> {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => history.push("/wallet-create")}
+              onClick={() => history.push('/wallet-create')}
             >
               Create wallet
             </Button>
           </CardActions>
         </Card>
       </Container>
-    );
+    )
   }
 }
 
-export default withRouter(WalletDecision);
+export default withRouter(WalletDecision)

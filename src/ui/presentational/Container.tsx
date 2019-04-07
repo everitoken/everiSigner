@@ -1,6 +1,6 @@
-import * as React from "react";
-import styled from "styled-components";
-import * as style from "../../style";
+import * as React from 'react'
+import styled from 'styled-components'
+import * as style from '../../style'
 
 const Container = styled.div`
   overflow: hidden;
@@ -8,10 +8,10 @@ const Container = styled.div`
   height: ${style.WINDOW_HEIGHT}px;
   display: flex;
   flex-direction: column;
-`;
+`
 
 export default class extends React.PureComponent {
   render() {
-    return <Container>{this.props.children}</Container>;
+    return <Container>{this.props.children}</Container>
   }
 }

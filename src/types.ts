@@ -1,44 +1,45 @@
-export type StartScreenNameType = "GET_STARTED" | "HOME" | "LOGIN";
+export type ValidAuthenticatedStatus = 'password' | 'hash' | 'unknown'
+export type StartScreenNameType = 'GET_STARTED' | 'HOME' | 'LOGIN'
 
 // TODO: check native types
 export interface WithRouterType {
-  history: any;
-  match: any;
-  location: any;
+  history: any
+  match: any
+  location: any
 }
 
 export type PasswordReceiveBgMsgSendType = {
-  type: "popup/passwordReceive";
-  payload: string;
-};
+  type: 'popup/passwordReceive'
+  payload: string
+}
 
 export type PopupStartedBgMsgSendType = {
-  type: "popup/started";
-  payload: null;
-};
+  type: 'popup/started'
+  payload: null
+}
 
 export type PopupStartPasswordTimerType = {
-  type: "popup/startPasswordTimer";
-};
+  type: 'popup/startPasswordTimer'
+}
 
 export type BgMsgSendTypes =
   | PasswordReceiveBgMsgSendType
   | PopupStartPasswordTimerType
-  | PopupStartedBgMsgSendType;
+  | PopupStartedBgMsgSendType
 
 export type BgMsgResponseTypes = {
-  type: "background/passwordSaved" | "background/password" | string;
+  type: 'background/passwordSaved' | 'background/password' | string
   payload:
     | {
-        success: true;
-        data: {};
+        success: true
+        data: {}
       }
     | {
-        success: false;
-        errMsg: string;
-      };
-};
+        success: false
+        errMsg: string
+      }
+}
 
 export interface BgMethodsInterface {
-  startTimer: (milliseconds: number) => void;
+  startTimer: (milliseconds: number) => void
 }

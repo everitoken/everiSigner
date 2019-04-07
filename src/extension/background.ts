@@ -1,67 +1,68 @@
-import { BackgroundReceiveMessageType } from "../ui/action";
 import {
-  BgMsgSendTypes,
+  BgMethodsInterface,
   BgMsgResponseTypes,
+  BgMsgSendTypes,
   PasswordReceiveBgMsgSendType,
   PopupStartedBgMsgSendType,
   PopupStartPasswordTimerType,
-  BgMethodsInterface
-} from "../types";
+} from '../types'
+import { BackgroundReceiveMessageType } from '../ui/action'
+import { isPopMessage, isClientMessage } from '../util/background'
 
-let password = null;
-let timerHandler = null;
-const TIMEOUT = 1000 * 60 * 15;
+let password = null
+let timerHandler = null
+const TIMEOUT = 1000 * 60 * 15
 
 const setPassword = (newPassword: string) => {
-  password = newPassword;
-};
+  password = newPassword
+}
 
 const removePassword = () => {
-  password = null;
-};
+  password = null
+}
 
 // Handle popup state
 // it is only start communicating after popup.html is initialized
-let popupStarted = false;
+let popupStarted = false
 
 const popupStart = () => {
-  popupStarted = true;
-  return undefined;
-};
+  popupStarted = true
+  return undefined
+}
 const isPopupStarted = () => {
-  return popupStarted === true;
-};
+  return popupStarted === true
+}
 const resetPopup = () => {
-  popupStarted = false;
-  return undefined;
-};
+  popupStarted = false
+  return undefined
+}
 
 const backgroundMethods: BgMethodsInterface = {
   startTimer: (milliseconds: number = TIMEOUT) => {
     if (timerHandler) {
-      clearTimeout(timerHandler);
-      timerHandler = null;
+      clearTimeout(timerHandler)
+      timerHandler = null
     }
 
-    console.log("password timeout timer started with timeout:", milliseconds);
+    console.log('password timeout timer started with timeout:', milliseconds)
 
     timerHandler = setTimeout(() => {
-      removePassword();
-      clearTimeout(timerHandler);
-      timerHandler = null;
-    }, milliseconds);
-  }
-};
+      removePassword()
+      clearTimeout(timerHandler)
+      timerHandler = null
+    }, milliseconds)
+  },
+}
 
 // popup is closed
 const disconnectHandler = (port: chrome.runtime.Port) => {
   // TODO or trigger a count down
-  resetPopup();
-  console.log("background", "disconnectHandler");
-  port.disconnect();
-};
+  resetPopup()
+  console.log('background', 'disconnectHandler')
+  port.disconnect()
+}
 
-type PostMessageType = (msg: BgMsgResponseTypes) => void;
+type PostMessageType = (msg: BgMsgResponseTypes) => void
 
 // response creator helper
 const responseSuccessCreator = (
@@ -69,33 +70,33 @@ const responseSuccessCreator = (
   data: {} = {}
 ): BgMsgResponseTypes => ({
   type,
-  payload: { success: true, data }
-});
+  payload: { success: true, data },
+})
 
 const responseErrorCreator = (
   type: string,
   errMsg: string
 ): BgMsgResponseTypes => ({
   type,
-  payload: { success: false, errMsg }
-});
+  payload: { success: false, errMsg },
+})
 
 const passwordReceiveHandler = (
   message: PasswordReceiveBgMsgSendType,
   postMessage: PostMessageType
 ) => {
-  setPassword(message.payload);
-  console.log("password is set to ", password);
-  postMessage(responseSuccessCreator("background/passwordSaved"));
-};
+  setPassword(message.payload)
+  console.log('password is set to ', password)
+  postMessage(responseSuccessCreator('background/passwordSaved'))
+}
 
 const popupStartedHandler = (
   message: PopupStartedBgMsgSendType,
   postMessage: PostMessageType
 ) => {
-  console.log("popupStartedHandler", password);
-  postMessage(responseSuccessCreator("background/password", { password }));
-};
+  console.log('popupStartedHandler', password)
+  postMessage(responseSuccessCreator('background/password', { password }))
+}
 
 const passwordTimerHandler = (
   message: PopupStartPasswordTimerType,
@@ -103,55 +104,78 @@ const passwordTimerHandler = (
 ) => {
   // it is only started after you opened with a valid password
   // startPasswordTimer();
-  postMessage(responseSuccessCreator("background/passwordTimerSet"));
-};
+  postMessage(responseSuccessCreator('background/passwordTimerSet'))
+}
 
-const handleMessage = (
+const handleClientMessage = (message: any, postMessage: any) => {
+  console.log('handle client message:', message)
+  switch (message.type) {
+    case 'client/requestId':
+      postMessage({ type: 'background/setClientId' })
+      break
+
+    default:
+      return
+  }
+}
+const handlePopupMessage = (
   message: BgMsgSendTypes,
   postMessage: PostMessageType
 ) => {
+  console.log(message)
   switch (message.type) {
-    case "popup/passwordReceive":
-      passwordReceiveHandler(message, postMessage);
-      break;
-    case "popup/started":
-      popupStartedHandler(message, postMessage);
-      break;
-    case "popup/startPasswordTimer": // currently unused
-      passwordTimerHandler(message, postMessage);
+    case 'popup/passwordReceive':
+      passwordReceiveHandler(message, postMessage)
+      break
+    case 'popup/started':
+      popupStartedHandler(message, postMessage)
+      break
+    case 'popup/startPasswordTimer': // currently unused
+      passwordTimerHandler(message, postMessage)
 
     default:
       postMessage(
         responseErrorCreator(
-          "background/unsupportedType",
+          'background/unsupportedType',
           `Unsupported type ${message.type}`
         )
-      );
+      )
 
-      break;
+      break
   }
-};
+}
 
 // setup communication channel
 chrome.runtime.onConnect.addListener(function(port) {
-  console.assert(port.name == "background");
-  const postMessage: PostMessageType = msg => port.postMessage(msg);
+  //   console.assert(port.name == "background");
+  const postMessage: PostMessageType = msg => port.postMessage(msg)
   port.onMessage.addListener((message: BgMsgSendTypes) => {
+    console.log('bakcground', message)
     // listen on "popup/initialized" event
-    if (message.type === "popup/started") {
-      popupStart();
+    if (port.name === 'background' && isPopMessage(message.type)) {
+      if (message.type === 'popup/started') {
+        popupStart()
+      }
+
+      // don't do anything if popup is not initialized
+      if (!isPopupStarted()) {
+        return
+      }
+
+      // start handling message based on types
+      handlePopupMessage(message, postMessage)
+      return
     }
 
-    // don't do anything if popup is not initialized
-    if (!isPopupStarted()) {
-      return;
+    if (port.name === 'client' && isClientMessage(message.type)) {
+      handleClientMessage(message, postMessage)
+      return
     }
 
-    // start handling message based on types
-    handleMessage(message, postMessage);
-  });
+    throw new Error(`Message type is not supported: ${message.type}`)
+  })
 
-  port.onDisconnect.addListener(disconnectHandler);
-});
+  port.onDisconnect.addListener(disconnectHandler)
+})
 
-window.everisigner = backgroundMethods;
+window.everisigner = backgroundMethods

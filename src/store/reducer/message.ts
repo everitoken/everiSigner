@@ -1,23 +1,23 @@
 import {
   SNACKBAR_MESSAGE_SHOW,
   SNACKBAR_MESSAGE_DISMISS,
-  StoreActionTypes
-} from "../action";
-import { PURGE } from "redux-persist/es/constants";
+  StoreActionTypes,
+} from '../action'
+import { PURGE } from 'redux-persist/es/constants'
 
 const defaultState = {
-  message: "",
-  variant: "info" as VariantType,
-  open: false
-};
+  message: '',
+  variant: 'info' as VariantType,
+  open: false,
+}
 
-type VariantType = "info" | "warning" | "error" | "success";
+type VariantType = 'info' | 'warning' | 'error' | 'success'
 
 export type MessageStageType = {
-  message: string;
-  variant: VariantType;
-  open: boolean;
-};
+  message: string
+  variant: VariantType
+  open: boolean
+}
 
 export default (
   state: MessageStageType = defaultState,
@@ -28,16 +28,16 @@ export default (
       return {
         ...state,
         message: action.payload.message,
-        open: true
-      };
+        open: true,
+      }
 
     case SNACKBAR_MESSAGE_DISMISS:
-      return defaultState;
+      return defaultState
 
     case PURGE:
-      return defaultState;
+      return defaultState
 
     default:
-      return state;
+      return state
   }
-};
+}

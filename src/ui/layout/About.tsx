@@ -1,9 +1,9 @@
-import * as React from "react";
-import { ReactReduxContext } from "react-redux";
+import * as React from 'react'
+import { ReactReduxContext } from 'react-redux'
 
 export default class extends React.PureComponent {
   componentDidMount() {
-    console.log(window.location);
+    console.log(window.location)
   }
   render() {
     return (
@@ -15,6 +15,6 @@ export default class extends React.PureComponent {
           <li>Contribute, GitHub</li>
         </ul>
       </React.Fragment>
-    );
+    )
   }
 }

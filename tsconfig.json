@@ -3,7 +3,9 @@
     "jsx": "preserve",
     "lib": ["es7", "dom"],
     "types": ["chrome", "node"],
-    "strict": true
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]

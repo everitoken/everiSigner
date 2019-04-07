@@ -1,78 +1,81 @@
-import * as storeActions from "../action";
-import * as uiActions from "../../ui/action";
-import { select, take, fork, call, put } from "redux-saga/effects";
-import { eventChannel, END } from "redux-saga";
-import * as PasswordService from "../../service/PasswordService";
-import { BgMsgResponseTypes } from "../../types";
-import { get } from "lodash";
-import { getPasswordHash, getPassword } from "../getter";
-import { AccountStateType } from "../reducer/accounts";
+import { get } from 'lodash'
+import { END, eventChannel } from 'redux-saga'
+import { call, fork, put, select, take } from 'redux-saga/effects'
+import * as PasswordService from '../../service/PasswordService'
+import { BgMsgResponseTypes } from '../../types'
+import * as uiActions from '../../ui/action'
+import * as storeActions from '../action'
+import { getPassword, getPasswordHash } from '../getter'
+import { AccountStateType } from '../reducer/accounts'
 
-let backgroundPort = null;
-const log = (msg: string) => {
-  const background = chrome.extension.getBackgroundPage();
-  background.console.log("popup: ", msg);
-};
+let backgroundPort = null
+
+const log = (msg: string, tag: string = 'unspecified') => {
+  const background = chrome.extension.getBackgroundPage()
+  background.console.log(`popup(${tag}): `, msg)
+}
 
 function* waitBackgroundResponse(type: string) {
   const action: uiActions.BackgroundReceiveMessageType = yield take(
     (a: any) =>
       a.type === uiActions.RECEIVE_BACKGROUND_MESSAGE && a.payload.type === type
-  );
-  return action.payload;
+  )
+  return action.payload
 }
 
 function setupPopupUnloadListener() {
-  const background = chrome.extension.getBackgroundPage();
+  const background = chrome.extension.getBackgroundPage()
 
   addEventListener(
-    "unload",
+    'unload',
     () => {
-      background.window.everisigner.startTimer();
+      try {
+        background.window.everisigner.startTimer(5000)
+      } catch (e) {}
     },
     true
-  );
+  )
 }
 
 function* createAccountHandler() {
   while (true) {
     const action: uiActions.CreateDefaultAccountType = yield take(
       uiActions.CREATE_DEFAULT_ACCOUNT
-    );
+    )
 
     // construct seed
     // 1. get password
-    const password: string | false = yield select(getPassword);
+    const password: string | false = yield select(getPassword)
 
     if (!password) {
-      alert("Invalid password, Default account creation failed");
-      return;
+      alert('Invalid password, Default account creation failed')
+      return
     }
 
     // 2. get mnemonic
-    const words = PasswordService.generateMnemonicWords(password, "english");
+    const words = PasswordService.generateMnemonicWords(password, 'english')
 
     // 3. generate entropy
-    const seed = PasswordService.mnemonicToSeed(password, words);
+    const seed = PasswordService.mnemonicToSeed(password, words)
 
     // construct state
     const account: AccountStateType = {
       ...action.payload,
-      type: "default",
+      type: 'default',
       createdAt: new Date(),
-      privateKey: seed.toString("hex"),
-      words
-    };
+      privateKey: seed.toString('hex'),
+      words,
+    }
 
     yield put(
       storeActions.accountCreate(
         PasswordService.encryptAccount(password, account)
       )
-    );
+    )
 
     yield put(
-      storeActions.snackbarMessageShow("Successfully created default account.")
-    );
+      storeActions.snackbarMessageShow('Successfully created default account.')
+    )
   }
 }
 
@@ -80,35 +83,35 @@ function* setPasswordHandler() {
   while (true) {
     const action: uiActions.SetPasswordType = yield take([
       uiActions.SET_PASSWORD,
-      uiActions.LOG_IN
-    ]);
+      uiActions.LOG_IN,
+    ])
 
-    const { payload: password } = action;
+    const { payload: password } = action
 
     // hash password with bcrypt
-    const hash = PasswordService.hashPassword(password);
+    const hash = PasswordService.hashPassword(password)
 
     // store hash in store
-    yield put(storeActions.passwordSet(hash));
-    yield put(storeActions.landPlane("password", password));
+    yield put(storeActions.passwordSet(hash))
+    yield put(storeActions.landPlane('password', password))
 
     // send password to background.js
     backgroundPort.postMessage({
-      type: "popup/passwordReceive",
-      payload: password
-    });
+      type: 'popup/passwordReceive',
+      payload: password,
+    })
   }
 }
 
 function* backgroundChannelHandler(port: chrome.runtime.Port) {
-  const chan = yield call(setupMessagingChannel, port);
+  const chan = yield call(setupMessagingChannel, port)
 
   try {
     while (true) {
-      let message: BgMsgResponseTypes = yield take(chan);
+      const message: BgMsgResponseTypes = yield take(chan)
 
       // convert to redux action, so other watchers can "take" on
-      yield put(uiActions.receiveBackgroundMessage(message));
+      yield put(uiActions.receiveBackgroundMessage(message))
     }
   } finally {
   }
@@ -116,31 +119,31 @@ function* backgroundChannelHandler(port: chrome.runtime.Port) {
 
 function* setupMessagingChannel(port: chrome.runtime.Port) {
   return eventChannel(emitter => {
-    port.onMessage.addListener(emitter);
+    port.onMessage.addListener(emitter)
 
     port.onDisconnect.addListener(() => {
-      emitter(END);
-    });
+      emitter(END)
+    })
 
     return () => {
-      port.disconnect();
-      backgroundPort = null;
-    };
-  });
+      port.disconnect()
+      backgroundPort = null
+    }
+  })
 }
 
 function* rootSaga() {
   try {
     // do some cleanup on popup unload
-    yield call(setupPopupUnloadListener);
+    yield call(setupPopupUnloadListener)
 
     if (backgroundPort === null) {
-      backgroundPort = chrome.runtime.connect({ name: "background" });
+      backgroundPort = chrome.runtime.connect({ name: 'background' })
       // setup background channel, this needs to be called before waiting on any background message
-      yield fork(backgroundChannelHandler, backgroundPort);
+      yield fork(backgroundChannelHandler, backgroundPort)
 
       // tell background that pop up is started
-      backgroundPort.postMessage({ type: "popup/started" });
+      backgroundPort.postMessage({ type: 'popup/started' })
 
       // At initialize phase need to perform a handshake. The background.js will let popup know
       // what is the current state.
@@ -151,39 +154,41 @@ function* rootSaga() {
       //    2.2 if local doesn't have a password hash, app is not initialized with a password
       const bgMsgPassword: BgMsgResponseTypes = yield call(
         waitBackgroundResponse,
-        "background/password"
-      );
+        'background/password'
+      )
 
-      const password = get(bgMsgPassword.payload, "data.password", null);
-      log(JSON.stringify(password));
+      const password = get(bgMsgPassword.payload, 'data.password', null)
+      log(JSON.stringify(password))
 
-      const passwordHash = yield select(getPasswordHash);
+      const passwordHash = yield select(getPasswordHash)
 
       if (password !== null && passwordHash !== null) {
         // verify password from background against local password hash
         const isPasswordValid = PasswordService.verifyPassword(
           password,
           passwordHash
-        );
+        )
 
         if (!isPasswordValid) {
           // if not lock
-          yield put(storeActions.passwordRemove());
+          yield put(storeActions.passwordRemove())
         } else {
-          log("password valid");
-          yield put(storeActions.landPlane("password", password));
+          log('password valid')
+          yield put(storeActions.landPlane('password', password))
           // start password lock timer
-          backgroundPort.postMessage({ type: "popup/startPasswordTimer" });
+          backgroundPort.postMessage({
+            type: 'popup/startPasswordTimer',
+          })
         }
       }
     }
 
-    yield fork(createAccountHandler);
-    yield fork(setPasswordHandler);
+    yield fork(createAccountHandler)
+    yield fork(setPasswordHandler)
   } catch (e) {
     // TODO consider restart saga
-    console.log("saga root error: ", e);
+    console.log('saga root error: ', e)
   }
 }
 
-export default rootSaga;
+export default rootSaga

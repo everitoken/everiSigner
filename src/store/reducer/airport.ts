@@ -1,10 +1,10 @@
-import { omit } from "lodash";
-import * as actions from "../action";
-import { PURGE } from "redux-persist";
+import { omit } from 'lodash'
+import * as actions from '../action'
+import { PURGE } from 'redux-persist'
 
-export type StateType = { [key: string]: { name: string; value: any } };
+export type StateType = { [key: string]: { name: string; value: any } }
 
-const defaultState: StateType = {};
+const defaultState: StateType = {}
 
 export default (
   state: StateType = defaultState,
@@ -14,15 +14,15 @@ export default (
     case actions.PLANE_LAND:
       return {
         ...state,
-        [action.payload.name]: action.payload.value
-      };
+        [action.payload.name]: action.payload.value,
+      }
 
     case actions.PLANE_TAKEOFF:
-      return omit(state, action.payload);
+      return omit(state, action.payload)
 
     case PURGE:
-      return defaultState;
+      return defaultState
     default:
-      return state;
+      return state
   }
-};
+}

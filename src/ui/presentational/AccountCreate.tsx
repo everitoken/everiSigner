@@ -1,29 +1,29 @@
-import * as React from "react";
-import AlertDialog from "./AlertDialog";
+import * as React from 'react'
+import AlertDialog from './AlertDialog'
 import {
   Typography,
   FormControl,
   InputLabel,
   Input,
-  Button
-} from "@material-ui/core";
-import SeedWordsDisplay from "./SeedWordsDisplay";
-import FlexContainer from "./FlexContainer";
-import { AccountStateType } from "../../store/reducer/accounts";
-import { CreateDefaultAccountType } from "../action";
-import * as uuid from "uuid";
+  Button,
+} from '@material-ui/core'
+import SeedWordsDisplay from './SeedWordsDisplay'
+import FlexContainer from './FlexContainer'
+import { AccountStateType } from '../../store/reducer/accounts'
+import { CreateDefaultAccountType } from '../action'
+import * as uuid from 'uuid'
 
 type AccountCreatePropTypes = {
-  account: AccountStateType;
-  onClick: (id: string, accountName: string) => CreateDefaultAccountType;
-};
+  account: AccountStateType | null
+  onClick: (id: string, accountName: string) => CreateDefaultAccountType
+}
 
 type AccountCreateStateTypes = {
-  id: string;
-  accountName: string;
-  invalid: boolean;
-  modalState: boolean;
-};
+  id: string | null
+  accountName: string
+  invalid: boolean
+  modalState: boolean
+}
 
 class AccountCreate extends React.PureComponent<
   AccountCreatePropTypes,
@@ -31,43 +31,43 @@ class AccountCreate extends React.PureComponent<
 > {
   state = {
     id: null,
-    accountName: "Untitled account",
+    accountName: 'Untitled account',
     invalid: false,
-    modalState: false
-  };
+    modalState: false,
+  }
   handleAccountChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = target;
-    this.setState({ accountName: value });
-  };
+    const { value } = target
+    this.setState({ accountName: value })
+  }
   isValid = () => {
     if (
       this.state.accountName.length === 0 ||
       this.state.accountName.length > 25
     ) {
-      return false;
+      return false
     }
 
-    return true;
-  };
+    return true
+  }
   handleOnCreate = () => {
-    const isValid = this.isValid();
+    const isValid = this.isValid()
 
     if (!isValid) {
-      this.setState({ invalid: true });
-      return;
+      this.setState({ invalid: true })
+      return
     }
 
-    const id = uuid.v4();
-    this.setState({ id, modalState: true, invalid: false });
+    const id = uuid.v4()
+    this.setState({ id, modalState: true, invalid: false })
 
-    this.props.onClick(id, this.state.accountName);
-  };
+    this.props.onClick(id, this.state.accountName)
+  }
   handleModalClose = () => {
-    this.setState({ modalState: false });
-  };
+    this.setState({ modalState: false })
+  }
   render() {
-    const { account } = this.props;
-    console.log(account);
+    const { account } = this.props
+    console.log(account)
 
     if (account) {
       if (account.id === this.state.id) {
@@ -78,14 +78,14 @@ class AccountCreate extends React.PureComponent<
             </Typography>
             <SeedWordsDisplay words={account.words} />
           </React.Fragment>
-        );
+        )
       }
       return (
         <p>
           You have already created an default account. You can alternatively
           import "loose account".
         </p>
-      );
+      )
     }
     return (
       <React.Fragment>
@@ -126,7 +126,7 @@ class AccountCreate extends React.PureComponent<
           </Button>
         </FlexContainer>
       </React.Fragment>
-    );
+    )
   }
 }
-export default AccountCreate;
+export default AccountCreate

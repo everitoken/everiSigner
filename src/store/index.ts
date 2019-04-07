@@ -1,41 +1,43 @@
-import { applyMiddleware, compose, createStore } from "redux";
-import createSagaMiddleware from "redux-saga";
-import { persistStore, persistReducer } from "redux-persist";
-import { localStorage } from "redux-persist-webextension-storage";
+import { applyMiddleware, compose, createStore } from 'redux'
+import createSagaMiddleware from 'redux-saga'
+import { persistStore, persistReducer } from 'redux-persist'
+import { localStorage } from 'redux-persist-webextension-storage'
 
-import rootReducer from "./reducer";
-import rootSaga from "./saga";
-import * as PasswordService from "../service/PasswordService";
+import rootReducer from './reducer'
+import rootSaga from './saga'
+import * as PasswordService from '../service/PasswordService'
 
 const persistConfig = {
-  key: "root",
+  key: 'root',
   storage: localStorage,
-  blacklist: ["airport", "message"]
-};
+  blacklist: ['airport', 'message'],
+}
+
+const isProd = process.env.NODE_ENV === 'development'
 
 export default function configureStore() {
-  const sagaMiddleware = createSagaMiddleware();
-  const middlewares = [sagaMiddleware];
+  const sagaMiddleware = createSagaMiddleware()
+  const middlewares = [sagaMiddleware]
 
-  if (process.env.NODE_ENV === "development") {
-    const { logger } = require("redux-logger");
+  if (!isProd) {
+    const { logger } = require('redux-logger')
 
-    middlewares.push(logger);
+    middlewares.push(logger)
   }
 
-  const enhancer = compose(applyMiddleware(...middlewares));
-  const persistedReducer = persistReducer(persistConfig, rootReducer);
+  const enhancer = compose(applyMiddleware(...middlewares))
+  const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-  const store = createStore(persistedReducer, enhancer);
-  let persistor = persistStore(store);
+  const store = createStore(persistedReducer, enhancer)
+  let persistor = persistStore(store)
 
-  if (process.env.NODE_ENV === "development") {
-    window.store = store;
-    window.persistor = persistor;
-    window.PasswordService = PasswordService;
+  if (isProd) {
+    window.store = store
+    window.persistor = persistor
+    window.PasswordService = PasswordService
   }
 
-  sagaMiddleware.run(rootSaga);
+  sagaMiddleware.run(rootSaga)
 
-  return { store, persistor };
+  return { store, persistor }
 }
