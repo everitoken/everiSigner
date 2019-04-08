@@ -4,17 +4,15 @@ import {
   ClientGlobalMsgTypes,
 } from '../types'
 
-const port = chrome.runtime.connect({ name: 'background' })
+const port = chrome.runtime.connect({ name: 'client' })
 
 const postLocalMessage = (msg: ClientLocalMsgTypes) => port.postMessage(msg)
 
 window.addEventListener(
   'message',
-
   ev => {
     const { type, payload } = ev.data
     if (type === 'everisigner/global/sign') {
-      console.log('Received local sign from inject.js', ev.data)
       postLocalMessage({ type: 'everisigner/local/sign', payload })
     }
   },
@@ -23,8 +21,8 @@ window.addEventListener(
 
 const postGlobalMessage = (msg: ClientGlobalMsgTypes) =>
   window.postMessage(msg, '*')
-port.onMessage.addListener((message: BackgroundMsgTypes) => {
-  // listen for "background/signed" message
+
+chrome.runtime.onMessage.addListener(message => {
   if (message.type === 'background/signed') {
     postGlobalMessage({
       type: 'everisigner/global/signed',

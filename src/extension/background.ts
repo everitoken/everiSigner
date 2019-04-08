@@ -10,6 +10,7 @@ import {
 } from '../types'
 import { isPopMessage, isClientMessage } from '../util/background'
 
+let backgroundPort = null
 let password: string | null = null
 let timerHandler: number | null = null
 const TIMEOUT = 1000 * 60 * 15
@@ -64,6 +65,7 @@ const disconnectHandler = (port: chrome.runtime.Port) => {
 }
 
 type PostMessageType = (msg: BackgroundMsgTypes) => void
+type SendMessageType = (msg: BackgroundMsgTypes) => void
 
 const passwordSetHandler = (
   message: PopupPasswordSetMsgType,
@@ -95,16 +97,42 @@ const signedHandler = (
   message: PopupSignedMsgType,
   postMessage: PostMessageType
 ) => {
-  postMessage({ type: 'background/signed', payload: message.payload })
+  setTimeout(() => {
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+      const tabId = tabs[0].id
+      if (tabId) {
+        chrome.tabs.sendMessage(tabId, {
+          type: 'background/signed',
+          payload: message.payload,
+        })
+      }
+    })
+  }, 3000)
 }
 
 const handleClientMessage = (
   message: ClientLocalMsgTypes,
-  postMessage: PostMessageType
+  sendMessage: SendMessageType
 ) => {
   switch (message.type) {
     case 'everisigner/local/sign':
-      postMessage({ type: 'background/sign', payload: message.payload })
+      chrome.windows.create(
+        {
+          width: 500, // TODO center window
+          height: 800,
+          url: chrome.extension.getURL('extension/prompt.html'),
+          type: 'popup',
+          focused: true,
+        },
+        () => {
+          setTimeout(() => {
+            sendMessage({
+              type: 'background/sign',
+              payload: message.payload,
+            })
+          }, 1000)
+        }
+      )
       break
 
     default:
@@ -134,40 +162,43 @@ const handlePopupMessage = (
         type: 'background/error',
         payload: `Unsupported type ${JSON.stringify(message)}`,
       })
-
       break
   }
 }
 
 // setup communication channel
 chrome.runtime.onConnect.addListener(function(port) {
-  //   console.assert(port.name == "background");
-  const postMessage: PostMessageType = msg => port.postMessage(msg)
-  port.onMessage.addListener((message: PopupMsgTypes | ClientLocalMsgTypes) => {
-    if (port.name === 'background' && isPopMessage(message.type)) {
-      const localMessageWithType = message as PopupMsgTypes
-      if (localMessageWithType.type === 'popup/started') {
-        popupStart()
-      }
+  backgroundPort = port
 
-      // don't do anything if popup is not initialized
-      if (!isPopupStarted()) {
-        return
-      }
-
-      // start handling message based on types
-      handlePopupMessage(localMessageWithType, postMessage)
-      return
-    }
-
-    if (port.name === 'client' && isClientMessage(message.type)) {
-      const localMessageWithType = message as ClientLocalMsgTypes
-      handleClientMessage(localMessageWithType, postMessage)
-      return
-    }
-
-    throw new Error(`Message type is not supported: ${message.type}`)
+  port.onDisconnect.addListener(() => {
+    console.log('disconnected.................')
   })
+
+  const postMessage: PostMessageType = msg => port.postMessage(msg)
+  const sendMessage: SendMessageType = msg => chrome.runtime.sendMessage(msg)
+  port.onMessage.addListener(
+    (message: PopupMsgTypes | ClientLocalMsgTypes, sender) => {
+      console.log(sender)
+      if (isPopMessage(message.type)) {
+        const localMessageWithType = message as PopupMsgTypes
+        //   if (localMessageWithType.type === 'popup/started') {
+        //     popupStart()
+        //   }
+
+        //   // don't do anything if popup is not initialized
+        //   if (!isPopupStarted()) {
+        //     return
+        //   }
+
+        handlePopupMessage(localMessageWithType, postMessage)
+      } else if (isClientMessage(message.type)) {
+        const localMessageWithType = message as ClientLocalMsgTypes
+        handleClientMessage(localMessageWithType, sendMessage)
+      } else {
+        throw new Error(`Message type is not supported: ${message.type}`)
+      }
+    }
+  )
 
   port.onDisconnect.addListener(disconnectHandler)
 })

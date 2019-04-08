@@ -4,7 +4,6 @@ import { persistStore, persistReducer } from 'redux-persist'
 import { localStorage } from 'redux-persist-webextension-storage'
 
 import rootReducer from './reducer'
-import rootSaga from './saga'
 import * as PasswordService from '../service/PasswordService'
 
 const persistConfig = {
@@ -15,7 +14,7 @@ const persistConfig = {
 
 const isProd = process.env.NODE_ENV === 'development'
 
-export default function configureStore() {
+export default function configureStore(saga) {
   const sagaMiddleware = createSagaMiddleware()
   const middlewares = [sagaMiddleware]
 
@@ -37,7 +36,7 @@ export default function configureStore() {
     window.PasswordService = PasswordService
   }
 
-  sagaMiddleware.run(rootSaga)
+  sagaMiddleware.run(saga)
 
   return { store, persistor }
 }

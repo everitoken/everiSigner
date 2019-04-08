@@ -4,9 +4,7 @@ const btn = document.getElementById('sign')
 const payload = document.getElementById('payload')
 
 const handleSign = ev => {
-  setInterval(() => {
-    window.everisigner.sign(payload.innerHTML.trim()).then(d => console.log(d))
-  }, 5000)
+  window.everisigner.sign(payload.innerHTML.trim()).then(d => console.log(d))
 }
 
 btn.addEventListener('click', handleSign)
