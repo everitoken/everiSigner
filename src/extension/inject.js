@@ -1,42 +1,47 @@
 // initialize everiSigner client
 // this client will be init with a tag id, which will be verified in extension
+import * as uuid from 'uuid'
+import { get } from 'lodash'
 
-// window.everiSignerClient = {
-//   signProvider: () => {
-//     window.postMessage(
-//       { type: 'everisigner', payload: { type: 'sign', data: 'test' } },
-//       '*'
-//     )
-//   },
-// }
+let listeners = {}
 
-// window.addEventListener('message', function(event) {
-//   console.log('inject.js', event.data.type)
-// })
-
-// window.postMessage(
-//   {
-//     type: 'everisigner/client',
-//     payload: { type: 'ready', data: 'client.is.ready' },
-//   },
-//   '*'
-// )
-
-// window.document.everiSignerClient = msg => {
-//   console.log('window.everisigner', msg)
-// }
-
-const everiSignerClient = () => {
-  //   bridge.getId().then(d => console.log(d))
+const registerListener = (id, fn) => {
+  listeners[id] = fn
 }
 
-// workflow
-//  1. inject.js first fire "client/init-handshake" with a random id (K)
-//  2. this message is picked up by content.js and passed along to background.js
-//  3. background.js encrypt the K
+const removeListener = id => {
+  delete listeners[id]
+}
 
-document.addEventListener('everisigner/init', ev => {
-  console.log('inject.js', ev)
-})
+window.addEventListener(
+  'message',
+  ev => {
+    const { type, payload } = event.data
+    // listens for signed message
+    if (type === 'everisigner/signed') {
+      const id = get(payload, 'id')
+      const listener = get(listeners, id)
 
-window.app = everiSignerClient()
+      // if there is a listener, invoke the listener with signed payload
+      // then remove the listener
+      if (listener) {
+        listener(payload)
+        removeListener(id)
+      }
+    }
+  },
+  false
+)
+
+window.everisigner = {
+  sign: data => {
+    return new Promise(resolve => {
+      const id = uuid.v4()
+      window.postMessage({
+        type: 'everisigner/sign',
+        payload: { id, data },
+      })
+      registerListener(id, resolve)
+    })
+  },
+}

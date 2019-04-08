@@ -28,6 +28,7 @@
     "redux-persist": "^5.10.0",
     "redux-persist-webextension-storage": "^1.0.2",
     "redux-saga": "^1.0.2",
+    "sjcl": "^1.0.8",
     "styled-components": "^4.2.0",
     "uuid": "^3.3.2"
   },

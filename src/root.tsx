@@ -6,7 +6,6 @@ import Container from './ui/presentational/Container'
 
 import createStore from './store'
 import App from './ui/App'
-import './lib/sjcl.js'
 
 const { store, persistor } = createStore()
 

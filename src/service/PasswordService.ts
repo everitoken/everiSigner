@@ -3,6 +3,7 @@ import * as bip39 from 'bip39'
 import englishWords from '../assets/wordlist/english'
 import chineseSimplifiedWords from '../assets/wordlist/chinese_simplified'
 import { AccountStateType } from '../store/reducer/accounts'
+import * as sjcl from 'sjcl'
 import { get } from 'lodash'
 
 type SupportedWordlist = 'english' | 'chinese_simplified'
@@ -41,7 +42,7 @@ export const verifyPassword = (password: string, hash: string): boolean =>
 
 export const encrypt = (password: string, payload: {}): string => {
   const { iv, salt, ct } = JSON.parse(
-    window.sjcl.encrypt(password, JSON.stringify(payload), { mode: 'gcm' })
+    sjcl.encrypt(password, JSON.stringify(payload), { mode: 'gcm' })
   )
 
   return JSON.stringify({ iv, salt, ct })
@@ -52,7 +53,7 @@ export const decrypt = (password: string, raw: string) => {
     Object.assign(JSON.parse(raw), { mode: 'gcm' })
   )
 
-  const clearText = window.sjcl.decrypt(password, payload)
+  const clearText = sjcl.decrypt(password, payload)
 
   try {
     const data = JSON.parse(clearText)
@@ -69,7 +70,7 @@ export const decrypt = (password: string, raw: string) => {
 }
 
 export const sha256 = (input: string): string => {
-  return window.sjcl.codec.hex.fromBits(window.sjcl.hash.sha256.hash(input))
+  return sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(input))
 }
 
 export const generateMnemonicWords = (
