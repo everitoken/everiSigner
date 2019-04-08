@@ -1,5 +1,4 @@
 // initialize everiSigner client
-// this client will be init with a tag id, which will be verified in extension
 import * as uuid from 'uuid'
 import { get } from 'lodash'
 
@@ -18,7 +17,7 @@ window.addEventListener(
   ev => {
     const { type, payload } = event.data
     // listens for signed message
-    if (type === 'everisigner/signed') {
+    if (type === 'everisigner/global/signed') {
       const id = get(payload, 'id')
       const listener = get(listeners, id)
 
@@ -38,7 +37,7 @@ window.everisigner = {
     return new Promise(resolve => {
       const id = uuid.v4()
       window.postMessage({
-        type: 'everisigner/sign',
+        type: 'everisigner/global/sign',
         payload: { id, data },
       })
       registerListener(id, resolve)

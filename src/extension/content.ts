@@ -1,33 +1,37 @@
-const port = chrome.runtime.connect({ name: 'client' })
+import {
+  ClientLocalMsgTypes,
+  BackgroundMsgTypes,
+  ClientGlobalMsgTypes,
+} from '../types'
 
-const listeners = {}
+const port = chrome.runtime.connect({ name: 'background' })
+
+const postLocalMessage = (msg: ClientLocalMsgTypes) => port.postMessage(msg)
 
 window.addEventListener(
   'message',
-  function(event) {
-    const { type } = event.data
-    if (type === 'everisigner/sign') {
-      port.postMessage(event.data)
-      console.log('setting timeout')
-      setTimeout(() => {
-        window.postMessage(
-          {
-            type: 'everisigner/signed',
-            payload: { id: event.data.payload.id, data: 'gibberish' },
-          },
-          '*'
-        )
-      }, 3000)
+
+  ev => {
+    const { type, payload } = ev.data
+    if (type === 'everisigner/global/sign') {
+      console.log('Received local sign from inject.js', ev.data)
+      postLocalMessage({ type: 'everisigner/local/sign', payload })
     }
   },
   false
 )
 
-port.onMessage.addListener(message => {
-  console.log('message', message)
+const postGlobalMessage = (msg: ClientGlobalMsgTypes) =>
+  window.postMessage(msg, '*')
+port.onMessage.addListener((message: BackgroundMsgTypes) => {
+  // listen for "background/signed" message
+  if (message.type === 'background/signed') {
+    postGlobalMessage({
+      type: 'everisigner/global/signed',
+      payload: message.payload,
+    })
+  }
 })
-
-port.postMessage({ type: 'client/requestId' })
 
 // inject `inject.js` to dom
 const inject = () => {

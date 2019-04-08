@@ -10,4 +10,4 @@ const isMessageTypeof = (type: string) => (msgType: string): boolean => {
 }
 
 export const isPopMessage = isMessageTypeof('popup')
-export const isClientMessage = isMessageTypeof('client')
+export const isClientMessage = isMessageTypeof('everisigner')

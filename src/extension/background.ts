@@ -1,16 +1,17 @@
 import {
-  BgMethodsInterface,
-  BgMsgResponseTypes,
-  BgMsgSendTypes,
-  PasswordReceiveBgMsgSendType,
-  PopupStartedBgMsgSendType,
-  PopupStartPasswordTimerType,
+  BackgroundMethodsInterface,
+  BackgroundMsgTypes,
+  PopupMsgTypes,
+  PopupPasswordSetMsgType,
+  PopupStartedMsgType,
+  PopupStartPasswordTimerMsgType,
+  ClientLocalMsgTypes,
+  PopupSignedMsgType,
 } from '../types'
-import { BackgroundReceiveMessageType } from '../ui/action'
 import { isPopMessage, isClientMessage } from '../util/background'
 
-let password = null
-let timerHandler = null
+let password: string | null = null
+let timerHandler: number | null = null
 const TIMEOUT = 1000 * 60 * 15
 
 const setPassword = (newPassword: string) => {
@@ -37,7 +38,7 @@ const resetPopup = () => {
   return undefined
 }
 
-const backgroundMethods: BgMethodsInterface = {
+const backgroundMethods: BackgroundMethodsInterface = {
   startTimer: (milliseconds: number = TIMEOUT) => {
     if (timerHandler) {
       clearTimeout(timerHandler)
@@ -62,84 +63,77 @@ const disconnectHandler = (port: chrome.runtime.Port) => {
   port.disconnect()
 }
 
-type PostMessageType = (msg: BgMsgResponseTypes) => void
+type PostMessageType = (msg: BackgroundMsgTypes) => void
 
-// response creator helper
-const responseSuccessCreator = (
-  type: string,
-  data: {} = {}
-): BgMsgResponseTypes => ({
-  type,
-  payload: { success: true, data },
-})
-
-const responseErrorCreator = (
-  type: string,
-  errMsg: string
-): BgMsgResponseTypes => ({
-  type,
-  payload: { success: false, errMsg },
-})
-
-const passwordReceiveHandler = (
-  message: PasswordReceiveBgMsgSendType,
+const passwordSetHandler = (
+  message: PopupPasswordSetMsgType,
   postMessage: PostMessageType
 ) => {
   setPassword(message.payload)
   console.log('password is set to ', password)
-  postMessage(responseSuccessCreator('background/passwordSaved'))
+  postMessage({
+    type: 'background/passwordSaved',
+  })
 }
 
 const popupStartedHandler = (
-  message: PopupStartedBgMsgSendType,
+  _: PopupStartedMsgType,
   postMessage: PostMessageType
 ) => {
   console.log('popupStartedHandler', password)
-  postMessage(responseSuccessCreator('background/password', { password }))
+  postMessage({ type: 'background/password', payload: { password } })
 }
 
 const passwordTimerHandler = (
-  message: PopupStartPasswordTimerType,
+  _: PopupStartPasswordTimerMsgType,
   postMessage: PostMessageType
 ) => {
-  // it is only started after you opened with a valid password
-  // startPasswordTimer();
-  postMessage(responseSuccessCreator('background/passwordTimerSet'))
+  postMessage({ type: 'background/passwordTimerSet' })
 }
 
-const handleClientMessage = (message: any, postMessage: any) => {
-  console.log('handle client message:', message)
+const signedHandler = (
+  message: PopupSignedMsgType,
+  postMessage: PostMessageType
+) => {
+  postMessage({ type: 'background/signed', payload: message.payload })
+}
+
+const handleClientMessage = (
+  message: ClientLocalMsgTypes,
+  postMessage: PostMessageType
+) => {
   switch (message.type) {
-    case 'client/requestId':
-      postMessage({ type: 'background/setClientId' })
+    case 'everisigner/local/sign':
+      postMessage({ type: 'background/sign', payload: message.payload })
       break
 
     default:
       return
   }
 }
+
 const handlePopupMessage = (
-  message: BgMsgSendTypes,
+  message: PopupMsgTypes,
   postMessage: PostMessageType
 ) => {
-  console.log(message)
   switch (message.type) {
-    case 'popup/passwordReceive':
-      passwordReceiveHandler(message, postMessage)
+    case 'popup/passwordset':
+      passwordSetHandler(message, postMessage)
       break
     case 'popup/started':
       popupStartedHandler(message, postMessage)
       break
     case 'popup/startPasswordTimer': // currently unused
       passwordTimerHandler(message, postMessage)
-
+      break
+    case 'popup/signed':
+      signedHandler(message, postMessage)
+      break
     default:
-      postMessage(
-        responseErrorCreator(
-          'background/unsupportedType',
-          `Unsupported type ${message.type}`
-        )
-      )
+      postMessage({
+        type: 'background/error',
+        payload: `Unsupported type ${JSON.stringify(message)}`,
+      })
 
       break
   }
@@ -149,11 +143,10 @@ const handlePopupMessage = (
 chrome.runtime.onConnect.addListener(function(port) {
   //   console.assert(port.name == "background");
   const postMessage: PostMessageType = msg => port.postMessage(msg)
-  port.onMessage.addListener((message: BgMsgSendTypes) => {
-    console.log('bakcground', message)
-    // listen on "popup/initialized" event
+  port.onMessage.addListener((message: PopupMsgTypes | ClientLocalMsgTypes) => {
     if (port.name === 'background' && isPopMessage(message.type)) {
-      if (message.type === 'popup/started') {
+      const localMessageWithType = message as PopupMsgTypes
+      if (localMessageWithType.type === 'popup/started') {
         popupStart()
       }
 
@@ -163,12 +156,13 @@ chrome.runtime.onConnect.addListener(function(port) {
       }
 
       // start handling message based on types
-      handlePopupMessage(message, postMessage)
+      handlePopupMessage(localMessageWithType, postMessage)
       return
     }
 
     if (port.name === 'client' && isClientMessage(message.type)) {
-      handleClientMessage(message, postMessage)
+      const localMessageWithType = message as ClientLocalMsgTypes
+      handleClientMessage(localMessageWithType, postMessage)
       return
     }
 
