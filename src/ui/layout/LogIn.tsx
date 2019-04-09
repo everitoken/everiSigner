@@ -10,18 +10,16 @@ import {
   IconButton,
   Button,
   Typography,
-  FormHelperText,
 } from '@material-ui/core'
 
-import logo from '../../assets/logo@2x.png'
 import * as uiActions from '../action'
 import { mapInputPassword } from '../../store/getter'
 import { verifyPassword } from '../../service/PasswordService'
-import Container from '../presentational/FlexContainer'
+import { Logo } from '../presentational/Logo'
 
 type PropTypes = {
   passwordHash: string
-  onUnlock: (password: string) => uiActions.LogInType
+  onUnlock: typeof uiActions.logIn
 }
 
 type StateTypes = {
@@ -37,7 +35,7 @@ class Login extends React.PureComponent<PropTypes, StateTypes> {
     showPassword: false,
   }
   handleClickShowPassword = () => {
-    this.setState(state => ({ showPassword: !this.state.showPassword }))
+    this.setState({ showPassword: !this.state.showPassword })
   }
   handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ password: event.target.value })
@@ -57,17 +55,7 @@ class Login extends React.PureComponent<PropTypes, StateTypes> {
     return (
       <React.Fragment>
         <div>
-          <img
-            src={logo}
-            alt="logo"
-            style={{
-              width: '15rem',
-              alignSelf: 'center',
-              padding: 10,
-              display: 'flex',
-              margin: '0 auto',
-            }}
-          />
+          <Logo />
           <Typography variant="h6" align="center" color="textSecondary">
             WELCOME BACK
           </Typography>

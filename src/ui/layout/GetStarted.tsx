@@ -3,7 +3,6 @@ import Button from '@material-ui/core/Button'
 import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import { WithRouterType } from '../../types'
-import logo from '../../assets/logo@2x.png'
 
 export type PropTypes = {} & WithRouterType
 
@@ -19,11 +18,6 @@ class GetStarted extends React.PureComponent<PropTypes> {
   render() {
     return (
       <Container>
-        <img
-          src={logo}
-          alt="logo"
-          style={{ width: '15rem', alignSelf: 'center', padding: 10 }}
-        />
         <div style={{ textAlign: 'center' }}>
           <h1>Welcome to EveriSigner</h1>
           <p>

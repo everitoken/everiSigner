@@ -1,5 +1,5 @@
 import { AppState } from './reducer'
-import { StartScreenNameType, ValidAuthenticatedStatus } from '../types'
+import { StartScreenNameType, ValidAuthenticatedStatusTypes } from '../types'
 import { get } from 'lodash'
 import { decryptAccount } from '../service/PasswordService'
 
@@ -11,7 +11,7 @@ export const getPassword = (state: AppState): string | false =>
 
 export const getAuthenticatedStatus = (
   state: AppState
-): ValidAuthenticatedStatus => {
+): ValidAuthenticatedStatusTypes => {
   const password = getPassword(state)
 
   if (password) {

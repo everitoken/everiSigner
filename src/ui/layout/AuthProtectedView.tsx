@@ -3,14 +3,14 @@ import { connect } from 'react-redux'
 import { getAuthenticatedStatus } from '../../store/getter'
 import { AppState } from '../../store/reducer'
 import { isFunction, omit } from 'lodash'
-import { ValidAuthenticatedStatus } from '../../types'
+import { ValidAuthenticatedStatusTypes } from '../../types'
 
 type PropTypes = {
-  status: ValidAuthenticatedStatus
+  status: ValidAuthenticatedStatusTypes
   children: ({
     status,
   }: {
-    status: ValidAuthenticatedStatus
+    status: ValidAuthenticatedStatusTypes
   }) => React.ReactNode
 }
 

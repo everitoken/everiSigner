@@ -101,13 +101,15 @@ export const snackbarMessageDismiss = (): SnackbarMessageDismissType => ({
 export const signingPayloadReceive = (
   payload: ToBeSignDataType,
   meta?: MessageMetaType
-) => ({
+): SigningPayloadReceiveType => ({
   type: SIGNING_PAYLOAD_RECEIVE,
   payload,
   meta,
 })
 
-export const signedPayloadReceive = (payload: SignedDataType) => ({
+export const signedPayloadReceive = (
+  payload: SignedDataType
+): SignedPayloadReceiveType => ({
   type: SIGNED_PAYLOAD_RECEIVE,
   payload,
 })

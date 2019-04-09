@@ -2,17 +2,15 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { getSigningPayload } from '../../store/getter'
 import { SigningPayloadStateType } from '../../store/reducer/signingPayload'
-import { Button } from '@material-ui/core'
+import { Button, Typography } from '@material-ui/core'
 import FlexContainer from '../presentational/FlexContainer'
-import { sign, SignType } from '../action'
-import { ToBeSignDataType, MessageMetaType } from '../../types'
+import { sign } from '../action'
+import AuthProtectedView from './AuthProtectedView'
+import InvalidRoute from './InvalidRoute'
 
 type PropTypes = {
   signingPayload: SigningPayloadStateType
-  onClick: (raw: {
-    payload: ToBeSignDataType
-    meta?: MessageMetaType
-  }) => SignType
+  onClick: typeof sign
 }
 
 class Signing extends React.PureComponent<PropTypes> {
@@ -23,8 +21,10 @@ class Signing extends React.PureComponent<PropTypes> {
       onClick(signingPayload.raw)
     }
   }
+
   render() {
     const { signingPayload } = this.props
+
     const canSign =
       signingPayload.raw != null &&
       signingPayload.raw.payload &&
@@ -47,9 +47,33 @@ class Signing extends React.PureComponent<PropTypes> {
     )
   }
 }
-// export default Signing
 
-export default connect(
+const ConnectedSigningScreen = connect(
   getSigningPayload,
   { onClick: sign }
 )(Signing)
+
+const AccountSetupReminder = () => (
+  <FlexContainer withPadding>
+    <Typography variant="body1" color="textSecondary">
+      EveriSigner is not yet set up yet. There is no account configured yet.
+      Please go to the everiToken extension page and finish the set up process.
+    </Typography>
+  </FlexContainer>
+)
+
+export default () => (
+  <AuthProtectedView>
+    {({ status }) => {
+      if (status === 'unknown') {
+        return <AccountSetupReminder />
+      }
+
+      if (status === 'hash') {
+        return <p>Input password</p>
+      }
+
+      return <ConnectedSigningScreen />
+    }}
+  </AuthProtectedView>
+)

@@ -20,7 +20,9 @@ const log = (msg: string, tag: string = 'unspecified') => {
 }
 
 function* waitBackgroundResponse(type: string) {
-  const action: uiActions.BackgroundReceiveMessageType = yield take(
+  const action: ReturnType<
+    typeof uiActions.receiveBackgroundMessage
+  > = yield take(
     (a: any) =>
       a.type === uiActions.RECEIVE_BACKGROUND_MESSAGE && a.payload.type === type
   )
@@ -78,9 +80,9 @@ function* signHandler() {
 }
 function* createAccountHandler() {
   while (true) {
-    const action: uiActions.CreateDefaultAccountType = yield take(
-      uiActions.CREATE_DEFAULT_ACCOUNT
-    )
+    const action: ReturnType<
+      typeof uiActions.createDefaultAccount
+    > = yield take(uiActions.CREATE_DEFAULT_ACCOUNT)
 
     // construct words
     // 1. get password
@@ -120,7 +122,7 @@ function* createAccountHandler() {
 
 function* setPasswordHandler() {
   while (true) {
-    const action: uiActions.SetPasswordType = yield take([
+    const action: ReturnType<typeof uiActions.setPassword> = yield take([
       uiActions.SET_PASSWORD,
       uiActions.LOG_IN,
     ])

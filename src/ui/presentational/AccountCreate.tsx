@@ -10,12 +10,12 @@ import {
 import SeedWordsDisplay from './SeedWordsDisplay'
 import FlexContainer from './FlexContainer'
 import { AccountStateType } from '../../store/reducer/accounts'
-import { CreateDefaultAccountType } from '../action'
+import { createDefaultAccount } from '../action'
 import * as uuid from 'uuid'
 
 type AccountCreatePropTypes = {
   account: AccountStateType | null
-  onClick: (id: string, accountName: string) => CreateDefaultAccountType
+  onClick: typeof createDefaultAccount
 }
 
 type AccountCreateStateTypes = {

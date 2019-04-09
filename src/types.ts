@@ -1,4 +1,4 @@
-export type ValidAuthenticatedStatus = 'password' | 'hash' | 'unknown'
+export type ValidAuthenticatedStatusTypes = 'password' | 'hash' | 'unknown'
 export type StartScreenNameType = 'GET_STARTED' | 'HOME' | 'LOGIN'
 
 export type ToBeSignDataType = {
