@@ -41,7 +41,7 @@ function setupPopupUnloadListener() {
   )
 }
 
-function* signHandler() {
+function* signWatcher() {
   while (true) {
     const action: { payload: BackgroundSignMsgType } = yield take(
       (a: any) =>
@@ -49,7 +49,18 @@ function* signHandler() {
         a.payload.type === 'background/sign'
     )
 
-    log(JSON.stringify(action, null, 4), 'popup/signed/4')
+    yield put(
+      storeActions.signingPayloadReceive(
+        action.payload.payload,
+        action.payload.meta
+      )
+    )
+  }
+}
+
+function* signHandler() {
+  while (true) {
+    const action = yield take(uiActions.SIGN)
 
     backgroundPort &&
       backgroundPort.postMessage({
@@ -244,9 +255,10 @@ function* rootSaga() {
       }
     }
 
-    yield fork(signHandler)
+    yield fork(signWatcher)
     yield fork(createAccountHandler)
     yield fork(setPasswordHandler)
+    yield fork(signHandler)
   } catch (e) {
     // TODO consider restart saga
     console.log('saga root error: ', e)

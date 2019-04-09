@@ -10,6 +10,7 @@ import {
 } from '../types'
 import { isPopMessage, isClientMessage } from '../util/background'
 import { get } from 'lodash'
+import { WINDOW_WIDTH, WINDOW_HEIGHT } from '../style'
 
 let password: string | null = null
 let timerHandler: number | null = null
@@ -93,6 +94,7 @@ const passwordTimerHandler = (
 }
 
 const signedHandler = (message: PopupSignedMsgType, _: PostMessageType) => {
+  console.log('signHandler in background', message)
   const tabId = get(message, 'payload.meta.tabId', null)
 
   if (tabId) {
@@ -108,8 +110,8 @@ const handleClientMessage = (message: ClientLocalMsgTypes) => {
     case 'everisigner/local/sign':
       chrome.windows.create(
         {
-          width: 500, // TODO center window
-          height: 800,
+          width: WINDOW_WIDTH, // TODO center window
+          height: WINDOW_HEIGHT + 40,
           url: chrome.extension.getURL('extension/prompt.html'),
           type: 'popup',
           focused: true,

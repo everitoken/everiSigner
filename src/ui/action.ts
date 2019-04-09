@@ -1,57 +1,69 @@
-import { BgMsgResponseTypes } from "../types";
+import { ToBeSignDataType, BackgroundMsgTypes } from '../types'
 
-export const SET_PASSWORD = "ui/SET_PASSWORD";
-export const LOG_IN = "ui/LOG_IN";
-export const RECEIVE_BACKGROUND_MESSAGE = "background/RECEIVE_MESSAGE";
-export const CREATE_DEFAULT_ACCOUNT = "CREATE_DEFAULT_ACCOUNT";
+export const SET_PASSWORD = 'ui/SET_PASSWORD'
+export const LOG_IN = 'ui/LOG_IN'
+export const RECEIVE_BACKGROUND_MESSAGE = 'background/RECEIVE_MESSAGE'
+export const CREATE_DEFAULT_ACCOUNT = 'CREATE_DEFAULT_ACCOUNT'
+export const SIGN = 'SIGN'
+
+export type SignType = {
+  type: typeof SIGN
+  payload: ToBeSignDataType
+}
 
 export type CreateDefaultAccountType = {
-  type: typeof CREATE_DEFAULT_ACCOUNT;
-  payload: { id: string; name: string };
-};
+  type: typeof CREATE_DEFAULT_ACCOUNT
+  payload: { id: string; name: string }
+}
 
 export type SetPasswordType = {
-  type: typeof SET_PASSWORD;
-  payload: string;
-};
+  type: typeof SET_PASSWORD
+  payload: string
+}
 
 export type LogInType = {
-  type: typeof LOG_IN;
-  payload: string;
-};
+  type: typeof LOG_IN
+  payload: string
+}
 
 export type BackgroundReceiveMessageType = {
-  type: typeof RECEIVE_BACKGROUND_MESSAGE;
-  payload: BgMsgResponseTypes;
-};
+  type: typeof RECEIVE_BACKGROUND_MESSAGE
+  payload: BackgroundMsgTypes
+}
 
 export type UiActionTypes =
   | SetPasswordType
   | LogInType
-  | CreateDefaultAccountType;
-export type BackgroundActionTypes = BackgroundReceiveMessageType;
+  | CreateDefaultAccountType
+  | SignType
 
+export type BackgroundActionTypes = BackgroundReceiveMessageType
+
+export const sign = (payload: ToBeSignDataType) => ({
+  type: SIGN,
+  payload,
+})
 export const setPassword = (password: string): UiActionTypes => ({
   type: SET_PASSWORD,
-  payload: password
-});
+  payload: password,
+})
 
 export const logIn = (password: string): LogInType => ({
   type: LOG_IN,
-  payload: password
-});
+  payload: password,
+})
 
 export const createDefaultAccount = (
   id: string,
   name: string
 ): CreateDefaultAccountType => ({
   type: CREATE_DEFAULT_ACCOUNT,
-  payload: { id, name }
-});
+  payload: { id, name },
+})
 
 export const receiveBackgroundMessage = (
-  msg: BgMsgResponseTypes
+  msg: BackgroundMsgTypes
 ): BackgroundReceiveMessageType => ({
   type: RECEIVE_BACKGROUND_MESSAGE,
-  payload: msg
-});
+  payload: msg,
+})

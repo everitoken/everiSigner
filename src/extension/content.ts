@@ -1,7 +1,6 @@
 import { ClientLocalMsgTypes, ClientGlobalMsgTypes } from '../types'
 
 const port = chrome.runtime.connect({ name: 'client' })
-
 const postLocalMessage = (msg: ClientLocalMsgTypes) => port.postMessage(msg)
 
 window.addEventListener(

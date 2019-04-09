@@ -9,7 +9,7 @@ import * as PasswordService from '../service/PasswordService'
 const persistConfig = {
   key: 'root',
   storage: localStorage,
-  blacklist: ['airport', 'message'],
+  blacklist: ['airport', 'message', 'signingPayload'],
 }
 
 const isProd = process.env.NODE_ENV === 'development'

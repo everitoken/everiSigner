@@ -1,12 +1,12 @@
 export type ValidAuthenticatedStatus = 'password' | 'hash' | 'unknown'
 export type StartScreenNameType = 'GET_STARTED' | 'HOME' | 'LOGIN'
 
-type ToBeSignDataType = {
+export type ToBeSignDataType = {
   id: string
   from: number
   data: string
 }
-type SignedDataType = {
+export type SignedDataType = {
   id: string
   payload: {
     original: string

@@ -1,7 +1,6 @@
 import { AppState } from './reducer'
 import { StartScreenNameType, ValidAuthenticatedStatus } from '../types'
 import { get } from 'lodash'
-import { AccountStateType } from './reducer/accounts'
 import { decryptAccount } from '../service/PasswordService'
 
 export const getPasswordHash = (state: AppState) =>
@@ -64,3 +63,7 @@ export const getDefaultAccountDecrypted = (state: AppState) => {
 
   return { account: decryptAccount(password, account) }
 }
+
+export const getSigningPayload = ({ signingPayload }: AppState) => ({
+  signingPayload,
+})
