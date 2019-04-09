@@ -4,8 +4,8 @@ import { get } from 'lodash'
 
 let listeners = {}
 
-const registerListener = (id, fn) => {
-  listeners[id] = fn
+const registerListener = (id, fns) => {
+  listeners[id] = fns
 }
 
 const removeListener = id => {
@@ -24,7 +24,7 @@ window.addEventListener(
       // if there is a listener, invoke the listener with signed payload
       // then remove the listener
       if (listener) {
-        listener(payload)
+        listener[0](payload)
         removeListener(id)
       }
     }
@@ -34,13 +34,13 @@ window.addEventListener(
 
 window.everisigner = {
   sign: data => {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       const id = uuid.v4()
       window.postMessage({
         type: 'everisigner/global/sign',
         payload: { id, data },
       })
-      registerListener(id, resolve)
+      registerListener(id, [resolve, reject])
     })
   },
 }
