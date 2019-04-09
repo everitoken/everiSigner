@@ -9,8 +9,8 @@ import {
   PopupSignedMsgType,
 } from '../types'
 import { isPopMessage, isClientMessage } from '../util/background'
+import { get } from 'lodash'
 
-let backgroundPort = null
 let password: string | null = null
 let timerHandler: number | null = null
 const TIMEOUT = 1000 * 60 * 15
@@ -65,7 +65,6 @@ const disconnectHandler = (port: chrome.runtime.Port) => {
 }
 
 type PostMessageType = (msg: BackgroundMsgTypes) => void
-type SendMessageType = (msg: BackgroundMsgTypes) => void
 
 const passwordSetHandler = (
   message: PopupPasswordSetMsgType,
@@ -93,27 +92,18 @@ const passwordTimerHandler = (
   postMessage({ type: 'background/passwordTimerSet' })
 }
 
-const signedHandler = (
-  message: PopupSignedMsgType,
-  postMessage: PostMessageType
-) => {
-  setTimeout(() => {
-    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-      const tabId = tabs[0].id
-      if (tabId) {
-        chrome.tabs.sendMessage(tabId, {
-          type: 'background/signed',
-          payload: message.payload,
-        })
-      }
+const signedHandler = (message: PopupSignedMsgType, _: PostMessageType) => {
+  const tabId = get(message, 'payload.meta.tabId', null)
+
+  if (tabId) {
+    chrome.tabs.sendMessage(tabId, {
+      type: 'background/signed',
+      payload: message.payload,
     })
-  }, 3000)
+  }
 }
 
-const handleClientMessage = (
-  message: ClientLocalMsgTypes,
-  sendMessage: SendMessageType
-) => {
+const handleClientMessage = (message: ClientLocalMsgTypes) => {
   switch (message.type) {
     case 'everisigner/local/sign':
       chrome.windows.create(
@@ -125,12 +115,17 @@ const handleClientMessage = (
           focused: true,
         },
         () => {
-          setTimeout(() => {
-            sendMessage({
-              type: 'background/sign',
-              payload: message.payload,
+          chrome.runtime.onConnect.addListener(port => {
+            port.onMessage.addListener((msg: PopupMsgTypes) => {
+              if (msg.type === 'popup/started') {
+                port.postMessage({
+                  type: 'background/sign',
+                  payload: message.payload,
+                  meta: message.meta,
+                })
+              }
             })
-          }, 1000)
+          })
         }
       )
       break
@@ -168,32 +163,34 @@ const handlePopupMessage = (
 
 // setup communication channel
 chrome.runtime.onConnect.addListener(function(port) {
-  backgroundPort = port
-
-  port.onDisconnect.addListener(() => {
-    console.log('disconnected.................')
-  })
-
   const postMessage: PostMessageType = msg => port.postMessage(msg)
-  const sendMessage: SendMessageType = msg => chrome.runtime.sendMessage(msg)
+
   port.onMessage.addListener(
     (message: PopupMsgTypes | ClientLocalMsgTypes, sender) => {
-      console.log(sender)
+      const tabId = get(sender, 'sender.tab.id', null)
+
       if (isPopMessage(message.type)) {
         const localMessageWithType = message as PopupMsgTypes
-        //   if (localMessageWithType.type === 'popup/started') {
-        //     popupStart()
-        //   }
 
-        //   // don't do anything if popup is not initialized
-        //   if (!isPopupStarted()) {
-        //     return
-        //   }
+        if (localMessageWithType.type === 'popup/started') {
+          popupStart()
+        }
+
+        // don't do anything if popup is not initialized
+        if (!isPopupStarted()) {
+          return
+        }
 
         handlePopupMessage(localMessageWithType, postMessage)
       } else if (isClientMessage(message.type)) {
-        const localMessageWithType = message as ClientLocalMsgTypes
-        handleClientMessage(localMessageWithType, sendMessage)
+        // only data from client side (client app) needs tabId,
+        // so background.js knows where to send back the data
+        const localMessageWithType = {
+          ...message,
+          meta: { tabId },
+        } as ClientLocalMsgTypes
+
+        handleClientMessage(localMessageWithType)
       } else {
         throw new Error(`Message type is not supported: ${message.type}`)
       }

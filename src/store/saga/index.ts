@@ -5,7 +5,6 @@ import * as PasswordService from '../../service/PasswordService'
 import {
   BackgroundMsgTypes,
   BackgroundPasswordMsgType,
-  PopupMsgTypes,
   BackgroundSignMsgType,
 } from '../../types'
 import * as uiActions from '../../ui/action'
@@ -18,13 +17,6 @@ let backgroundPort: chrome.runtime.Port | null = null
 const log = (msg: string, tag: string = 'unspecified') => {
   const background = chrome.extension.getBackgroundPage()
   background && background.console.log(`popup(${tag}): `, msg)
-}
-
-const postMessageToBackground = (message: PopupMsgTypes) => {
-  if (backgroundPort) {
-    log('sending to background port')
-    backgroundPort.postMessage(message)
-  }
 }
 
 function* waitBackgroundResponse(type: string) {
@@ -68,6 +60,7 @@ function* signHandler() {
             original: action.payload.payload.data,
             signature: 'dummy',
           },
+          meta: action.payload.meta,
         },
       })
   }

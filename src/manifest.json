@@ -9,13 +9,7 @@
     "default_popup": "./extension/index.html"
   },
   "storage": "local",
-  "permissions": [
-    "storage",
-    "unlimitedStorage",
-    "http://*/*",
-    "https://*/*",
-    "tabs"
-  ],
+  "permissions": ["storage", "unlimitedStorage", "http://*/*", "https://*/*"],
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],

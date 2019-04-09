@@ -1,8 +1,4 @@
-import {
-  ClientLocalMsgTypes,
-  BackgroundMsgTypes,
-  ClientGlobalMsgTypes,
-} from '../types'
+import { ClientLocalMsgTypes, ClientGlobalMsgTypes } from '../types'
 
 const port = chrome.runtime.connect({ name: 'client' })
 

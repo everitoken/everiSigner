@@ -3,6 +3,7 @@ export type StartScreenNameType = 'GET_STARTED' | 'HOME' | 'LOGIN'
 
 type ToBeSignDataType = {
   id: string
+  from: number
   data: string
 }
 type SignedDataType = {
@@ -24,20 +25,24 @@ export interface WithRouterType {
 export type PopupPasswordSetMsgType = {
   type: 'popup/passwordset'
   payload: string
+  meta?: MessageMetaType
 }
 
 export type PopupStartedMsgType = {
   type: 'popup/started'
   payload: null
+  meta?: MessageMetaType
 }
 
 export type PopupSignedMsgType = {
   type: 'popup/signed'
   payload: SignedDataType
+  meta?: MessageMetaType
 }
 
 export type PopupStartPasswordTimerMsgType = {
   type: 'popup/startPasswordTimer'
+  meta?: MessageMetaType
 }
 
 export type PopupMsgTypes =
@@ -55,25 +60,30 @@ export type BackgroundPasswordSavedMsgType = {
 export type BackgroundPasswordMsgType = {
   type: 'background/password'
   payload: { password: string | null }
+  meta?: MessageMetaType
 }
 
 export type BackgroundSignMsgType = {
   type: 'background/sign'
-  payload: { id: string; data: string }
+  payload: ToBeSignDataType
+  meta?: MessageMetaType
 }
 
 export type BackgroundSignedMsgType = {
   type: 'background/signed'
   payload: SignedDataType
+  meta?: MessageMetaType
 }
 
 export type BackgroundPasswordTimerSetMsgType = {
   type: 'background/passwordTimerSet'
+  meta?: MessageMetaType
 }
 
 export type BackgroundErrorMsgType = {
   type: 'background/error'
   payload: string
+  meta?: MessageMetaType
 }
 
 export type BackgroundMsgTypes =
@@ -89,6 +99,7 @@ export type BackgroundMsgTypes =
 export type ClientSignMsgType = {
   type: 'everisigner/local/sign'
   payload: ToBeSignDataType
+  meta?: MessageMetaType
 }
 
 export type ClientGlobalSignMsgType = {
@@ -109,4 +120,8 @@ export type ClientGlobalMsgTypes =
 
 export interface BackgroundMethodsInterface {
   startTimer: (milliseconds: number) => void
+}
+
+export type MessageMetaType = {
+  tabId: number | null
 }

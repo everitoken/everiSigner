@@ -67,7 +67,6 @@ class AccountCreate extends React.PureComponent<
   }
   render() {
     const { account } = this.props
-    console.log(account)
 
     if (account) {
       if (account.id === this.state.id) {

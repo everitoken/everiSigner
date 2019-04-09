@@ -14,7 +14,7 @@ const persistConfig = {
 
 const isProd = process.env.NODE_ENV === 'development'
 
-export default function configureStore(saga) {
+export default function configureStore(saga: any) {
   const sagaMiddleware = createSagaMiddleware()
   const middlewares = [sagaMiddleware]
 
