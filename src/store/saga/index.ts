@@ -38,7 +38,9 @@ function setupPopupUnloadListener() {
     () => {
       try {
         background && background.window.everisigner.startTimer()
-      } catch (e) {}
+      } catch (e) {
+        // TODO: handle
+      }
     },
     true
   )
@@ -67,16 +69,17 @@ function* signHandler() {
     let data = null
 
     try {
-      data = get(JSON.parse(action.payload.payload.data), 'data')
+      data = JSON.parse(action.payload.payload.data)
     } catch (e) {
       break
     }
 
     // TODO get private key
 
+    // get private key from default account
     const signature = yield call(
-      Evt.EvtKey.sign,
-      data,
+      Evt.EvtKey.signHash,
+      new Buffer(data.buf, 'hex'),
       '5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D'
     )
 

@@ -9,9 +9,7 @@ type StateTypes = {
 }
 
 class Home extends React.PureComponent<PropTypes, StateTypes> {
-  handleClick = () => {
-    // chrome.tabs.create({ url: `${window.location.href}/extension/index.html` });
-  }
+  handleClick = () => {}
   handleResetState = () => {
     window.persistor.purge()
   }
