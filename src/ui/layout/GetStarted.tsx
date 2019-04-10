@@ -1,23 +1,17 @@
-import * as React from 'react'
 import Button from '@material-ui/core/Button'
+import * as React from 'react'
 import { withRouter } from 'react-router-dom'
-import styled from 'styled-components'
 import { WithRouterType } from '../../types'
+import Container from '../presentational/FlexContainer'
+import Logo from '../presentational/Logo'
 
 export type PropTypes = {} & WithRouterType
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  flex: 1;
-`
-
 class GetStarted extends React.PureComponent<PropTypes> {
-  render() {
+  public render() {
     return (
       <Container>
+        <Logo />
         <div style={{ textAlign: 'center' }}>
           <h1>Welcome to EveriSigner</h1>
           <p>

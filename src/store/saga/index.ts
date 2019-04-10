@@ -15,7 +15,7 @@ import { AccountStateType } from '../reducer/accounts'
 let backgroundPort: chrome.runtime.Port | null = null
 
 const log = (msg: string, tag: string = 'unspecified') => {
-  const background = chrome.extension.getBackgroundPage()
+    const background = chrome.extension.getBackgroundPage()
   background && background.console.log(`popup(${tag}): `, msg)
 }
 

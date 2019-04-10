@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { render } from 'react-dom'
-import { Provider, connect } from 'react-redux'
+import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import Container from './ui/presentational/Container'
 import createStore from './store'

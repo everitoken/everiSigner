@@ -6,7 +6,7 @@ import { Button, Typography } from '@material-ui/core'
 import FlexContainer from '../presentational/FlexContainer'
 import { sign } from '../action'
 import AuthProtectedView from './AuthProtectedView'
-import InvalidRoute from './InvalidRoute'
+import Logo from '../presentational/Logo'
 
 type PropTypes = {
   signingPayload: SigningPayloadStateType
@@ -55,6 +55,7 @@ const ConnectedSigningScreen = connect(
 
 const AccountSetupReminder = () => (
   <FlexContainer withPadding>
+    <Logo />
     <Typography variant="body1" color="textSecondary">
       EveriSigner is not yet set up yet. There is no account configured yet.
       Please go to the everiToken extension page and finish the set up process.

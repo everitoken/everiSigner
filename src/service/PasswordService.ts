@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcryptjs'
 import * as bip39 from 'bip39'
 import englishWords from '../assets/wordlist/english'
-import chineseSimplifiedWords from '../assets/wordlist/chinese_simplified'
+import ChineseSimplifiedWords from '../assets/wordlist/chinese_simplified'
 import { AccountStateType } from '../store/reducer/accounts'
 import * as sjcl from 'sjcl'
 import { get } from 'lodash'
@@ -9,8 +9,8 @@ import { get } from 'lodash'
 type SupportedWordlist = 'english' | 'chinese_simplified'
 
 const wordlists: { [key in SupportedWordlist]: string[] } = {
+  chinese_simplified: ChineseSimplifiedWords,
   english: englishWords,
-  chinese_simplified: chineseSimplifiedWords,
 }
 
 export const isPasswordValid = (password: string, passwordRepeat: string) => {
@@ -20,7 +20,7 @@ export const isPasswordValid = (password: string, passwordRepeat: string) => {
       payload: 'Password needs to be at least 8 chars.',
     }
   }
-  if (password != passwordRepeat) {
+  if (password !== passwordRepeat) {
     return {
       success: false,
       payload: "Passwords don't match, please check again.",

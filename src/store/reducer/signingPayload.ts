@@ -1,7 +1,6 @@
 import * as actions from '../action'
 import { PURGE } from 'redux-persist/es/constants'
 import { ToBeSignDataType, SignedDataType, MessageMetaType } from '../../types'
-
 export type SigningPayloadStateType = {
   raw: { payload: ToBeSignDataType; meta?: MessageMetaType } | null
   signed: SignedDataType | null

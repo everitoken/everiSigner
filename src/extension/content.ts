@@ -1,8 +1,11 @@
 import { ClientLocalMsgTypes, ClientGlobalMsgTypes } from '../types'
 
 const port = chrome.runtime.connect({ name: 'client' })
+
+// Post message to `background.js`
 const postLocalMessage = (msg: ClientLocalMsgTypes) => port.postMessage(msg)
 
+// Here relay to message from `host dom` to `background.js`
 window.addEventListener(
   'message',
   ev => {
@@ -14,9 +17,11 @@ window.addEventListener(
   false
 )
 
+// post the message back to the `everisigner app`
 const postGlobalMessage = (msg: ClientGlobalMsgTypes) =>
   window.postMessage(msg, '*')
 
+// here listens the message sent from `background.js` and relay it to `host dom`
 chrome.runtime.onMessage.addListener(message => {
   if (message.type === 'background/signed') {
     postGlobalMessage({
@@ -26,7 +31,7 @@ chrome.runtime.onMessage.addListener(message => {
   }
 })
 
-// inject `inject.js` to dom
+// inject `inject.js` to dom which initialize the everisigner app
 const inject = () => {
   const script = document.createElement('script')
   script.src = chrome.extension.getURL('extension/inject.js')
@@ -36,5 +41,4 @@ const inject = () => {
   }
 }
 
-// call this with key requested from background.js
 inject()
