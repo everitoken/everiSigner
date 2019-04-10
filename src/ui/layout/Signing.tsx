@@ -7,6 +7,7 @@ import FlexContainer from '../presentational/FlexContainer'
 import { sign } from '../action'
 import AuthProtectedView from './AuthProtectedView'
 import Logo from '../presentational/Logo'
+import LogIn from './LogIn'
 
 type PropTypes = {
   signingPayload: SigningPayloadStateType
@@ -71,7 +72,11 @@ export default () => (
       }
 
       if (status === 'hash') {
-        return <p>Input password</p>
+        return (
+          <FlexContainer withPadding>
+            <LogIn message="Unlock to continue" />
+          </FlexContainer>
+        )
       }
 
       return <ConnectedSigningScreen />

@@ -1,3 +1,4 @@
+// @ts-check
 // initialize everiSigner client
 import * as uuid from 'uuid'
 import { get } from 'lodash'

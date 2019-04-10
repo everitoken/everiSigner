@@ -15,8 +15,11 @@ import {
 import * as uiActions from '../action'
 import { mapInputPassword } from '../../store/getter'
 import { verifyPassword } from '../../service/PasswordService'
-import { Logo } from '../presentational/Logo'
+import Logo from '../presentational/Logo'
 
+type OwnProps = {
+  message: string
+}
 type PropTypes = {
   passwordHash: string
   onUnlock: typeof uiActions.logIn
@@ -28,7 +31,7 @@ type StateTypes = {
   showPassword: boolean
 }
 
-class Login extends React.PureComponent<PropTypes, StateTypes> {
+class Login extends React.PureComponent<OwnProps & PropTypes, StateTypes> {
   state = {
     invalid: false,
     password: '',
@@ -54,12 +57,10 @@ class Login extends React.PureComponent<PropTypes, StateTypes> {
   render() {
     return (
       <React.Fragment>
-        <div>
-          <Logo />
-          <Typography variant="h6" align="center" color="textSecondary">
-            WELCOME BACK
-          </Typography>
-        </div>
+        <Logo />
+        <Typography variant="h6" align="center" color="textPrimary">
+          {this.props.message}
+        </Typography>
         <FormControl>
           <InputLabel htmlFor="password">Type password to unlock...</InputLabel>
           <Input

@@ -18,7 +18,7 @@ class Start extends React.PureComponent<StartPropTypes> {
     }
 
     if (name === 'LOGIN') {
-      return <Login />
+      return <Login message="Welcome back!" />
     }
 
     return <GetStarted />
