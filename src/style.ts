@@ -1,5 +1,5 @@
-export const WINDOW_WIDTH = 360;
-export const WINDOW_HEIGHT = 600;
+export const WINDOW_WIDTH = 400
+export const WINDOW_HEIGHT = Math.floor(WINDOW_WIDTH * 1.618 - 50)
 export const padding = {
-  standard: 16
-};
+  standard: 16,
+}

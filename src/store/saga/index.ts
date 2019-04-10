@@ -2,6 +2,7 @@ import { get } from 'lodash'
 import { END, eventChannel } from 'redux-saga'
 import { call, fork, put, select, take } from 'redux-saga/effects'
 import * as PasswordService from '../../service/PasswordService'
+import * as Evt from 'evtjs'
 import {
   BackgroundMsgTypes,
   BackgroundPasswordMsgType,
@@ -15,7 +16,7 @@ import { AccountStateType } from '../reducer/accounts'
 let backgroundPort: chrome.runtime.Port | null = null
 
 const log = (msg: string, tag: string = 'unspecified') => {
-    const background = chrome.extension.getBackgroundPage()
+  const background = chrome.extension.getBackgroundPage()
   background && background.console.log(`popup(${tag}): `, msg)
 }
 
@@ -36,7 +37,7 @@ function setupPopupUnloadListener() {
     'unload',
     () => {
       try {
-        background && background.window.everisigner.startTimer(5000)
+        background && background.window.everisigner.startTimer()
       } catch (e) {}
     },
     true
@@ -63,19 +64,38 @@ function* signWatcher() {
 function* signHandler() {
   while (true) {
     const action = yield take(uiActions.SIGN)
+    let data = null
+
+    try {
+      data = get(JSON.parse(action.payload.payload.data), 'data')
+    } catch (e) {
+      break
+    }
+
+    // TODO get private key
+
+    const signature = yield call(
+      Evt.EvtKey.sign,
+      data,
+      '5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D'
+    )
+
+    const signedPayload = {
+      id: action.payload.payload.id,
+      payload: {
+        original: action.payload.payload.data,
+        signature,
+      },
+      meta: action.payload.meta,
+    }
 
     backgroundPort &&
       backgroundPort.postMessage({
         type: 'popup/signed',
-        payload: {
-          id: action.payload.payload.id,
-          payload: {
-            original: action.payload.payload.data,
-            signature: 'dummy',
-          },
-          meta: action.payload.meta,
-        },
+        payload: signedPayload,
       })
+
+    yield put(storeActions.signedPayloadReceive(signedPayload))
   }
 }
 function* createAccountHandler() {

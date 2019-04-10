@@ -8,6 +8,8 @@ import { sign } from '../action'
 import AuthProtectedView from './AuthProtectedView'
 import Logo from '../presentational/Logo'
 import LogIn from './LogIn'
+import { getDisplayableSigningPayload } from '../util'
+import { get } from 'lodash'
 
 type PropTypes = {
   signingPayload: SigningPayloadStateType
@@ -33,9 +35,23 @@ class Signing extends React.PureComponent<PropTypes> {
 
     return (
       <FlexContainer withPadding justifyContent="space-between">
-        <p>{canSign}</p>
-        <p>Raw: {JSON.stringify(signingPayload.raw)}</p>
-        <p>Signed: {JSON.stringify(signingPayload.signed)}</p>
+        <div>
+          <Typography variant="h4">Signing Request</Typography>
+          <Typography variant="body2">
+            Overview of data to be signed.
+          </Typography>
+        </div>
+        <pre>
+          {JSON.stringify(
+            getDisplayableSigningPayload(signingPayload),
+            null,
+            4
+          )}
+        </pre>
+        <span />
+        <p style={{ overflowWrap: 'break-word' }}>
+          Signed: {get(signingPayload, 'signed.payload.signature', null)}
+        </p>
         <Button
           variant="contained"
           color="primary"

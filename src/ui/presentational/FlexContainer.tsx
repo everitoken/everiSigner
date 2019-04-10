@@ -9,6 +9,7 @@ export type PropTypes = {
 
 const FlexContainer = styled.div`
   display: flex;
+  box-sizing: border-box;
   flex-direction: column;
   flex: 1;
   justify-content: ${(props: PropTypes) => props.justifyContent};
