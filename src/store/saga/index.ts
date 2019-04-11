@@ -12,12 +12,29 @@ import * as uiActions from '../../ui/action'
 import * as storeActions from '../action'
 import { getPassword, getPasswordHash } from '../getter'
 import { AccountStateType } from '../reducer/accounts'
+import StoreProvider from '../provider'
+import ChainApi from '../../chain'
+import { getEvtChain } from '../../chain/util'
+import ChainInterface from '../../chain/ChainInterface'
 
 let backgroundPort: chrome.runtime.Port | null = null
+let chain: ChainApi | null = null
 
 const log = (msg: string, tag: string = 'unspecified') => {
   const background = chrome.extension.getBackgroundPage()
   background && background.console.log(`popup(${tag}): `, msg)
+}
+
+function* setupChainProviders() {
+  const store = yield select()
+  const storeProvider = new StoreProvider(store)
+  chain = new ChainApi(storeProvider)
+
+  try {
+    const evtChain: ChainInterface = yield call(getEvtChain, chain)
+  } catch (error) {
+    log(error, 'error')
+  }
 }
 
 function* waitBackgroundResponse(type: string) {
@@ -36,11 +53,7 @@ function setupPopupUnloadListener() {
   addEventListener(
     'unload',
     () => {
-      try {
-        background && background.window.everisigner.startTimer()
-      } catch (e) {
-        // TODO: handle
-      }
+      background && background.window.everisigner.startTimer()
     },
     true
   )
@@ -284,6 +297,7 @@ function* rootSaga() {
     yield fork(createAccountHandler)
     yield fork(setPasswordHandler)
     yield fork(signHandler)
+    yield fork(setupChainProviders)
   } catch (e) {
     // TODO consider restart saga
     console.log('saga root error: ', e)
