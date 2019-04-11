@@ -7,16 +7,15 @@ const privateKey = '5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D'
 const publicKey = EVT.EvtKey.privateToPublic(privateKey)
 
 const network = {
-  host: 'testnet1.everitoken.io', // For everiToken TestNet (See all the networks on https://www.everitoken.io/networks)
-  port: 443, // defaults to 443
-  protocol: 'https', // the TestNet of everiToken uses http and the MainNet uses https
+  host: 'testnet1.everitoken.io',
+  port: 443,
+  protocol: 'https',
 }
 
 const handlePush = ev => {
   const apiCaller = EVT({
     endpoint: network,
-    signProvider: everisigner.signProvider,
-    // keyProvider: [privateKey],
+    signProvider: everisigner.createSignProvider(),
   })
 
   apiCaller

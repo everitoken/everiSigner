@@ -1,5 +1,4 @@
 // @ts-check
-// initialize everiSigner client
 import * as uuid from 'uuid'
 import { get } from 'lodash'
 
@@ -48,13 +47,26 @@ window.addEventListener(
   false
 )
 
-// get version
-// get supported chain
-// get supported action
+/**
+ * API Sections
+ */
+
 // pass min extension version // guard in extension
-// use function
 window.everisigner = {
-  signProvider: config => {
+  getVersion() {
+    throw new Error('Not supprted yet.')
+  },
+
+  getSupportedChains() {
+    throw new Error('Not supprted yet.')
+  },
+
+  getSupportedActions() {
+    throw new Error('Not supprted yet.')
+  },
+
+  // create sign provider
+  createSignProvider: opts => config => {
     const id = uuid.v4()
     window.postMessage(
       {
