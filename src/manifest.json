@@ -5,7 +5,7 @@
   "version": "0.0.1",
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "browser_action": {
-    "default_icon": "./assets/icon.png",
+    "default_icon": "./asset/icon.png",
     "default_popup": "./extension/index.html"
   },
   "storage": "local",

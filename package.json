@@ -4,7 +4,8 @@
   "description": "Signing provider",
   "main": "index.js",
   "scripts": {
-    "watch": "NODE_ENV=development parcel watch --no-hmr src/manifest.json"
+    "watch": "NODE_ENV=development parcel watch --no-hmr src/manifest.json",
+    "test": "jest"
   },
   "keywords": [
     "everitoken",
@@ -35,6 +36,7 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/chrome": "^0.0.81",
+    "@types/jest": "^24.0.11",
     "@types/lodash": "^4.14.123",
     "@types/node": "^11.12.2",
     "@types/react": "^16.8.10",
@@ -55,12 +57,14 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-react": "^7.12.4",
     "eslint-plugin-standard": "^4.0.0",
+    "jest": "^24.7.1",
     "parcel-bundler": "^1.12.3",
     "parcel-plugin-web-extension": "^1.5.2",
     "prettier": "^1.16.4",
     "redux-logger": "^3.0.6",
-    "tslint-config-prettier": "^1.18.0",
+    "ts-jest": "^24.0.2",
     "tslint": "^5.15.0",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.4.3"
   }
 }

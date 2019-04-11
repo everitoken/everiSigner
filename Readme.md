@@ -12,6 +12,7 @@ Official browser extension from [everiToken](https://everitoken.io) for signing.
 - material ui
 - styled components
 - parcel
+- jest
 
 ## Todos
 
