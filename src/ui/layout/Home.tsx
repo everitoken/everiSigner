@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Button from '@material-ui/core/Button'
-import logo from '../../assets/logo@2x.png'
+import logo from '../../asset/logo@2x.png'
 
 type PropTypes = {}
 

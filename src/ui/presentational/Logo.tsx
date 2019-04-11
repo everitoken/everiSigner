@@ -1,5 +1,5 @@
 import * as React from 'react'
-import logo from '../../assets/logo@2x.png'
+import logo from '../../asset/logo@2x.png'
 
 class Logo extends React.PureComponent {
   render() {
