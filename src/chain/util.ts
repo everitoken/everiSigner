@@ -5,5 +5,5 @@ export const getEvtChain = (chainApi: ChainApi) => {
     return Promise.reject('Chain api is null.')
   }
 
-  return chainApi.getChain('eos')
+  return chainApi.getChain('everitoken')
 }

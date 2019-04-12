@@ -3,6 +3,14 @@ import { StartScreenNameType, ValidAuthenticatedStatusTypes } from '../types'
 import { get } from 'lodash'
 import { decryptAccount } from '../service/PasswordService'
 
+export const getAccountByPublicKey = (
+  state: AppState,
+  ownProps: { publicKey: string }
+) => state.accounts.find(account => account.publicKey === ownProps.publicKey)
+
+export const getAccountById = (state: AppState, ownProps: { id: string }) =>
+  state.accounts.find(account => account.id === ownProps.id)
+
 export const getPasswordHash = (state: AppState) =>
   state.authentication.password
 

@@ -5,9 +5,10 @@ export type AccountStateType = {
   type: 'default' | 'imported'
   words: string
   privateKey: string
+  publicKey: string
   id: string
   name: string
-  createdAt: Date
+  createdAt: string
 }
 
 type StateType = AccountStateType[]

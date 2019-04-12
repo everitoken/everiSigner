@@ -133,16 +133,21 @@ function* createAccountHandler() {
     const words = PasswordService.generateMnemonicWords(password, 'english')
 
     // 3. generate entropy
-    const seed = PasswordService.mnemonicToSeed(password, words)
+    const seed = PasswordService.mnemonicToSeed(words)
+
+    const privateKey = Evt.EvtKey.seedPrivateKey(seed.toString('hex'))
 
     // construct state
     const account: AccountStateType = {
       ...action.payload,
       type: 'default',
-      createdAt: new Date(),
-      privateKey: seed.toString('hex'),
-      words,
+      createdAt: new Date().toISOString(),
+      privateKey: PasswordService.encrypt(password, privateKey),
+      publicKey: Evt.EvtKey.privateToPublic(privateKey),
+      words: PasswordService.encrypt(password, words),
     }
+
+    log(JSON.stringify(account))
 
     yield put(
       storeActions.accountCreate(

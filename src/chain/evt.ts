@@ -7,6 +7,21 @@ class Evt implements ChainInterface {
     this.storeProvider = storeProvider
   }
   getName = () => 'everitoken'
+  generateSeedPrivateKey = () => {
+    // get seed
+    return 'seed'
+  }
+  getPublicKeyFromPrivateKey = (publicKey: string) => {
+    return `publicKey ${publicKey}`
+  }
+
+  randomPrivateKey = () => {
+    return 'random'
+  }
+
+  signHashByPublicKey = (hash: string, publicKey: string) => {
+    return `signed ${hash} - ${publicKey}`
+  }
 }
 
 export default Evt

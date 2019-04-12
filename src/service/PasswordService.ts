@@ -40,9 +40,9 @@ export const hashPassword = (password: string): string => {
 export const verifyPassword = (password: string, hash: string): boolean =>
   bcrypt.compareSync(password, hash)
 
-export const encrypt = (password: string, payload: {}): string => {
+export const encrypt = (password: string, payload: string): string => {
   const { iv, salt, ct } = JSON.parse(
-    sjcl.encrypt(password, JSON.stringify(payload), { mode: 'gcm' })
+    sjcl.encrypt(password, payload, { mode: 'gcm' })
   )
 
   return JSON.stringify({ iv, salt, ct })
@@ -53,18 +53,15 @@ export const decrypt = (password: string, raw: string) => {
     Object.assign(JSON.parse(raw), { mode: 'gcm' })
   )
 
-  const clearText = sjcl.decrypt(password, payload)
-
   try {
-    const data = JSON.parse(clearText)
     return {
       success: true,
-      data,
+      data: sjcl.decrypt(password, payload),
     }
   } catch (e) {
     return {
       success: false,
-      errMsg: e.message,
+      data: e.message,
     }
   }
 }
@@ -77,11 +74,11 @@ export const generateMnemonicWords = (
   password: string,
   wordlist: SupportedWordlist
 ): string => {
-  const digest = sha256(password)
+  const digest = sha256(hashPassword(password))
   return bip39.entropyToMnemonic(digest, wordlists[wordlist])
 }
 
-export const mnemonicToSeed = (password: string, words: string) =>
+export const mnemonicToSeed = (words: string) =>
   bip39.mnemonicToSeedSync(words, '')
 
 export const encryptAccount = (
@@ -89,17 +86,20 @@ export const encryptAccount = (
   account: AccountStateType
 ): AccountStateType => ({
   ...account,
-  words: encrypt(password, { data: account.words }),
-  privateKey: encrypt(password, { data: account.privateKey }),
+  words: encrypt(password, account.words),
+  privateKey: encrypt(password, account.privateKey),
 })
 
 export const decryptAccount = (
   password: string,
   account: AccountStateType
 ): AccountStateType => {
+  const wordsDecrypted = decrypt(password, account.words)
+  const privateKeyDecrypted = decrypt(password, account.privateKey)
+
   return {
     ...account,
-    words: get(decrypt(password, account.words), 'data.data', null),
-    privateKey: get(decrypt(password, account.privateKey), 'data.data', null),
+    words: wordsDecrypted.success ? wordsDecrypted.data : '',
+    privateKey: privateKeyDecrypted.success ? wordsDecrypted.data : '',
   }
 }

@@ -14,15 +14,6 @@ Official browser extension from [everiToken](https://everitoken.io) for signing.
 - parcel
 - jest
 
-## Todos
-
-- [x] add evtjs
-- [x] add redux
-- [x] add redux saga
-- [x] add redux-persist
-- [x] add router
-- [ ] migrate scatter
-
 ## Resources
 
 - [Message passing](https://developer.chrome.com/apps/messaging)
