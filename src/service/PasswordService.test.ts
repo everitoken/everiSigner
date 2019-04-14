@@ -1,5 +1,4 @@
 import { generateMnemonicWords, decrypt } from './PasswordService'
-import console = require('console')
 
 test('generateMnemonicWords', () => {
   const words = generateMnemonicWords('ooliufei', 'english')
@@ -15,5 +14,4 @@ test('decrypt', () => {
   expect(decrypt(password, data).data).toEqual(
     '5JbKK9dsTmCE1HSjAZRXthMZYRrjQa1bG8UJj9bVXP3pY8jQh7F'
   )
-  console.log(decrypt(password, data))
 })
