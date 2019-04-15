@@ -1,15 +1,50 @@
-import { AppState } from './reducer'
 import StoreProviderInterface from './ProviderInterface'
-import { getPassword, getAccountByPublicKey, getAccountById } from './getter'
-import { decrypt, mnemonicToSeed } from '../service/PasswordService'
+import {
+  getPassword,
+  getAccountByPublicKey,
+  getAccountById,
+  getDefaultAccount,
+} from './getter'
+import {
+  decrypt,
+  mnemonicToSeed,
+  decryptAccount,
+} from '../service/PasswordService'
+import { AppState } from './reducer/index'
+import { Store } from 'redux'
+
+let provider: null | StoreProvider = null
+
 class StoreProvider implements StoreProviderInterface {
-  state: AppState
-  constructor(state: AppState) {
-    this.state = state
+  store: Store<AppState>
+  constructor(store: Store<AppState>) {
+    this.store = store
   }
 
-  getAccountByPublicKey = (publicKey: string) => {
-    const account = getAccountByPublicKey(this.state, { publicKey })
+  private getPassword = () => {
+    const password = getPassword(this.store.getState())
+
+    if (!password) {
+      return Promise.reject('Unable to get password to decrypt the app.')
+    }
+
+    return Promise.resolve(password)
+  }
+  getDefaultAccount = async () => {
+    const account = getDefaultAccount(this.store.getState())
+
+    if (!account) {
+      return Promise.reject('Default account is not found')
+    }
+
+    const password = await this.getPassword()
+
+    return Promise.resolve(decryptAccount(password, account))
+  }
+
+  getAccountByPublicKey = async (publicKey: string) => {
+    const password = await this.getPassword()
+    const account = getAccountByPublicKey(this.store.getState(), { publicKey })
 
     if (!account) {
       return Promise.reject(
@@ -17,11 +52,11 @@ class StoreProvider implements StoreProviderInterface {
       )
     }
 
-    return Promise.resolve(account)
+    return Promise.resolve(decryptAccount(password, account))
   }
 
   getAccountByAccountId = (id: string) => {
-    const account = getAccountById(this.state, { id })
+    const account = getAccountById(this.store.getState(), { id })
 
     if (!account) {
       return Promise.reject(`Account with id "${id} is not found."`)
@@ -31,52 +66,34 @@ class StoreProvider implements StoreProviderInterface {
   }
 
   getPrivateKeyByPublicKey = async (publicKey: string) => {
-    // first get the password, there is no password, throw error
-    const password = getPassword(this.state)
+    // get account by public key
+    const account = await this.getAccountByPublicKey(publicKey)
 
-    if (!password) {
-      return Promise.reject('Unable to get password to decrypt the app.')
-    }
-
-    try {
-      // get account by public key
-      const account = await this.getAccountByPublicKey(publicKey)
-
-      // decrypt with password
-      const { success, data } = decrypt(password, account.privateKey)
-
-      if (!success) {
-        return Promise.reject('unable to decrypt private key with password')
-      }
-
-      return Promise.resolve(data)
-    } catch (error) {
-      return Promise.reject(error)
-    }
+    return Promise.resolve(account.privateKey)
   }
   getSeedByAccountId = async (id: string) => {
     // first get the password, there is no password, throw error
-    const password = getPassword(this.state)
+    const password = await this.getPassword()
 
-    if (!password) {
-      return Promise.reject('Unable to get password to decrypt the app.')
+    // get words of account
+    const account = await this.getAccountByAccountId(id)
+
+    const { success, data } = decrypt(password, account.words)
+    if (!success) {
+      return Promise.reject('Unable to decrypt words with password')
     }
 
-    try {
-      // get words of account
-      const account = await this.getAccountByAccountId(id)
-
-      const { success, data } = decrypt(password, account.words)
-      if (!success) {
-        return Promise.reject('Unable to decrypt words with password')
-      }
-
-      // get seed in hex
-      return Promise.resolve(mnemonicToSeed(data).toString('hex'))
-    } catch (err) {
-      return Promise.reject('error')
-    }
+    // get seed in hex
+    return Promise.resolve(mnemonicToSeed(data).toString('hex'))
   }
 }
 
-export default StoreProvider
+export default {
+  get() {
+    return provider
+  },
+
+  init(store: Store<AppState>): void {
+    provider = new StoreProvider(store)
+  },
+}

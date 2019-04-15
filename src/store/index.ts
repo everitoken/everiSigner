@@ -12,13 +12,13 @@ const persistConfig = {
   blacklist: ['airport', 'message', 'signingPayload'],
 }
 
-const isProd = process.env.NODE_ENV === 'development'
+const isDevelopment = process.env.NODE_ENV === 'development'
 
 export default function configureStore(saga: any) {
   const sagaMiddleware = createSagaMiddleware()
   const middlewares = [sagaMiddleware]
 
-  if (!isProd) {
+  if (isDevelopment) {
     const { logger } = require('redux-logger')
 
     middlewares.push(logger)
@@ -30,7 +30,7 @@ export default function configureStore(saga: any) {
   const store = createStore(persistedReducer, enhancer)
   let persistor = persistStore(store)
 
-  if (isProd) {
+  if (isDevelopment) {
     window.store = store
     window.persistor = persistor
     window.PasswordService = PasswordService

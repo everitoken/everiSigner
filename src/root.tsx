@@ -7,8 +7,12 @@ import Container from './ui/presentational/Container'
 import createStore from './store'
 import App from './ui/App'
 import rootSaga from './store/saga'
+import provider from './store/provider'
 
 const { store, persistor } = createStore(rootSaga)
+
+// init store provider, pass store instance
+provider.init(store)
 
 class Root extends React.PureComponent {
   render() {

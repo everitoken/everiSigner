@@ -6,8 +6,13 @@ import Container from './ui/presentational/Container'
 import createStore from './store'
 import saga from './store/saga/'
 import Signing from './ui/layout/Signing'
+import provider from './store/provider'
 
 const { store, persistor } = createStore(saga)
+
+// init store provider, pass store instance
+provider.init(store)
+
 class Prompt extends React.PureComponent {
   render() {
     return (

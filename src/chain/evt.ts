@@ -18,8 +18,10 @@ class Evt implements ChainInterface {
     const seed = await getSeed(this.storeProvider)
     return EvtKey.seedPrivateKey(seed)
   }
-  getPublicKeyFromPrivateKey = async (publicKey: string) =>
-    this.storeProvider.getPrivateKeyByPublicKey(publicKey)
+  getPublicKeyFromPrivateKey = async (privateKey: string) => {
+    const { EvtKey } = Evtjs
+    return EvtKey.privateToPublic(privateKey)
+  }
 
   randomPrivateKey = async () => Evtjs.EvtKey.randomPrivateKey()
 

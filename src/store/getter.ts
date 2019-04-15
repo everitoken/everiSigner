@@ -3,6 +3,9 @@ import { StartScreenNameType, ValidAuthenticatedStatusTypes } from '../types'
 import { get } from 'lodash'
 import { decryptAccount } from '../service/PasswordService'
 
+export const getDefaultAccount = (state: AppState) =>
+  state.accounts.find(account => account.type === 'default')
+
 export const getAccountByPublicKey = (
   state: AppState,
   ownProps: { publicKey: string }

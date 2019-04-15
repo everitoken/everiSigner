@@ -2,7 +2,6 @@ import { get } from 'lodash'
 import { END, eventChannel } from 'redux-saga'
 import { call, fork, put, select, take } from 'redux-saga/effects'
 import * as PasswordService from '../../service/PasswordService'
-import * as Evt from 'evtjs'
 import {
   BackgroundMsgTypes,
   BackgroundPasswordMsgType,
@@ -12,10 +11,11 @@ import * as uiActions from '../../ui/action'
 import * as storeActions from '../action'
 import { getPassword, getPasswordHash } from '../getter'
 import { AccountStateType } from '../reducer/accounts'
-import StoreProvider from '../provider'
+import storeProvider from '../provider'
 import ChainApi from '../../chain'
 import { getEvtChain } from '../../chain/util'
 import ChainInterface from '../../chain/ChainInterface'
+import StoreProviderInterface from '../ProviderInterface'
 
 let backgroundPort: chrome.runtime.Port | null = null
 let chain: ChainApi | null = null
@@ -25,15 +25,11 @@ const log = (msg: string, tag: string = 'unspecified') => {
   background && background.console.log(`popup(${tag}): `, msg)
 }
 
-function* setupChainProviders() {
-  const store = yield select()
-  const storeProvider = new StoreProvider(store)
-  chain = new ChainApi(storeProvider)
+function setupChainProviders() {
+  const provider: StoreProviderInterface | null = storeProvider.get()
 
-  try {
-    const evtChain: ChainInterface = yield call(getEvtChain, chain)
-  } catch (error) {
-    log(error, 'error')
+  if (provider != null) {
+    chain = new ChainApi(provider)
   }
 }
 
@@ -81,19 +77,26 @@ function* signHandler() {
     const action = yield take(uiActions.SIGN)
     let data = null
 
+    // skip direct when chain is not setup
+    if (!chain) {
+      break
+    }
+
     try {
       data = JSON.parse(action.payload.payload.data)
     } catch (e) {
       break
     }
 
-    // TODO get private key
+    const evtChain: ChainInterface = yield call(getEvtChain, chain)
 
     // get private key from default account
-    const signature = yield call(
-      Evt.EvtKey.signHash,
+    const signature = yield evtChain.signHash(
       new Buffer(data.buf, 'hex'),
-      '5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D'
+      async storeProvider => {
+        const account = await storeProvider.getDefaultAccount()
+        return account.privateKey
+      }
     )
 
     const signedPayload = {
@@ -120,6 +123,10 @@ function* createAccountHandler() {
       typeof uiActions.createDefaultAccount
     > = yield take(uiActions.CREATE_DEFAULT_ACCOUNT)
 
+    if (!chain) {
+      break // TODO refactor away
+    }
+
     // construct words
     // 1. get password
     const password: string | false = yield select(getPassword)
@@ -135,19 +142,23 @@ function* createAccountHandler() {
     // 3. generate entropy
     const seed = PasswordService.mnemonicToSeed(words)
 
-    const privateKey = Evt.EvtKey.seedPrivateKey(seed.toString('hex'))
+    const evtChain: ChainInterface = yield call(getEvtChain, chain)
+
+    const privateKey = yield evtChain.generateSeedPrivateKey(() =>
+      Promise.resolve(seed.toString('hex'))
+    )
+
+    const publicKey = yield evtChain.getPublicKeyFromPrivateKey(privateKey)
 
     // construct state
     const account: AccountStateType = {
       ...action.payload,
       type: 'default',
       createdAt: new Date().toISOString(),
-      privateKey: PasswordService.encrypt(password, privateKey),
-      publicKey: Evt.EvtKey.privateToPublic(privateKey),
-      words: PasswordService.encrypt(password, words),
+      privateKey,
+      publicKey,
+      words,
     }
-
-    log(JSON.stringify(account))
 
     yield put(
       storeActions.accountCreate(
@@ -203,8 +214,7 @@ function* backgroundSendMessageChannelHandler() {
 function* setupSendMessageChannel() {
   return eventChannel(emitter => {
     const messageHandler = (msg: BackgroundMsgTypes) => emitter(msg)
-    chrome.runtime.onMessage.addListener((msg, sender) => {
-      log(JSON.stringify(sender, null, 4), 'sender')
+    chrome.runtime.onMessage.addListener(msg => {
       messageHandler(msg)
       return true
     })
@@ -273,7 +283,6 @@ function* rootSaga() {
       )
 
       const password = get(bgMsgPassword.payload, 'data.password', null)
-      log(JSON.stringify(password))
 
       const passwordHash = yield select(getPasswordHash)
 
@@ -288,7 +297,6 @@ function* rootSaga() {
           // if not lock
           yield put(storeActions.passwordRemove())
         } else {
-          log('password valid')
           yield put(storeActions.landPlane('password', password))
           // start password lock timer
           backgroundPort.postMessage({
@@ -302,7 +310,7 @@ function* rootSaga() {
     yield fork(createAccountHandler)
     yield fork(setPasswordHandler)
     yield fork(signHandler)
-    yield fork(setupChainProviders)
+    yield fork(setupChainProviders) // NOTE expose `chain` global to saga/index
   } catch (e) {
     // TODO consider restart saga
     console.log('saga root error: ', e)

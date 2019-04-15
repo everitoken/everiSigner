@@ -47,13 +47,8 @@ export const hashPassword = (password: string): string => {
 export const verifyPassword = (password: string, hash: string): boolean =>
   bcrypt.compareSync(password, hash)
 
-export const encrypt = (password: string, payload: string): string => {
-  const { iv, salt, ct } = JSON.parse(
-    sjcl.encrypt(password, payload, { mode: 'gcm' })
-  )
-
-  return JSON.stringify({ iv, salt, ct })
-}
+export const encrypt = (password: string, payload: string): string =>
+  sjcl.encrypt(password, payload, { mode: 'gcm' })
 
 export const decrypt = (password: string, raw: string) => {
   const payload = JSON.stringify(
@@ -103,10 +98,9 @@ export const decryptAccount = (
 ): AccountStateType => {
   const wordsDecrypted = decrypt(password, account.words)
   const privateKeyDecrypted = decrypt(password, account.privateKey)
-
   return {
     ...account,
     words: wordsDecrypted.success ? wordsDecrypted.data : '',
-    privateKey: privateKeyDecrypted.success ? wordsDecrypted.data : '',
+    privateKey: privateKeyDecrypted.success ? privateKeyDecrypted.data : '',
   }
 }
