@@ -10,14 +10,23 @@ const SeedListContainer = styled.ul`
   flex-wrap: wrap;
 `
 
-export default (props: { words: string }) => {
-  return (
-    <SeedListContainer>
-      {props.words.split(' ').map((word, i) => (
-        <li key={word} style={{ margin: 3 }}>
-          <Chip label={`${i + 1}. ${word}`} />
-        </li>
-      ))}
-    </SeedListContainer>
-  )
+export type PropTypes = {
+  words: string
 }
+
+class SeedWordsDisplay extends React.PureComponent<PropTypes> {
+  render() {
+    const { props } = this
+
+    return (
+      <SeedListContainer>
+        {props.words.split(' ').map((word, i) => (
+          <li key={word} style={{ margin: 3 }}>
+            <Chip label={`${i + 1}. ${word}`} />
+          </li>
+        ))}
+      </SeedListContainer>
+    )
+  }
+}
+export default SeedWordsDisplay
