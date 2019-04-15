@@ -15,7 +15,7 @@ import AuthProtectedView from './AuthProtectedView'
 import InvalidRoute from './InvalidRoute'
 
 type PropTypes = {
-  setPassword: (password: string) => uiActions.UiActionTypes
+  setPassword: typeof uiActions.setPassword
 }
 
 type StateTypes = {
@@ -26,8 +26,8 @@ type StateTypes = {
 }
 class WalletCreate extends React.Component<PropTypes, StateTypes> {
   state = {
-    password: null,
-    passwordRepeat: null,
+    password: '',
+    passwordRepeat: '',
     passwordConfirmed: false,
     showPassword: false,
   }
@@ -44,7 +44,7 @@ class WalletCreate extends React.Component<PropTypes, StateTypes> {
   }
 
   handleClickShowPassword = () => {
-    this.setState(state => ({ showPassword: !this.state.showPassword }))
+    this.setState({ showPassword: !this.state.showPassword })
   }
 
   handleSetPassword = () => {
@@ -52,7 +52,7 @@ class WalletCreate extends React.Component<PropTypes, StateTypes> {
       return
     }
 
-    const { success, payload } = PasswordService.isPasswordValid(
+    const { success } = PasswordService.isPasswordValid(
       this.state.password,
       this.state.passwordRepeat
     )
@@ -61,7 +61,9 @@ class WalletCreate extends React.Component<PropTypes, StateTypes> {
       return
     }
 
-    this.props.setPassword(this.state.password)
+    if (this.state.password !== '') {
+      this.props.setPassword(this.state.password)
+    }
   }
 
   render() {

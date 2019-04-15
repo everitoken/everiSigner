@@ -1,41 +1,40 @@
-import * as React from "react";
+import * as React from 'react'
 import {
   withRouter,
   BrowserRouter as Router,
   Route,
-  Link
-} from "react-router-dom";
-import Start from "./layout/Start";
-import About from "./layout/About";
-import Footer from "./layout/Footer";
-import WalletModeDecision from "./layout/WalletModeDecision";
-import WalletImport from "./layout/WalletImport";
-import WalletCreate from "./layout/WalletCreate";
-import FlexContainer from "./presentational/FlexContainer";
-import { connect } from "react-redux";
-import { getSnackbarMessage } from "../store/getter";
-import SnackbarMessage from "./presentational/SnackbarMessage";
-import { snackbarMessageDismiss } from "../store/action";
-import AccountCreate from "./layout/AccountCreate";
-import AlertDialog from "./presentational/AlertDialog";
+  Link,
+} from 'react-router-dom'
+import Start from './layout/Start'
+import About from './layout/About'
+import Footer from './layout/Footer'
+import WalletModeDecision from './layout/WalletModeDecision'
+import WalletImport from './layout/WalletImport'
+import WalletCreate from './layout/WalletCreate'
+import FlexContainer from './presentational/FlexContainer'
+import { connect } from 'react-redux'
+import { getSnackbarMessage } from '../store/getter'
+import SnackbarMessage from './presentational/SnackbarMessage'
+import { snackbarMessageDismiss } from '../store/action'
+import AccountCreate from './layout/AccountCreate'
 
 class HackRedirect extends React.PureComponent<any> {
   componentDidMount() {
-    this.props.history.push("/");
+    this.props.history.push('/')
   }
   render() {
-    return <span />;
+    return <span />
   }
 }
 
 // this is need because when browser load extension for the first time, it doesn't give a fully qualified url.
 // therefore we need to force redirect to "home"
-const HackRedirectWithRouter = withRouter(HackRedirect);
+const HackRedirectWithRouter = withRouter(HackRedirect)
 
 const ConnectedMessage = connect(
   getSnackbarMessage,
   { onClose: snackbarMessageDismiss }
-)(SnackbarMessage);
+)(SnackbarMessage)
 
 class App extends React.PureComponent {
   render() {
@@ -59,11 +58,11 @@ class App extends React.PureComponent {
           <div>
             <ul
               style={{
-                listStyle: "none",
+                listStyle: 'none',
                 margin: 0,
                 padding: 0,
-                display: "flex",
-                flexWrap: "wrap"
+                display: 'flex',
+                flexWrap: 'wrap',
               }}
             >
               <li style={{ margin: 5 }}>
@@ -86,8 +85,8 @@ class App extends React.PureComponent {
           <Footer />
         </Router>
       </FlexContainer>
-    );
+    )
   }
 }
 
-export default App;
+export default App

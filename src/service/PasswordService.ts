@@ -4,7 +4,6 @@ import englishWords from '../asset/wordlist/english'
 import ChineseSimplifiedWords from '../asset/wordlist/chinese_simplified'
 import { AccountStateType } from '../store/reducer/accounts'
 import * as sjcl from 'sjcl'
-import { get } from 'lodash'
 
 type SupportedWordlist = 'english' | 'chinese_simplified'
 
@@ -13,13 +12,21 @@ const wordlists: { [key in SupportedWordlist]: string[] } = {
   english: englishWords,
 }
 
-export const isPasswordValid = (password: string, passwordRepeat: string) => {
+export const isPasswordValid = (password?: string, passwordRepeat?: string) => {
+  if (!password || !passwordRepeat) {
+    return {
+      success: false,
+      payload: 'Password can not be empty',
+    }
+  }
+
   if (password.length < 8) {
     return {
       success: false,
       payload: 'Password needs to be at least 8 chars.',
     }
   }
+
   if (password !== passwordRepeat) {
     return {
       success: false,
