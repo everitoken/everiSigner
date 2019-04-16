@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { getSigningPayload } from '../../store/getter'
 import { SigningPayloadStateType } from '../../store/reducer/signingPayload'
-import { Button, Typography } from '@material-ui/core'
+import { Button, Typography, CircularProgress } from '@material-ui/core'
 import FlexContainer from '../presentational/FlexContainer'
 import { sign } from '../action'
 import AuthProtectedView from './AuthProtectedView'
@@ -10,6 +10,7 @@ import Logo from '../presentational/Logo'
 import LogIn from './LogIn'
 import { getDisplayableSigningPayload } from '../util'
 import { get } from 'lodash'
+import styled from 'styled-components'
 
 type PropTypes = {
   signingPayload: SigningPayloadStateType
@@ -80,9 +81,24 @@ const AccountSetupReminder = () => (
   </FlexContainer>
 )
 
+const LoaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+`
+
 export default () => (
   <AuthProtectedView>
-    {({ status }) => {
+    {({ status, uiReady }) => {
+      if (!uiReady) {
+        return (
+          <LoaderContainer>
+            <CircularProgress disableShrink />
+          </LoaderContainer>
+        )
+      }
+
       if (status === 'unknown') {
         return <AccountSetupReminder />
       }

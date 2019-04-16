@@ -4,7 +4,7 @@ import {
   PopupMsgTypes,
   PopupPasswordSetMsgType,
   PopupStartedMsgType,
-  PopupStartPasswordTimerMsgType,
+  PopupInitializedMsgType,
   ClientLocalMsgTypes,
   PopupSignedMsgType,
 } from '../types'
@@ -86,11 +86,11 @@ const popupStartedHandler = (
   postMessage({ type: 'background/password', payload: { password } })
 }
 
-const passwordTimerHandler = (
-  _: PopupStartPasswordTimerMsgType,
+const popupInitialized = (
+  _: PopupInitializedMsgType,
   postMessage: PostMessageType
 ) => {
-  postMessage({ type: 'background/passwordTimerSet' })
+  postMessage({ type: 'background/synced' })
 }
 
 const signedHandler = (message: PopupSignedMsgType, _: PostMessageType) => {
@@ -147,8 +147,8 @@ const handlePopupMessage = (
     case 'popup/started':
       popupStartedHandler(message, postMessage)
       break
-    case 'popup/startPasswordTimer': // currently unused
-      passwordTimerHandler(message, postMessage)
+    case 'popup/initialized':
+      popupInitialized(message, postMessage)
       break
     case 'popup/signed':
       signedHandler(message, postMessage)
@@ -168,6 +168,7 @@ chrome.runtime.onConnect.addListener(function(port) {
 
   port.onMessage.addListener(
     (message: PopupMsgTypes | ClientLocalMsgTypes, sender) => {
+      console.log('message', message)
       const tabId = get(sender, 'sender.tab.id', null)
 
       if (isPopMessage(message.type)) {

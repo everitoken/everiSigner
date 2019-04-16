@@ -55,20 +55,24 @@ function setupPopupUnloadListener() {
   )
 }
 
-function* signWatcher() {
+function* backgroundMessageWatcher() {
   while (true) {
-    const action: { payload: BackgroundSignMsgType } = yield take(
-      (a: any) =>
-        a.type === uiActions.RECEIVE_BACKGROUND_MESSAGE &&
-        a.payload.type === 'background/sign'
+    const action: { payload: BackgroundMsgTypes } = yield take(
+      (a: any) => a.type === uiActions.RECEIVE_BACKGROUND_MESSAGE
     )
+    log(JSON.stringify(action), 'message')
 
-    yield put(
-      storeActions.signingPayloadReceive(
-        action.payload.payload,
-        action.payload.meta
+    const { payload } = action
+
+    if (payload.type === 'background/sign') {
+      yield put(
+        storeActions.signingPayloadReceive(payload.payload, payload.meta)
       )
-    )
+    }
+
+    if (payload.type === 'background/synced') {
+      yield put(storeActions.landPlane('uiready', true))
+    }
   }
 }
 
@@ -117,6 +121,7 @@ function* signHandler() {
     yield put(storeActions.signedPayloadReceive(signedPayload))
   }
 }
+
 function* createAccountHandler() {
   while (true) {
     const action: ReturnType<
@@ -260,6 +265,7 @@ function* rootSaga() {
   try {
     // do some cleanup on popup unload
     yield call(setupPopupUnloadListener)
+    yield fork(backgroundMessageWatcher)
 
     if (backgroundPort === null) {
       backgroundPort = chrome.runtime.connect()
@@ -282,7 +288,7 @@ function* rootSaga() {
         'background/password'
       )
 
-      const password = get(bgMsgPassword.payload, 'data.password', null)
+      const password = get(bgMsgPassword.payload, 'password', null)
 
       const passwordHash = yield select(getPasswordHash)
 
@@ -298,15 +304,14 @@ function* rootSaga() {
           yield put(storeActions.passwordRemove())
         } else {
           yield put(storeActions.landPlane('password', password))
-          // start password lock timer
-          backgroundPort.postMessage({
-            type: 'popup/startPasswordTimer',
-          })
         }
       }
+
+      backgroundPort.postMessage({
+        type: 'popup/initialized',
+      })
     }
 
-    yield fork(signWatcher)
     yield fork(createAccountHandler)
     yield fork(setPasswordHandler)
     yield fork(signHandler)

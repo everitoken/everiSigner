@@ -41,14 +41,17 @@ export type PopupSignedMsgType = {
   meta?: MessageMetaType
 }
 
-export type PopupStartPasswordTimerMsgType = {
-  type: 'popup/startPasswordTimer'
+export type PopupInitializedMsgType = {
+  type: 'popup/initialized'
+  payload: {
+    password: string | null
+  }
   meta?: MessageMetaType
 }
 
 export type PopupMsgTypes =
   | PopupPasswordSetMsgType
-  | PopupStartPasswordTimerMsgType
+  | PopupInitializedMsgType
   | PopupStartedMsgType
   | PopupSignedMsgType
 
@@ -76,8 +79,8 @@ export type BackgroundSignedMsgType = {
   meta?: MessageMetaType
 }
 
-export type BackgroundPasswordTimerSetMsgType = {
-  type: 'background/passwordTimerSet'
+export type BackgroundSyncedMsgType = {
+  type: 'background/synced'
   meta?: MessageMetaType
 }
 
@@ -92,7 +95,7 @@ export type BackgroundMsgTypes =
   | BackgroundPasswordMsgType
   | BackgroundSignMsgType
   | BackgroundSignedMsgType
-  | BackgroundPasswordTimerSetMsgType
+  | BackgroundSyncedMsgType
   | BackgroundErrorMsgType
 
 /* Client message types */

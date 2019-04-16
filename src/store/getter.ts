@@ -20,6 +20,9 @@ export const getPasswordHash = (state: AppState) =>
 export const getPassword = (state: AppState): string | false =>
   get(state, 'airport.password', false)
 
+export const getUiReadyStatus = (state: AppState): boolean =>
+  get(state, 'airport.uiready', false)
+
 export const getAuthenticatedStatus = (
   state: AppState
 ): ValidAuthenticatedStatusTypes => {
