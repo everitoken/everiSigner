@@ -66,7 +66,10 @@ window.everisigner = {
   },
 
   // create sign provider
-  createSignProvider: opts => config => {
+  /**
+   * @param {{message?: string, timeout?: number}} opts
+   */
+  createSignProvider: opts => data => {
     const id = uuid.v4()
     window.postMessage(
       {
@@ -74,14 +77,17 @@ window.everisigner = {
         payload: {
           id,
           data: JSON.stringify({
-            buf: config.buf.toString('hex'),
-            transaction: config.transaction,
+            buf: data.buf.toString('hex'),
+            transaction: data.transaction,
+            message: opts.message,
+            site: location.origin,
           }),
         },
       },
       '*'
     )
 
+    // TODO implement timeout
     return new Promise((resolve, reject) => {
       registerListener(id, [resolve, reject])
     })

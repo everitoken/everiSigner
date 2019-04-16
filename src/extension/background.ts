@@ -94,7 +94,6 @@ const passwordTimerHandler = (
 }
 
 const signedHandler = (message: PopupSignedMsgType, _: PostMessageType) => {
-  console.log('signHandler in background', message)
   const tabId = get(message, 'payload.meta.tabId', null)
 
   if (tabId) {

@@ -15,7 +15,7 @@ const network = {
 const handlePush = ev => {
   const apiCaller = EVT({
     endpoint: network,
-    signProvider: everisigner.createSignProvider(),
+    signProvider: everisigner.createSignProvider({ message: 'test message' }),
   })
 
   apiCaller
