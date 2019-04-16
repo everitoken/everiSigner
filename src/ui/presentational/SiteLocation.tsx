@@ -1,14 +1,15 @@
 import * as React from 'react'
-import { Tooltip, Fade } from '@material-ui/core'
+import { Fade } from '@material-ui/core'
 import MonospaceText from './MonospaceText'
 import WebIcon from '@material-ui/icons/Web'
 import InlineButton from './InlineButton'
+import Tooltip from './Tooltip'
 
 type PropTypes = {
   url: string
 }
 
-class ActionName extends React.PureComponent<PropTypes> {
+class SiteLocation extends React.PureComponent<PropTypes> {
   render() {
     return (
       <Tooltip
@@ -26,4 +27,4 @@ class ActionName extends React.PureComponent<PropTypes> {
   }
 }
 
-export default ActionName
+export default SiteLocation

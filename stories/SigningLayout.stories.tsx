@@ -1,6 +1,17 @@
 import * as React from 'react'
 import FlexContainer from '../src/ui/presentational/FlexContainer'
-import { Button, Typography } from '@material-ui/core'
+import {
+  Button,
+  Typography,
+  Card,
+  CardHeader,
+  CardContent,
+  CardActions,
+  IconButton,
+} from '@material-ui/core'
+import ActionName from '../src/ui/presentational/ActionName'
+import SiteLocation from '../src/ui/presentational/SiteLocation'
+import SigningMessage from '../src/ui/presentational/SigningMessage'
 
 import { storiesOf } from '@storybook/react'
 
@@ -36,3 +47,22 @@ storiesOf('Signing', module).add('layout', () => (
     </FlexContainer>
   </div>
 ))
+
+storiesOf('Signing', module).add('overview', () => {
+  return (
+    <Card>
+      <CardHeader title="Overview" />
+      <CardContent>
+        <div>
+          <SiteLocation url="https://google.com:88" />
+        </div>
+        <div>
+          <SigningMessage message="this is the signing message comming with the signing request" />
+        </div>
+      </CardContent>
+      <CardActions disableActionSpacing>
+        <ActionName name="transferft" />
+      </CardActions>
+    </Card>
+  )
+})

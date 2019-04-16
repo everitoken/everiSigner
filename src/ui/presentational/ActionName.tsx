@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { ActionNameSupportedTypes } from '../../types'
-import { Tooltip, Fade } from '@material-ui/core'
-import MonospaceText from './MonospaceText'
-import InlineButton from './InlineButton'
+import { Fade, Chip } from '@material-ui/core'
+import Fiber from '@material-ui/icons/FiberSmartRecord'
+import Tooltip from './Tooltip'
 
 type PropTypes = {
   name: ActionNameSupportedTypes
@@ -21,11 +21,13 @@ class SiteLocation extends React.PureComponent<PropTypes> {
         TransitionComponent={Fade}
         TransitionProps={{ timeout: 600 }}
         disableFocusListener
-        title={ActionDescription[this.props.name]}
+        title={this.props.name}
       >
-        <InlineButton disableTouchRipple component="span">
-          <MonospaceText>{this.props.name}</MonospaceText>
-        </InlineButton>
+        <Chip
+          icon={<Fiber />}
+          label={ActionDescription[this.props.name]}
+          color="primary"
+        />
       </Tooltip>
     )
   }

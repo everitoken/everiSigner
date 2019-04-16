@@ -1,8 +1,9 @@
 import * as React from 'react'
-import { Tooltip, Fade } from '@material-ui/core'
+import { Fade } from '@material-ui/core'
 import MonospaceText from './MonospaceText'
 import MessageIcon from '@material-ui/icons/Message'
 import InlineButton from './InlineButton'
+import Tooltip from './Tooltip'
 
 type PropTypes = {
   message: string
