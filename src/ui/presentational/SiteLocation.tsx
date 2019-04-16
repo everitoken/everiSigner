@@ -1,34 +1,29 @@
 import * as React from 'react'
-import { ActionNameSupportedTypes } from '../../types'
 import { Tooltip, Fade } from '@material-ui/core'
 import MonospaceText from './MonospaceText'
+import WebIcon from '@material-ui/icons/Web'
 import InlineButton from './InlineButton'
 
 type PropTypes = {
-  name: ActionNameSupportedTypes
+  url: string
 }
 
-export const ActionDescription: {
-  [key in ActionNameSupportedTypes]: string
-} = {
-  transferft: 'Transfer fungible',
-}
-
-class SiteLocation extends React.PureComponent<PropTypes> {
+class ActionName extends React.PureComponent<PropTypes> {
   render() {
     return (
       <Tooltip
         TransitionComponent={Fade}
         TransitionProps={{ timeout: 600 }}
         disableFocusListener
-        title={ActionDescription[this.props.name]}
+        title="Website which requests signing"
       >
         <InlineButton disableTouchRipple component="span">
-          <MonospaceText>{this.props.name}</MonospaceText>
+          <WebIcon />
+          <MonospaceText>{this.props.url}</MonospaceText>
         </InlineButton>
       </Tooltip>
     )
   }
 }
 
-export default SiteLocation
+export default ActionName
