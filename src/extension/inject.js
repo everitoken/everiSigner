@@ -26,26 +26,54 @@ window.addEventListener(
   ev => {
     const { type, payload } = event.data
     // listens for signed message
+
     if (type === 'everisigner/global/signed') {
       const id = get(payload, 'id')
       const listener = get(listeners, id)
-
       // if there is a listener, invoke the listener with signed payload
       // then remove the listener
-      if (listener) {
-        const signature = get(payload, 'payload.signature', null)
-
-        if (signature) {
-          listener[0]([signature])
-        } else {
-          listener[1]('Sign failed')
-        }
-        removeListener(id)
+      const signature = get(payload, 'payload.signature', null)
+      if (signature) {
+        listener[0]([signature])
+      } else {
+        listener[1]('Sign failed')
       }
+      removeListener(payload.id)
+    } else if (type === 'everisigner/global/receive.supportedactions') {
+      const listener = get(listeners, payload.id)
+      listener[0](payload.actions || [])
+      removeListener(payload.id)
     }
   },
   false
 )
+
+/**
+ *
+ * @param {string} type
+ * @param {Object} data
+ */
+const localPostMessage = (type, data = {}) => {
+  const id = uuid.v4()
+  window.postMessage(
+    {
+      type,
+      payload: {
+        id,
+        data: JSON.stringify({
+          ...data,
+          site: location.origin,
+        }),
+      },
+    },
+    '*'
+  )
+
+  // TODO implement timeout
+  return new Promise((resolve, reject) => {
+    registerListener(id, [resolve, reject])
+  })
+}
 
 /**
  * API Sections
@@ -58,38 +86,23 @@ window.everisigner = {
   },
 
   getSupportedChains() {
-    throw new Error('Not supprted yet.')
+    return ['everitoken']
   },
 
   getSupportedActions() {
-    throw new Error('Not supprted yet.')
+    return localPostMessage('everisigner/global/get.supportedactions')
   },
 
   // create sign provider
   /**
    * @param {{message?: string, timeout?: number}} opts
+   * @param {Object} data
    */
   createSignProvider: opts => data => {
-    const id = uuid.v4()
-    window.postMessage(
-      {
-        type: 'everisigner/global/sign',
-        payload: {
-          id,
-          data: JSON.stringify({
-            buf: data.buf.toString('hex'),
-            transaction: data.transaction,
-            message: opts.message,
-            site: location.origin,
-          }),
-        },
-      },
-      '*'
-    )
-
-    // TODO implement timeout
-    return new Promise((resolve, reject) => {
-      registerListener(id, [resolve, reject])
+    return localPostMessage('everisigner/global/sign', {
+      buf: data.buf.toString('hex'),
+      transaction: data.transaction,
+      message: opts.message,
     })
   },
 }

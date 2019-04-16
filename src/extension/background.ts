@@ -12,6 +12,7 @@ import { isPopMessage, isClientMessage } from '../util/background'
 import { get } from 'lodash'
 import { WINDOW_WIDTH, WINDOW_HEIGHT } from '../style'
 
+const supprtedActions: string[] = ['transferft']
 let password: string | null = null
 let timerHandler: number | null = null
 const TIMEOUT = 1000 * 60 * 15
@@ -47,8 +48,6 @@ const backgroundMethods: BackgroundMethodsInterface = {
       timerHandler = null
     }
 
-    console.log('password timeout timer started with timeout:', milliseconds)
-
     timerHandler = setTimeout(() => {
       removePassword()
       clearTimeout(timerHandler)
@@ -59,9 +58,7 @@ const backgroundMethods: BackgroundMethodsInterface = {
 
 // popup is closed
 const disconnectHandler = (port: chrome.runtime.Port) => {
-  // TODO or trigger a count down
   resetPopup()
-  console.log('background', 'disconnectHandler')
   port.disconnect()
 }
 
@@ -72,7 +69,6 @@ const passwordSetHandler = (
   postMessage: PostMessageType
 ) => {
   setPassword(message.payload)
-  console.log('password is set to ', password)
   postMessage({
     type: 'background/passwordSaved',
   })
@@ -82,7 +78,6 @@ const popupStartedHandler = (
   _: PopupStartedMsgType,
   postMessage: PostMessageType
 ) => {
-  console.log('popupStartedHandler', password)
   postMessage({ type: 'background/password', payload: { password } })
 }
 
@@ -130,7 +125,17 @@ const handleClientMessage = (message: ClientLocalMsgTypes) => {
         }
       )
       break
-
+    case 'everisigner/local/get.supportedactions':
+      if (message.meta && message.meta.tabId) {
+        chrome.tabs.sendMessage(message.meta.tabId, {
+          type: 'background/get.supportedactions',
+          payload: {
+            ...message.payload,
+            actions: supprtedActions,
+          },
+        })
+      }
+      break
     default:
       return
   }
@@ -168,7 +173,6 @@ chrome.runtime.onConnect.addListener(function(port) {
 
   port.onMessage.addListener(
     (message: PopupMsgTypes | ClientLocalMsgTypes, sender) => {
-      console.log('message', message)
       const tabId = get(sender, 'sender.tab.id', null)
 
       if (isPopMessage(message.type)) {

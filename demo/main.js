@@ -1,6 +1,7 @@
 /* eslint-disable quotes */
 /* eslint-disable semi */
 const btn = document.getElementById('sign')
+const getSupportedActionsBtn = document.getElementById('supportedactions')
 const payload = document.getElementById('payload')
 
 const privateKey = '5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D'
@@ -22,7 +23,7 @@ const handlePush = ev => {
     .pushTransaction(
       { maxCharge: 10000, payer: publicKey },
       new EVT.EvtAction('newdomain', {
-        name: 'testCreateDomain4',
+        name: 'testCreateDomain5',
         creator: publicKey,
         issue: {
           name: 'issue',
@@ -60,3 +61,6 @@ const handlePush = ev => {
 }
 
 btn.addEventListener('click', handlePush)
+getSupportedActionsBtn.addEventListener('click', () => {
+  everisigner.getSupportedActions().then(actions => console.log(actions))
+})

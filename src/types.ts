@@ -106,6 +106,12 @@ export type ClientSignMsgType = {
   meta?: MessageMetaType
 }
 
+export type ClientSupportedActionsMsgType = {
+  type: 'everisigner/local/get.supportedactions'
+  payload: ToBeSignDataType
+  meta?: MessageMetaType
+}
+
 export type ClientGlobalSignMsgType = {
   type: 'everisigner/global/sign'
   payload: ToBeSignDataType
@@ -116,11 +122,19 @@ export type ClientGlobalSignedMsgType = {
   payload: SignedDataType
 }
 
-export type ClientLocalMsgTypes = ClientSignMsgType
+export type ClientGlobalSupportedActionsMsgType = {
+  type: 'everisigner/global/receive.supportedactions'
+  payload: SignedDataType
+}
+
+export type ClientLocalMsgTypes =
+  | ClientSignMsgType
+  | ClientSupportedActionsMsgType
 
 export type ClientGlobalMsgTypes =
   | ClientGlobalSignMsgType
   | ClientGlobalSignedMsgType
+  | ClientGlobalSupportedActionsMsgType
 
 export interface BackgroundMethodsInterface {
   startTimer: (milliseconds: number) => void

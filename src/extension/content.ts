@@ -12,6 +12,11 @@ window.addEventListener(
     const { type, payload } = ev.data
     if (type === 'everisigner/global/sign') {
       postLocalMessage({ type: 'everisigner/local/sign', payload })
+    } else if (type === 'everisigner/global/get.supportedactions') {
+      postLocalMessage({
+        type: 'everisigner/local/get.supportedactions',
+        payload,
+      })
     }
   },
   false
@@ -26,6 +31,11 @@ chrome.runtime.onMessage.addListener(message => {
   if (message.type === 'background/signed') {
     postGlobalMessage({
       type: 'everisigner/global/signed',
+      payload: message.payload,
+    })
+  } else if (message.type === 'background/get.supportedactions') {
+    postGlobalMessage({
+      type: 'everisigner/global/receive.supportedactions',
       payload: message.payload,
     })
   }
