@@ -1,15 +1,9 @@
 import * as React from 'react'
-import { Card, CardHeader, Avatar, withStyles } from '@material-ui/core'
-
-type NetworkType = {
-  abbr: string
-  name: string
-  url: string
-  location: string
-}
+import { CardHeader, Avatar, withStyles, Typography } from '@material-ui/core'
+import { NetworkItemType } from '../../types'
 
 type PropTypes = {
-  network: NetworkType
+  network: NetworkItemType
   simple?: boolean
 }
 
@@ -31,9 +25,9 @@ const CustomCardHeader = withStyles({
 
 const CustomAvatar = withStyles({
   root: {
-    width: '30px',
-    height: '30px',
-    fontSize: '0.9rem',
+    width: '35px',
+    height: '35px',
+    fontSize: '0.7rem',
   },
 })(Avatar)
 
@@ -42,15 +36,25 @@ export default class NetworkListItem extends React.PureComponent<PropTypes> {
   render() {
     const { network, simple } = this.props
     return (
-      <Card>
-        <CustomCardHeader
-          avatar={
-            <CustomAvatar aria-label="network">{network.abbr}</CustomAvatar>
-          }
-          title={`${network.location} (${network.name})`}
-          subheader={simple ? network.url : ''}
-        />
-      </Card>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontFamily: 'Roboto Mono',
+        }}
+      >
+        <div style={{ paddingRight: '10px' }}>
+          <CustomAvatar aria-label="network">{network.abbr}</CustomAvatar>
+        </div>
+        <div>
+          <span>{`${network.location} (${network.name})`}</span>
+          {!simple ? (
+            <Typography variant="caption">{network.url}</Typography>
+          ) : null}
+        </div>
+      </div>
     )
   }
 }

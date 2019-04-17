@@ -143,3 +143,10 @@ export interface BackgroundMethodsInterface {
 export type MessageMetaType = {
   tabId: number | null
 }
+
+export type NetworkItemType = {
+  abbr: string
+  name: string
+  url: string
+  location: string
+}
