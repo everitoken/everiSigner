@@ -59,11 +59,7 @@ export default class NetworkSelect extends React.PureComponent<
     }
 
     return (
-      <Dialog
-        disableBackdropClick
-        open={this.state.open}
-        onClose={this.handleClose}
-      >
+      <Dialog open={this.state.open} onClose={this.handleClose}>
         <DialogTitle>Select network</DialogTitle>
         <DialogContent>
           <List>

@@ -47,11 +47,11 @@ const network6 = {
 const networks = [network1, network2, network3, network4, network5, network6]
 
 storiesOf('Network', module).add('simple list item', () => (
-  <NetworkListItem network={network1} />
+  <NetworkListItem network={network1} simple />
 ))
 
 storiesOf('Network', module).add('extended list item', () => (
-  <NetworkListItem network={network1} simple />
+  <NetworkListItem network={network1} />
 ))
 
 storiesOf('Network', module).add('select', () => (
