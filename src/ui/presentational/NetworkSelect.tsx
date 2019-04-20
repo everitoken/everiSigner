@@ -9,21 +9,16 @@ import {
   Button,
   List,
   ListItem,
-  Checkbox,
-  ListItemText,
-  ListItemSecondaryAction,
-  IconButton,
   Radio,
 } from '@material-ui/core'
 import CloudIcon from '@material-ui/icons/Cloud'
 import ExpandMore from '@material-ui/icons/ExpandMore'
-import CommentIcon from '@material-ui/icons/CommentOutlined'
 import NetworkListItem from './NetworkListItem'
 
 type PropTypes = {
   selected: NetworkItemType
   networks: NetworkItemType[]
-  onSelect: any
+  onSelect: any // TODO
 }
 
 type StateTypes = {
@@ -35,7 +30,6 @@ export default class NetworkSelect extends React.PureComponent<
   PropTypes,
   StateTypes
 > {
-  static defaultProps = { simple: false }
   state = {
     selected: this.props.selected,
     open: false,

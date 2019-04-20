@@ -1,27 +1,11 @@
 import * as React from 'react'
-import { CardHeader, Avatar, withStyles, Typography } from '@material-ui/core'
+import { Avatar, withStyles, Typography } from '@material-ui/core'
 import { NetworkItemType } from '../../types'
 
 type PropTypes = {
   network: NetworkItemType
   simple?: boolean
 }
-
-const CustomCardHeader = withStyles({
-  root: {
-    padding: '2px 5px',
-  },
-  title: {
-    fontSize: '14px',
-    fontWeight: 'bold',
-    padding: '2px',
-    lineHeight: '1rem',
-  },
-  subheader: {
-    padding: '2px',
-    lineHeight: '1rem',
-  },
-})(CardHeader)
 
 const CustomAvatar = withStyles({
   root: {
@@ -39,7 +23,6 @@ export default class NetworkListItem extends React.PureComponent<PropTypes> {
       <div
         style={{
           display: 'flex',
-          flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
           fontFamily: 'Roboto Mono',

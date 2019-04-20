@@ -10,7 +10,7 @@ export const keys: { [key: string]: { public: string; private: string } } = {
 export const accounts: { [key: string]: AccountStateType } = {
   validDefaultDecrypted: {
     id: '6d339a6c-0d1f-462c-863b-dad0cba57fcf',
-    name: 'Untitled account',
+    name: 'default decrypted',
     type: 'default',
     createdAt: '2019-04-12T14:11:00.263Z',
     privateKey: '5JcRkzh5SqoKM5imCW3Qtnt4Cu7gosR9iiiDtPFh66WjmvK65sM',
@@ -20,7 +20,7 @@ export const accounts: { [key: string]: AccountStateType } = {
   },
   validDefaultEncrypted: {
     id: 'dc7c1663-2a11-49e0-8790-6a3ee5be5c79',
-    name: 'Untitled account',
+    name: 'default encrypted',
     type: 'default',
     createdAt: '2019-04-12T14:24:23.846Z',
     privateKey:
