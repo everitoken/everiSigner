@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core'
 import AccountListItem from './AccountListItem'
 import { AccountStateType } from '../../store/reducer/accounts'
+import AccountSelectList from './AccountSelectList'
 
 type PropTypes = {
   selected: AccountStateType
@@ -54,25 +55,11 @@ export default class AccountSelect extends React.PureComponent<
       <Dialog open={this.state.open} onClose={this.handleClose}>
         <DialogTitle>Select account</DialogTitle>
         <DialogContent>
-          <List>
-            {this.props.accounts.map(account => (
-              <ListItem
-                key={account.id}
-                role={undefined}
-                dense
-                button
-                onClick={() => this.handleSelect(account)}
-              >
-                <Radio
-                  checked={account.id === this.state.selected.id}
-                  tabIndex={-1}
-                  value={account.name}
-                  name="select-account"
-                />
-                <AccountListItem account={account} truncateLen={12} />
-              </ListItem>
-            ))}
-          </List>
+          <AccountSelectList
+            accounts={this.props.accounts}
+            selected={this.state.selected}
+            onSelect={this.handleSelect}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} color="primary">
