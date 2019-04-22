@@ -101,8 +101,8 @@ class WalletCreate extends React.Component<PropTypes, StateTypes> {
             <Input
               error={
                 !this.state.passwordConfirmed &&
-                this.state.password != null &&
-                this.state.passwordRepeat != null
+                this.state.password !== '' &&
+                this.state.passwordRepeat !== ''
               }
               id="password-confirm"
               type={this.state.showPassword ? 'text' : 'password'}
