@@ -40,7 +40,7 @@ const handlePush = ev => {
           threshold: 1,
           authorizers: [
             {
-              ref: '[G] .OWNER'
+              ref: '[G] .OWNER',
               weight: 1,
             },
           ],
