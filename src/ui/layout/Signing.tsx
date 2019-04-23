@@ -5,12 +5,9 @@ import { SigningPayloadStateType } from '../../store/reducer/signingPayload'
 import { Button, Typography, CircularProgress } from '@material-ui/core'
 import FlexContainer from '../presentational/FlexContainer'
 import { sign } from '../action'
-import AuthProtectedView from './AuthProtectedView'
-import Logo from '../presentational/Logo'
-import LogIn from './LogIn'
 import { getDisplayableSigningPayload } from '../util'
 import { get } from 'lodash'
-import styled from 'styled-components'
+import AuthenticationProtectedView from './AuthenticationProtectedView'
 
 type PropTypes = {
   signingPayload: SigningPayloadStateType
@@ -71,47 +68,8 @@ const ConnectedSigningScreen = connect(
   { onClick: sign }
 )(Signing)
 
-const AccountSetupReminder = () => (
-  <FlexContainer withPadding>
-    <Logo />
-    <Typography variant="body1" color="textSecondary">
-      EveriSigner is not yet set up yet. There is no account configured yet.
-      Please go to the everiToken extension page and finish the set up process.
-    </Typography>
-  </FlexContainer>
-)
-
-const LoaderContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-`
-
 export default () => (
-  <AuthProtectedView>
-    {({ status, uiReady }) => {
-      if (!uiReady) {
-        return (
-          <LoaderContainer>
-            <CircularProgress disableShrink />
-          </LoaderContainer>
-        )
-      }
-
-      if (status === 'unknown') {
-        return <AccountSetupReminder />
-      }
-
-      if (status === 'hash') {
-        return (
-          <FlexContainer withPadding>
-            <LogIn message="Unlock to continue" />
-          </FlexContainer>
-        )
-      }
-
-      return <ConnectedSigningScreen />
-    }}
-  </AuthProtectedView>
+  <AuthenticationProtectedView>
+    <ConnectedSigningScreen />
+  </AuthenticationProtectedView>
 )

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { getAuthenticatedStatus, getUiReadyStatus } from '../../store/getter'
-import { AppState } from '../../store/reducer'
+import { AppState } from '../../store/reducer/index'
 import { isFunction, omit } from 'lodash'
 import { ValidAuthenticatedStatusTypes } from '../../types'
 

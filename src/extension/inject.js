@@ -43,6 +43,11 @@ window.addEventListener(
       const listener = get(listeners, payload.id)
       listener[0](payload.actions || [])
       removeListener(payload.id)
+    } else if (type === 'everisigner/global/receive.accounts') {
+      const listener = get(listeners, payload.id)
+      const accounts = get(payload, 'payload.accounts', [])
+      listener[0](accounts)
+      removeListener(payload.id)
     }
   },
   false
@@ -82,7 +87,11 @@ const localPostMessage = (type, data = {}) => {
 // pass min extension version // guard in extension
 window.everisigner = {
   getVersion() {
-    throw new Error('Not supprted yet.')
+    throw new Error('Not supported yet.')
+  },
+
+  getAccounts() {
+    return localPostMessage('everisigner/global/get.accounts')
   },
 
   getSupportedChains() {

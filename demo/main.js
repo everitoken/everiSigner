@@ -2,6 +2,7 @@
 /* eslint-disable semi */
 const btn = document.getElementById('sign')
 const getSupportedActionsBtn = document.getElementById('supportedactions')
+const getAccountsButton = document.getElementById('getaccounts')
 const payload = document.getElementById('payload')
 
 const privateKey = '5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D'
@@ -61,6 +62,10 @@ const handlePush = ev => {
 }
 
 btn.addEventListener('click', handlePush)
+
 getSupportedActionsBtn.addEventListener('click', () => {
   everisigner.getSupportedActions().then(actions => console.log(actions))
+})
+getAccountsButton.addEventListener('click', () => {
+  everisigner.getAccounts().then(accounts => console.log(accounts))
 })

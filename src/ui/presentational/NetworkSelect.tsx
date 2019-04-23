@@ -92,7 +92,7 @@ export default class NetworkSelect extends React.PureComponent<
         <Chip
           icon={<CloudIcon />}
           label={
-            <p style={{ fontFamily: 'Roboto Mono' }}>
+            <p style={{ fontFamily: 'Roboto Mono', fontSize: '16px' }}>
               <b>Network: </b>
               {this.state.selected.location.toUpperCase()}
             </p>

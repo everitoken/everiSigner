@@ -15,6 +15,14 @@ export type SignedDataType = {
   }
 }
 
+export type AccountDataType = {
+  id: string
+  payload: {
+    original: string
+    account: { name: string; publicKey: string }
+  }
+}
+
 // TODO: check native types
 export interface WithRouterType {
   history: any
@@ -26,6 +34,12 @@ export interface WithRouterType {
 export type PopupPasswordSetMsgType = {
   type: 'popup/passwordset'
   payload: string
+  meta?: MessageMetaType
+}
+
+export type PopupReceiveAccountsMsgType = {
+  type: 'popup/receive.accounts'
+  payload: AccountDataType
   meta?: MessageMetaType
 }
 
@@ -54,6 +68,7 @@ export type PopupMsgTypes =
   | PopupInitializedMsgType
   | PopupStartedMsgType
   | PopupSignedMsgType
+  | PopupReceiveAccountsMsgType
 
 /* Background message types */
 export type BackgroundPasswordSavedMsgType = {
@@ -69,6 +84,11 @@ export type BackgroundPasswordMsgType = {
 
 export type BackgroundSignMsgType = {
   type: 'background/sign'
+  payload: ToBeSignDataType
+  meta?: MessageMetaType
+}
+export type BackgroundGetAccountsMsgType = {
+  type: 'background/get.accounts'
   payload: ToBeSignDataType
   meta?: MessageMetaType
 }
@@ -97,6 +117,7 @@ export type BackgroundMsgTypes =
   | BackgroundSignedMsgType
   | BackgroundSyncedMsgType
   | BackgroundErrorMsgType
+  | BackgroundGetAccountsMsgType
 
 /* Client message types */
 
@@ -112,8 +133,19 @@ export type ClientSupportedActionsMsgType = {
   meta?: MessageMetaType
 }
 
+export type ClientGetAccountsMsgType = {
+  type: 'everisigner/local/get.accounts'
+  payload: ToBeSignDataType
+  meta?: MessageMetaType
+}
+
 export type ClientGlobalSignMsgType = {
   type: 'everisigner/global/sign'
+  payload: ToBeSignDataType
+}
+
+export type ClientGlobalAccountsMsgType = {
+  type: 'everisigner/global/receive.accounts'
   payload: ToBeSignDataType
 }
 
@@ -129,10 +161,12 @@ export type ClientGlobalSupportedActionsMsgType = {
 
 export type ClientLocalMsgTypes =
   | ClientSignMsgType
+  | ClientGetAccountsMsgType
   | ClientSupportedActionsMsgType
 
 export type ClientGlobalMsgTypes =
   | ClientGlobalSignMsgType
+  | ClientGlobalAccountsMsgType
   | ClientGlobalSignedMsgType
   | ClientGlobalSupportedActionsMsgType
 

@@ -7,12 +7,13 @@ import {
   PopupInitializedMsgType,
   ClientLocalMsgTypes,
   PopupSignedMsgType,
+  PopupReceiveAccountsMsgType,
 } from '../types'
 import { isPopMessage, isClientMessage } from '../util/background'
 import { get } from 'lodash'
 import { WINDOW_WIDTH, WINDOW_HEIGHT } from '../style'
 
-const supprtedActions: string[] = ['transferft']
+const supportedActions: string[] = ['transferft']
 let password: string | null = null
 let timerHandler: number | null = null
 const TIMEOUT = 1000 * 60 * 15
@@ -99,12 +100,23 @@ const signedHandler = (message: PopupSignedMsgType, _: PostMessageType) => {
   }
 }
 
+const receiveAccountHandler = (message: PopupReceiveAccountsMsgType) => {
+  const tabId = get(message, 'payload.meta.tabId', null)
+
+  if (tabId) {
+    chrome.tabs.sendMessage(tabId, {
+      type: 'background/receive.accounts',
+      payload: message.payload,
+    })
+  }
+}
+
 const handleClientMessage = (message: ClientLocalMsgTypes) => {
   switch (message.type) {
     case 'everisigner/local/sign':
       chrome.windows.create(
         {
-          width: WINDOW_WIDTH, // TODO center window
+          width: WINDOW_WIDTH,
           height: WINDOW_HEIGHT + 40,
           url: chrome.extension.getURL('extension/prompt.html'),
           type: 'popup',
@@ -125,13 +137,37 @@ const handleClientMessage = (message: ClientLocalMsgTypes) => {
         }
       )
       break
+    case 'everisigner/local/get.accounts':
+      chrome.windows.create(
+        {
+          width: WINDOW_WIDTH,
+          height: WINDOW_HEIGHT + 40,
+          url: chrome.extension.getURL('extension/account_select.html'),
+          type: 'popup',
+          focused: true,
+        },
+        () => {
+          chrome.runtime.onConnect.addListener(port => {
+            port.onMessage.addListener((msg: PopupMsgTypes) => {
+              if (msg.type === 'popup/started') {
+                port.postMessage({
+                  type: 'background/get.accounts',
+                  payload: message.payload,
+                  meta: message.meta,
+                })
+              }
+            })
+          })
+        }
+      )
+      break
     case 'everisigner/local/get.supportedactions':
       if (message.meta && message.meta.tabId) {
         chrome.tabs.sendMessage(message.meta.tabId, {
           type: 'background/get.supportedactions',
           payload: {
             ...message.payload,
-            actions: supprtedActions,
+            actions: supportedActions,
           },
         })
       }
@@ -157,6 +193,9 @@ const handlePopupMessage = (
       break
     case 'popup/signed':
       signedHandler(message, postMessage)
+      break
+    case 'popup/receive.accounts':
+      receiveAccountHandler(message)
       break
     default:
       postMessage({

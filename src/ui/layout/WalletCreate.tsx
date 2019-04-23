@@ -11,7 +11,7 @@ import Container from '../presentational/FlexContainer'
 import * as PasswordService from '../../service/PasswordService'
 import * as uiActions from '../action'
 import { connect } from 'react-redux'
-import AuthProtectedView from './AuthProtectedView'
+import AuthProtectedView from './WithAuthentication'
 import InvalidRoute from './InvalidRoute'
 
 type PropTypes = {

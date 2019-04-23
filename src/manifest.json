@@ -19,7 +19,7 @@
   ],
   "web_accessible_resources": [
     "./extension/inject.js",
-    "./extension/prompt.js",
+    "./extension/account_select.html",
     "./extension/prompt.html"
   ],
   "background": {

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import AuthProtectedView from './AuthProtectedView'
+import WithAuthentication from './WithAuthentication'
 import InvalidRoute from './InvalidRoute'
 import SwipeableViews from 'react-swipeable-views'
 import AppBar from '@material-ui/core/AppBar'
@@ -82,7 +82,7 @@ class AccountCreateBar extends React.PureComponent<{}, { value: number }> {
 }
 
 export default () => (
-  <AuthProtectedView>
+  <WithAuthentication>
     {({ status }) => {
       if (status === 'password') {
         return <AccountCreateBar />
@@ -92,5 +92,5 @@ export default () => (
         <InvalidRoute message="everiSigner needs to be unlock in order to create an Account." />
       )
     }}
-  </AuthProtectedView>
+  </WithAuthentication>
 )

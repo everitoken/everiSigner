@@ -44,6 +44,7 @@ export default class AccountListItem extends React.PureComponent<
           justifyContent: 'center',
           alignItems: 'center',
           fontFamily: 'Roboto Mono',
+          fontSize: '16px',
         }}
       >
         <div>

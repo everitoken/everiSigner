@@ -17,6 +17,11 @@ window.addEventListener(
         type: 'everisigner/local/get.supportedactions',
         payload,
       })
+    } else if (type === 'everisigner/global/get.accounts') {
+      postLocalMessage({
+        type: 'everisigner/local/get.accounts',
+        payload,
+      })
     }
   },
   false
@@ -36,6 +41,11 @@ chrome.runtime.onMessage.addListener(message => {
   } else if (message.type === 'background/get.supportedactions') {
     postGlobalMessage({
       type: 'everisigner/global/receive.supportedactions',
+      payload: message.payload,
+    })
+  } else if (message.type === 'background/receive.accounts') {
+    postGlobalMessage({
+      type: 'everisigner/global/receive.accounts',
       payload: message.payload,
     })
   }

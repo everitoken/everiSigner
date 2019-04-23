@@ -2,14 +2,14 @@ import { get } from 'lodash'
 import { END, eventChannel } from 'redux-saga'
 import { call, fork, put, select, take } from 'redux-saga/effects'
 import * as PasswordService from '../../service/PasswordService'
-import {
-  BackgroundMsgTypes,
-  BackgroundPasswordMsgType,
-  BackgroundSignMsgType,
-} from '../../types'
+import { BackgroundMsgTypes, BackgroundPasswordMsgType } from '../../types'
 import * as uiActions from '../../ui/action'
 import * as storeActions from '../action'
-import { getPassword, getPasswordHash } from '../getter'
+import {
+  getPassword,
+  getPasswordHash,
+  getAuthenticateAccountRequest,
+} from '../getter'
 import { AccountStateType } from '../reducer/accounts'
 import storeProvider from '../provider'
 import ChainApi from '../../chain'
@@ -60,7 +60,6 @@ function* backgroundMessageWatcher() {
     const action: { payload: BackgroundMsgTypes } = yield take(
       (a: any) => a.type === uiActions.RECEIVE_BACKGROUND_MESSAGE
     )
-    log(JSON.stringify(action), 'message')
 
     const { payload } = action
 
@@ -70,9 +69,39 @@ function* backgroundMessageWatcher() {
       )
     }
 
+    if (payload.type === 'background/get.accounts') {
+      yield put(storeActions.landPlane('get/accounts', payload))
+    }
+
     if (payload.type === 'background/synced') {
       yield put(storeActions.landPlane('uiready', true))
     }
+  }
+}
+
+function* authorizeAccountAccessHandler() {
+  while (true) {
+    const action: ReturnType<
+      typeof uiActions.authorizeAccountAccess
+    > = yield take(uiActions.AUTHORIZE_ACCOUNT_ACCESS)
+
+    const { request } = yield select(getAuthenticateAccountRequest)
+    const { account } = action.payload
+
+    const signedPayload = {
+      id: request.payload.id,
+      payload: {
+        original: request.payload.data,
+        accounts: [{ name: account.name, publicKey: account.publicKey }],
+      },
+      meta: request.meta,
+    }
+
+    backgroundPort &&
+      backgroundPort.postMessage({
+        type: 'popup/receive.accounts',
+        payload: signedPayload,
+      })
   }
 }
 
@@ -315,6 +344,7 @@ function* rootSaga() {
     yield fork(createAccountHandler)
     yield fork(setPasswordHandler)
     yield fork(signHandler)
+    yield fork(authorizeAccountAccessHandler)
     yield fork(setupChainProviders) // NOTE expose `chain` global to saga/index
   } catch (e) {
     // TODO consider restart saga

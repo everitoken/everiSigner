@@ -2,6 +2,7 @@ import { AppState } from './reducer'
 import { StartScreenNameType, ValidAuthenticatedStatusTypes } from '../types'
 import { get } from 'lodash'
 import { decryptAccount } from '../service/PasswordService'
+import { AccountStateType } from './reducer/accounts'
 
 export const getDefaultAccount = (state: AppState) =>
   state.accounts.find(account => account.type === 'default')
@@ -22,6 +23,13 @@ export const getPassword = (state: AppState): string | false =>
 
 export const getUiReadyStatus = (state: AppState): boolean =>
   get(state, 'airport.uiready', false)
+
+export const getAuthenticateAccountRequest = (
+  state: AppState
+): { request: {} | null; accounts: AccountStateType[] } => ({
+  request: get(state, 'airport.get/accounts', null),
+  accounts: state.accounts,
+})
 
 export const getAuthenticatedStatus = (
   state: AppState
