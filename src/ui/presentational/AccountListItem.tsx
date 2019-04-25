@@ -39,11 +39,11 @@ export default class AccountListItem extends React.PureComponent<
 
     return (
       <div
+        className="everitoken-mono"
         style={{
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          fontFamily: 'Roboto Mono',
           fontSize: '16px',
         }}
       >

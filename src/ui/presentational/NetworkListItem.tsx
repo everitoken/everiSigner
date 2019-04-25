@@ -21,11 +21,11 @@ export default class NetworkListItem extends React.PureComponent<PropTypes> {
     const { network, simple } = this.props
     return (
       <div
+        className="everitoken-mono"
         style={{
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          fontFamily: 'Roboto Mono',
         }}
       >
         <div style={{ paddingRight: '10px' }}>
