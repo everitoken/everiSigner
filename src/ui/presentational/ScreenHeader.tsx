@@ -10,7 +10,10 @@ export default class ScreenHeader extends React.PureComponent<PropTypes> {
       <p
         style={{
           textAlign: 'center',
+          width: '100%',
           fontSize: '20px',
+          fontWeight: 'bold',
+          fontFamily: 'Open Sans',
           padding: '20px 0',
           margin: 0,
           backgroundColor: '#ececec',

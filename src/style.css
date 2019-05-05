@@ -1,5 +1,5 @@
 @font-face {
-  font-family: 'OpenSans';
+  font-family: 'Open Sans';
   src: url('./asset/OpenSans-Regular.ttf') format('truetype');
 }
 
@@ -9,7 +9,7 @@
 }
 
 body {
-  font-family: 'OpenSans';
+  font-family: 'Open Sans';
 }
 
 .everitoken-mono {
