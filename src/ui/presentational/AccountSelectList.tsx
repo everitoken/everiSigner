@@ -1,36 +1,79 @@
 import * as React from 'react'
-import { List, ListItem, Radio } from '@material-ui/core'
+import {
+  List,
+  ListItem,
+  Radio,
+  Grid,
+  withStyles,
+  StyledComponentProps,
+  IconButton,
+} from '@material-ui/core'
 import AccountListItem from './AccountListItem'
 import { AccountStateType } from '../../store/reducer/accounts'
+import MoreIcon from '@material-ui/icons/AccountBalanceWallet'
 
 type PropTypes = {
   accounts: AccountStateType[]
   selected: AccountStateType
   onSelect: (account: AccountStateType) => any
+  onMoreClicked: (account: AccountStateType) => any
 }
 
-export default class AccountSelectList extends React.PureComponent<PropTypes> {
+const styles = {
+  root: {
+    padding: '0 8px 0 0',
+  },
+  margin: {
+    margin: 8,
+  },
+}
+
+class AccountSelectList extends React.PureComponent<
+  PropTypes & StyledComponentProps
+> {
   render() {
+    const { classes } = this.props
     return (
       <List>
         {this.props.accounts.map(account => (
-          <ListItem
+          <Grid
             key={account.id}
-            role={undefined}
-            dense
-            button
-            onClick={() => this.props.onSelect(account)}
+            container
+            justify="space-between"
+            alignItems="center"
+            spacing={0}
           >
-            <Radio
-              checked={account.id === this.props.selected.id}
-              tabIndex={-1}
-              value={account.name}
-              name="select-account"
-            />
-            <AccountListItem account={account} truncateLen={12} />
-          </ListItem>
+            <Grid item xs={10}>
+              <ListItem
+                role={undefined}
+                dense
+                disableGutters
+                button
+                onClick={() => this.props.onSelect(account)}
+              >
+                <Radio
+                  checked={account.id === this.props.selected.id}
+                  className={classes && classes.root}
+                  tabIndex={-1}
+                  value={account.name}
+                  name="select-account"
+                />
+                <AccountListItem account={account} truncateLen={12} />
+              </ListItem>
+            </Grid>
+            <Grid item xs={2}>
+              <IconButton
+                aria-label="More"
+                onClick={() => this.props.onMoreClicked(account)}
+                className={classes && classes.margin}
+              >
+                <MoreIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
         ))}
       </List>
     )
   }
 }
+export default withStyles(styles)(AccountSelectList)

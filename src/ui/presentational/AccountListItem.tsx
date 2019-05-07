@@ -18,7 +18,7 @@ type PropTypes = {
 type StateTypes = {}
 
 const AccountNameContainer = styled.span`
-  padding-left: 5px;
+  /* padding-left: 5px; */
 `
 
 const CustomBadge = withStyles({
@@ -42,9 +42,10 @@ export default class AccountListItem extends React.PureComponent<
         className="everitoken-mono"
         style={{
           display: 'flex',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
           alignItems: 'center',
-          fontSize: '16px',
+          fontSize: '13px',
+          overflow: 'hidden',
         }}
       >
         <div>

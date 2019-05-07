@@ -11,6 +11,7 @@ import ScreenHeader from '../presentational/ScreenHeader'
 import ConnectedEntities from '../presentational/ConnectedEntities'
 import CircularEntity from '../presentational/CircularEntity'
 import BottomButtonGroup from '../presentational/BottomButtonGroup'
+import AccountSelectDialog from '../presentational/AccountSelect'
 
 type PropTypes = {
   request: {} | null
@@ -20,12 +21,14 @@ type PropTypes = {
 
 type StateTypes = {
   selectedAccount: AccountStateType | undefined
+  data: string[]
 }
 class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
   state = {
     selectedAccount: this.props.accounts.find(
       account => account.type === 'default'
     ),
+    data: [],
   }
   handleSelect = (selectedAccount: AccountStateType) => {
     this.setState({ selectedAccount })
@@ -43,6 +46,12 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
   render() {
     const rawData = JSON.parse(this.props.request.payload.data)
     const { selectedAccount } = this.state
+    const { accounts } = this.props
+
+    if (!selectedAccount) {
+      alert('No default account found')
+      return
+    }
 
     const left = (
       <CircularEntity title={rawData.title} subtitle={rawData.site} />
@@ -55,7 +64,28 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
         title={accountName}
         subtitle={publicKey}
         renderAction={() => (
-          <Link className="circular-entity-link"> (change?)</Link>
+          <AccountSelectDialog
+            selected={selectedAccount}
+            onSelect={() => null}
+            accounts={accounts}
+            onAccountMoreClicked={() => this.setState({ data: ['fei', 'liu'] })}
+            detailComponent={
+              this.state.data.length ? (
+                <ul>
+                  {this.state.data.map(k => (
+                    <li>{k}</li>
+                  ))}
+                </ul>
+              ) : null
+            }
+          >
+            {({ handleOpen }) => (
+              <Link className="circular-entity-link" onClick={handleOpen}>
+                {' '}
+                (change?)
+              </Link>
+            )}
+          </AccountSelectDialog>
         )}
       />
     )

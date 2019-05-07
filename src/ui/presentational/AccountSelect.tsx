@@ -18,6 +18,8 @@ type PropTypes = {
   accounts: AccountStateType[]
   children: ({ handleOpen }: { handleOpen: () => void }) => React.ReactNode
   onSelect: any // TODO
+  onAccountMoreClicked: (account: AccountStateType) => void
+  detailComponent: React.ReactNode
 }
 
 type StateTypes = {
@@ -31,7 +33,7 @@ export default class AccountSelect extends React.PureComponent<
 > {
   state = {
     selected: this.props.selected,
-    open: false,
+    open: true,
   }
   handleOpen = () => {
     this.setState({ open: true })
@@ -52,14 +54,21 @@ export default class AccountSelect extends React.PureComponent<
     }
 
     return (
-      <Dialog open={this.state.open} onClose={this.handleClose}>
+      <Dialog
+        maxWidth="xs"
+        fullWidth
+        open={this.state.open}
+        onClose={this.handleClose}
+      >
         <DialogTitle>Select account</DialogTitle>
         <DialogContent>
           <AccountSelectList
             accounts={this.props.accounts}
             selected={this.state.selected}
             onSelect={this.handleSelect}
+            onMoreClicked={this.props.onAccountMoreClicked}
           />
+          {this.props.detailComponent}
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} color="primary">
