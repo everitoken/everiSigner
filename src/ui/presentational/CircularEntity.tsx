@@ -42,13 +42,15 @@ class CircularEntity extends React.PureComponent<
             {title.substring(0, 1).toUpperCase()}
           </Avatar>
         )}
-        <span style={{ fontSize: 13 }}>
+        <span style={{ fontSize: 12 }}>
           <MonoText>
             {title.length > 12 ? `${title.substring(0, 12)}...` : title}
           </MonoText>
         </span>
         <Typography variant="caption">
-          {subtitle.length > 33 ? `${subtitle.substring(0, 33)}...` : subtitle}
+          {subtitle.length > 33
+            ? `${subtitle.substring(0, 8)}...${subtitle.slice(-8)}`
+            : subtitle}
         </Typography>
       </Grid>
     )

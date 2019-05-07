@@ -68,6 +68,7 @@ const localPostMessage = (type, data = {}) => {
         data: JSON.stringify({
           ...data,
           site: location.origin,
+          title: window.document.title,
         }),
       },
     },

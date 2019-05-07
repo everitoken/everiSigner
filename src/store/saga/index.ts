@@ -92,7 +92,10 @@ function* authorizeAccountAccessHandler() {
       id: request.payload.id,
       payload: {
         original: request.payload.data,
-        accounts: [{ name: account.name, publicKey: account.publicKey }],
+        accounts:
+          account == null
+            ? []
+            : [{ name: account.name, publicKey: account.publicKey }],
       },
       meta: request.meta,
     }

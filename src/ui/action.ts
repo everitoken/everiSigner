@@ -36,7 +36,7 @@ export const receiveBackgroundMessage = (msg: BackgroundMsgTypes) => ({
 })
 
 export const authorizeAccountAccess = (
-  account: AccountStateType,
+  account: AccountStateType | null,
   raw: any
 ) => ({
   type: AUTHORIZE_ACCOUNT_ACCESS,

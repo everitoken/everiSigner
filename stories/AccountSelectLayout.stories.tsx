@@ -1,17 +1,14 @@
 import * as React from 'react'
 import Container from '../src/ui/presentational/Container'
-import ScreenTitle from '../src/ui/presentational/ScreenTitle'
 import FlexContainer from '../src/ui/presentational/FlexContainer'
 import * as fixture from '../src/fixture'
-import Button from '../src/ui/presentational/InlineButton'
 
 import { storiesOf } from '@storybook/react'
-import { FormHelperText, Grid, Divider, Typography } from '@material-ui/core'
-import AccountSelectList from '../src/ui/presentational/AccountSelectList'
-import SiteLocation from '../src/ui/presentational/SiteLocation'
+import BottomButtonGroup from '../src/ui/presentational/BottomButtonGroup'
 import CircularEntity from '../src/ui/presentational/CircularEntity'
 import ConnectedEntities from '../src/ui/presentational/ConnectedEntities'
 import ScreenHeader from '../src/ui/presentational/ScreenHeader'
+import { Grid, Typography } from '@material-ui/core'
 
 const account = fixture.accounts.validDefaultDecrypted
 const account1 = fixture.accounts.validDefaultEncrypted
@@ -32,7 +29,14 @@ storiesOf('Account request', module).add('layout', () => {
   return (
     <Container>
       <FlexContainer alignItems="center">
-        <div style={{ margin: '0 0 3rem 0', width: '100%' }}>
+        <div
+          style={{
+            display: 'flex',
+            flex: 1,
+            alignSelf: 'stretch',
+            margin: '0 0 3rem 0',
+          }}
+        >
           <ScreenHeader title="Connect Request" />
         </div>
 
@@ -58,31 +62,10 @@ storiesOf('Account request', module).add('layout', () => {
           </Grid>
         </Grid>
 
-        <Grid container spacing={16}>
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
-          <Grid item xs={6}>
-            <Button
-              variant="outlined"
-              color="secondary"
-              size="large"
-              onClick={this.handleClick}
-            >
-              Cancel
-            </Button>
-          </Grid>
-          <Grid item xs={6}>
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              onClick={this.handleClick}
-            >
-              Authorize
-            </Button>
-          </Grid>
-        </Grid>
+        <BottomButtonGroup
+          onPrimaryButtonClick={() => alert('primary')}
+          onSecondaryButtonClick={() => alert('secondary')}
+        />
       </FlexContainer>
     </Container>
   )

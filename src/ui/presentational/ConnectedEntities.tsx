@@ -53,7 +53,7 @@ class ConnectedEntities extends React.PureComponent<
           </div>
           <Line />
         </LineContainer>
-        <Grid className={classes && classes.item} item xs={3}>
+        <Grid className={classes && classes.item} item xs={4}>
           {right}
         </Grid>
       </Grid>
