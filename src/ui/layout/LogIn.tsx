@@ -1,6 +1,7 @@
 import * as React from 'react'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
+import FlexContainer from '../presentational/FlexContainer'
 import { connect } from 'react-redux'
 import {
   FormControl,
@@ -8,14 +9,16 @@ import {
   Input,
   InputAdornment,
   IconButton,
-  Button,
   Typography,
 } from '@material-ui/core'
+import Button from '../presentational/InlineButton'
 
 import * as uiActions from '../action'
 import { mapInputPassword } from '../../store/getter'
 import { verifyPassword } from '../../service/PasswordService'
 import Logo from '../presentational/Logo'
+import Container from '../presentational/Container'
+import ScreenHeader from '../presentational/ScreenHeader'
 
 type OwnProps = {
   message: string
@@ -56,40 +59,48 @@ class Login extends React.PureComponent<OwnProps & PropTypes, StateTypes> {
   }
   render() {
     return (
-      <React.Fragment>
-        <Logo />
-        <Typography variant="h6" align="center" color="textPrimary">
-          {this.props.message}
-        </Typography>
-        <FormControl>
-          <InputLabel htmlFor="password">Type password to unlock...</InputLabel>
-          <Input
-            error={this.state.invalid}
-            id="password"
-            type={this.state.showPassword ? 'text' : 'password'}
-            value={this.state.password || ''}
-            onChange={this.handlePasswordChange}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="Toggle password visibility"
-                  onClick={this.handleClickShowPassword}
-                >
-                  {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            }
-          />
-        </FormControl>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          onClick={this.onUnlock}
-        >
-          UNLOCK
-        </Button>
-      </React.Fragment>
+      <Container>
+        <FlexContainer withPadding alignItems="center">
+          <FlexContainer>
+            <Logo />
+            <ScreenHeader title="Connect Request" withBackgroundColor={false} />
+            <FormControl fullWidth>
+              <InputLabel htmlFor="password">
+                Type password to unlock...
+              </InputLabel>
+              <Input
+                error={this.state.invalid}
+                id="password"
+                type={this.state.showPassword ? 'text' : 'password'}
+                value={this.state.password || ''}
+                onChange={this.handlePasswordChange}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="Toggle password visibility"
+                      onClick={this.handleClickShowPassword}
+                    >
+                      {this.state.showPassword ? (
+                        <Visibility />
+                      ) : (
+                        <VisibilityOff />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+          </FlexContainer>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={this.onUnlock}
+          >
+            UNLOCK
+          </Button>
+        </FlexContainer>
+      </Container>
     )
   }
 }

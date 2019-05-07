@@ -5,11 +5,18 @@ import Button from './InlineButton'
 type PropTypes = {
   onSecondaryButtonClick: () => void
   onPrimaryButtonClick: () => void
+  primaryButtonText: string
+  secondaryButtonText: string
 }
 
 class BottomButtonGroup extends React.PureComponent<PropTypes> {
   render() {
-    const { onSecondaryButtonClick, onPrimaryButtonClick } = this.props
+    const {
+      onSecondaryButtonClick,
+      onPrimaryButtonClick,
+      primaryButtonText,
+      secondaryButtonText,
+    } = this.props
     return (
       <Grid container spacing={16}>
         <Grid item xs={12}>
@@ -23,7 +30,7 @@ class BottomButtonGroup extends React.PureComponent<PropTypes> {
               size="large"
               onClick={onSecondaryButtonClick}
             >
-              Cancel
+              {secondaryButtonText}
             </Button>
           </div>
         </Grid>
@@ -35,7 +42,7 @@ class BottomButtonGroup extends React.PureComponent<PropTypes> {
               size="large"
               onClick={onPrimaryButtonClick}
             >
-              Authorize
+              {primaryButtonText}
             </Button>
           </div>
         </Grid>

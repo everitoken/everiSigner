@@ -12,7 +12,9 @@ const styles = {
   root: {
     color: 'green',
   },
-  item: {},
+  item: {
+    whiteSpace: 'nowrap',
+  },
 }
 
 const LineContainer = styled.div`
@@ -22,7 +24,7 @@ const LineContainer = styled.div`
   margin-right: -3rem;
   justify-content: center;
   align-items: center;
-  margin-top: -3rem;
+  margin-top: 1rem;
 `
 const Line = styled.div`
   height: 2;
@@ -37,8 +39,8 @@ class ConnectedEntities extends React.PureComponent<
   render() {
     const { left, right, classes } = this.props
     return (
-      <Grid container spacing={0} direction="row" alignItems="center">
-        <Grid className={classes && classes.item} item xs={4}>
+      <Grid container spacing={0} direction="row" alignItems="flex-start">
+        <Grid className={classes && classes.item} item xs={5}>
           {left}
         </Grid>
 
@@ -53,7 +55,7 @@ class ConnectedEntities extends React.PureComponent<
           </div>
           <Line />
         </LineContainer>
-        <Grid className={classes && classes.item} item xs={4}>
+        <Grid className={classes && classes.item} item xs={5}>
           {right}
         </Grid>
       </Grid>

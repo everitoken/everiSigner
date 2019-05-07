@@ -15,3 +15,8 @@ body {
 .everitoken-mono {
   font-family: 'Roboto Mono';
 }
+
+a.circular-entity-link {
+  font-size: 12px;
+  cursor: pointer;
+}

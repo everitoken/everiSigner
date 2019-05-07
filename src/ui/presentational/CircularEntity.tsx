@@ -12,6 +12,7 @@ type PropTypes = {
   title: string
   renderAvatar?: (props: { title: string; subtitle: string }) => React.ReactNode
   subtitle: string
+  renderAction?: (props: { title: string; subtitle: string }) => React.ReactNode
 }
 
 const styles = {
@@ -26,7 +27,7 @@ class CircularEntity extends React.PureComponent<
   PropTypes & StyledComponentProps
 > {
   render() {
-    const { renderAvatar, title, subtitle, classes } = this.props
+    const { renderAvatar, title, subtitle, classes, renderAction } = this.props
     return (
       <Grid
         container
@@ -46,6 +47,7 @@ class CircularEntity extends React.PureComponent<
           <MonoText>
             {title.length > 12 ? `${title.substring(0, 12)}...` : title}
           </MonoText>
+          {renderAction ? renderAction({ title, subtitle }) : null}
         </span>
         <Typography variant="caption">
           {subtitle.length > 33

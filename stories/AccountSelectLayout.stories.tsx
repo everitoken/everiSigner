@@ -65,6 +65,8 @@ storiesOf('Account request', module).add('layout', () => {
         <BottomButtonGroup
           onPrimaryButtonClick={() => alert('primary')}
           onSecondaryButtonClick={() => alert('secondary')}
+          primaryButtonText="authorize"
+          secondaryButtonText="cancel"
         />
       </FlexContainer>
     </Container>

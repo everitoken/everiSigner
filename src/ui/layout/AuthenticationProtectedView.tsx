@@ -40,9 +40,7 @@ export default ({ children }: { children: React.ReactNode }) => (
 
       if (status === 'hash') {
         return (
-          <FlexContainer withPadding>
             <LogIn message="Unlock to continue" />
-          </FlexContainer>
         )
       }
 

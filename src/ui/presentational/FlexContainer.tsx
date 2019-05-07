@@ -6,6 +6,7 @@ export type PropTypes = {
   withPadding?: boolean
   justifyContent: string
   alignItems: string
+  alignSelf: string
 }
 
 const FlexContainer = styled.div`
@@ -15,6 +16,7 @@ const FlexContainer = styled.div`
   flex: 1;
   justify-content: ${(props: PropTypes) => props.justifyContent};
   align-items: ${(props: PropTypes) => props.alignItems};
+  align-self: ${(props: PropTypes) => props.alignSelf};
   padding: ${(props: PropTypes) =>
     props.withPadding ? `${style.padding.standard}px` : '0px'};
 `
@@ -24,6 +26,7 @@ class Comp extends React.PureComponent<PropTypes> {
     withPadding: false,
     justifyContent: 'space-evenly',
     alignItems: 'flex-start',
+    alignSelf: 'stretch',
   }
   render() {
     return <FlexContainer {...this.props}>{this.props.children}</FlexContainer>

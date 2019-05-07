@@ -3,9 +3,24 @@ import CircularEntity from '../src/ui/presentational/CircularEntity'
 import ConnectedEntities from '../src/ui/presentational/ConnectedEntities'
 
 import { storiesOf } from '@storybook/react'
+import { Button, Fab, Link } from '@material-ui/core'
+import EditIcon from '@material-ui/icons/Edit'
 
 storiesOf('CircularEntity', module).add('default', () => (
   <CircularEntity title="demo page" subtitle="https://google.de" />
+))
+
+storiesOf('CircularEntity', module).add('withAction', () => (
+  <CircularEntity
+    title="demo page"
+    subtitle="https://google.de"
+    renderAction={({ title, subtitle }) => (
+      <Button variant="outlined" color="secondary" size="small">{`${title.slice(
+        0,
+        1
+      )} - ${subtitle.slice(0, 1)}`}</Button>
+    )}
+  />
 ))
 
 storiesOf('CircularEntity', module).add('long text', () => (
@@ -32,7 +47,16 @@ storiesOf('CircularEntity', module).add('connected entities', () => {
     <CircularEntity title="demo page with long text" subtitle="subtitle" />
   )
   const right = (
-    <CircularEntity title="demo page" subtitle="https://google.de" />
+    <CircularEntity
+      title="demo page"
+      subtitle="https://google.de"
+      renderAction={({ title, subtitle }) => (
+        <Link className="circular-entity-link" variant="body2">
+          {' '}
+          (change?)
+        </Link>
+      )}
+    />
   )
   return <ConnectedEntities left={left} right={right} />
 })

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import FlexContainer from '../presentational/FlexContainer'
-import { Typography, Grid } from '@material-ui/core'
+import { Typography, Grid, Link } from '@material-ui/core'
 import { AccountStateType } from '../../store/reducer/accounts'
 import * as uiActions from '../action'
 import AuthenticationProtectedView from './AuthenticationProtectedView'
@@ -50,12 +50,27 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
 
     const accountName = selectedAccount ? selectedAccount.name : '-'
     const publicKey = selectedAccount ? selectedAccount.publicKey : '-'
-    const right = <CircularEntity title={accountName} subtitle={publicKey} />
+    const right = (
+      <CircularEntity
+        title={accountName}
+        subtitle={publicKey}
+        renderAction={() => (
+          <Link className="circular-entity-link"> (change?)</Link>
+        )}
+      />
+    )
 
     return (
       <Container>
         <FlexContainer alignItems="center">
-          <div style={{ margin: '0 0 3rem 0', width: '100%' }}>
+          <div
+            style={{
+              display: 'flex',
+              flex: 1,
+              alignSelf: 'stretch',
+              margin: '0 0 3rem 0',
+            }}
+          >
             <ScreenHeader title="Connect Request" />
           </div>
 
@@ -90,6 +105,8 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
           <BottomButtonGroup
             onPrimaryButtonClick={this.handleAuthorize}
             onSecondaryButtonClick={this.handleCancel}
+            primaryButtonText="Authorize"
+            secondaryButtonText="Cancel"
           />
         </FlexContainer>
       </Container>
