@@ -101,3 +101,5 @@ export const getBalanceByPublicKey = (
     fetched: isArray(balances),
   }
 }
+
+export const getNetworks = (state: AppState) => state.network

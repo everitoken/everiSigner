@@ -39,52 +39,47 @@ const ConnectedMessage = connect(
 class App extends React.PureComponent {
   render() {
     return (
-      <FlexContainer>
-        <Router>
-          <HackRedirectWithRouter />
-          <FlexContainer withPadding>
-            <Route exact path="/" component={Start} />
-            <Route path="/about" component={About} />
-            <Route
-              path="/wallet-mode-decision"
-              component={WalletModeDecision}
-            />
-            <Route path="/account-create" component={AccountCreate} />
-            <Route path="/wallet-create" component={WalletCreate} />
-            <Route path="/wallet-import" component={WalletImport} />
-            <ConnectedMessage />
-          </FlexContainer>
-          <hr />
-          <div>
-            <ul
-              style={{
-                listStyle: 'none',
-                margin: 0,
-                padding: 0,
-                display: 'flex',
-                flexWrap: 'wrap',
-              }}
-            >
-              <li style={{ margin: 5 }}>
-                <Link to="/">Home</Link>
-              </li>
-              <li style={{ margin: 5 }}>
-                <Link to="/about">About</Link>
-              </li>
-              <li style={{ margin: 5 }}>
-                <Link to="/account-create">Account-create</Link>
-              </li>
-              <li style={{ margin: 5 }}>
-                <Link to="/wallet-import">Wallet-import</Link>
-              </li>
-              <li style={{ margin: 5 }}>
-                <Link to="/wallet-create">Wallet-create</Link>
-              </li>
-            </ul>
-          </div>
-          <Footer />
-        </Router>
-      </FlexContainer>
+      <Router>
+        <HackRedirectWithRouter />
+        <React.Fragment>
+          <Route exact path="/" component={Start} />
+          <Route path="/about" component={About} />
+          <Route path="/wallet-mode-decision" component={WalletModeDecision} />
+          <Route path="/account-create" component={AccountCreate} />
+          <Route path="/wallet-create" component={WalletCreate} />
+          <Route path="/wallet-import" component={WalletImport} />
+          <ConnectedMessage />
+        </React.Fragment>
+        <hr />
+        <div>
+          <ul
+            style={{
+              listStyle: 'none',
+              margin: 0,
+              padding: 0,
+              display: 'flex',
+              flexWrap: 'wrap',
+            }}
+          >
+            <li style={{ margin: 5 }}>
+              <Link to="/">Home</Link>
+            </li>
+            <li style={{ margin: 5 }}>
+              <Link to="/about">About</Link>
+            </li>
+            <li style={{ margin: 5 }}>
+              <Link to="/account-create">Account-create</Link>
+            </li>
+            <li style={{ margin: 5 }}>
+              <Link to="/wallet-import">Wallet-import</Link>
+            </li>
+            <li style={{ margin: 5 }}>
+              <Link to="/wallet-create">Wallet-create</Link>
+            </li>
+          </ul>
+        </div>
+        <Footer />
+      </Router>
     )
   }
 }

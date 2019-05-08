@@ -191,4 +191,6 @@ export type NetworkItemType = {
   name: string
   url: string
   location: string
+  isProduction: boolean
+  isCustom: boolean
 }

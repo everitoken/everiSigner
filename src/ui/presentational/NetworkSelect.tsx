@@ -14,7 +14,6 @@ import {
   withStyles,
   StyledComponentProps,
 } from '@material-ui/core'
-import CloudIcon from '@material-ui/icons/Cloud'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import NetworkListItem from './NetworkListItem'
 
@@ -62,7 +61,7 @@ class NetworkSelect extends React.PureComponent<
     }
 
     return (
-      <Dialog open={this.state.open} onClose={this.handleClose}>
+      <Dialog fullWidth open={this.state.open} onClose={this.handleClose}>
         <DialogTitle>Select network</DialogTitle>
         <DialogContent>
           <List>
@@ -71,6 +70,7 @@ class NetworkSelect extends React.PureComponent<
                 key={network.name}
                 role={undefined}
                 dense
+                disableGutters
                 button
                 onClick={() => this.handleSelect(network)}
               >

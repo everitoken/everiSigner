@@ -1,6 +1,11 @@
 import { PURGE } from 'redux-persist/es/constants'
 import { AccountStateType } from './reducer/accounts'
-import { ToBeSignDataType, SignedDataType, MessageMetaType } from '../types'
+import {
+  ToBeSignDataType,
+  SignedDataType,
+  MessageMetaType,
+  NetworkItemType,
+} from '../types'
 
 export const ACCOUNT_CREATE = 'store/ACCOUNT_CREATE'
 export const PASSWORD_SET = 'store/PASSWORD_SET'
@@ -11,6 +16,8 @@ export const SNACKBAR_MESSAGE_SHOW = 'SNACKBAR_MESSAGE_SHOW'
 export const SNACKBAR_MESSAGE_DISMISS = 'SNACKBAR_MESSAGE_DISMISS'
 export const SIGNING_PAYLOAD_RECEIVE = 'SIGNING_PAYLOAD_RECEIVE'
 export const SIGNED_PAYLOAD_RECEIVE = 'SIGNED_PAYLOAD_RECEIVE'
+export const NETWORK_SELECT = 'store/NETWORK_SELECT'
+export const NETWORK_ADD = 'store/NETWORK_ADD'
 
 export interface SignedPayloadReceiveType {
   type: typeof SIGNED_PAYLOAD_RECEIVE
@@ -58,6 +65,16 @@ export interface PlaneLandType {
 export interface PlaneTakeoffType {
   type: typeof PLANE_TAKEOFF
   payload: string
+}
+
+export interface NetworkSelectType {
+  type: typeof NETWORK_SELECT
+  payload: { network: NetworkItemType }
+}
+
+export interface NetworkAddType {
+  type: typeof NETWORK_ADD
+  payload: { network: NetworkItemType }
 }
 
 export const landPlane = (name: string, value: any): PlaneLandType => ({
@@ -114,6 +131,20 @@ export const signedPayloadReceive = (
   payload,
 })
 
+export const networkSelect = (network: NetworkItemType) => ({
+  type: NETWORK_SELECT,
+  payload: {
+    network,
+  },
+})
+
+export const networkAdd = (network: NetworkItemType) => ({
+  type: NETWORK_ADD,
+  payload: {
+    network,
+  },
+})
+
 export type StoreActionTypes =
   | AccountCreateType
   | PasswordSetType
@@ -125,3 +156,5 @@ export type StoreActionTypes =
   | PlaneTakeoffType
   | SigningPayloadReceiveType
   | SignedPayloadReceiveType
+  | NetworkSelectType
+  | NetworkAddType

@@ -13,7 +13,7 @@ type PropTypes = {
 class MainLayout extends React.PureComponent<PropTypes> {
   render() {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         <div
           style={{
             height: 60,
@@ -61,6 +61,7 @@ export const TopActionBar = (props: TopActionBarPropTypes) => {
           width="45"
           alt="logo"
           style={{ marginLeft: 8 }}
+          onClick={props.onLogoClick}
         />
       </Grid>
       <Grid item>{props.renderMiddle()}</Grid>

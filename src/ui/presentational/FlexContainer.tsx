@@ -24,7 +24,7 @@ const FlexContainer = styled.div`
 class Comp extends React.PureComponent<PropTypes> {
   static defaultProps = {
     withPadding: false,
-    justifyContent: 'space-evenly',
+    justifyContent: 'flex-start',
     alignItems: 'flex-start',
     alignSelf: 'stretch',
   }
