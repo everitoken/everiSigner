@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { NetworkItemType } from '../../types'
+import * as style from '../../style'
 import {
   Chip,
   Dialog,
@@ -10,6 +11,8 @@ import {
   List,
   ListItem,
   Radio,
+  withStyles,
+  StyledComponentProps,
 } from '@material-ui/core'
 import CloudIcon from '@material-ui/icons/Cloud'
 import ExpandMore from '@material-ui/icons/ExpandMore'
@@ -26,8 +29,14 @@ type StateTypes = {
   open: boolean
 }
 
-export default class NetworkSelect extends React.PureComponent<
-  PropTypes,
+const styles = {
+  root: {
+    color: style.colors.headerPrimary,
+    borderColor: '#ccc',
+  },
+}
+class NetworkSelect extends React.PureComponent<
+  PropTypes & StyledComponentProps,
   StateTypes
 > {
   state = {
@@ -86,14 +95,18 @@ export default class NetworkSelect extends React.PureComponent<
   }
 
   render() {
+    const { classes } = this.props
     return (
       <React.Fragment>
         <div />
         {this.renderSelectNetwork()}
         <Chip
-          icon={<CloudIcon />}
+          className={classes && classes.root}
           label={
-            <p className="everitoken-mono" style={{ fontSize: '12px' }}>
+            <p
+              className="everitoken-mono"
+              style={{ fontSize: '12px', color: style.colors.headerPrimary }}
+            >
               <b>Network: </b>
               {this.state.selected.location.toUpperCase()}
             </p>
@@ -101,8 +114,10 @@ export default class NetworkSelect extends React.PureComponent<
           deleteIcon={<ExpandMore />}
           onDelete={this.handleOpen}
           variant="outlined"
+          color="primary"
         />
       </React.Fragment>
     )
   }
 }
+export default withStyles(styles)(NetworkSelect)
