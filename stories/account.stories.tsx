@@ -26,7 +26,12 @@ storiesOf('Account', module).add('imported account', () => (
 ))
 
 storiesOf('Account', module).add('select', () => (
-  <AccountSelect selected={account} onSelect={() => null} accounts={accounts}>
+  <AccountSelect
+    selected={account}
+    onSelect={() => null}
+    accounts={accounts}
+    onAccountMoreClicked={() => alert('more')}
+  >
     {({ handleOpen }) => {
       return <Button onClick={handleOpen}>Show Dialog</Button>
     }}

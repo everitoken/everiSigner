@@ -2,6 +2,14 @@ export type ActionNameSupportedTypes = 'transferft'
 export type ValidAuthenticatedStatusTypes = 'password' | 'hash' | 'unknown'
 export type StartScreenNameType = 'GET_STARTED' | 'HOME' | 'LOGIN'
 
+export type BalanceType = {
+  id: number
+  displayName: string
+  name: string
+  logoDataUri: string
+  value: string
+}
+
 export type ToBeSignDataType = {
   id: string
   from: number

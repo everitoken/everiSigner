@@ -17,4 +17,6 @@ export default interface ChainInterface {
     data: string,
     getPrivateKey: (provider: StoreProviderInterface) => Promise<string>
   ): Promise<string>
+  getBalancesByPublicKey(publicKey: string): Promise<Array<string>>
+  getFungibleDetail(id: number): Promise<any>
 }

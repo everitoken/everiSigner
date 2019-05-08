@@ -4,8 +4,8 @@ import StoreProviderInterface from '../store/ProviderInterface'
 
 class ChainApi {
   private chains: ChainInterface[]
-  constructor(storeProvider: StoreProviderInterface) {
-    this.chains = [new Evt(storeProvider)]
+  constructor(storeProvider: StoreProviderInterface, network: {}) {
+    this.chains = [new Evt(storeProvider, network)]
   }
   getSupportedChains = () => this.chains.map(chain => chain.getName())
 

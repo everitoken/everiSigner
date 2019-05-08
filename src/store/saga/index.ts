@@ -1,8 +1,13 @@
 import { get } from 'lodash'
 import { END, eventChannel } from 'redux-saga'
-import { call, fork, put, select, take } from 'redux-saga/effects'
+import { call, fork, put, select, take, all } from 'redux-saga/effects'
 import * as PasswordService from '../../service/PasswordService'
-import { BackgroundMsgTypes, BackgroundPasswordMsgType } from '../../types'
+import { imageDataUriMap } from '../../asset'
+import {
+  BackgroundMsgTypes,
+  BackgroundPasswordMsgType,
+  BalanceType,
+} from '../../types'
 import * as uiActions from '../../ui/action'
 import * as storeActions from '../action'
 import {
@@ -28,8 +33,14 @@ const log = (msg: string, tag: string = 'unspecified') => {
 function setupChainProviders() {
   const provider: StoreProviderInterface | null = storeProvider.get()
 
+  const network = {
+    host: 'testnet1.everitoken.io',
+    port: 443,
+    protocol: 'https',
+  }
+
   if (provider != null) {
-    chain = new ChainApi(provider)
+    chain = new ChainApi(provider, network)
   }
 }
 
@@ -53,6 +64,65 @@ function setupPopupUnloadListener() {
     },
     true
   )
+}
+
+function* fetchBalanceWatcher() {
+  while (true) {
+    const action: ReturnType<typeof uiActions.fetchBalance> = yield take(
+      uiActions.FETCH_BALANCE
+    )
+
+    if (!chain) {
+      break
+    }
+
+    const evtChain: ChainInterface = yield call(getEvtChain, chain)
+    // get all balances by public key
+    const rawBalances: string[] = yield evtChain.getBalancesByPublicKey(
+      action.payload.publicKey
+    )
+
+    // parse balance to get symbol id
+    const rawBalanceArray = rawBalances.map(balance => {
+      const parts = balance.split(' ')
+
+      return {
+        id: Number(parts[1].split('#')[1]),
+        value: parts[0],
+      }
+    })
+
+    // get details of all symbol id
+    const details = yield all(
+      rawBalanceArray.map(function*(balance) {
+        return yield evtChain.getFungibleDetail(balance.id)
+      })
+    )
+
+    console.log(details)
+
+    // organize output
+    const balanceData: BalanceType[] = details.map(
+      (balance: any, i: number) => {
+        const id = rawBalanceArray[i].id
+        const logoMeta = balance.metas.find(
+          (meta: any) => meta.key === 'symbol-icon'
+        )
+        return {
+          id,
+          displayName: balance.name,
+          logoDataUri:
+            imageDataUriMap[String(id)] || logoMeta || imageDataUriMap.default,
+          name: balance.sym_name,
+          value: rawBalanceArray[i].value,
+        }
+      }
+    )
+
+    yield put(
+      storeActions.landPlane(`balance/${action.payload.publicKey}`, balanceData)
+    )
+  }
 }
 
 function* backgroundMessageWatcher() {
@@ -349,6 +419,7 @@ function* rootSaga() {
     yield fork(signHandler)
     yield fork(authorizeAccountAccessHandler)
     yield fork(setupChainProviders) // NOTE expose `chain` global to saga/index
+    yield fork(fetchBalanceWatcher)
   } catch (e) {
     // TODO consider restart saga
     console.log('saga root error: ', e)

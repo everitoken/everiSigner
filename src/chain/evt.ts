@@ -4,9 +4,11 @@ import StoreProviderInterface from '../store/ProviderInterface'
 
 class Evt implements ChainInterface {
   storeProvider: StoreProviderInterface
-  constructor(storeProvider: StoreProviderInterface) {
+  network: {}
+  constructor(storeProvider: StoreProviderInterface, network: {}) {
     // console.log(storeProvider.getAccountByPublicKey)
     this.storeProvider = storeProvider
+    this.network = network
   }
   getName = () => 'everitoken'
   getVersion = () => Evtjs.version
@@ -38,6 +40,22 @@ class Evt implements ChainInterface {
   ) => {
     const privateKey = await getPrivateKey(this.storeProvider)
     return Evtjs.EvtKey.sign(data, privateKey)
+  }
+
+  getBalancesByPublicKey = async (publicKey: string) => {
+    const apiCaller = new Evtjs.default({
+      endpoint: this.network,
+    })
+
+    return apiCaller.getFungibleBalance(publicKey)
+  }
+
+  getFungibleDetail = async (id: number) => {
+    const apiCaller = new Evtjs.default({
+      endpoint: this.network,
+    })
+
+    return apiCaller.getFungibleSymbolDetail(id)
   }
 }
 

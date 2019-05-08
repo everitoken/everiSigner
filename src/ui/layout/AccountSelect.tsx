@@ -17,6 +17,9 @@ type PropTypes = {
   request: {} | null
   accounts: AccountStateType[]
   onAuthorize: typeof uiActions.authorizeAccountAccess
+  onAccountInfoMoreClick: (
+    publicKey: string
+  ) => ReturnType<typeof uiActions.fetchBalance>
 }
 
 type StateTypes = {
@@ -68,7 +71,11 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
             selected={selectedAccount}
             onSelect={() => null}
             accounts={accounts}
-            onAccountMoreClicked={() => this.setState({ data: ['fei', 'liu'] })}
+            onAccountMoreClicked={() =>
+              this.props.onAccountInfoMoreClick(
+                'EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND'
+              )
+            }
             detailComponent={
               this.state.data.length ? (
                 <ul>
@@ -148,6 +155,7 @@ const ConnectedAccountSelect = connect(
   getAuthenticateAccountRequest,
   {
     onAuthorize: uiActions.authorizeAccountAccess,
+    onAccountInfoMoreClick: uiActions.fetchBalance,
   }
 )(AccountSelect)
 
