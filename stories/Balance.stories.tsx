@@ -24,33 +24,18 @@ const balances: BalanceType[] = [
 
 storiesOf('Balance', module).add('loading', () => (
   <Container>
-    <BalanceTable
-      onMount={publicKey => console.log(publicKey)}
-      publicKey={'whatnot'}
-      fetched={false}
-      balances={[]}
-    />
+    <BalanceTable fetched={false} balances={[]} />
   </Container>
 ))
 
 storiesOf('Balance', module).add('empty balance', () => (
   <Container>
-    <BalanceTable
-      onMount={publicKey => console.log(publicKey)}
-      publicKey={'whatnot'}
-      fetched={true}
-      balances={[]}
-    />
+    <BalanceTable fetched={true} balances={[]} />
   </Container>
 ))
 
 storiesOf('Balance', module).add('table', () => (
   <Container>
-    <BalanceTable
-      onMount={publicKey => console.log(publicKey)}
-      publicKey={'whatnot'}
-      fetched={true}
-      balances={balances}
-    />
+    <BalanceTable fetched={true} balances={balances} />
   </Container>
 ))

@@ -12,6 +12,7 @@ import ConnectedEntities from '../presentational/ConnectedEntities'
 import CircularEntity from '../presentational/CircularEntity'
 import BottomButtonGroup from '../presentational/BottomButtonGroup'
 import AccountSelectDialog from '../presentational/AccountSelect'
+import ConnectedBalanceTable from './ConnectedBalanceTable'
 
 type PropTypes = {
   request: {} | null
@@ -25,6 +26,7 @@ type PropTypes = {
 type StateTypes = {
   selectedAccount: AccountStateType | undefined
   data: string[]
+  showBalanceTable: boolean
 }
 class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
   state = {
@@ -32,6 +34,10 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
       account => account.type === 'default'
     ),
     data: [],
+    showBalanceTable: false,
+  }
+  handleAccountMoreClicked = () => {
+    this.setState({ showBalanceTable: !this.state.showBalanceTable })
   }
   handleSelect = (selectedAccount: AccountStateType) => {
     this.setState({ selectedAccount })
@@ -62,6 +68,7 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
 
     const accountName = selectedAccount ? selectedAccount.name : '-'
     const publicKey = selectedAccount ? selectedAccount.publicKey : '-'
+
     const right = (
       <CircularEntity
         title={accountName}
@@ -71,18 +78,10 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
             selected={selectedAccount}
             onSelect={() => null}
             accounts={accounts}
-            onAccountMoreClicked={() =>
-              this.props.onAccountInfoMoreClick(
-                'EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND'
-              )
-            }
+            onAccountMoreClicked={this.handleAccountMoreClicked}
             detailComponent={
-              this.state.data.length ? (
-                <ul>
-                  {this.state.data.map(k => (
-                    <li>{k}</li>
-                  ))}
-                </ul>
+              this.state.showBalanceTable ? (
+                <ConnectedBalanceTable publicKey={selectedAccount.publicKey} />
               ) : null
             }
           >
@@ -155,7 +154,6 @@ const ConnectedAccountSelect = connect(
   getAuthenticateAccountRequest,
   {
     onAuthorize: uiActions.authorizeAccountAccess,
-    onAccountInfoMoreClick: uiActions.fetchBalance,
   }
 )(AccountSelect)
 

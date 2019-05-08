@@ -11,17 +11,17 @@ import FlexContainer from './FlexContainer'
 import ExploreIcon from '@material-ui/icons/Explore'
 import { BalanceType } from '../../types'
 
-type PropTypes = {
-  publicKey: string
-  onMount: any
+export type PropTypes = {
   balances: BalanceType[]
   fetched: boolean
+  showLink?: boolean
 }
 
 export default class BalanceTable extends React.PureComponent<PropTypes> {
-  componentWillMount() {
-    this.props.onMount(this.props.publicKey)
+  static defaultProps = {
+    showLink: false,
   }
+
   render() {
     const { fetched, balances } = this.props
     if (!fetched) {
@@ -59,14 +59,23 @@ export default class BalanceTable extends React.PureComponent<PropTypes> {
                   />
                 </Grid>
                 <Grid item>
-                  <MonoText>{`${balance.name} (#${balance.id})`}</MonoText>
+                  <div>
+                    <MonoText>{balance.name}</MonoText>
+                  </div>
+                  <div>
+                    <MonoText>{`(#${balance.id})`}</MonoText>
+                  </div>
                 </Grid>
+                {this.props.showLink ? (
+                  <Grid item>
+                    <IconButton>
+                      <ExploreIcon />
+                    </IconButton>
+                  </Grid>
+                ) : null}
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={4}>
                 <MonoText>{balance.value}</MonoText>
-                <IconButton>
-                  <ExploreIcon />
-                </IconButton>
               </Grid>
             </Grid>
           </ListItem>

@@ -3,6 +3,7 @@ import { StartScreenNameType, ValidAuthenticatedStatusTypes } from '../types'
 import { get } from 'lodash'
 import { decryptAccount } from '../service/PasswordService'
 import { AccountStateType } from './reducer/accounts'
+import { isArray } from 'lodash'
 
 export const getDefaultAccount = (state: AppState) =>
   state.accounts.find(account => account.type === 'default')
@@ -89,3 +90,14 @@ export const getDefaultAccountDecrypted = (state: AppState) => {
 export const getSigningPayload = ({ signingPayload }: AppState) => ({
   signingPayload,
 })
+
+export const getBalanceByPublicKey = (
+  state: AppState,
+  ownProps: { publicKey: string }
+) => {
+  const balances = get(state, `airport.balance/${ownProps.publicKey}`)
+  return {
+    balances: balances || [],
+    fetched: isArray(balances),
+  }
+}
