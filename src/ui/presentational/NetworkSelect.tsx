@@ -88,11 +88,12 @@ export default class NetworkSelect extends React.PureComponent<
   render() {
     return (
       <React.Fragment>
+        <div />
         {this.renderSelectNetwork()}
         <Chip
           icon={<CloudIcon />}
           label={
-            <p className="everitoken-mono" style={{ fontSize: '16px' }}>
+            <p className="everitoken-mono" style={{ fontSize: '12px' }}>
               <b>Network: </b>
               {this.state.selected.location.toUpperCase()}
             </p>
@@ -100,7 +101,6 @@ export default class NetworkSelect extends React.PureComponent<
           deleteIcon={<ExpandMore />}
           onDelete={this.handleOpen}
           variant="outlined"
-          color="primary"
         />
       </React.Fragment>
     )

@@ -279,7 +279,7 @@ function* createAccountHandler() {
   }
 }
 
-function* setPasswordHandler() {
+function* setPasswordWatcher() {
   while (true) {
     const action: ReturnType<typeof uiActions.setPassword> = yield take([
       uiActions.SET_PASSWORD,
@@ -290,6 +290,7 @@ function* setPasswordHandler() {
 
     // hash password with bcrypt
     const hash = PasswordService.hashPassword(password)
+    console.log(hash)
 
     // store hash in store
     yield put(storeActions.passwordSet(hash))
@@ -415,7 +416,7 @@ function* rootSaga() {
     }
 
     yield fork(createAccountHandler)
-    yield fork(setPasswordHandler)
+    yield fork(setPasswordWatcher)
     yield fork(signHandler)
     yield fork(authorizeAccountAccessHandler)
     yield fork(setupChainProviders) // NOTE expose `chain` global to saga/index

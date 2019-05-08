@@ -11,7 +11,7 @@ const CustomAvatar = withStyles({
   root: {
     width: '35px',
     height: '35px',
-    fontSize: '0.7rem',
+    fontSize: '0.5rem',
   },
 })(Avatar)
 

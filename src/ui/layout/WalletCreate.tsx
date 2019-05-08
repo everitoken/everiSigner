@@ -13,6 +13,8 @@ import * as uiActions from '../action'
 import { connect } from 'react-redux'
 import AuthProtectedView from './WithAuthentication'
 import InvalidRoute from './InvalidRoute'
+import ScreenHeader from '../presentational/ScreenHeader'
+import FlexContainer from '../presentational/FlexContainer'
 
 type PropTypes = {
   setPassword: typeof uiActions.setPassword
@@ -68,8 +70,17 @@ class WalletCreate extends React.Component<PropTypes, StateTypes> {
 
   render() {
     return (
-      <Container>
-        <Typography variant="h5">Create a strong password</Typography>
+      <FlexContainer alignItems="center">
+        <div
+          style={{
+            display: 'flex',
+            flex: 1,
+            alignSelf: 'stretch',
+            margin: '0 0 3rem 0',
+          }}
+        >
+          <ScreenHeader title="Create a strong password" />
+        </div>
         <Container justifyContent="space-evenly">
           <FormControl>
             <InputLabel htmlFor="password">
@@ -132,7 +143,7 @@ class WalletCreate extends React.Component<PropTypes, StateTypes> {
             Create wallet
           </Button>
         </Container>
-      </Container>
+      </FlexContainer>
     )
   }
 }

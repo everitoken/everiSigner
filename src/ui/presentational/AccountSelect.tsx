@@ -33,7 +33,7 @@ export default class AccountSelect extends React.PureComponent<
 > {
   state = {
     selected: this.props.selected,
-    open: true,
+    open: false,
   }
   handleOpen = () => {
     this.setState({ open: true })
