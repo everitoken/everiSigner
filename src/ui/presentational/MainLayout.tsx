@@ -5,6 +5,7 @@ import { Grid, IconButton, Typography } from '@material-ui/core'
 import { imageDataUriMap } from '../../asset'
 import SettingsIcon from '@material-ui/icons/Settings'
 import FlexContainer from '../presentational/FlexContainer'
+import { withRouter, RouteComponentProps } from 'react-router-dom'
 
 type PropTypes = {
   renderHead: () => React.ReactNode
@@ -12,7 +13,7 @@ type PropTypes = {
   children: React.ReactNode
 }
 
-class MainLayout extends React.PureComponent<PropTypes> {
+class MainLayout extends React.PureComponent<PropTypes & RouteComponentProps> {
   static defaultProps = {
     renderLogo: false,
   }
@@ -29,7 +30,10 @@ class MainLayout extends React.PureComponent<PropTypes> {
           }}
         >
           {this.props.renderLogo ? (
-            <div style={{ marginLeft: 8 }}>
+            <div
+              style={{ marginLeft: 8, zIndex: 10 }}
+              onClick={() => this.props.history.push('/')}
+            >
               <img src={imageDataUriMap['1.transparent']} alt="everitoken" />
             </div>
           ) : null}
@@ -129,4 +133,4 @@ export const TopActionBar = (props: TopActionBarPropTypes) => {
   )
 }
 
-export default MainLayout
+export default withRouter(MainLayout)

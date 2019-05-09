@@ -6,17 +6,14 @@ import {
   Link,
 } from 'react-router-dom'
 import Start from './layout/Start'
-import About from './layout/About'
 import Footer from './layout/Footer'
-import WalletModeDecision from './layout/WalletModeDecision'
-import WalletImport from './layout/WalletImportScreen'
-import WalletCreate from './layout/WalletCreate'
 import { connect } from 'react-redux'
 import { getSnackbarMessage } from '../store/getter'
 import SnackbarMessage from './presentational/SnackbarMessage'
 import { snackbarMessageDismiss } from '../store/action'
 import AccountCreate from './layout/AccountCreate'
 import WalletScreen from './layout/WalletScreen'
+import SettingsScreen from './layout/SettingsScreen'
 
 class HackRedirect extends React.PureComponent<any> {
   componentDidMount() {
@@ -43,12 +40,9 @@ class App extends React.PureComponent {
         <HackRedirectWithRouter />
         <React.Fragment>
           <Route exact path="/" component={Start} />
-          <Route path="/about" component={About} />
-          <Route path="/wallet-mode-decision" component={WalletModeDecision} />
-          <Route path="/wallet-create" component={WalletCreate} />
-          <Route path="/wallet-import" component={WalletImport} />
           <Route path="/wallet" component={WalletScreen} />
-          <Route path="/account-create" component={AccountCreate} />
+          <Route path="/account" component={AccountCreate} />
+          <Route path="/settings" component={SettingsScreen} />
           <ConnectedMessage />
         </React.Fragment>
         <hr />
@@ -66,16 +60,16 @@ class App extends React.PureComponent {
               <Link to="/">Home</Link>
             </li>
             <li style={{ margin: 5 }}>
-              <Link to="/about">About</Link>
+              <Link to="/settings">Settings</Link>
             </li>
             <li style={{ margin: 5 }}>
-              <Link to="/account-create">Account-create</Link>
+              <Link to="/account/create">Account-create</Link>
             </li>
             <li style={{ margin: 5 }}>
-              <Link to="/wallet-import">Wallet-import</Link>
+              <Link to="/wallet/import">Wallet-import</Link>
             </li>
             <li style={{ margin: 5 }}>
-              <Link to="/wallet-create">Wallet-create</Link>
+              <Link to="/wallet/create">Wallet-create</Link>
             </li>
           </ul>
         </div>
