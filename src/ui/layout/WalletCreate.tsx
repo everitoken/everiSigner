@@ -6,15 +6,17 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import FormControl from '@material-ui/core/FormControl'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
-import { Typography, Button } from '@material-ui/core'
-import Container from '../presentational/FlexContainer'
 import * as PasswordService from '../../service/PasswordService'
 import * as uiActions from '../action'
 import { connect } from 'react-redux'
 import AuthProtectedView from './WithAuthentication'
 import InvalidRoute from './InvalidRoute'
-import ScreenHeader from '../presentational/ScreenHeader'
 import FlexContainer from '../presentational/FlexContainer'
+import { NavigationLayout } from '../presentational/MainLayout'
+import { ConnectedNavigationBackButton } from './NavigationButtons'
+import InfoArea from '../presentational/InfoArea'
+import Button from '../presentational/InlineButton'
+import { Divider } from '@material-ui/core'
 
 type PropTypes = {
   setPassword: typeof uiActions.setPassword
@@ -70,80 +72,87 @@ class WalletCreate extends React.Component<PropTypes, StateTypes> {
 
   render() {
     return (
-      <FlexContainer alignItems="center">
-        <div
-          style={{
-            display: 'flex',
-            flex: 1,
-            alignSelf: 'stretch',
-            margin: '0 0 3rem 0',
-          }}
-        >
-          <ScreenHeader title="Create a strong password" />
-        </div>
-        <Container justifyContent="space-evenly">
-          <FormControl>
-            <InputLabel htmlFor="password">
-              New Password (min. 8 chars)
-            </InputLabel>
-            <Input
-              id="password"
-              type={this.state.showPassword ? 'text' : 'password'}
-              value={this.state.password || ''}
-              onChange={this.handlePasswordChange}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="Toggle password visibility"
-                    onClick={this.handleClickShowPassword}
-                  >
-                    {this.state.showPassword ? (
-                      <Visibility />
-                    ) : (
-                      <VisibilityOff />
-                    )}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-          <FormControl>
-            <InputLabel htmlFor="password-confirm">Confirm Password</InputLabel>
-            <Input
-              error={
-                !this.state.passwordConfirmed &&
-                this.state.password !== '' &&
-                this.state.passwordRepeat !== ''
-              }
-              id="password-confirm"
-              type={this.state.showPassword ? 'text' : 'password'}
-              value={this.state.passwordRepeat || ''}
-              onChange={this.handlePasswordRepeatChange}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="Toggle password visibility"
-                    onClick={this.handleClickShowPassword}
-                  >
-                    {this.state.showPassword ? (
-                      <Visibility />
-                    ) : (
-                      <VisibilityOff />
-                    )}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={this.handleSetPassword}
-          >
-            Create wallet
-          </Button>
-        </Container>
-      </FlexContainer>
+      <NavigationLayout
+        title="设置为新钱包"
+        renderLeft={() => <ConnectedNavigationBackButton />}
+      >
+        <FlexContainer>
+          <InfoArea>
+            <ul>
+              <li>Please set a strong password</li>
+              <li>This password will be used to unlock your wallet</li>
+              <li>请安全保存密码</li>
+            </ul>
+          </InfoArea>
+          <FlexContainer withPadding alignItems="stretch">
+            <FormControl>
+              <InputLabel htmlFor="password">
+                New Password (min. 8 chars)
+              </InputLabel>
+              <Input
+                id="password"
+                type={this.state.showPassword ? 'text' : 'password'}
+                value={this.state.password || ''}
+                onChange={this.handlePasswordChange}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="Toggle password visibility"
+                      onClick={this.handleClickShowPassword}
+                    >
+                      {this.state.showPassword ? (
+                        <Visibility />
+                      ) : (
+                        <VisibilityOff />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            <div style={{ height: 32 }} />
+            <FormControl>
+              <InputLabel htmlFor="password-confirm">
+                Confirm Password
+              </InputLabel>
+              <Input
+                error={
+                  !this.state.passwordConfirmed &&
+                  this.state.password !== '' &&
+                  this.state.passwordRepeat !== ''
+                }
+                id="password-confirm"
+                type={this.state.showPassword ? 'text' : 'password'}
+                value={this.state.passwordRepeat || ''}
+                onChange={this.handlePasswordRepeatChange}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="Toggle password visibility"
+                      onClick={this.handleClickShowPassword}
+                    >
+                      {this.state.showPassword ? (
+                        <Visibility />
+                      ) : (
+                        <VisibilityOff />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+          </FlexContainer>
+          <FlexContainer withPadding justifyContent="flex-end">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.handleSetPassword}
+            >
+              创建钱包
+            </Button>
+          </FlexContainer>
+        </FlexContainer>
+      </NavigationLayout>
     )
   }
 }

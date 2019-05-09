@@ -9,7 +9,6 @@ import { ConnectedNavigationBackButton } from './NavigationButtons'
 import FlexContainer from '../presentational/FlexContainer'
 import { List, ListItem, CardActionArea } from '@material-ui/core'
 import ForwardIcon from '@material-ui/icons/ChevronRight'
-import { IconButton } from '@material-ui/core'
 
 type PropTypes = {} & WithRouterType
 

@@ -4,7 +4,7 @@ import WalletCreate from './WalletCreate'
 import WalletModeDecision from './WalletModeDecision'
 import MainLayout, { HeaderTitle } from '../presentational/MainLayout'
 import FlexContainer from '../presentational/FlexContainer'
-import WalletImport from './WalletImport'
+import WalletImport from './WalletImportScreen'
 
 type PropTypes = {}
 
@@ -16,7 +16,7 @@ class WalletLayout extends React.PureComponent<
     return (
       <MainLayout
         renderLogo
-        renderHead={() => <HeaderTitle title="Wallet Settings" />}
+        renderHead={() => <HeaderTitle title="钱包设置" />}
       >
         <FlexContainer justifyContent="space-evenly" alignItems="center">
           <Route path={`${match.path}/decide`} component={WalletModeDecision} />

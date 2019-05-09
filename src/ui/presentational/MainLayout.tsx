@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Grid, IconButton, Typography } from '@material-ui/core'
 import { imageDataUriMap } from '../../asset'
 import SettingsIcon from '@material-ui/icons/Settings'
+import FlexContainer from '../presentational/FlexContainer'
 
 type PropTypes = {
   renderHead: () => React.ReactNode
@@ -57,7 +58,7 @@ type NavigationLayoutPropTypes = {
 
 export const NavigationLayout = (props: NavigationLayoutPropTypes) => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+    <FlexContainer>
       <div
         style={{
           height: 68,
@@ -65,19 +66,20 @@ export const NavigationLayout = (props: NavigationLayoutPropTypes) => {
           justifyContent: 'space-between',
           alignItems: 'center',
           borderBottom: `1px solid #ececec`,
+          alignSelf: 'stretch',
           marginLeft: 8,
         }}
       >
-        <div style={{ display: 'flex', flex: 1, alignItems: 'center' }}>
+        <FlexContainer direction="row" alignItems="center">
           <div style={{ marginRight: 8 }}>{props.renderLeft()}</div>
           <Typography variant="h5">{props.title}</Typography>
-        </div>
+        </FlexContainer>
         {props.renderRight ? (
           <div style={{ marginRight: 4 }}>{props.renderRight()}</div>
         ) : null}
       </div>
-      <div style={{ display: 'flex', flex: '1' }}>{props.children}</div>
-    </div>
+      <FlexContainer direction="row">{props.children}</FlexContainer>
+    </FlexContainer>
   )
 }
 
