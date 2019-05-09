@@ -3,10 +3,11 @@ import { getNetworks } from '../../store/getter'
 import NetworkSelect from '../presentational/NetworkSelect'
 import { connect } from 'react-redux'
 import MainLayout, { TopActionBar } from '../presentational/MainLayout'
+import { networkSelect } from '../../store/action'
 
 const ConnectedNetworkSelect = connect(
   getNetworks,
-  { onSelect: () => alert('fei') }
+  { onSelect: networkSelect }
 )(NetworkSelect)
 
 type PropTypes = {
@@ -20,8 +21,8 @@ export default class AccountBarLayout extends React.PureComponent<PropTypes> {
         renderHead={() => (
           <TopActionBar
             renderMiddle={() => <ConnectedNetworkSelect />}
-            onLogoClick={() => alert('logo clicked')}
-            onMoreClick={() => alert('more clicked')}
+            onLogoClick={() => null}
+            onMoreClick={() => null}
           />
         )}
       >

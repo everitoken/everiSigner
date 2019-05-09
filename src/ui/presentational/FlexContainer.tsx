@@ -7,12 +7,13 @@ export type PropTypes = {
   justifyContent: string
   alignItems: string
   alignSelf: string
+  direction: 'row' | 'column'
 }
 
 const FlexContainer = styled.div`
   display: flex;
   box-sizing: border-box;
-  flex-direction: column;
+  flex-direction: ${(props: PropTypes) => props.direction};
   flex: 1;
   justify-content: ${(props: PropTypes) => props.justifyContent};
   align-items: ${(props: PropTypes) => props.alignItems};
@@ -27,6 +28,7 @@ class Comp extends React.PureComponent<PropTypes> {
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     alignSelf: 'stretch',
+    direction: 'column',
   }
   render() {
     return <FlexContainer {...this.props}>{this.props.children}</FlexContainer>

@@ -4,14 +4,40 @@ import { storiesOf } from '@storybook/react'
 import MainLayout, {
   HeaderTitle,
   TopActionBar,
+  NavigationLayout,
 } from '../src/ui/presentational/MainLayout'
 import Container from '../src/ui/presentational/Container'
 import NetworkSelect from '../src/ui/presentational/NetworkSelect'
+import { IconButton } from '@material-ui/core'
+import BackIcon from '@material-ui/icons/ArrowBack'
+import CloseIcon from '@material-ui/icons/Close'
 
 storiesOf('Layout', module).add('with text header', () => (
   <Container>
     <MainLayout renderHead={() => <HeaderTitle title="Main layout head" />}>
       <p>Body</p>
+    </MainLayout>
+  </Container>
+))
+
+storiesOf('Layout', module).add('navigation layout in main layout', () => (
+  <Container>
+    <MainLayout renderHead={() => <HeaderTitle title="Main layout head" />}>
+      <NavigationLayout
+        renderLeft={() => (
+          <IconButton>
+            <BackIcon fontSize="large" />
+          </IconButton>
+        )}
+        renderRight={() => (
+          <IconButton>
+            <CloseIcon fontSize="large" />
+          </IconButton>
+        )}
+        title="设置钱包"
+      >
+        content of navigation layout
+      </NavigationLayout>
     </MainLayout>
   </Container>
 ))

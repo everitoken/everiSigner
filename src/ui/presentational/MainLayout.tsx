@@ -1,34 +1,84 @@
 import * as React from 'react'
 import * as style from '../../style'
 import styled from 'styled-components'
-import { Grid, IconButton } from '@material-ui/core'
+import { Grid, IconButton, Typography } from '@material-ui/core'
 import { imageDataUriMap } from '../../asset'
-import MoreVert from '@material-ui/icons/MoreVert'
+import SettingsIcon from '@material-ui/icons/Settings'
 
 type PropTypes = {
   renderHead: () => React.ReactNode
+  renderLogo?: boolean
   children: React.ReactNode
 }
 
 class MainLayout extends React.PureComponent<PropTypes> {
+  static defaultProps = {
+    renderLogo: false,
+  }
   render() {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         <div
           style={{
-            height: 60,
+            height: 65,
             backgroundColor: '#ececec',
             display: 'flex',
-            alignContent: 'center',
+            alignContent: 'space-between',
             alignItems: 'center',
           }}
         >
-          {this.props.renderHead()}
+          {this.props.renderLogo ? (
+            <div style={{ marginLeft: 8 }}>
+              <img src={imageDataUriMap['1.transparent']} alt="everitoken" />
+            </div>
+          ) : null}
+          <div
+            style={{
+              display: 'flex',
+              flex: 1,
+              marginLeft: this.props.renderLogo ? -50 : 0,
+            }}
+          >
+            {this.props.renderHead()}
+          </div>
         </div>
         <div style={{ display: 'flex', flex: '1' }}>{this.props.children}</div>
       </div>
     )
   }
+}
+
+type NavigationLayoutPropTypes = {
+  title: string
+  children: React.ReactNode
+  renderLeft: () => React.ReactNode
+  renderRight?: () => React.ReactNode
+}
+
+export const NavigationLayout = (props: NavigationLayoutPropTypes) => {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+      <div
+        style={{
+          height: 68,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          borderBottom: `1px solid #ececec`,
+          marginLeft: 8,
+        }}
+      >
+        <div style={{ display: 'flex', flex: 1, alignItems: 'center' }}>
+          <div style={{ marginRight: 8 }}>{props.renderLeft()}</div>
+          <Typography variant="h5">{props.title}</Typography>
+        </div>
+        {props.renderRight ? (
+          <div style={{ marginRight: 4 }}>{props.renderRight()}</div>
+        ) : null}
+      </div>
+      <div style={{ display: 'flex', flex: '1' }}>{props.children}</div>
+    </div>
+  )
 }
 
 const HeaderText = styled.p`
@@ -69,7 +119,7 @@ export const TopActionBar = (props: TopActionBarPropTypes) => {
       <Grid item>
         <div style={{ marginRight: 4 }}>
           <IconButton>
-            <MoreVert onClick={props.onMoreClick} />
+            <SettingsIcon onClick={props.onMoreClick} />
           </IconButton>
         </div>
       </Grid>

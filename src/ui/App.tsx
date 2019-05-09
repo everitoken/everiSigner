@@ -11,12 +11,12 @@ import Footer from './layout/Footer'
 import WalletModeDecision from './layout/WalletModeDecision'
 import WalletImport from './layout/WalletImport'
 import WalletCreate from './layout/WalletCreate'
-import FlexContainer from './presentational/FlexContainer'
 import { connect } from 'react-redux'
 import { getSnackbarMessage } from '../store/getter'
 import SnackbarMessage from './presentational/SnackbarMessage'
 import { snackbarMessageDismiss } from '../store/action'
 import AccountCreate from './layout/AccountCreate'
+import WalletLayout from './layout/WalletLayout'
 
 class HackRedirect extends React.PureComponent<any> {
   componentDidMount() {
@@ -45,9 +45,10 @@ class App extends React.PureComponent {
           <Route exact path="/" component={Start} />
           <Route path="/about" component={About} />
           <Route path="/wallet-mode-decision" component={WalletModeDecision} />
-          <Route path="/account-create" component={AccountCreate} />
           <Route path="/wallet-create" component={WalletCreate} />
           <Route path="/wallet-import" component={WalletImport} />
+          <Route path="/wallet" component={WalletLayout} />
+          <Route path="/account-create" component={AccountCreate} />
           <ConnectedMessage />
         </React.Fragment>
         <hr />

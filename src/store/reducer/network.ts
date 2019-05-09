@@ -77,6 +77,7 @@ export default (
       const hasNetwork = state.networks.find(
         network => network.url === action.payload.network.url
       )
+
       if (hasNetwork) {
         return state
       }
