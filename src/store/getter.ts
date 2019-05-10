@@ -78,8 +78,13 @@ export const mapInputPassword = (state: AppState) => ({
 
 export const getSnackbarMessage = ({ message }: AppState) => message
 
+export const getAccountImportScreen = (state: AppState) => ({
+  accountNames: state.accounts.map(({ name }) => name),
+})
+
 export const getDefaultAccountDecrypted = (state: AppState) => {
   const account = state.accounts.find(account => account.type === 'default')
+  const accountNames = state.accounts.map(({ name }) => name)
   const password = getPassword(state)
 
   let words = ''
@@ -89,11 +94,10 @@ export const getDefaultAccountDecrypted = (state: AppState) => {
   }
 
   if (!account || !password) {
-    return { account: null, words }
+    return { account: null, words, accountName: accountNames }
   }
 
-  console.log('getter', account)
-  return { account: decryptAccount(password, account), words }
+  return { account: decryptAccount(password, account), words, accountNames }
 }
 
 export const getSigningPayload = ({ signingPayload }: AppState) => ({

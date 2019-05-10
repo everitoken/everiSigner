@@ -15,7 +15,7 @@ export default class InfoArea extends React.PureComponent<PropTypes> {
             display: 'flex',
             alignSelf: 'stretch',
             fontFamily: 'Roboto Mono',
-            backgroundColor: 'rgba(4, 56, 129, 0.4)',
+            backgroundColor: 'rgba(4, 56, 129, 0.2)',
           }}
         >
           {this.props.children}

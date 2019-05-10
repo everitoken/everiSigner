@@ -224,6 +224,55 @@ function* signHandler() {
   }
 }
 
+function* importAccountHandler() {
+  while (true) {
+    const action: ReturnType<typeof uiActions.importAccount> = yield take(
+      uiActions.IMPORT_ACCOUNT
+    )
+
+    if (!chain) {
+      break // TODO refactor away
+    }
+
+    // construct words
+    // 1. get password
+    const password: string | false = yield select(getPassword)
+
+    if (!password) {
+      alert('Invalid password, Default account creation failed')
+      return
+    }
+
+    const evtChain: ChainInterface = yield call(getEvtChain, chain)
+
+    const { id, privateKey, name } = action.payload
+
+    const publicKey = yield evtChain.getPublicKeyFromPrivateKey(
+      action.payload.privateKey
+    )
+
+    // construct state
+    const account: AccountStateType = {
+      id,
+      name,
+      type: 'imported',
+      createdAt: new Date().toISOString(),
+      words: '',
+      privateKey,
+      publicKey,
+    }
+
+    yield put(
+      storeActions.accountCreate(
+        PasswordService.encryptAccount(password, account)
+      )
+    )
+
+    yield put(
+      storeActions.snackbarMessageShow('Successfully imported account.')
+    )
+  }
+}
 function* createAccountHandler() {
   while (true) {
     const action: ReturnType<
@@ -412,6 +461,7 @@ function* rootSaga() {
     }
 
     yield fork(createAccountHandler)
+    yield fork(importAccountHandler)
     yield fork(setPasswordWatcher)
     yield fork(signHandler)
     yield fork(authorizeAccountAccessHandler)

@@ -1,8 +1,5 @@
 import * as React from 'react'
 import {
-  FormControl,
-  InputLabel,
-  Input,
   Button,
   Stepper,
   Step,
@@ -20,95 +17,13 @@ import { AccountStateType } from '../../store/reducer/accounts'
 import * as uuid from 'uuid'
 import SuccessInfoLayout from './SuccessInfoLayout'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import AccountNameComponent from './AccountNameComponent'
 
-const CREATE_ACCOUNT_STEPS = [
+const STEPS = [
   { step: 'Pick a name', action: '下一步' },
   { step: 'Back up', action: '下一步' },
   { step: 'Verify', action: '完成' },
 ]
-
-type StepAccountNamePropTypes = {
-  buttonText: string
-  onNextClick: (accountName: string) => void
-}
-type StepAccountNameStateTypes = {
-  accountName: string
-  invalid: boolean
-}
-
-class StepAccountName extends React.PureComponent<
-  StepAccountNamePropTypes,
-  StepAccountNameStateTypes
-> {
-  state = {
-    accountName: '',
-    invalid: false,
-  }
-
-  handleAccountChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = target
-    this.setState({ accountName: value })
-  }
-  isValid = () => {
-    if (
-      this.state.accountName.length === 0 ||
-      this.state.accountName.length > 25
-    ) {
-      return false
-    }
-
-    return true
-  }
-  handleClick = () => {
-    const isValid = this.isValid()
-
-    if (!isValid) {
-      this.setState({ invalid: true })
-      return
-    }
-
-    this.setState({ invalid: false })
-
-    this.props.onNextClick(this.state.accountName)
-  }
-  render() {
-    return (
-      <FlexContainer>
-        <FlexContainer alignItems="stretch" justifyContent="center" withPadding>
-          <FormControl>
-            <InputLabel htmlFor="account-name">
-              Specify account name (less than 25 chars)
-            </InputLabel>
-            <Input
-              autoFocus
-              style={{ fontSize: 24 }}
-              error={this.state.invalid}
-              id="account-name"
-              value={this.state.accountName}
-              onChange={this.handleAccountChange}
-            />
-          </FormControl>
-        </FlexContainer>
-        <div style={{ alignSelf: 'stretch' }}>
-          <FlexContainer
-            withPadding
-            alignItems="stretch"
-            justifyContent="flex-end"
-          >
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              onClick={this.handleClick}
-            >
-              {this.props.buttonText}
-            </Button>
-          </FlexContainer>
-        </div>
-      </FlexContainer>
-    )
-  }
-}
 
 type StepDisplaySeedPhrasesPropTypes = {
   accountName: string
@@ -203,6 +118,7 @@ class StepVerifySeedPhrases extends React.PureComponent<
     value: '',
     error: false,
   }
+
   handleSubmit = () => {
     if (this.state.value.trim() !== this.props.words) {
       this.setState({ error: true })
@@ -285,6 +201,7 @@ class StepSuccess extends React.PureComponent<RouteComponentProps> {
 const ConnectedStepSuccess = withRouter(StepSuccess)
 
 type AccountCreatePropTypes = {
+  accountNames: string[]
   account: AccountStateType | null
   words: string
   onClick: typeof createDefaultAccount
@@ -327,12 +244,14 @@ class AccountCreate extends React.PureComponent<
   renderStep = () => {
     if (this.state.activeStep === 0) {
       return (
-        <StepAccountName
+        <AccountNameComponent
+          accountNames={this.props.accountNames}
+          autoFocus
           onNextClick={accountName => {
             this.setState({ accountName })
             this.handleNextStep()
           }}
-          buttonText={CREATE_ACCOUNT_STEPS[this.state.activeStep].action}
+          buttonText={STEPS[this.state.activeStep].action}
         />
       )
     } else if (this.state.activeStep === 1) {
@@ -340,14 +259,14 @@ class AccountCreate extends React.PureComponent<
         <StepDisplaySeedPhrases
           accountName={this.state.accountName}
           words={this.props.words}
-          buttonText={CREATE_ACCOUNT_STEPS[this.state.activeStep].action}
+          buttonText={STEPS[this.state.activeStep].action}
           onNextClick={this.handleNextStep}
         />
       )
-    } else if (this.state.activeStep === CREATE_ACCOUNT_STEPS.length - 1) {
+    } else if (this.state.activeStep === STEPS.length - 1) {
       return (
         <StepVerifySeedPhrases
-          buttonText={CREATE_ACCOUNT_STEPS[this.state.activeStep].action}
+          buttonText={STEPS[this.state.activeStep].action}
           words={this.props.words}
           onNextClick={() => {
             this.handleNextStep()
@@ -370,6 +289,24 @@ class AccountCreate extends React.PureComponent<
   }
 
   render() {
+    if (this.props.account && this.state.currentAccountId === null) {
+      return (
+        <FlexContainer>
+          <div>
+            <InfoArea>
+              <p style={{ padding: '8px 16px' }}>
+                A default account has been created, now you can only create
+                loose account. (TODO: better wording)
+              </p>
+            </InfoArea>
+          </div>
+          <FlexContainer withPadding alignSelf="stretch" alignItems="stretch">
+            <p>A default account has been created.</p>
+          </FlexContainer>
+        </FlexContainer>
+      )
+    }
+
     return (
       <FlexContainer>
         <div>
@@ -386,7 +323,7 @@ class AccountCreate extends React.PureComponent<
             alternativeLabel
             style={{ padding: 16 }}
           >
-            {CREATE_ACCOUNT_STEPS.map(({ step }) => (
+            {STEPS.map(({ step }) => (
               <Step key={step}>
                 <StepLabel>{step}</StepLabel>
               </Step>

@@ -9,14 +9,21 @@ import Tab from '@material-ui/core/Tab'
 import Container from '../presentational/FlexContainer'
 import AccountCreate from '../presentational/AccountCreate'
 import { connect } from 'react-redux'
-import { getDefaultAccountDecrypted } from '../../store/getter'
-import { createDefaultAccount } from '../action'
+import {
+  getDefaultAccountDecrypted,
+  getAccountImportScreen,
+} from '../../store/getter'
+import { createDefaultAccount, importAccount } from '../action'
 import { NavigationLayout } from '../presentational/MainLayout'
 import { ConnectedNavigationBackButton } from './NavigationButtons'
+import AccountImport from '../presentational/AccountImport'
 
 function TabContainer({ children }: { children: React.ReactNode }) {
   return (
-    <div className="tab-container" style={{ height: 460, display: 'flex' }}>
+    <div
+      className="tab-container"
+      style={{ height: 460, display: 'flex', maxWidth: 400 }}
+    >
       {children}
     </div>
   )
@@ -26,6 +33,11 @@ const ConnectedAccountCreate = connect(
   getDefaultAccountDecrypted,
   { onClick: createDefaultAccount }
 )(AccountCreate)
+
+const ConnectedAccountImport = connect(
+  getAccountImportScreen,
+  { onClick: importAccount }
+)(AccountImport)
 
 class AccountCreateBar extends React.PureComponent<{}, { value: number }> {
   state = {
@@ -67,7 +79,9 @@ class AccountCreateBar extends React.PureComponent<{}, { value: number }> {
             <TabContainer>
               <ConnectedAccountCreate />
             </TabContainer>
-            <TabContainer>Here is to import an account</TabContainer>
+            <TabContainer>
+              <ConnectedAccountImport />
+            </TabContainer>
           </SwipeableViews>
         </Container>
       </NavigationLayout>
