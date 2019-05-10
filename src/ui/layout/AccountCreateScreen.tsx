@@ -5,29 +5,20 @@ import SwipeableViews from 'react-swipeable-views'
 import AppBar from '@material-ui/core/AppBar'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import Typography from '@material-ui/core/Typography'
 
 import Container from '../presentational/FlexContainer'
-import { padding } from '../../style'
 import AccountCreate from '../presentational/AccountCreate'
 import { connect } from 'react-redux'
 import { getDefaultAccountDecrypted } from '../../store/getter'
 import { createDefaultAccount } from '../action'
+import { NavigationLayout } from '../presentational/MainLayout'
+import { ConnectedNavigationBackButton } from './NavigationButtons'
 
 function TabContainer({ children }: { children: React.ReactNode }) {
   return (
-    <Typography
-      component="div"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        minHeight: 300,
-        padding: padding.standard / 2,
-      }}
-    >
+    <div className="tab-container" style={{ height: 460, display: 'flex' }}>
       {children}
-    </Typography>
+    </div>
   )
 }
 
@@ -51,32 +42,35 @@ class AccountCreateBar extends React.PureComponent<{}, { value: number }> {
 
   render() {
     return (
-      <Container justifyContent="flex-start">
-        <div style={{ paddingBottom: padding.standard * 2 }}>
-          <Typography variant="h4">Create Account</Typography>
-        </div>
-        <AppBar position="static" color="default">
-          <Tabs
-            value={this.state.value}
-            onChange={this.handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="fullWidth"
+      <NavigationLayout
+        title="创建新账户"
+        renderLeft={() => <ConnectedNavigationBackButton />}
+      >
+        <Container justifyContent="flex-start">
+          <AppBar position="static" color="default">
+            <Tabs
+              value={this.state.value}
+              onChange={this.handleChange}
+              indicatorColor="primary"
+              textColor="primary"
+              variant="fullWidth"
+            >
+              <Tab label="创建" />
+              <Tab label="导入" />
+            </Tabs>
+          </AppBar>
+          <SwipeableViews
+            containerStyle={{ display: 'flex', flex: 1 }}
+            index={this.state.value}
+            onChangeIndex={this.handleChangeIndex}
           >
-            <Tab label="Create" />
-            <Tab label="Import" />
-          </Tabs>
-        </AppBar>
-        <SwipeableViews
-          index={this.state.value}
-          onChangeIndex={this.handleChangeIndex}
-        >
-          <TabContainer>
-            <ConnectedAccountCreate />
-          </TabContainer>
-          <TabContainer>Here is to import an account</TabContainer>
-        </SwipeableViews>
-      </Container>
+            <TabContainer>
+              <ConnectedAccountCreate />
+            </TabContainer>
+            <TabContainer>Here is to import an account</TabContainer>
+          </SwipeableViews>
+        </Container>
+      </NavigationLayout>
     )
   }
 }

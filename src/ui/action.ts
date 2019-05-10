@@ -26,9 +26,13 @@ export const logIn = (password: string) => ({
   payload: password,
 })
 
-export const createDefaultAccount = (id: string, name: string) => ({
+export const createDefaultAccount = (payload: {
+  id: string
+  name: string
+  words: string
+}) => ({
   type: CREATE_DEFAULT_ACCOUNT,
-  payload: { id, name },
+  payload,
 })
 
 export const receiveBackgroundMessage = (msg: BackgroundMsgTypes) => ({

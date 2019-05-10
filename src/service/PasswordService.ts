@@ -4,6 +4,7 @@ import englishWords from '../asset/wordlist/english'
 import ChineseSimplifiedWords from '../asset/wordlist/chinese_simplified'
 import { AccountStateType } from '../store/reducer/accounts'
 import * as sjcl from 'sjcl'
+import jssha1 from 'js-sha1'
 
 type SupportedWordlist = 'english' | 'chinese_simplified'
 
@@ -72,12 +73,17 @@ export const sha256 = (input: string): string => {
   return sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(input))
 }
 
+export const sha1 = (input: string): string => {
+  return jssha1(input)
+}
+
 export const generateMnemonicWords = (
   password: string,
   wordlist: SupportedWordlist
 ): string => {
   const digest = sha256(hashPassword(password))
-  return bip39.entropyToMnemonic(digest, wordlists[wordlist])
+  console.log(digest.slice(0, 32))
+  return bip39.entropyToMnemonic(digest.slice(0, 32), wordlists[wordlist])
 }
 
 export const mnemonicToSeed = (words: string) =>

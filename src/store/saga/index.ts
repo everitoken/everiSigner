@@ -243,11 +243,8 @@ function* createAccountHandler() {
       return
     }
 
-    // 2. get mnemonic
-    const words = PasswordService.generateMnemonicWords(password, 'english')
-
     // 3. generate entropy
-    const seed = PasswordService.mnemonicToSeed(words)
+    const seed = PasswordService.mnemonicToSeed(action.payload.words)
 
     const evtChain: ChainInterface = yield call(getEvtChain, chain)
 
@@ -264,7 +261,6 @@ function* createAccountHandler() {
       createdAt: new Date().toISOString(),
       privateKey,
       publicKey,
-      words,
     }
 
     yield put(

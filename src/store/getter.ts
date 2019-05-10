@@ -4,6 +4,7 @@ import { get } from 'lodash'
 import { decryptAccount } from '../service/PasswordService'
 import { AccountStateType } from './reducer/accounts'
 import { isArray } from 'lodash'
+import * as PasswordService from '../service/PasswordService'
 
 export const getDefaultAccount = (state: AppState) =>
   state.accounts.find(account => account.type === 'default')
@@ -49,6 +50,7 @@ export const getAuthenticatedStatus = (
 
   return 'unknown'
 }
+
 /**
  * If there is a temp password, app is active
  * If there is only a password hash, app is locked
@@ -80,11 +82,18 @@ export const getDefaultAccountDecrypted = (state: AppState) => {
   const account = state.accounts.find(account => account.type === 'default')
   const password = getPassword(state)
 
-  if (!account || !password) {
-    return { account: null }
+  let words = ''
+
+  if (password) {
+    words = PasswordService.generateMnemonicWords(password, 'english')
   }
 
-  return { account: decryptAccount(password, account) }
+  if (!account || !password) {
+    return { account: null, words }
+  }
+
+  console.log('getter', account)
+  return { account: decryptAccount(password, account), words }
 }
 
 export const getSigningPayload = ({ signingPayload }: AppState) => ({

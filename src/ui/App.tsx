@@ -11,7 +11,7 @@ import { connect } from 'react-redux'
 import { getSnackbarMessage } from '../store/getter'
 import SnackbarMessage from './presentational/SnackbarMessage'
 import { snackbarMessageDismiss } from '../store/action'
-import AccountCreate from './layout/AccountCreate'
+import AccountCreate from './layout/AccountCreateScreen'
 import WalletScreen from './layout/WalletScreen'
 import SettingsScreen from './layout/SettingsScreen'
 
