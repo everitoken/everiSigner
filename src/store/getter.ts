@@ -81,7 +81,20 @@ export const getSnackbarMessage = ({ message }: AppState) => message
 export const getAccountImportScreen = (state: AppState) => ({
   accountNames: state.accounts.map(({ name }) => name),
 })
+export const getDecryptedAccounts = (state: AppState) => {
+  {
+    const password = getPassword(state)
+    if (!password) {
+      return { accounts: [] }
+    }
 
+    return {
+      accounts: state.accounts.map(account =>
+        decryptAccount(password, account)
+      ),
+    }
+  }
+}
 export const getDefaultAccountDecrypted = (state: AppState) => {
   const account = state.accounts.find(account => account.type === 'default')
   const accountNames = state.accounts.map(({ name }) => name)
@@ -94,7 +107,7 @@ export const getDefaultAccountDecrypted = (state: AppState) => {
   }
 
   if (!account || !password) {
-    return { account: null, words, accountName: accountNames }
+    return { account: null, words, accountNames }
   }
 
   return { account: decryptAccount(password, account), words, accountNames }

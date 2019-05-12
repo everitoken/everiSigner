@@ -8,6 +8,7 @@ const SeedListContainer = styled.ul`
   padding: 0;
   display: flex;
   flex-wrap: wrap;
+  font-size: 12px;
 `
 
 export type PropTypes = {
@@ -21,8 +22,11 @@ class SeedWordsDisplay extends React.PureComponent<PropTypes> {
     return (
       <SeedListContainer>
         {props.words.split(' ').map((word, i) => (
-          <li key={word} style={{ margin: 3 }}>
-            <Chip label={`${i + 1}. ${word}`} />
+          <li key={word} style={{ margin: '0 3px 3px 0' }}>
+            <Chip
+              label={`${i + 1} ${word}`}
+              style={{ fontFamily: 'Roboto Mono' }}
+            />
           </li>
         ))}
       </SeedListContainer>

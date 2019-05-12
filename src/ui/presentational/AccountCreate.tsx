@@ -20,9 +20,9 @@ import { RouteComponentProps, withRouter } from 'react-router-dom'
 import AccountNameComponent from './AccountNameComponent'
 
 const STEPS = [
-  { step: 'Pick a name', action: '下一步' },
-  { step: 'Back up', action: '下一步' },
-  { step: 'Verify', action: '完成' },
+  { step: '账户名', action: '下一步' },
+  { step: '备份', action: '下一步' },
+  { step: '验证', action: '创建账户' },
 ]
 
 type StepDisplaySeedPhrasesPropTypes = {
@@ -68,12 +68,19 @@ class StepDisplaySeedPhrases extends React.PureComponent<
     return (
       <FlexContainer>
         <FlexContainer withPadding>
-          <p>
+          <p style={{ marginTop: 0 }}>
             Make sure to write down these words safely. In next step you will be
             asked to input these phrases in sequence.
           </p>
           <SeedWordsDisplay words={this.props.words} />
-          <div style={{ alignSelf: 'flex-end' }}>
+          <div
+            style={{
+              position: 'absolute',
+              right: '10px',
+              bottom: '65px',
+              cursor: 'pointer',
+            }}
+          >
             <Link onClick={this.handleCopy}>
               {this.state.copied ? 'copied' : 'copy?'}
             </Link>
@@ -318,11 +325,7 @@ class AccountCreate extends React.PureComponent<
           </InfoArea>
         </div>
         <FlexContainer alignSelf="stretch" alignItems="stretch">
-          <Stepper
-            activeStep={this.state.activeStep}
-            alternativeLabel
-            style={{ padding: 16 }}
-          >
+          <Stepper activeStep={this.state.activeStep} style={{ padding: 16 }}>
             {STEPS.map(({ step }) => (
               <Step key={step}>
                 <StepLabel>{step}</StepLabel>

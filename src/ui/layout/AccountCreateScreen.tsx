@@ -22,7 +22,7 @@ function TabContainer({ children }: { children: React.ReactNode }) {
   return (
     <div
       className="tab-container"
-      style={{ height: 460, display: 'flex', maxWidth: 400 }}
+      style={{ height: 400, display: 'flex', maxWidth: 400 }}
     >
       {children}
     </div>

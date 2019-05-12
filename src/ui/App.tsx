@@ -11,9 +11,9 @@ import { connect } from 'react-redux'
 import { getSnackbarMessage } from '../store/getter'
 import SnackbarMessage from './presentational/SnackbarMessage'
 import { snackbarMessageDismiss } from '../store/action'
-import AccountCreate from './layout/AccountCreateScreen'
 import WalletScreen from './layout/WalletScreen'
 import SettingsScreen from './layout/SettingsScreen'
+import AccountScreen from './layout/AccountScreen'
 
 class HackRedirect extends React.PureComponent<any> {
   componentDidMount() {
@@ -41,7 +41,7 @@ class App extends React.PureComponent {
         <React.Fragment>
           <Route exact path="/" component={Start} />
           <Route path="/wallet" component={WalletScreen} />
-          <Route path="/account" component={AccountCreate} />
+          <Route path="/account" component={AccountScreen} />
           <Route path="/settings" component={SettingsScreen} />
           <ConnectedMessage />
         </React.Fragment>
@@ -63,13 +63,16 @@ class App extends React.PureComponent {
               <Link to="/settings">Settings</Link>
             </li>
             <li style={{ margin: 5 }}>
-              <Link to="/account/create">Account-create</Link>
+              <Link to="/account/list">A/List</Link>
             </li>
             <li style={{ margin: 5 }}>
-              <Link to="/wallet/import">Wallet-import</Link>
+              <Link to="/account/create">A/create</Link>
             </li>
             <li style={{ margin: 5 }}>
-              <Link to="/wallet/create">Wallet-create</Link>
+              <Link to="/wallet/import">W/import</Link>
+            </li>
+            <li style={{ margin: 5 }}>
+              <Link to="/wallet/create">W/create</Link>
             </li>
           </ul>
         </div>

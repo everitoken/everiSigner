@@ -15,7 +15,7 @@ import * as Evtjs from 'evtjs'
 import uuid = require('uuid')
 
 const STEPS = [
-  { step: '填写账户名', action: '下一步' },
+  { step: '账户名', action: '下一步' },
   { step: '输入私钥', action: '导入私钥' },
 ]
 
@@ -63,7 +63,15 @@ class StepInputPrivateKey extends React.PureComponent<
   render() {
     return (
       <FlexContainer>
-        <FlexContainer withPadding justifyContent="space-between">
+        <div
+          style={{
+            display: 'flex',
+            flex: 1,
+            flexDirection: 'column',
+            padding: '12px 16px',
+            alignSelf: 'stretch',
+          }}
+        >
           <FlexContainer>
             <TextField
               id="seed-phrase-verify"
@@ -105,7 +113,7 @@ class StepInputPrivateKey extends React.PureComponent<
               />
             </FlexContainer>
           ) : null}
-        </FlexContainer>
+        </div>
 
         <div style={{ alignSelf: 'stretch' }}>
           <FlexContainer
@@ -194,11 +202,7 @@ class AccountImport extends React.PureComponent<
           </InfoArea>
         </div>
         <FlexContainer alignSelf="stretch" alignItems="stretch">
-          <Stepper
-            activeStep={this.state.activeStep}
-            alternativeLabel
-            style={{ padding: 16 }}
-          >
+          <Stepper activeStep={this.state.activeStep} style={{ padding: 16 }}>
             {STEPS.map(({ step }) => (
               <Step key={step}>
                 <StepLabel>{step}</StepLabel>
