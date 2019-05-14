@@ -75,6 +75,7 @@ class AccountMoreMenu extends React.Component<
           {labels.SHOW_ADDRESS_AS_QR}
         </MenuItem>
         <MenuItem
+          disabled={this.props.account.isMain}
           onClick={() => {
             this.props.onSetMainAccountClicked(this.props.account)
             this.handleClose()
