@@ -50,15 +50,13 @@ export default class AccountListItem extends React.PureComponent<
       >
         <div>
           <CustomBadge
-            invisible={account.type !== 'default'}
+            invisible={account.type !== 'seed'}
             color="secondary"
             variant="dot"
           >
             <Tooltip
               title={
-                account.type === 'default'
-                  ? 'Default account'
-                  : 'Imported account'
+                account.type === 'seed' ? 'Seed account' : 'Imported account'
               }
             >
               <AccountNameContainer>

@@ -308,7 +308,7 @@ function* createAccountHandler() {
     // construct state
     const account: AccountStateType = {
       ...action.payload,
-      type: 'default',
+      type: 'seed',
       createdAt: new Date().toISOString(),
       privateKey,
       publicKey,

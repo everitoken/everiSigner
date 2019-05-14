@@ -14,7 +14,7 @@ const importedAccount: typeof account = {
 }
 const accounts = [account, importedAccount]
 
-storiesOf('Account', module).add('default account', () => (
+storiesOf('Account', module).add('seed account', () => (
   <AccountListItem account={account} />
 ))
 storiesOf('Account', module).add('truncate len', () => (
@@ -31,6 +31,7 @@ storiesOf('Account', module).add('select', () => (
     onSelect={() => null}
     accounts={accounts}
     onAccountMoreClicked={() => alert('more')}
+    detailComponent={null}
   >
     {({ handleOpen }) => {
       return <Button onClick={handleOpen}>Show Dialog</Button>

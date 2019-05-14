@@ -143,7 +143,7 @@ class AccountListItem extends React.PureComponent<
               >
                 {account.name}
               </p>
-              {account.type === 'default' ? (
+              {account.type === 'seed' ? (
                 <Chip
                   style={{ fontSize: '10px', padding: 4 }}
                   label="Default"

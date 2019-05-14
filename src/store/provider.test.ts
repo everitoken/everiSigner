@@ -86,7 +86,7 @@ describe('getAccountByPublicKey', () => {
 })
 
 describe('getDefaultAccount', () => {
-  it('should throw error if default account is not found', async () => {
+  it('should throw error if seed account is not found', async () => {
     const newState = {
       ...emptyState,
       accounts: [],

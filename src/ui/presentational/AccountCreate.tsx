@@ -319,7 +319,7 @@ class AccountCreate extends React.PureComponent<
         <div>
           <InfoArea>
             <p style={{ padding: '8px 16px' }}>
-              This is your <b>default account</b>, this account will be
+              This is your <b>seed account</b>, this account will be
               recoverable with your seed phrases.
             </p>
           </InfoArea>

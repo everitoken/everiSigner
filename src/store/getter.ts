@@ -7,7 +7,7 @@ import { isArray } from 'lodash'
 import * as PasswordService from '../service/PasswordService'
 
 export const getDefaultAccount = (state: AppState) =>
-  state.accounts.find(account => account.type === 'default')
+  state.accounts.find(account => account.type === 'seed')
 
 export const getAccountByPublicKey = (
   state: AppState,
@@ -95,8 +95,8 @@ export const getDecryptedAccounts = (state: AppState) => {
     }
   }
 }
-export const getDefaultAccountDecrypted = (state: AppState) => {
-  const account = state.accounts.find(account => account.type === 'default')
+export const getSeedAccountDecrypted = (state: AppState) => {
+  const account = state.accounts.find(account => account.type === 'seed')
   const accountNames = state.accounts.map(({ name }) => name)
   const password = getPassword(state)
 

@@ -10,7 +10,7 @@ import Container from '../presentational/FlexContainer'
 import AccountCreate from '../presentational/AccountCreate'
 import { connect } from 'react-redux'
 import {
-  getDefaultAccountDecrypted,
+  getSeedAccountDecrypted,
   getAccountImportScreen,
 } from '../../store/getter'
 import { createDefaultAccount, importAccount } from '../action'
@@ -30,7 +30,7 @@ function TabContainer({ children }: { children: React.ReactNode }) {
 }
 
 const ConnectedAccountCreate = connect(
-  getDefaultAccountDecrypted,
+  getSeedAccountDecrypted,
   { onClick: createDefaultAccount }
 )(AccountCreate)
 

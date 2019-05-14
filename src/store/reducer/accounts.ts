@@ -2,7 +2,7 @@ import { ACCOUNT_CREATE, StoreActionTypes } from '../action'
 import { PURGE } from 'redux-persist'
 
 export type AccountStateType = {
-  type: 'default' | 'imported'
+  type: 'seed' | 'imported'
   words: string
   privateKey: string
   publicKey: string

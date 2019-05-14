@@ -31,7 +31,7 @@ type StateTypes = {
 class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
   state = {
     selectedAccount: this.props.accounts.find(
-      account => account.type === 'default'
+      account => account.type === 'seed'
     ),
     data: [],
     showBalanceTable: false,
@@ -58,7 +58,7 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
     const { accounts } = this.props
 
     if (!selectedAccount) {
-      alert('No default account found')
+      alert('No Seed account found')
       return
     }
 
