@@ -12,6 +12,7 @@ export const accounts: { [key: string]: AccountStateType } = {
     id: '6d339a6c-0d1f-462c-863b-dad0cba57fcf',
     name: 'seed decrypted',
     type: 'seed',
+    isMain: true,
     createdAt: '2019-04-12T14:11:00.263Z',
     privateKey: '5JcRkzh5SqoKM5imCW3Qtnt4Cu7gosR9iiiDtPFh66WjmvK65sM',
     publicKey: 'EVT5Cc5RpTMUWRqvGKgS3KchurXkbF5Q5Et1dFRX7NyCt7WRVmZtS',
@@ -22,6 +23,7 @@ export const accounts: { [key: string]: AccountStateType } = {
     id: 'dc7c1663-2a11-49e0-8790-6a3ee5be5c79',
     name: 'seed encrypted',
     type: 'seed',
+    isMain: false,
     createdAt: '2019-04-12T14:24:23.846Z',
     privateKey:
       '{"iv":"tFIvLQNrvvFqmcdVeB8S2Q==","salt":"u/mDZe32WNY=","ct":"35mALzO+kqTh45sj6YhjVXDG6dljZMO9w1hmmTTGM9xzdEvUEeBg4a26BvazjZKq8YlSA04bQ77PsX4="}',

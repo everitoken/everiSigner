@@ -10,7 +10,7 @@ import {
   CircularProgress,
 } from '@material-ui/core'
 import FlexContainer from './FlexContainer'
-import { createDefaultAccount } from '../action'
+import { createSeedAccount } from '../action'
 import InfoArea from './InfoArea'
 import SeedWordsDisplay from './SeedWordsDisplay'
 import { AccountStateType } from '../../store/reducer/accounts'
@@ -211,7 +211,7 @@ type AccountCreatePropTypes = {
   accountNames: string[]
   account: AccountStateType | null
   words: string
-  onClick: typeof createDefaultAccount
+  onClick: typeof createSeedAccount
 }
 
 type AccountCreateStateTypes = {

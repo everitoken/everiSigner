@@ -1,8 +1,9 @@
-import { ACCOUNT_CREATE, StoreActionTypes } from '../action'
+import { ACCOUNT_CREATE, StoreActionTypes, MAIN_ACCOUNT_SET } from '../action'
 import { PURGE } from 'redux-persist'
 
 export type AccountStateType = {
   type: 'seed' | 'imported'
+  isMain: boolean
   words: string
   privateKey: string
   publicKey: string
@@ -22,6 +23,12 @@ export default (
   switch (action.type) {
     case ACCOUNT_CREATE:
       return [...state, action.payload]
+
+    case MAIN_ACCOUNT_SET:
+      return state.map(account => ({
+        ...account,
+        isMain: account.id === action.payload.id,
+      }))
 
     case PURGE:
       return defaultState

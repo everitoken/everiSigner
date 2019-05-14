@@ -18,7 +18,12 @@ export const SIGNING_PAYLOAD_RECEIVE = 'SIGNING_PAYLOAD_RECEIVE'
 export const SIGNED_PAYLOAD_RECEIVE = 'SIGNED_PAYLOAD_RECEIVE'
 export const NETWORK_SELECT = 'store/NETWORK_SELECT'
 export const NETWORK_ADD = 'store/NETWORK_ADD'
+export const MAIN_ACCOUNT_SET = 'store/MAIN_ACCOUNT_SET'
 
+export interface MainAccountSetType {
+  type: typeof MAIN_ACCOUNT_SET
+  payload: AccountStateType
+}
 export interface SignedPayloadReceiveType {
   type: typeof SIGNED_PAYLOAD_RECEIVE
   payload: SignedDataType
@@ -145,6 +150,11 @@ export const networkAdd = (network: NetworkItemType) => ({
   },
 })
 
+export const mainAccountSet = (account: AccountStateType) => ({
+  type: MAIN_ACCOUNT_SET,
+  payload: account,
+})
+
 export type StoreActionTypes =
   | AccountCreateType
   | PasswordSetType
@@ -158,3 +168,4 @@ export type StoreActionTypes =
   | SignedPayloadReceiveType
   | NetworkSelectType
   | NetworkAddType
+  | MainAccountSetType

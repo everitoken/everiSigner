@@ -13,7 +13,7 @@ import {
   getSeedAccountDecrypted,
   getAccountImportScreen,
 } from '../../store/getter'
-import { createDefaultAccount, importAccount } from '../action'
+import { createSeedAccount, importAccount } from '../action'
 import { NavigationLayout } from '../presentational/MainLayout'
 import { ConnectedNavigationBackButton } from './NavigationButtons'
 import AccountImport from '../presentational/AccountImport'
@@ -31,7 +31,7 @@ function TabContainer({ children }: { children: React.ReactNode }) {
 
 const ConnectedAccountCreate = connect(
   getSeedAccountDecrypted,
-  { onClick: createDefaultAccount }
+  { onClick: createSeedAccount }
 )(AccountCreate)
 
 const ConnectedAccountImport = connect(

@@ -257,6 +257,7 @@ function* importAccountHandler() {
       id,
       name,
       type: 'imported',
+      isMain: false,
       createdAt: new Date().toISOString(),
       words: '',
       privateKey,
@@ -277,9 +278,9 @@ function* importAccountHandler() {
 
 function* createAccountHandler() {
   while (true) {
-    const action: ReturnType<
-      typeof uiActions.createDefaultAccount
-    > = yield take(uiActions.CREATE_DEFAULT_ACCOUNT)
+    const action: ReturnType<typeof uiActions.createSeedAccount> = yield take(
+      uiActions.CREATE_SEED_ACCOUNT
+    )
 
     if (!chain) {
       break // TODO refactor away
@@ -309,6 +310,7 @@ function* createAccountHandler() {
     const account: AccountStateType = {
       ...action.payload,
       type: 'seed',
+      isMain: true,
       createdAt: new Date().toISOString(),
       privateKey,
       publicKey,
@@ -323,6 +325,15 @@ function* createAccountHandler() {
     yield put(
       storeActions.snackbarMessageShow('Successfully created default account.')
     )
+  }
+}
+function* setMainAccountWatcher() {
+  while (true) {
+    const action: ReturnType<typeof uiActions.setMainAccount> = yield take(
+      uiActions.SET_MAIN_ACCOUNT
+    )
+
+    yield put(storeActions.mainAccountSet(action.payload.account))
   }
 }
 
@@ -490,6 +501,7 @@ function* rootSaga() {
     yield fork(setupChainProviders) // NOTE expose `chain` global to saga/index
     yield fork(fetchBalanceWatcher)
     yield fork(copyAddressWatcher)
+    yield fork(setMainAccountWatcher)
   } catch (e) {
     // TODO consider restart saga
     console.log('saga root error: ', e)

@@ -13,15 +13,15 @@ import {
   ListItem,
   ListItemSecondaryAction,
   IconButton,
-  Chip,
   Divider,
   Typography,
   Menu,
   MenuItem,
+  Badge,
 } from '@material-ui/core'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import labels from '../../labels'
-import { copyAddress } from '../action'
+import { copyAddress, setMainAccount } from '../action'
 
 const ITEM_HEIGHT = 40
 
@@ -30,6 +30,7 @@ type AccountMoreMenuPropTypes = {
   account: AccountStateType
   onClose: () => void
   onCopyAddressClicked: typeof copyAddress
+  onSetMainAccountClicked: typeof setMainAccount
 }
 
 class AccountMoreMenu extends React.Component<AccountMoreMenuPropTypes> {
@@ -65,7 +66,12 @@ class AccountMoreMenu extends React.Component<AccountMoreMenuPropTypes> {
         <MenuItem onClick={() => alert('shown')}>
           {labels.SHOW_ADDRESS_AS_QR}
         </MenuItem>
-        <MenuItem onClick={() => alert('shown')}>
+        <MenuItem
+          onClick={() => {
+            this.props.onSetMainAccountClicked(this.props.account)
+            this.handleClose()
+          }}
+        >
           {labels.MAKE_DEFAULT_ACCOUNT}
         </MenuItem>
         <MenuItem onClick={() => alert('shown')}>
@@ -81,7 +87,7 @@ class AccountMoreMenu extends React.Component<AccountMoreMenuPropTypes> {
 
 const ConnectedAccountMoreMenu = connect(
   null,
-  { onCopyAddressClicked: copyAddress }
+  { onCopyAddressClicked: copyAddress, onSetMainAccountClicked: setMainAccount }
 )(AccountMoreMenu)
 
 type AccountListItemPropTypes = {
@@ -133,24 +139,22 @@ class AccountListItem extends React.PureComponent<
         <ListItem alignItems="flex-start">
           <FlexContainer>
             <FlexContainer direction="row" alignItems="center">
-              <p
-                style={{
-                  fontFamily: 'Roboto Mono',
-                  fontSize: '18px',
-                  paddingRight: '8px',
-                  margin: 0,
-                }}
+              <Badge
+                variant="dot"
+                color="secondary"
+                invisible={!account.isMain}
               >
-                {account.name}
-              </p>
-              {account.type === 'seed' ? (
-                <Chip
-                  style={{ fontSize: '10px', padding: 4 }}
-                  label="Default"
-                  variant="outlined"
-                  color="primary"
-                />
-              ) : null}
+                <p
+                  style={{
+                    fontFamily: 'Roboto Mono',
+                    fontSize: '18px',
+                    paddingRight: '8px',
+                    margin: 0,
+                  }}
+                >
+                  {account.name}
+                </p>
+              </Badge>
             </FlexContainer>
             <FlexContainer direction="row" alignItems="center">
               <p
