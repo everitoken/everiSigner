@@ -16,13 +16,78 @@ import {
   Chip,
   Divider,
   Typography,
+  Menu,
+  MenuItem,
 } from '@material-ui/core'
 import MoreIcon from '@material-ui/icons/MoreVert'
+import labels from '../../labels'
+import { copyAddress } from '../action'
+
+const ITEM_HEIGHT = 40
+
+type AccountMoreMenuPropTypes = {
+  anchorEl: any
+  account: AccountStateType
+  onClose: () => void
+  onCopyAddressClicked: typeof copyAddress
+}
+
+class AccountMoreMenu extends React.Component<AccountMoreMenuPropTypes> {
+  handleClose = () => {
+    this.props.onClose()
+  }
+
+  render() {
+    const { anchorEl } = this.props
+    const open = Boolean(anchorEl)
+
+    return (
+      <Menu
+        disableAutoFocusItem
+        anchorEl={anchorEl}
+        open={open}
+        onClose={this.handleClose}
+        PaperProps={{
+          style: {
+            maxHeight: ITEM_HEIGHT * 4.5,
+            width: 200,
+          },
+        }}
+      >
+        <MenuItem
+          onClick={() => {
+            this.props.onCopyAddressClicked(this.props.account)
+            this.handleClose()
+          }}
+        >
+          {labels.COPY_ADDRESS}
+        </MenuItem>
+        <MenuItem onClick={() => alert('shown')}>
+          {labels.SHOW_ADDRESS_AS_QR}
+        </MenuItem>
+        <MenuItem onClick={() => alert('shown')}>
+          {labels.MAKE_DEFAULT_ACCOUNT}
+        </MenuItem>
+        <MenuItem onClick={() => alert('shown')}>
+          {labels.SHOW_ACCOUNT_BALANCE}
+        </MenuItem>
+        <MenuItem onClick={() => alert('shown')}>
+          {labels.EXPORT_PRIVATE_KEY}
+        </MenuItem>
+      </Menu>
+    )
+  }
+}
+
+const ConnectedAccountMoreMenu = connect(
+  null,
+  { onCopyAddressClicked: copyAddress }
+)(AccountMoreMenu)
 
 type AccountListItemPropTypes = {
   account: AccountStateType
 }
-type AccountListItemStateProps = {}
+type AccountListItemStateProps = { showCopied: boolean; menuEl: any }
 class AccountListItem extends React.PureComponent<
   AccountListItemPropTypes,
   AccountListItemStateProps
@@ -40,7 +105,9 @@ class AccountListItem extends React.PureComponent<
 
   state = {
     showCopied: false,
+    menuEl: null,
   }
+
   handleCopy = (account: AccountStateType) => {
     navigator.clipboard.writeText(account.publicKey).then(() => {
       this.setState({ showCopied: true })
@@ -49,10 +116,20 @@ class AccountListItem extends React.PureComponent<
       }, 3000)
     })
   }
+
+  handleMoreClick = (event: any) => {
+    this.setState({ menuEl: event.currentTarget })
+  }
+
   render() {
     const { account } = this.props
     return (
       <React.Fragment>
+        <ConnectedAccountMoreMenu
+          anchorEl={this.state.menuEl}
+          onClose={() => this.setState({ menuEl: null })}
+          account={account}
+        />
         <ListItem alignItems="flex-start">
           <FlexContainer>
             <FlexContainer direction="row" alignItems="center">
@@ -94,7 +171,7 @@ class AccountListItem extends React.PureComponent<
             </FlexContainer>
           </FlexContainer>
           <ListItemSecondaryAction>
-            <IconButton aria-label="Delete">
+            <IconButton aria-label="More" onClick={this.handleMoreClick}>
               <MoreIcon />
             </IconButton>
           </ListItemSecondaryAction>

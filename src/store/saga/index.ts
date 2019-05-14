@@ -21,6 +21,7 @@ import ChainApi from '../../chain'
 import { getEvtChain } from '../../chain/util'
 import ChainInterface from '../../chain/ChainInterface'
 import StoreProviderInterface from '../ProviderInterface'
+import labels from '../../labels'
 
 let backgroundPort: chrome.runtime.Port | null = null
 let chain: ChainApi | null = null
@@ -273,6 +274,7 @@ function* importAccountHandler() {
     )
   }
 }
+
 function* createAccountHandler() {
   while (true) {
     const action: ReturnType<
@@ -349,6 +351,26 @@ function* setPasswordWatcher() {
       })
   }
 }
+
+function* copyAddressWatcher() {
+  while (true) {
+    const action: ReturnType<typeof uiActions.copyAddress> = yield take(
+      uiActions.COPY_ADDRESS
+    )
+
+    const { publicKey } = action.payload.account
+
+    try {
+      yield call([navigator.clipboard, 'writeText'], publicKey)
+      yield put(storeActions.snackbarMessageShow(labels.COPIED_TO_CLIPBOARD))
+    } catch (e) {
+      yield put(
+        storeActions.snackbarMessageShow(labels.FAILED_COPIED_TO_CLIPBOARD)
+      )
+    }
+  }
+}
+
 function* backgroundSendMessageChannelHandler() {
   const chan = yield call(setupSendMessageChannel)
 
@@ -467,6 +489,7 @@ function* rootSaga() {
     yield fork(authorizeAccountAccessHandler)
     yield fork(setupChainProviders) // NOTE expose `chain` global to saga/index
     yield fork(fetchBalanceWatcher)
+    yield fork(copyAddressWatcher)
   } catch (e) {
     // TODO consider restart saga
     console.log('saga root error: ', e)

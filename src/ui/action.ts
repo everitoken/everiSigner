@@ -9,6 +9,7 @@ export const IMPORT_ACCOUNT = 'ui/IMPORT_ACCOUNT'
 export const SIGN = 'ui/SIGN'
 export const AUTHORIZE_ACCOUNT_ACCESS = 'ui/AUTHORIZE_ACCOUNT_ACCESS'
 export const FETCH_BALANCE = 'ui/FETCH_BALANCE'
+export const COPY_ADDRESS = 'ui/COPY_ADDRESS'
 
 export const sign = (payload: {
   payload: ToBeSignDataType
@@ -64,5 +65,12 @@ export const fetchBalance = (publicKey: string) => ({
   type: FETCH_BALANCE,
   payload: {
     publicKey,
+  },
+})
+
+export const copyAddress = (account: AccountStateType) => ({
+  type: COPY_ADDRESS,
+  payload: {
+    account,
   },
 })
