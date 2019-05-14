@@ -5,6 +5,7 @@ import { decryptAccount } from '../service/PasswordService'
 import { AccountStateType } from './reducer/accounts'
 import { isArray } from 'lodash'
 import * as PasswordService from '../service/PasswordService'
+import { RouteComponentProps } from 'react-router-dom'
 
 export const getDefaultAccount = (state: AppState) =>
   state.accounts.find(account => account.type === 'seed')
@@ -129,3 +130,13 @@ export const getBalanceByPublicKey = (
 }
 
 export const getNetworks = (state: AppState) => state.network
+
+export const getAccountDetailScreen = (
+  state: AppState,
+  ownProps: RouteComponentProps<{ id: string }>
+) => {
+  const id = ownProps.match.params.id
+  return {
+    account: getAccountById(state, { id }),
+  }
+}

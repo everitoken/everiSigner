@@ -22,6 +22,8 @@ import {
 import MoreIcon from '@material-ui/icons/MoreVert'
 import labels from '../../labels'
 import { copyAddress, setMainAccount } from '../action'
+import { withRouter, RouteComponentProps } from 'react-router'
+import { compose } from 'redux'
 
 const ITEM_HEIGHT = 40
 
@@ -33,7 +35,9 @@ type AccountMoreMenuPropTypes = {
   onSetMainAccountClicked: typeof setMainAccount
 }
 
-class AccountMoreMenu extends React.Component<AccountMoreMenuPropTypes> {
+class AccountMoreMenu extends React.Component<
+  AccountMoreMenuPropTypes & RouteComponentProps
+> {
   handleClose = () => {
     this.props.onClose()
   }
@@ -63,7 +67,11 @@ class AccountMoreMenu extends React.Component<AccountMoreMenuPropTypes> {
         >
           {labels.COPY_ADDRESS}
         </MenuItem>
-        <MenuItem onClick={() => alert('shown')}>
+        <MenuItem
+          onClick={() =>
+            this.props.history.push(`/account/${this.props.account.id}/qr`)
+          }
+        >
           {labels.SHOW_ADDRESS_AS_QR}
         </MenuItem>
         <MenuItem
@@ -85,9 +93,15 @@ class AccountMoreMenu extends React.Component<AccountMoreMenuPropTypes> {
   }
 }
 
-const ConnectedAccountMoreMenu = connect(
-  null,
-  { onCopyAddressClicked: copyAddress, onSetMainAccountClicked: setMainAccount }
+const ConnectedAccountMoreMenu = compose(
+  withRouter,
+  connect(
+    null,
+    {
+      onCopyAddressClicked: copyAddress,
+      onSetMainAccountClicked: setMainAccount,
+    }
+  )
 )(AccountMoreMenu)
 
 type AccountListItemPropTypes = {
