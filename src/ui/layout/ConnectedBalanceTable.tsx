@@ -21,7 +21,7 @@ class ConnectedBalanceTable extends React.PureComponent<
   render() {
     return (
       <BalanceTable
-        showLink={false}
+        {...this.props}
         balances={this.props.balances}
         fetched={this.props.fetched}
       />

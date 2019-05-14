@@ -26,7 +26,7 @@ export default class BalanceTable extends React.PureComponent<PropTypes> {
     const { fetched, balances } = this.props
     if (!fetched) {
       return (
-        <FlexContainer alignItems="center">
+        <FlexContainer alignItems="center" alignSelf="stretch">
           <CircularProgress disableShrink />
         </FlexContainer>
       )
@@ -49,7 +49,7 @@ export default class BalanceTable extends React.PureComponent<PropTypes> {
               justify="space-between"
               direction="row"
             >
-              <Grid container spacing={8} alignItems="center" xs={8}>
+              <Grid container spacing={8} alignItems="center" xs={6}>
                 <Grid item>
                   <img
                     style={{ marginBottom: '-5px' }}
@@ -74,9 +74,9 @@ export default class BalanceTable extends React.PureComponent<PropTypes> {
                   </Grid>
                 ) : null}
               </Grid>
-              <Grid item xs={4}>
+              <div>
                 <MonoText>{balance.value}</MonoText>
-              </Grid>
+              </div>
             </Grid>
           </ListItem>
         ))}

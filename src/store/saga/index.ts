@@ -35,7 +35,7 @@ function setupChainProviders() {
   const provider: StoreProviderInterface | null = storeProvider.get()
 
   const network = {
-    host: 'testnet1.everitoken.io',
+    host: 'mainnet14.everitoken.io',
     port: 443,
     protocol: 'https',
   }
@@ -99,8 +99,6 @@ function* fetchBalanceWatcher() {
         return yield evtChain.getFungibleDetail(balance.id)
       })
     )
-
-    console.log(details)
 
     // organize output
     const balanceData: BalanceType[] = details.map(

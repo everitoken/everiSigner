@@ -68,9 +68,10 @@ class AccountMoreMenu extends React.Component<
           {labels.COPY_ADDRESS}
         </MenuItem>
         <MenuItem
-          onClick={() =>
+          onClick={() => {
             this.props.history.push(`/account/${this.props.account.id}/qr`)
-          }
+            this.handleClose()
+          }}
         >
           {labels.SHOW_ADDRESS_AS_QR}
         </MenuItem>
@@ -83,7 +84,12 @@ class AccountMoreMenu extends React.Component<
         >
           {labels.MAKE_DEFAULT_ACCOUNT}
         </MenuItem>
-        <MenuItem onClick={() => alert('shown')}>
+        <MenuItem
+          onClick={() => {
+            this.props.history.push(`/account/${this.props.account.id}/balance`)
+            this.handleClose()
+          }}
+        >
           {labels.SHOW_ACCOUNT_BALANCE}
         </MenuItem>
         <MenuItem onClick={() => alert('shown')}>
