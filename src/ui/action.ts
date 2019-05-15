@@ -9,7 +9,7 @@ export const IMPORT_ACCOUNT = 'ui/IMPORT_ACCOUNT'
 export const SIGN = 'ui/SIGN'
 export const AUTHORIZE_ACCOUNT_ACCESS = 'ui/AUTHORIZE_ACCOUNT_ACCESS'
 export const FETCH_BALANCE = 'ui/FETCH_BALANCE'
-export const COPY_ADDRESS = 'ui/COPY_ADDRESS'
+export const COPY_TO_CLIPBOARD = 'ui/COPY_ADDRESS'
 
 export const SET_MAIN_ACCOUNT = 'ui/SET_MAIN_ACCOUNT'
 
@@ -71,11 +71,9 @@ export const fetchBalance = (publicKey: string) => ({
   },
 })
 
-export const copyAddress = (account: AccountStateType) => ({
-  type: COPY_ADDRESS,
-  payload: {
-    account,
-  },
+export const copyToClipboard = (payload: string) => ({
+  type: COPY_TO_CLIPBOARD,
+  payload,
 })
 
 export const setMainAccount = (account: AccountStateType) => ({

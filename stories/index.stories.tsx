@@ -5,6 +5,7 @@ import SeedWordsDisplay from '../src/ui/presentational/SeedWordsDisplay'
 import SuccessInfoLayout from '../src/ui/presentational/SuccessInfoLayout'
 import { Button } from '@material-ui/core'
 import MonospaceText from '../src/ui/presentational/MonospaceText'
+import PasswordProtectedView from '../src/ui/presentational/PasswordProtectedView'
 
 storiesOf('SeedWordsDisplay', module).add('default', () => (
   <SeedWordsDisplay words="everitoken everisigner seed list" />
@@ -19,4 +20,10 @@ storiesOf('Success container', module).add('default', () => (
       </Button>
     </SuccessInfoLayout>
   </div>
+))
+
+storiesOf('Password protected view', module).add('default', () => (
+  <PasswordProtectedView password="test">
+    {({ password }) => <p>{password}</p>}
+  </PasswordProtectedView>
 ))

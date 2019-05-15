@@ -361,16 +361,14 @@ function* setPasswordWatcher() {
   }
 }
 
-function* copyAddressWatcher() {
+function* copyToClipBoardWatcher() {
   while (true) {
-    const action: ReturnType<typeof uiActions.copyAddress> = yield take(
-      uiActions.COPY_ADDRESS
+    const action: ReturnType<typeof uiActions.copyToClipboard> = yield take(
+      uiActions.COPY_TO_CLIPBOARD
     )
 
-    const { publicKey } = action.payload.account
-
     try {
-      yield call([navigator.clipboard, 'writeText'], publicKey)
+      yield call([navigator.clipboard, 'writeText'], action.payload)
       yield put(storeActions.snackbarMessageShow(labels.COPIED_TO_CLIPBOARD))
     } catch (e) {
       yield put(
@@ -498,7 +496,7 @@ function* rootSaga() {
     yield fork(authorizeAccountAccessHandler)
     yield fork(setupChainProviders) // NOTE expose `chain` global to saga/index
     yield fork(fetchBalanceWatcher)
-    yield fork(copyAddressWatcher)
+    yield fork(copyToClipBoardWatcher)
     yield fork(setMainAccountWatcher)
   } catch (e) {
     // TODO consider restart saga

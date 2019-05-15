@@ -9,7 +9,6 @@ import {
   Input,
   InputAdornment,
   IconButton,
-  Typography,
 } from '@material-ui/core'
 import Button from '../presentational/InlineButton'
 

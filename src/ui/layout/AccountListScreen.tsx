@@ -21,7 +21,7 @@ import {
 } from '@material-ui/core'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import labels from '../../labels'
-import { copyAddress, setMainAccount } from '../action'
+import { copyToClipboard, setMainAccount } from '../action'
 import { withRouter, RouteComponentProps } from 'react-router'
 import { compose } from 'redux'
 
@@ -31,7 +31,7 @@ type AccountMoreMenuPropTypes = {
   anchorEl: any
   account: AccountStateType
   onClose: () => void
-  onCopyAddressClicked: typeof copyAddress
+  onCopyAddressClicked: typeof copyToClipboard
   onSetMainAccountClicked: typeof setMainAccount
 }
 
@@ -61,7 +61,7 @@ class AccountMoreMenu extends React.Component<
       >
         <MenuItem
           onClick={() => {
-            this.props.onCopyAddressClicked(this.props.account)
+            this.props.onCopyAddressClicked(this.props.account.publicKey)
             this.handleClose()
           }}
         >
@@ -92,7 +92,12 @@ class AccountMoreMenu extends React.Component<
         >
           {labels.SHOW_ACCOUNT_BALANCE}
         </MenuItem>
-        <MenuItem onClick={() => alert('shown')}>
+        <MenuItem
+          onClick={() => {
+            this.props.history.push(`/account/${this.props.account.id}/key`)
+            this.handleClose()
+          }}
+        >
           {labels.EXPORT_PRIVATE_KEY}
         </MenuItem>
       </Menu>
@@ -105,7 +110,7 @@ const ConnectedAccountMoreMenu = compose(
   connect(
     null,
     {
-      onCopyAddressClicked: copyAddress,
+      onCopyAddressClicked: copyToClipboard,
       onSetMainAccountClicked: setMainAccount,
     }
   )

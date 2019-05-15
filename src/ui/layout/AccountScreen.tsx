@@ -5,6 +5,7 @@ import AccountCreateScreen from './AccountCreateScreen'
 import AccountListScreen from './AccountListScreen'
 import AccountQRScreen from './AccountQRScreen'
 import AccountBalanceScreen from './AccountBalanceScreen'
+import AccountPrivateKeyScreen from './AccountPrivateKeyScreen'
 
 type PropTypes = {}
 export default class AccountScreen extends React.PureComponent<
@@ -20,6 +21,10 @@ export default class AccountScreen extends React.PureComponent<
         <Route
           path={`${match.path}/:id/balance`}
           component={AccountBalanceScreen}
+        />
+        <Route
+          path={`${match.path}/:id/key`}
+          component={AccountPrivateKeyScreen}
         />
       </MainLayout>
     )

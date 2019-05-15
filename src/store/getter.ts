@@ -140,3 +140,11 @@ export const getAccountDetailScreen = (
     account: getAccountById(state, { id }),
   }
 }
+
+export const getPasswordProtectedView = (
+  state: AppState,
+  ownProps: RouteComponentProps<{ id: string }>
+) => ({
+  password: get(state, 'airport.password', ''),
+  account: getAccountById(state, { id: ownProps.match.params.id }),
+})
