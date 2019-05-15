@@ -18,7 +18,7 @@ type AccountBalancePropTypes = {
 type AccountBalanceStateTypes = {}
 
 class AccountBalanceScreen extends React.PureComponent<
-  AccountBalancePropTypes,
+  AccountBalancePropTypes & RouteComponentProps<{ id: string }>,
   AccountBalanceStateTypes
 > {
   render() {
@@ -39,7 +39,7 @@ class AccountBalanceScreen extends React.PureComponent<
 
 const ConnectedAccountQR = connect(getAccountDetailScreen)(AccountBalanceScreen)
 
-export default (props: RouteComponentProps) => (
+export default (props: RouteComponentProps<{ id: string }>) => (
   <WithAuthentication>
     {({ status }) => {
       if (status === 'password') {
