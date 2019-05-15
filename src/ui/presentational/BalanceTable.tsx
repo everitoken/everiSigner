@@ -5,6 +5,7 @@ import {
   ListItem,
   CircularProgress,
   Grid,
+  Link,
 } from '@material-ui/core'
 import MonoText from './MonospaceText'
 import FlexContainer from './FlexContainer'
@@ -69,7 +70,13 @@ export default class BalanceTable extends React.PureComponent<PropTypes> {
                 {this.props.showLink ? (
                   <Grid item>
                     <IconButton>
-                      <ExploreIcon />
+                      <Link
+                        color="inherit"
+                        href={`https://evtscan.io/fungible/${balance.id}`}
+                        target="__blank"
+                      >
+                        <ExploreIcon />
+                      </Link>
                     </IconButton>
                   </Grid>
                 ) : null}
