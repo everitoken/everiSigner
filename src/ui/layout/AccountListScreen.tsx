@@ -24,6 +24,7 @@ import labels from '../../labels'
 import { copyToClipboard, setMainAccount } from '../action'
 import { withRouter, RouteComponentProps } from 'react-router'
 import { compose } from 'redux'
+import { Link } from 'react-router-dom'
 
 const ITEM_HEIGHT = 40
 
@@ -225,16 +226,30 @@ class AccountList extends React.PureComponent<
   render() {
     return (
       <NavigationLayout
-        title="账户列表"
+        title={labels.ACCOUNT_LIST}
         renderLeft={() => <ConnectedNavigationBackButton />}
       >
-        <FlexContainer>
-          <List style={{ alignSelf: 'stretch' }}>
-            {this.props.accounts.map(account => (
-              <AccountListItem account={account} />
-            ))}
-          </List>
-        </FlexContainer>
+        {!this.props.accounts.length ? (
+          <FlexContainer>
+            <List style={{ alignSelf: 'stretch' }}>
+              {this.props.accounts.map(account => (
+                <AccountListItem key={account.id} account={account} />
+              ))}
+            </List>
+          </FlexContainer>
+        ) : (
+          <FlexContainer justifyContent="center" alignItems="center">
+            <p>{labels.NO_ACCOUNT_AVAILABLE}</p>
+            <div>
+              <Link
+                style={{ fontSize: 16, textDecoration: 'none' }}
+                to="/account/create"
+              >
+                {labels.CREATE_NEW_ACCOUNT}
+              </Link>
+            </div>
+          </FlexContainer>
+        )}
       </NavigationLayout>
     )
   }

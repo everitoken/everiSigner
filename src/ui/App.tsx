@@ -46,7 +46,7 @@ class App extends React.PureComponent {
           <ConnectedMessage />
         </React.Fragment>
         <hr />
-        <div>
+        <div style={{ zIndex: 100 }}>
           <ul
             style={{
               listStyle: 'none',
