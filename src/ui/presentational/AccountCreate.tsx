@@ -18,6 +18,7 @@ import * as uuid from 'uuid'
 import SuccessInfoLayout from './SuccessInfoLayout'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import AccountNameComponent from './AccountNameComponent'
+import labels from '../../labels'
 
 const STEPS = [
   { step: '账户名', action: '下一步' },
@@ -191,7 +192,7 @@ class StepSuccess extends React.PureComponent<RouteComponentProps> {
             fontSize: '1.1rem',
           }}
         >
-          Account is successfully created
+          {labels.ACCOUNT_CREATE_SUCCESSFUL}
         </p>
         <Button
           variant="outlined"
@@ -319,8 +320,8 @@ class AccountCreate extends React.PureComponent<
         <div>
           <InfoArea>
             <p style={{ padding: '8px 16px' }}>
-              This is your <b>seed account</b>, this account will be
-              recoverable with your seed phrases.
+              This is your <b>seed account</b>, this account will be recoverable
+              with your seed phrases.
             </p>
           </InfoArea>
         </div>

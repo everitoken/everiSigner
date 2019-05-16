@@ -17,4 +17,6 @@ export default {
   PRIVATE_KEY: '私钥',
   SHOW_ACCOUNT_BALANCE: '显示账户明细',
   SHOW_ADDRESS_AS_QR: '地址QR码',
+  ACCOUNT_CREATE_SUCCESSFUL: '成功创建账户',
+  ACCOUNT_IMPORT_SUCCESSFUL: '成功导入账户',
 }

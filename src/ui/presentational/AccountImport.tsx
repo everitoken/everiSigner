@@ -16,6 +16,8 @@ import * as Evtjs from 'evtjs'
 import uuid = require('uuid')
 import AlertDialog from './AlertDialog'
 import labels from '../../labels'
+import SuccessInfoLayout from './SuccessInfoLayout'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
 
 const STEPS = [
   { step: '账户名', action: '下一步' },
@@ -159,6 +161,33 @@ class StepInputPrivateKey extends React.PureComponent<
   }
 }
 
+class StepSuccess extends React.PureComponent<RouteComponentProps> {
+  render() {
+    return (
+      <SuccessInfoLayout>
+        <p
+          style={{
+            padding: '8px 0',
+            fontFamily: 'Roboto Mono',
+            fontSize: '1.1rem',
+          }}
+        >
+          {labels.ACCOUNT_IMPORT_SUCCESSFUL}
+        </p>
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => this.props.history.push('/')}
+        >
+          Go to Account
+        </Button>
+      </SuccessInfoLayout>
+    )
+  }
+}
+
+const ConnectedStepSuccess = withRouter(StepSuccess)
+
 type AccountImportPropType = {
   accountNames: string[]
   publicKeys: string[]
@@ -187,6 +216,7 @@ class AccountImport extends React.PureComponent<
       privateKey,
       name: this.state.name,
     })
+    this.handleNextStep()
   }
 
   handleNextStep = () => {
@@ -205,7 +235,7 @@ class AccountImport extends React.PureComponent<
           buttonText={STEPS[this.state.activeStep].action}
         />
       )
-    } else {
+    } else if (this.state.activeStep === 1) {
       return (
         <StepInputPrivateKey
           publicKeys={this.props.publicKeys}
@@ -214,6 +244,8 @@ class AccountImport extends React.PureComponent<
         />
       )
     }
+
+    return <ConnectedStepSuccess />
   }
 
   render() {
