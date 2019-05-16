@@ -12,6 +12,7 @@ export const FETCH_BALANCE = 'ui/FETCH_BALANCE'
 export const COPY_TO_CLIPBOARD = 'ui/COPY_ADDRESS'
 
 export const SET_MAIN_ACCOUNT = 'ui/SET_MAIN_ACCOUNT'
+export const REMOVE_ACCOUNT = 'ui/REMOVE_ACCOUNT'
 
 export const sign = (payload: {
   payload: ToBeSignDataType
@@ -78,5 +79,10 @@ export const copyToClipboard = (payload: string) => ({
 
 export const setMainAccount = (account: AccountStateType) => ({
   type: SET_MAIN_ACCOUNT,
+  payload: { account },
+})
+
+export const removeAccount = (account: AccountStateType) => ({
+  type: REMOVE_ACCOUNT,
   payload: { account },
 })

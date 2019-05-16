@@ -21,7 +21,7 @@ import {
 } from '@material-ui/core'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import labels from '../../labels'
-import { copyToClipboard, setMainAccount } from '../action'
+import { copyToClipboard, setMainAccount, removeAccount } from '../action'
 import { withRouter, RouteComponentProps } from 'react-router'
 import { compose } from 'redux'
 import { Link } from 'react-router-dom'
@@ -34,6 +34,7 @@ type AccountMoreMenuPropTypes = {
   onClose: () => void
   onCopyAddressClicked: typeof copyToClipboard
   onSetMainAccountClicked: typeof setMainAccount
+  onRemoveAccount: typeof removeAccount
 }
 
 class AccountMoreMenu extends React.Component<
@@ -101,6 +102,21 @@ class AccountMoreMenu extends React.Component<
         >
           {labels.EXPORT_PRIVATE_KEY}
         </MenuItem>
+
+        <MenuItem
+          disabled={this.props.account.type === 'seed'}
+          onClick={() => {
+            const yes = confirm(
+              `${labels.CONFIRM_REMOVE_ACCOUNT}: "${this.props.account.name}"?`
+            )
+            if (yes) {
+              this.props.onRemoveAccount(this.props.account)
+            }
+            this.handleClose()
+          }}
+        >
+          {labels.REMOVE_ACCOUNT}
+        </MenuItem>
       </Menu>
     )
   }
@@ -113,6 +129,7 @@ const ConnectedAccountMoreMenu = compose(
     {
       onCopyAddressClicked: copyToClipboard,
       onSetMainAccountClicked: setMainAccount,
+      onRemoveAccount: removeAccount,
     }
   )
 )(AccountMoreMenu)

@@ -329,6 +329,7 @@ function* createAccountHandler() {
     )
   }
 }
+
 function* setMainAccountWatcher() {
   while (true) {
     const action: ReturnType<typeof uiActions.setMainAccount> = yield take(
@@ -336,6 +337,16 @@ function* setMainAccountWatcher() {
     )
 
     yield put(storeActions.mainAccountSet(action.payload.account))
+  }
+}
+
+function* removeAccountWatcher() {
+  while (true) {
+    const action: ReturnType<typeof uiActions.removeAccount> = yield take(
+      uiActions.REMOVE_ACCOUNT
+    )
+
+    yield put(storeActions.accountRemove(action.payload.account))
   }
 }
 
@@ -502,6 +513,7 @@ function* rootSaga() {
     yield fork(fetchBalanceWatcher)
     yield fork(copyToClipBoardWatcher)
     yield fork(setMainAccountWatcher)
+    yield fork(removeAccountWatcher)
   } catch (e) {
     // TODO consider restart saga
     console.log('saga root error: ', e)

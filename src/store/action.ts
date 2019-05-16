@@ -19,6 +19,7 @@ export const SIGNED_PAYLOAD_RECEIVE = 'SIGNED_PAYLOAD_RECEIVE'
 export const NETWORK_SELECT = 'store/NETWORK_SELECT'
 export const NETWORK_ADD = 'store/NETWORK_ADD'
 export const MAIN_ACCOUNT_SET = 'store/MAIN_ACCOUNT_SET'
+export const ACCOUNT_REMOVE = 'store/ACCOUNT_REMOVE'
 
 export interface MainAccountSetType {
   type: typeof MAIN_ACCOUNT_SET
@@ -82,6 +83,11 @@ export interface NetworkAddType {
   payload: { network: NetworkItemType }
 }
 
+export interface AccountRemoveType {
+  type: typeof ACCOUNT_REMOVE
+  payload: AccountStateType
+}
+
 export const landPlane = (name: string, value: any): PlaneLandType => ({
   type: PLANE_LAND,
   payload: { name, value },
@@ -136,22 +142,31 @@ export const signedPayloadReceive = (
   payload,
 })
 
-export const networkSelect = (network: NetworkItemType) => ({
+export const networkSelect = (network: NetworkItemType): NetworkSelectType => ({
   type: NETWORK_SELECT,
   payload: {
     network,
   },
 })
 
-export const networkAdd = (network: NetworkItemType) => ({
+export const networkAdd = (network: NetworkItemType): NetworkAddType => ({
   type: NETWORK_ADD,
   payload: {
     network,
   },
 })
 
-export const mainAccountSet = (account: AccountStateType) => ({
+export const mainAccountSet = (
+  account: AccountStateType
+): MainAccountSetType => ({
   type: MAIN_ACCOUNT_SET,
+  payload: account,
+})
+
+export const accountRemove = (
+  account: AccountStateType
+): AccountRemoveType => ({
+  type: ACCOUNT_REMOVE,
   payload: account,
 })
 
@@ -169,3 +184,4 @@ export type StoreActionTypes =
   | NetworkSelectType
   | NetworkAddType
   | MainAccountSetType
+  | AccountRemoveType

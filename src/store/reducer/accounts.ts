@@ -1,4 +1,9 @@
-import { ACCOUNT_CREATE, StoreActionTypes, MAIN_ACCOUNT_SET } from '../action'
+import {
+  ACCOUNT_CREATE,
+  StoreActionTypes,
+  MAIN_ACCOUNT_SET,
+  ACCOUNT_REMOVE,
+} from '../action'
 import { PURGE } from 'redux-persist'
 
 export type AccountStateType = {
@@ -29,6 +34,8 @@ export default (
         ...account,
         isMain: account.id === action.payload.id,
       }))
+    case ACCOUNT_REMOVE:
+      return state.filter(account => account.id !== action.payload.id)
 
     case PURGE:
       return defaultState
