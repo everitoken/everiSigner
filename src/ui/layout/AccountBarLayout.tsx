@@ -4,6 +4,7 @@ import NetworkSelect from '../presentational/NetworkSelect'
 import { connect } from 'react-redux'
 import MainLayout, { TopActionBar } from '../presentational/MainLayout'
 import { networkSelect } from '../../store/action'
+import { RouteComponentProps, withRouter } from 'react-router'
 
 const ConnectedNetworkSelect = connect(
   getNetworks,
@@ -14,7 +15,9 @@ type PropTypes = {
   children: React.ReactNode
 }
 
-export default class AccountBarLayout extends React.PureComponent<PropTypes> {
+class AccountBarLayout extends React.PureComponent<
+  PropTypes & RouteComponentProps
+> {
   render() {
     return (
       <MainLayout
@@ -22,7 +25,7 @@ export default class AccountBarLayout extends React.PureComponent<PropTypes> {
           <TopActionBar
             renderMiddle={() => <ConnectedNetworkSelect />}
             onLogoClick={() => null}
-            onMoreClick={() => null}
+            onMoreClick={() => this.props.history.push('/settings')}
           />
         )}
       >
@@ -31,3 +34,5 @@ export default class AccountBarLayout extends React.PureComponent<PropTypes> {
     )
   }
 }
+
+export default withRouter(AccountBarLayout)

@@ -11,9 +11,11 @@ type StateTypes = {
 
 class Home extends React.PureComponent<PropTypes, StateTypes> {
   handleClick = () => {}
+
   handleResetState = () => {
     window.persistor.purge()
   }
+
   render() {
     return (
       <AccountBarLayout>

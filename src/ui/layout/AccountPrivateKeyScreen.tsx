@@ -48,7 +48,7 @@ class AccountExportPrivateKeyScreen extends React.PureComponent<
                 <div style={{ width: '100%' }}>
                   <InfoArea>
                     <p style={{ padding: 8 }}>
-                      请注意妥善保管私钥，勿泄露给其他人。
+                      {labels.GUARD_PRIVATE_KEY_SAFELY}
                     </p>
                   </InfoArea>
                 </div>
