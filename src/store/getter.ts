@@ -81,6 +81,7 @@ export const getSnackbarMessage = ({ message }: AppState) => message
 
 export const getAccountImportScreen = (state: AppState) => ({
   accountNames: state.accounts.map(({ name }) => name),
+  publicKeys: state.accounts.map(({ publicKey }) => publicKey),
 })
 export const getDecryptedAccounts = (state: AppState) => {
   {

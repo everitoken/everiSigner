@@ -13,5 +13,6 @@ export default {
   FAIL_FIND_ACCOUNT: '无找到指定账户',
   GUARD_PRIVATE_KEY_SAFELY: '请注意妥善保管私钥，勿泄露给其他人',
   NO_ACCOUNT_AVAILABLE: 'No account available',
-  CREATE_NEW_ACCOUNT: '创建新账户'
+  CREATE_NEW_ACCOUNT: '创建新账户',
+  PRIVATE_KEY_IMPORTED_ALREADY: '无法创建此账户，该私钥已存在。',
 }

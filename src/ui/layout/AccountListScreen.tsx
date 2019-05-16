@@ -229,7 +229,7 @@ class AccountList extends React.PureComponent<
         title={labels.ACCOUNT_LIST}
         renderLeft={() => <ConnectedNavigationBackButton />}
       >
-        {!this.props.accounts.length ? (
+        {this.props.accounts.length ? (
           <FlexContainer>
             <List style={{ alignSelf: 'stretch' }}>
               {this.props.accounts.map(account => (

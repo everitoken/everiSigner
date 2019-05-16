@@ -9,10 +9,13 @@ import {
   StepLabel,
   TextField,
   Button,
+  Typography,
 } from '@material-ui/core'
 import AccountNameComponent from './AccountNameComponent'
 import * as Evtjs from 'evtjs'
 import uuid = require('uuid')
+import AlertDialog from './AlertDialog'
+import labels from '../../labels'
 
 const STEPS = [
   { step: '账户名', action: '下一步' },
@@ -21,6 +24,7 @@ const STEPS = [
 
 type StepInputPrivateKeyPropTypes = {
   buttonText: string
+  publicKeys: string[]
   onNextClick: (privateKey: string) => void
 }
 
@@ -28,6 +32,7 @@ type StepInputPrivateKeyStateProps = {
   privateKey: string
   publicKey: string
   error: boolean
+  errorMessage: string
 }
 
 class StepInputPrivateKey extends React.PureComponent<
@@ -38,6 +43,7 @@ class StepInputPrivateKey extends React.PureComponent<
     privateKey: '',
     publicKey: '',
     error: false,
+    errorMessage: '',
   }
 
   handleSubmit = () => {
@@ -45,7 +51,13 @@ class StepInputPrivateKey extends React.PureComponent<
     if (!EvtKey.isValidPrivateKey(this.state.privateKey)) {
       this.setState({ error: true })
     } else {
-      this.props.onNextClick(this.state.privateKey)
+      const publicKey = EvtKey.privateToPublic(this.state.privateKey)
+
+      if (this.props.publicKeys.includes(publicKey)) {
+        this.setState({ errorMessage: labels.PRIVATE_KEY_IMPORTED_ALREADY })
+      } else {
+        this.props.onNextClick(this.state.privateKey)
+      }
     }
   }
 
@@ -62,46 +74,33 @@ class StepInputPrivateKey extends React.PureComponent<
 
   render() {
     return (
-      <FlexContainer>
-        <div
-          style={{
-            display: 'flex',
-            flex: 1,
-            flexDirection: 'column',
-            padding: '12px 16px',
-            alignSelf: 'stretch',
+      <React.Fragment>
+        <AlertDialog
+          title="Error"
+          open={this.state.errorMessage.length !== 0}
+          onClose={() => {
+            this.setState({ errorMessage: '' })
           }}
         >
-          <FlexContainer>
-            <TextField
-              id="seed-phrase-verify"
-              label="输入要导入的私钥"
-              multiline
-              rows="2"
-              fullWidth
-              inputProps={{
-                style: {
-                  fontSize: '0.8rem',
-                  fontFamily: 'Roboto Mono',
-                },
-                spellCheck: false,
-              }}
-              error={this.state.error}
-              required
-              onChange={this.handleChange}
-              variant="outlined"
-            />
-          </FlexContainer>
-
-          {this.state.publicKey ? (
+          <Typography>{this.state.errorMessage}</Typography>
+        </AlertDialog>
+        <FlexContainer>
+          <div
+            style={{
+              display: 'flex',
+              flex: 1,
+              flexDirection: 'column',
+              padding: '12px 16px',
+              alignSelf: 'stretch',
+            }}
+          >
             <FlexContainer>
               <TextField
                 id="seed-phrase-verify"
-                label="对应的公钥"
+                label="输入要导入的私钥"
                 multiline
                 rows="2"
                 fullWidth
-                value={this.state.publicKey}
                 inputProps={{
                   style: {
                     fontSize: '0.8rem',
@@ -109,35 +108,60 @@ class StepInputPrivateKey extends React.PureComponent<
                   },
                   spellCheck: false,
                 }}
+                error={this.state.error}
+                required
+                onChange={this.handleChange}
                 variant="outlined"
               />
             </FlexContainer>
-          ) : null}
-        </div>
 
-        <div style={{ alignSelf: 'stretch' }}>
-          <FlexContainer
-            withPadding
-            alignItems="stretch"
-            justifyContent="flex-end"
-          >
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              onClick={this.handleSubmit}
+            {this.state.publicKey ? (
+              <FlexContainer>
+                <TextField
+                  id="seed-phrase-verify"
+                  label="对应的公钥"
+                  multiline
+                  rows="2"
+                  fullWidth
+                  value={this.state.publicKey}
+                  inputProps={{
+                    style: {
+                      fontSize: '0.8rem',
+                      fontFamily: 'Roboto Mono',
+                    },
+                    spellCheck: false,
+                  }}
+                  variant="outlined"
+                />
+              </FlexContainer>
+            ) : null}
+          </div>
+
+          <div style={{ alignSelf: 'stretch' }}>
+            <FlexContainer
+              withPadding
+              alignItems="stretch"
+              justifyContent="flex-end"
             >
-              {this.props.buttonText}
-            </Button>
-          </FlexContainer>
-        </div>
-      </FlexContainer>
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                onClick={this.handleSubmit}
+              >
+                {this.props.buttonText}
+              </Button>
+            </FlexContainer>
+          </div>
+        </FlexContainer>
+      </React.Fragment>
     )
   }
 }
 
 type AccountImportPropType = {
   accountNames: string[]
+  publicKeys: string[]
   onClick: typeof importAccount
 }
 
@@ -184,6 +208,7 @@ class AccountImport extends React.PureComponent<
     } else {
       return (
         <StepInputPrivateKey
+          publicKeys={this.props.publicKeys}
           onNextClick={this.handleImportAccount}
           buttonText={STEPS[this.state.activeStep].action}
         />
