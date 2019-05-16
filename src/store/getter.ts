@@ -123,9 +123,11 @@ export const getBalanceByPublicKey = (
   ownProps: { publicKey: string }
 ) => {
   const balances = get(state, `airport.balance/${ownProps.publicKey}`)
+  const fetching = get(state, 'airport.balance/fetching', false)
+
   return {
     balances: balances || [],
-    fetched: isArray(balances),
+    fetching,
   }
 }
 

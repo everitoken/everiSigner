@@ -77,6 +77,8 @@ function* fetchBalanceWatcher() {
       break
     }
 
+    yield put(storeActions.landPlane('balance/fetching', true))
+
     const evtChain: ChainInterface = yield call(getEvtChain, chain)
     // get all balances by public key
     const rawBalances: string[] = yield evtChain.getBalancesByPublicKey(
@@ -121,6 +123,8 @@ function* fetchBalanceWatcher() {
     yield put(
       storeActions.landPlane(`balance/${action.payload.publicKey}`, balanceData)
     )
+
+    yield put(storeActions.landPlane('balance/fetching', false))
   }
 }
 

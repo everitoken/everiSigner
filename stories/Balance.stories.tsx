@@ -31,18 +31,18 @@ const balances: BalanceType[] = [
 
 storiesOf('Balance', module).add('loading', () => (
   <Container>
-    <BalanceTable fetched={false} balances={[]} />
+    <BalanceTable fetching={false} balances={[]} />
   </Container>
 ))
 
 storiesOf('Balance', module).add('empty balance', () => (
   <Container>
-    <BalanceTable fetched={true} balances={[]} />
+    <BalanceTable fetching={true} balances={[]} />
   </Container>
 ))
 
 storiesOf('Balance', module).add('table', () => (
   <Container>
-    <BalanceTable fetched={true} balances={balances} showLink />
+    <BalanceTable fetching={true} balances={balances} showLink />
   </Container>
 ))

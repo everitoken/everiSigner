@@ -23,7 +23,7 @@ class ConnectedBalanceTable extends React.PureComponent<
       <BalanceTable
         {...this.props}
         balances={this.props.balances}
-        fetched={this.props.fetched}
+        fetching={this.props.fetching}
       />
     )
   }

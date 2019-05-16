@@ -10,9 +10,19 @@ import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router'
 import labels from '../../labels'
 import AccountBalance from '../layout/ConnectedBalanceTable'
+import { IconButton } from '@material-ui/core'
+import RefreshIcon from '@material-ui/icons/Refresh'
+import { fetchBalance } from '../action'
+
+const RefreshButton = (props: { onRefresh: () => void }) => (
+  <IconButton>
+    <RefreshIcon fontSize="large" onClick={props.onRefresh} />
+  </IconButton>
+)
 
 type AccountBalancePropTypes = {
   account: AccountStateType | undefined
+  onRefresh: typeof fetchBalance
 }
 
 type AccountBalanceStateTypes = {}
@@ -21,11 +31,17 @@ class AccountBalanceScreen extends React.PureComponent<
   AccountBalancePropTypes & RouteComponentProps<{ id: string }>,
   AccountBalanceStateTypes
 > {
+  handleRefresh = () => {
+    if (this.props.account) {
+      this.props.onRefresh(this.props.account.publicKey)
+    }
+  }
   render() {
     return (
       <NavigationLayout
         title={labels.BALANCE}
         renderLeft={() => <ConnectedNavigationBackButton />}
+        renderRight={() => <RefreshButton onRefresh={this.handleRefresh} />}
       >
         {this.props.account ? (
           <div style={{ flex: '1 1 auto', padding: 16 }}>
@@ -37,7 +53,10 @@ class AccountBalanceScreen extends React.PureComponent<
   }
 }
 
-const ConnectedAccountQR = connect(getAccountDetailScreen)(AccountBalanceScreen)
+const ConnectedAccountQR = connect(
+  getAccountDetailScreen,
+  { onRefresh: fetchBalance }
+)(AccountBalanceScreen)
 
 export default (props: RouteComponentProps<{ id: string }>) => (
   <WithAuthentication>

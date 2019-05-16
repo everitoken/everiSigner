@@ -14,7 +14,7 @@ import { BalanceType } from '../../types'
 
 export type PropTypes = {
   balances: BalanceType[]
-  fetched: boolean
+  fetching: boolean
   showLink?: boolean
 }
 
@@ -24,15 +24,15 @@ export default class BalanceTable extends React.PureComponent<PropTypes> {
   }
 
   render() {
-    const { fetched, balances } = this.props
-    if (!fetched) {
+    const { fetching, balances } = this.props
+    if (fetching) {
       return (
         <FlexContainer alignItems="center" alignSelf="stretch">
           <CircularProgress disableShrink />
         </FlexContainer>
       )
     }
-    if (fetched && balances.length === 0) {
+    if (!fetching && balances.length === 0) {
       return (
         <FlexContainer alignItems="center">
           <p>No balance</p>
