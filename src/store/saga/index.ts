@@ -350,6 +350,29 @@ function* removeAccountWatcher() {
   }
 }
 
+function* addCustomNetworkWatcher() {
+  while (true) {
+    const action: ReturnType<typeof uiActions.addCustomNetwork> = yield take(
+      uiActions.ADD_CUSTOM_NETWORK
+    )
+
+    yield put(storeActions.networkAdd(action.payload.network))
+    yield put(
+      storeActions.snackbarMessageShow(labels.NETWORK_SUCCESSFULLY_CREATED)
+    )
+  }
+}
+
+function* removeCustomNetworkWatcher () {
+  while (true) {
+    const action: ReturnType<typeof uiActions.removeNetwork> = yield take(
+      uiActions.REMOVE_CUSTOM_NETWORK
+    )
+
+    yield put(storeActions.networkRemove(action.payload.network))
+  }
+}
+
 function* setPasswordWatcher() {
   while (true) {
     const action: ReturnType<typeof uiActions.setPassword> = yield take([
@@ -514,6 +537,8 @@ function* rootSaga() {
     yield fork(copyToClipBoardWatcher)
     yield fork(setMainAccountWatcher)
     yield fork(removeAccountWatcher)
+    yield fork(addCustomNetworkWatcher)
+    yield fork(removeCustomNetworkWatcher)
   } catch (e) {
     // TODO consider restart saga
     console.log('saga root error: ', e)

@@ -20,9 +20,15 @@ export default {
   ACCOUNT_CREATE_SUCCESSFUL: '成功创建账户',
   ACCOUNT_IMPORT_SUCCESSFUL: '成功导入账户',
   NETWORK: 'Network',
+  NETWORK_LIST: '节点列表',
+  CREATE_NETWORK: '创建节点',
   NETWORK_NAVIGATION_SECONDARY_TEXT: 'View and create network',
   ABOUT: 'About',
   ABOUT_NAVIGATION_SECONDARY_TEXT: 'Learn more about everiSigner',
   SET_NETWORK_AS_DEFAULT: '设置为默认节点',
-  REMOVE_NETWORK: '删除节点'
+  REMOVE_NETWORK: '删除节点',
+  NETWORK_NAME: '节点名称',
+  NETWORK_LOCATION: '节点位置',
+  NETWORK_URL: '节点Url地址',
+  NETWORK_SUCCESSFULLY_CREATED:'成功添加节点'
 }

@@ -16,6 +16,7 @@ import {
 } from '@material-ui/core'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import NetworkListItem from './NetworkListItem'
+import { isSameNetwork } from '../util'
 
 type PropTypes = {
   selected: NetworkItemType
@@ -50,7 +51,7 @@ class NetworkSelect extends React.PureComponent<
   }
   handleSelect = (network: NetworkItemType) => {
     this.setState({ selected: network, open: false })
-    if (this.state.selected.name !== network.name) {
+    if (!isSameNetwork(this.state.selected, network)) {
       this.props.onSelect(network)
     }
   }
@@ -67,7 +68,7 @@ class NetworkSelect extends React.PureComponent<
           <List>
             {this.props.networks.map(network => (
               <ListItem
-                key={network.name}
+                key={network.url}
                 role={undefined}
                 dense
                 disableGutters
@@ -75,7 +76,7 @@ class NetworkSelect extends React.PureComponent<
                 onClick={() => this.handleSelect(network)}
               >
                 <Radio
-                  checked={network.name === this.state.selected.name}
+                  checked={isSameNetwork(network, this.state.selected)}
                   tabIndex={-1}
                   value={network.name}
                   name="select-network"

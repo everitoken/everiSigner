@@ -3,7 +3,13 @@ import { NavigationLayout } from '../presentational/MainLayout'
 import { ConnectedNavigationBackButton } from './NavigationButtons'
 import labels from '../../labels'
 import { NetworkStateType } from '../../store/reducer/network'
-import { RouteComponentProps, Route, withRouter } from 'react-router-dom'
+import FlexContainer from '../presentational/FlexContainer'
+import {
+  RouteComponentProps,
+  Route,
+  withRouter,
+  withRouter,
+} from 'react-router-dom'
 import { getNetworks } from '../../store/getter'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
@@ -16,12 +22,28 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  FormControl,
+  InputLabel,
+  Input,
+  Divider,
 } from '@material-ui/core'
 import NetworkListItem from '../presentational/NetworkListItem'
 import { NetworkItemType } from '../../types'
 import { networkSelect } from '../../store/action'
+import AddIcon from '@material-ui/icons/Add'
+import { isSameNetwork } from '../util'
+import { addCustomNetwork, removeNetwork } from '../action'
+import InfoArea from '../presentational/InfoArea'
+import { isEmpty } from 'lodash'
+import Button from '../presentational/InlineButton'
 
 const ITEM_HEIGHT = 40
+
+const AddButton = (props: { onAdd: () => void }) => (
+  <IconButton onClick={props.onAdd}>
+    <AddIcon fontSize="large" />
+  </IconButton>
+)
 
 type NetworkItemMoreMenuPropTypes = {
   anchorEl: any
@@ -29,6 +51,7 @@ type NetworkItemMoreMenuPropTypes = {
   isSelected: boolean
   onClose: () => void
   onSelectNetwork: typeof networkSelect
+  onRemoveNetwork: typeof removeNetwork
 }
 
 class NetworkItemMoreMenu extends React.Component<
@@ -69,6 +92,7 @@ class NetworkItemMoreMenu extends React.Component<
         <MenuItem
           disabled={!this.props.network.isCustom}
           onClick={() => {
+            this.props.onRemoveNetwork(this.state.network)
             this.handleClose()
           }}
         >
@@ -81,6 +105,7 @@ class NetworkItemMoreMenu extends React.Component<
 
 type NetworkListPropTypes = NetworkStateType & {
   onNetworkSelect: typeof networkSelect
+  onNetworkRemove: typeof removeNetwork
 }
 
 type NetworkListStateTypes = {
@@ -102,7 +127,7 @@ class NetworkList extends React.PureComponent<
     this.setState({
       anchorEl: event.currentTarget,
       currentNetwork,
-      isSelected: currentNetwork.name === this.props.selected.name,
+      isSelected: isSameNetwork(currentNetwork, this.props.selected),
     })
   }
 
@@ -118,25 +143,34 @@ class NetworkList extends React.PureComponent<
             onSelectNetwork={() =>
               this.props.onNetworkSelect(this.state.currentNetwork)
             }
+            onRemoveNetwork={() =>
+              this.props.onNetworkRemove(this.state.currentNetwork)
+            }
           />
-          {this.props.networks.map(network => (
-            <ListItem key={network.name} role={undefined} button>
-              <Badge
-                variant="dot"
-                color="secondary"
-                invisible={this.props.selected.name !== network.name}
-              >
-                <NetworkListItem network={network} />
-              </Badge>
-              <ListItemSecondaryAction>
-                <IconButton
-                  aria-label="More"
-                  onClick={event => this.handleMoreClick(event, network)}
+          {this.props.networks.map((network, i) => (
+            <React.Fragment>
+              <ListItem key={network.url} role={undefined} button>
+                <Badge
+                  variant="dot"
+                  color="secondary"
+                  invisible={!isSameNetwork(this.props.selected, network)}
                 >
-                  <MoreIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
+                  <NetworkListItem network={network} />
+                </Badge>
+                <ListItemSecondaryAction>
+                  <IconButton
+                    aria-label="More"
+                    onClick={event => this.handleMoreClick(event, network)}
+                  >
+                    <MoreIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+
+              {i !== this.props.networks.length - 1 ? (
+                <Divider variant="fullWidth" />
+              ) : null}
+            </React.Fragment>
           ))}
         </List>
       </div>
@@ -148,28 +182,153 @@ const ConnectedNetworkList = compose(
   withRouter,
   connect(
     getNetworks,
-    { onNetworkSelect: networkSelect }
+    { onNetworkSelect: networkSelect, onNetworkRemove: removeNetwork }
   )
 )(NetworkList)
 
-type NetworkCreatePropTypes = {}
-class NetworkCreate extends React.PureComponent<NetworkCreatePropTypes> {
+type NetworkCreatePropTypes = NetworkStateType & {
+  onNetworkAdd: typeof addCustomNetwork
+}
+
+type NetworkCreateStateTypes = {
+  url: string
+  location: string
+  errorMessage: { [key: string]: string }
+}
+
+class NetworkCreate extends React.PureComponent<
+  NetworkCreatePropTypes & RouteComponentProps,
+  NetworkCreateStateTypes
+> {
+  state = {
+    url: '',
+    location: '',
+    errorMessage: {
+      name: '',
+      url: '',
+      location: '',
+    },
+  }
+
+  componentWillUpdate = (props: NetworkCreatePropTypes) => {
+    console.log(props)
+    if (props.networks.find(network => network.url === this.state.url)) {
+      setTimeout(() => {
+        this.props.history.goBack()
+      }, 300)
+    }
+  }
+
+  handleFieldChange = (name: string) => (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    this.setState({ [name]: event.target.value })
+  }
+
+  validate = () => {
+    // validate url, and location
+    // validate url or location exist in list
+    return true
+  }
+
+  handleCreateNetwork = () => {
+    if (this.validate()) {
+      this.props.onNetworkAdd({
+        url: this.state.url,
+        name: 'custom',
+        location: this.state.location,
+        isProduction: false,
+        isCustom: true,
+      })
+    }
+  }
+
   render() {
-    return <p>Network create</p>
+    return (
+      <FlexContainer justifyContent="space-between">
+        <div style={{ width: '100%' }}>
+          <InfoArea>
+            <ul>
+              <li>Create custom network</li>
+              <li>Custom network can be deleted</li>
+            </ul>
+          </InfoArea>
+        </div>
+
+        <FlexContainer withPadding justifyContent="space-around">
+          <FormControl fullWidth>
+            <InputLabel htmlFor="network-location">
+              {labels.NETWORK_LOCATION}
+            </InputLabel>
+            <Input
+              error={!isEmpty(this.state.errorMessage.location)}
+              id="location"
+              type="text"
+              value={this.state.location}
+              onChange={this.handleFieldChange('location')}
+            />
+          </FormControl>
+          <FormControl fullWidth>
+            <InputLabel htmlFor="network-url">{labels.NETWORK_URL}</InputLabel>
+            <Input
+              error={!isEmpty(this.state.errorMessage.url)}
+              id="url"
+              type="text"
+              value={this.state.url}
+              onChange={this.handleFieldChange('url')}
+            />
+          </FormControl>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={this.handleCreateNetwork}
+          >
+            {labels.CREATE_NETWORK}
+          </Button>
+        </FlexContainer>
+      </FlexContainer>
+    )
   }
 }
+
+const ConnectedNetworkCreate = compose(
+  withRouter,
+  connect(
+    getNetworks,
+    { onNetworkAdd: addCustomNetwork }
+  )
+)(NetworkCreate)
 
 export default class extends React.PureComponent<RouteComponentProps> {
   render() {
     const { match } = this.props
+    const isCreateNetworkScreen = this.props.location.pathname.includes(
+      '/create'
+    )
+    const title = isCreateNetworkScreen
+      ? labels.CREATE_NETWORK
+      : labels.NETWORK_LIST
 
     return (
       <NavigationLayout
-        title={labels.NETWORK}
+        title={title}
         renderLeft={() => <ConnectedNavigationBackButton />}
+        renderRight={() => {
+          if (isCreateNetworkScreen) {
+            return null
+          }
+          return (
+            <AddButton
+              onAdd={() => this.props.history.push('/settings/network/create')}
+            />
+          )
+        }}
       >
-        <Route path={`${match.path}/`} component={ConnectedNetworkList} />
-        <Route path={`${match.path}/create`} component={NetworkCreate} />
+        <Route exact path={`${match.path}/`} component={ConnectedNetworkList} />
+        <Route
+          path={`${match.path}/create`}
+          component={ConnectedNetworkCreate}
+        />
       </NavigationLayout>
     )
   }

@@ -18,7 +18,8 @@ export const COPY_TO_CLIPBOARD = 'ui/COPY_ADDRESS'
 
 export const SET_MAIN_ACCOUNT = 'ui/SET_MAIN_ACCOUNT'
 export const REMOVE_ACCOUNT = 'ui/REMOVE_ACCOUNT'
-export const SELECT_NETWORK = 'ui/SELECT_NETWORK'
+export const ADD_CUSTOM_NETWORK = 'ui/ADD_CUSTOM_NETWORK'
+export const REMOVE_CUSTOM_NETWORK = 'ui/REMOVE_CUSTOM_NETWORK'
 
 export const sign = (payload: {
   payload: ToBeSignDataType
@@ -93,7 +94,12 @@ export const removeAccount = (account: AccountStateType) => ({
   payload: { account },
 })
 
-export const selectNetwork = (network: NetworkItemType) => ({
-  type: SELECT_NETWORK,
+export const addCustomNetwork = (network: NetworkItemType) => ({
+  type: ADD_CUSTOM_NETWORK,
+  payload: { network },
+})
+
+export const removeNetwork = (network: NetworkItemType) => ({
+  type: REMOVE_CUSTOM_NETWORK,
   payload: { network },
 })

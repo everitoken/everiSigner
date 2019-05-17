@@ -186,8 +186,7 @@ export type MessageMetaType = {
   tabId: number | null
 }
 
-export type NetworkItemType = {
-  abbr: string
+export interface NetworkItemType {
   name: string
   url: string
   location: string

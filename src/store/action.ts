@@ -18,6 +18,7 @@ export const SIGNING_PAYLOAD_RECEIVE = 'SIGNING_PAYLOAD_RECEIVE'
 export const SIGNED_PAYLOAD_RECEIVE = 'SIGNED_PAYLOAD_RECEIVE'
 export const NETWORK_SELECT = 'store/NETWORK_SELECT'
 export const NETWORK_ADD = 'store/NETWORK_ADD'
+export const NETWORK_REMOVE = 'store/NETWORK_REMOVE'
 export const MAIN_ACCOUNT_SET = 'store/MAIN_ACCOUNT_SET'
 export const ACCOUNT_REMOVE = 'store/ACCOUNT_REMOVE'
 
@@ -80,6 +81,11 @@ export interface NetworkSelectType {
 
 export interface NetworkAddType {
   type: typeof NETWORK_ADD
+  payload: { network: NetworkItemType }
+}
+
+export interface NetworkRemoveType {
+  type: typeof NETWORK_REMOVE
   payload: { network: NetworkItemType }
 }
 
@@ -155,6 +161,12 @@ export const networkAdd = (network: NetworkItemType): NetworkAddType => ({
     network,
   },
 })
+export const networkRemove = (network: NetworkItemType): NetworkRemoveType => ({
+  type: NETWORK_REMOVE,
+  payload: {
+    network,
+  },
+})
 
 export const mainAccountSet = (
   account: AccountStateType
@@ -183,5 +195,6 @@ export type StoreActionTypes =
   | SignedPayloadReceiveType
   | NetworkSelectType
   | NetworkAddType
+  | NetworkRemoveType
   | MainAccountSetType
   | AccountRemoveType
