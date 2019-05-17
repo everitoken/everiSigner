@@ -8,7 +8,7 @@ import {
 
 const mainnet1 = {
   name: 'mainnet1',
-  url: 'https://mainnet1.everitoken.io/',
+  url: 'https://mainnet1.everitoken.io',
   location: 'Hong Kong',
   isProduction: true,
   isCustom: false,
@@ -16,7 +16,7 @@ const mainnet1 = {
 
 const mainnet2 = {
   name: 'mainnet2',
-  url: 'https://mainnet2.everitoken.io/',
+  url: 'https://mainnet2.everitoken.io',
   location: 'California',
   isProduction: true,
   isCustom: false,
@@ -24,7 +24,7 @@ const mainnet2 = {
 
 const mainnet3 = {
   name: 'mainnet3',
-  url: 'https://mainnet3.everitoken.io/',
+  url: 'https://mainnet3.everitoken.io',
   location: 'Tokyo',
   isProduction: true,
   isCustom: false,
@@ -32,28 +32,28 @@ const mainnet3 = {
 
 const mainnet4 = {
   name: 'mainnet4',
-  url: 'https://mainnet4.everitoken.io/',
+  url: 'https://mainnet4.everitoken.io',
   location: 'Frankfurt',
   isProduction: true,
   isCustom: false,
 }
 const mainnet5 = {
   name: 'mainnet5',
-  url: 'https://mainnet5.everitoken.io/',
+  url: 'https://mainnet5.everitoken.io',
   location: 'Seoul',
   isProduction: true,
   isCustom: false,
 }
 const mainnet6 = {
   name: 'mainnet6',
-  url: 'https://mainnet6.everitoken.io/',
+  url: 'https://mainnet6.everitoken.io',
   location: 'Brazil',
   isProduction: true,
   isCustom: false,
 }
 const mainnet7 = {
   name: 'mainnet7',
-  url: 'https://mainnet7.everitoken.io/',
+  url: 'https://mainnet7.everitoken.io',
   location: 'SINGAPORE',
   isProduction: true,
   isCustom: false,
@@ -61,7 +61,7 @@ const mainnet7 = {
 
 const mainnet8 = {
   name: 'mainnet8',
-  url: 'https://mainnet7.everitoken.io/',
+  url: 'https://mainnet7.everitoken.io',
   location: 'FRANKFURT 2',
   isProduction: true,
   isCustom: false,
@@ -69,8 +69,23 @@ const mainnet8 = {
 
 const mainnet9 = {
   name: 'mainnet9',
-  url: 'https://mainnet9.everitoken.io/',
+  url: 'https://mainnet9.everitoken.io',
   location: 'KUALA LUMPUR',
+  isProduction: true,
+  isCustom: false,
+}
+const mainnet14 = {
+  name: 'mainnet14',
+  url: 'https://mainnet14.everitoken.io',
+  location: 'SHANG HAI',
+  isProduction: true,
+  isCustom: false,
+}
+
+const testnet = {
+  name: 'testnet',
+  url: 'https://testnet1.everitoken.io',
+  location: 'Test Net',
   isProduction: true,
   isCustom: false,
 }
@@ -78,6 +93,7 @@ const mainnet9 = {
 const defaultState = {
   selected: mainnet1,
   networks: [
+    testnet,
     mainnet1,
     mainnet2,
     mainnet3,
@@ -87,6 +103,7 @@ const defaultState = {
     mainnet7,
     mainnet8,
     mainnet9,
+    mainnet14,
   ],
 }
 

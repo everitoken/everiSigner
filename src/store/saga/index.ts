@@ -1,5 +1,6 @@
 import { get } from 'lodash'
 import { END, eventChannel } from 'redux-saga'
+import parseUrl from 'parse-url'
 import { call, fork, put, select, take, all } from 'redux-saga/effects'
 import * as PasswordService from '../../service/PasswordService'
 import { imageDataUriMap } from '../../asset'
@@ -7,6 +8,7 @@ import {
   BackgroundMsgTypes,
   BackgroundPasswordMsgType,
   BalanceType,
+  NetworkItemType,
 } from '../../types'
 import * as uiActions from '../../ui/action'
 import * as storeActions from '../action'
@@ -14,6 +16,7 @@ import {
   getPassword,
   getPasswordHash,
   getAuthenticateAccountRequest,
+  getNetworks,
 } from '../getter'
 import { AccountStateType } from '../reducer/accounts'
 import storeProvider from '../provider'
@@ -22,6 +25,7 @@ import { getEvtChain } from '../../chain/util'
 import ChainInterface from '../../chain/ChainInterface'
 import StoreProviderInterface from '../ProviderInterface'
 import labels from '../../labels'
+import { NetworkStateType } from '../reducer/network'
 
 let backgroundPort: chrome.runtime.Port | null = null
 let chain: ChainApi | null = null
@@ -31,17 +35,26 @@ const log = (msg: string, tag: string = 'unspecified') => {
   background && background.console.log(`popup(${tag}): `, msg)
 }
 
-function setupChainProviders() {
+function setupChainProviders(network: NetworkItemType) {
   const provider: StoreProviderInterface | null = storeProvider.get()
 
-  const network = {
+  const chainNetwork = {
+    host: network.url
+      .replace(/\/$/, '')
+      .replace(/^https:\/\//, '')
+      .replace(/^http:\/\//, ''),
+    port: network.url.startsWith('https') ? 443 : 80,
+    protocol: network.url.startsWith('https') ? 'https' : 'http',
+  }
+
+  const fallbackNetwork = {
     host: 'mainnet14.everitoken.io',
     port: 443,
     protocol: 'https',
   }
 
   if (provider != null) {
-    chain = new ChainApi(provider, network)
+    chain = new ChainApi(provider, chainNetwork || fallbackNetwork)
   }
 }
 
@@ -121,7 +134,9 @@ function* fetchBalanceWatcher() {
     )
 
     yield put(
-      storeActions.landPlane(`balance/${action.payload.publicKey}`, balanceData)
+      storeActions.landPlane(`balance/${action.payload.publicKey}`, [
+        ...balanceData,
+      ])
     )
 
     yield put(storeActions.landPlane('balance/fetching', false))
@@ -363,7 +378,7 @@ function* addCustomNetworkWatcher() {
   }
 }
 
-function* removeCustomNetworkWatcher () {
+function* removeCustomNetworkWatcher() {
   while (true) {
     const action: ReturnType<typeof uiActions.removeNetwork> = yield take(
       uiActions.REMOVE_CUSTOM_NETWORK
@@ -526,13 +541,14 @@ function* rootSaga() {
         type: 'popup/initialized',
       })
     }
+    const { selected }: NetworkStateType = yield select(getNetworks)
 
     yield fork(createAccountHandler)
     yield fork(importAccountHandler)
     yield fork(setPasswordWatcher)
     yield fork(signHandler)
     yield fork(authorizeAccountAccessHandler)
-    yield fork(setupChainProviders) // NOTE expose `chain` global to saga/index
+    yield fork(setupChainProviders, selected) // NOTE expose `chain` global to saga/index
     yield fork(fetchBalanceWatcher)
     yield fork(copyToClipBoardWatcher)
     yield fork(setMainAccountWatcher)

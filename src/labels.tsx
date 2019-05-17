@@ -1,6 +1,7 @@
 export default {
   ACCOUNT_LIST: '账户列表',
-  BALANCE: '账户明细',
+  FUNGIBLE_BALANCE: '同质化通证 (FTs)',
+  NFTs_LIST: '非同质化通证 (NFTs)',
   COPIED_TO_CLIPBOARD: '已复制!',
   COPY_ADDRESS: '复制地址',
   COPY_PRIVATE_KEY: '复制私钥',
@@ -30,7 +31,7 @@ export default {
   NETWORK_NAME: '节点名称',
   NETWORK_LOCATION: '节点位置',
   NETWORK_URL: '节点Url地址',
-  NETWORK_SUCCESSFULLY_CREATED:'成功添加节点',
+  NETWORK_SUCCESSFULLY_CREATED: '成功添加节点',
   CANCEL: '取消',
   CLOSE: '关闭窗口',
 }

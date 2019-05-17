@@ -39,7 +39,7 @@ class AccountBalanceScreen extends React.PureComponent<
   render() {
     return (
       <NavigationLayout
-        title={labels.BALANCE}
+        title={labels.FUNGIBLE_BALANCE}
         renderLeft={() => <ConnectedNavigationBackButton />}
         renderRight={() => <RefreshButton onRefresh={this.handleRefresh} />}
       >

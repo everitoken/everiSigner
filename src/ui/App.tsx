@@ -45,7 +45,7 @@ class App extends React.PureComponent {
           <Route path="/settings" component={SettingsScreen} />
           <ConnectedMessage />
         </React.Fragment>
-        <hr />
+        {/* <hr />
         <div style={{ zIndex: 100 }}>
           <ul
             style={{
@@ -73,7 +73,7 @@ class App extends React.PureComponent {
             </li>
           </ul>
         </div>
-        <Footer />
+        <Footer /> */}
       </Router>
     )
   }

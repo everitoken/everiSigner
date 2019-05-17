@@ -1,7 +1,14 @@
 import * as React from 'react'
 import AccountBarLayout from './AccountBarLayout'
 import FlexContainer from '../presentational/FlexContainer'
-import { Grid, IconButton, Divider } from '@material-ui/core'
+import {
+  Grid,
+  IconButton,
+  Divider,
+  Typography,
+  BottomNavigation,
+  BottomNavigationAction,
+} from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import { connect } from 'react-redux'
 import { AccountStateType } from '../../store/reducer/accounts'
@@ -10,6 +17,7 @@ import { getForHome } from '../../store/getter'
 import AccountSelect from '../presentational/AccountSelect'
 import ConnectedBalanceTable from './ConnectedBalanceTable'
 import { setMainAccount, copyToClipboard } from '../action'
+import labels from '../../labels'
 
 type PropTypes = {
   mainAccount: AccountStateType | undefined
@@ -19,14 +27,19 @@ type PropTypes = {
 }
 
 type StateTypes = {
+  index: number
   showBalanceTable: boolean
   clickedAccount: AccountStateType | null
 }
 
 class Home extends React.PureComponent<PropTypes, StateTypes> {
   state = {
+    index: 0,
     showBalanceTable: false,
     clickedAccount: null,
+  }
+  handleTabChange = (_: any, index: number) => {
+    this.setState({ index })
   }
 
   componentWillUnmount() {
@@ -41,6 +54,43 @@ class Home extends React.PureComponent<PropTypes, StateTypes> {
     } else {
       this.setState({ showBalanceTable: true, clickedAccount })
     }
+  }
+
+  renderContent = () => {
+    if (this.state.index === 0) {
+      return (
+        <FlexContainer>
+          <Typography variant="h6" style={{ padding: '16px 0 0 16px' }}>
+            {labels.FUNGIBLE_BALANCE}
+          </Typography>
+          <ConnectedBalanceTable
+            showLink
+            publicKey={
+              this.state.clickedAccount
+                ? this.state.clickedAccount.publicKey
+                : this.props.mainAccount.publicKey
+            }
+          />
+        </FlexContainer>
+      )
+    } else if (this.state.index === 2) {
+      return (
+        <FlexContainer>
+          <Typography variant="h6" style={{ padding: '16px 0 0 16px' }}>
+            {labels.NFTs_LIST}
+          </Typography>
+          <ConnectedBalanceTable
+            showLink
+            publicKey={
+              this.state.clickedAccount
+                ? this.state.clickedAccount.publicKey
+                : this.props.mainAccount.publicKey
+            }
+          />
+        </FlexContainer>
+      )
+    }
+    return <p>No defined yet</p>
   }
 
   render() {
@@ -88,7 +138,17 @@ class Home extends React.PureComponent<PropTypes, StateTypes> {
             <Grid item justify="center" xs={2} />
             <Divider variant="fullWidth" style={{ width: '100%' }} />
           </Grid>
-          <p>some other content</p>
+          {this.renderContent()}
+          <BottomNavigation
+            style={{ width: '100%', borderTop: '1px solid #ccc' }}
+            value={this.state.index}
+            onChange={this.handleTabChange}
+            showLabels
+          >
+            <BottomNavigationAction label={labels.FUNGIBLE_BALANCE} />} />
+            <BottomNavigationAction label={labels.NFTs_LIST} />
+            <BottomNavigationAction label="Others" />
+          </BottomNavigation>
         </FlexContainer>
       </AccountBarLayout>
     )

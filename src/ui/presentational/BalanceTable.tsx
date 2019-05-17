@@ -27,23 +27,36 @@ export default class BalanceTable extends React.PureComponent<PropTypes> {
     const { fetching, balances } = this.props
     if (fetching) {
       return (
-        <FlexContainer alignItems="center" alignSelf="stretch">
+        <FlexContainer
+          alignItems="center"
+          justifyContent="center"
+          alignSelf="stretch"
+        >
           <CircularProgress disableShrink />
         </FlexContainer>
       )
     }
     if (!fetching && balances.length === 0) {
       return (
-        <FlexContainer alignItems="center">
+        <FlexContainer alignItems="center" justifyContent="center">
           <p>No balance</p>
         </FlexContainer>
       )
     }
 
     return (
-      <List dense disablePadding>
+      <List
+        dense
+        disablePadding
+        style={{
+          width: '100%',
+          minHeight: '120px',
+          maxHeight: '207px',
+          overflowY: 'auto',
+        }}
+      >
         {this.props.balances.map(balance => (
-          <ListItem disableGutters dense key={balance.id}>
+          <ListItem dense key={balance.id}>
             <Grid
               container
               alignItems="center"
