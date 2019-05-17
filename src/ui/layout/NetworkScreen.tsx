@@ -4,12 +4,7 @@ import { ConnectedNavigationBackButton } from './NavigationButtons'
 import labels from '../../labels'
 import { NetworkStateType } from '../../store/reducer/network'
 import FlexContainer from '../presentational/FlexContainer'
-import {
-  RouteComponentProps,
-  Route,
-  withRouter,
-  withRouter,
-} from 'react-router-dom'
+import { RouteComponentProps, Route, withRouter } from 'react-router-dom'
 import { getNetworks } from '../../store/getter'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
@@ -36,6 +31,7 @@ import { addCustomNetwork, removeNetwork } from '../action'
 import InfoArea from '../presentational/InfoArea'
 import { isEmpty } from 'lodash'
 import Button from '../presentational/InlineButton'
+import parseUrl from 'parse-url'
 
 const ITEM_HEIGHT = 40
 
@@ -187,13 +183,15 @@ const ConnectedNetworkList = compose(
 )(NetworkList)
 
 type NetworkCreatePropTypes = NetworkStateType & {
+  networks: NetworkItemType[]
   onNetworkAdd: typeof addCustomNetwork
 }
 
 type NetworkCreateStateTypes = {
   url: string
   location: string
-  errorMessage: { [key: string]: string }
+  errors: { url: boolean; location: boolean }
+  errorMessage: string
 }
 
 class NetworkCreate extends React.PureComponent<
@@ -201,33 +199,76 @@ class NetworkCreate extends React.PureComponent<
   NetworkCreateStateTypes
 > {
   state = {
+    urls: this.props.networks.map(({ url }) => url),
     url: '',
     location: '',
-    errorMessage: {
-      name: '',
-      url: '',
-      location: '',
+    errors: {
+      url: false,
+      location: false,
     },
+    errorMessage: '',
   }
 
-  componentWillUpdate = (props: NetworkCreatePropTypes) => {
-    console.log(props)
-    if (props.networks.find(network => network.url === this.state.url)) {
-      setTimeout(() => {
-        this.props.history.goBack()
-      }, 300)
-    }
-  }
-
-  handleFieldChange = (name: string) => (
+  handleFieldChange = (name: 'url' | 'location') => (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    this.setState({ [name]: event.target.value })
+    this.setState({
+      [name]: event.target.value,
+      errors: {
+        ...this.state.errors,
+        [name]: false,
+      },
+      errorMessage: '',
+    })
   }
 
   validate = () => {
     // validate url, and location
+    if (isEmpty(this.state.location) || this.state.location.length > 12) {
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          location: true,
+        },
+        errorMessage: 'Invalid location name',
+      })
+      return false
+    }
+
+    let validUrl = true
+
+    debugger
+    try {
+      parseUrl(this.state.url, true)
+    } catch (e) {
+      validUrl = false
+    }
+
+    if (isEmpty(this.state.url) || !validUrl) {
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          url: true,
+        },
+        errorMessage: 'Not a valid url.',
+      })
+
+      return false
+    }
+
     // validate url or location exist in list
+    if (this.state.urls.includes(this.state.url)) {
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          url: true,
+        },
+        errorMessage: 'This url exits already',
+      })
+
+      return false
+    }
+
     return true
   }
 
@@ -240,6 +281,9 @@ class NetworkCreate extends React.PureComponent<
         isProduction: false,
         isCustom: true,
       })
+      setTimeout(() => {
+        this.props.history.goBack()
+      }, 300)
     }
   }
 
@@ -253,6 +297,17 @@ class NetworkCreate extends React.PureComponent<
               <li>Custom network can be deleted</li>
             </ul>
           </InfoArea>
+          {!isEmpty(this.state.errorMessage) ? (
+            <p
+              style={{
+                paddingLeft: '8px',
+                color: 'red',
+                fontFamily: 'Roboto Mono',
+              }}
+            >
+              {this.state.errorMessage}
+            </p>
+          ) : null}
         </div>
 
         <FlexContainer withPadding justifyContent="space-around">
@@ -261,7 +316,8 @@ class NetworkCreate extends React.PureComponent<
               {labels.NETWORK_LOCATION}
             </InputLabel>
             <Input
-              error={!isEmpty(this.state.errorMessage.location)}
+              required
+              error={this.state.errors.location}
               id="location"
               type="text"
               value={this.state.location}
@@ -271,7 +327,8 @@ class NetworkCreate extends React.PureComponent<
           <FormControl fullWidth>
             <InputLabel htmlFor="network-url">{labels.NETWORK_URL}</InputLabel>
             <Input
-              error={!isEmpty(this.state.errorMessage.url)}
+              required
+              error={this.state.errors.url}
               id="url"
               type="text"
               value={this.state.url}
