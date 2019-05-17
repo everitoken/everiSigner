@@ -8,6 +8,7 @@ import { sign } from '../action'
 import { getDisplayableSigningPayload } from '../util'
 import { get } from 'lodash'
 import AuthenticationProtectedView from './AuthenticationProtectedView'
+import labels from '../../labels'
 
 type PropTypes = {
   signingPayload: SigningPayloadStateType
@@ -58,7 +59,7 @@ class Signing extends React.PureComponent<PropTypes> {
             size="large"
             onClick={this.handleClick}
           >
-            Cancel
+            {labels.CANCEL}
           </Button>
           <Button
             variant="outlined"

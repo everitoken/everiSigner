@@ -17,6 +17,7 @@ import {
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import NetworkListItem from './NetworkListItem'
 import { isSameNetwork } from '../util'
+import labels from '../../labels'
 
 type PropTypes = {
   selected: NetworkItemType
@@ -88,7 +89,7 @@ class NetworkSelect extends React.PureComponent<
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} color="primary">
-            Cancel
+            {labels.CANCEL}
           </Button>
         </DialogActions>
       </Dialog>
