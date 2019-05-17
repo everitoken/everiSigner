@@ -7,6 +7,7 @@ import {
   withStyles,
   StyledComponentProps,
   IconButton,
+  ListItemSecondaryAction,
 } from '@material-ui/core'
 import AccountListItem from './AccountListItem'
 import { AccountStateType } from '../../store/reducer/accounts'
@@ -43,12 +44,13 @@ class AccountSelectList extends React.PureComponent<
             alignItems="center"
             spacing={0}
           >
-            <Grid item xs={10}>
+            <Grid item xs={12}>
               <ListItem
                 role={undefined}
-                dense
+                disableRipple
+                divider
+                disableTouchRipple
                 disableGutters
-                button
                 onClick={() => this.props.onSelect(account)}
               >
                 <Radio
@@ -58,17 +60,18 @@ class AccountSelectList extends React.PureComponent<
                   value={account.name}
                   name="select-account"
                 />
-                <AccountListItem account={account} truncateLen={12} />
+                <AccountListItem account={account} />
+
+                <ListItemSecondaryAction>
+                  <IconButton
+                    aria-label="More"
+                    onClick={() => this.props.onMoreClicked(account)}
+                    className={classes && classes.margin}
+                  >
+                    <MoreIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
               </ListItem>
-            </Grid>
-            <Grid item xs={2}>
-              <IconButton
-                aria-label="More"
-                onClick={() => this.props.onMoreClicked(account)}
-                className={classes && classes.margin}
-              >
-                <MoreIcon />
-              </IconButton>
             </Grid>
           </Grid>
         ))}

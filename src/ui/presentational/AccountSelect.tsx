@@ -5,13 +5,10 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  List,
-  ListItem,
-  Radio,
 } from '@material-ui/core'
-import AccountListItem from './AccountListItem'
 import { AccountStateType } from '../../store/reducer/accounts'
 import AccountSelectList from './AccountSelectList'
+import labels from '../../labels'
 
 type PropTypes = {
   selected: AccountStateType
@@ -72,7 +69,7 @@ export default class AccountSelect extends React.PureComponent<
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} color="primary">
-            Cancel
+            {labels.CLOSE}
           </Button>
         </DialogActions>
       </Dialog>

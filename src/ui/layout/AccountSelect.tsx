@@ -30,9 +30,7 @@ type StateTypes = {
 }
 class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
   state = {
-    selectedAccount: this.props.accounts.find(
-      account => account.type === 'seed'
-    ),
+    selectedAccount: this.props.accounts.find(({ isMain }) => isMain),
     data: [],
     showBalanceTable: false,
   }

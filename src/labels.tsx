@@ -30,5 +30,7 @@ export default {
   NETWORK_NAME: '节点名称',
   NETWORK_LOCATION: '节点位置',
   NETWORK_URL: '节点Url地址',
-  NETWORK_SUCCESSFULLY_CREATED:'成功添加节点'
+  NETWORK_SUCCESSFULLY_CREATED:'成功添加节点',
+  CANCEL: '取消',
+  CLOSE: '关闭窗口',
 }

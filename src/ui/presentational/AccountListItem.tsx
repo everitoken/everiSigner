@@ -23,8 +23,8 @@ const AccountNameContainer = styled.span`
 
 const CustomBadge = withStyles({
   badge: {
-    right: '-10px',
-    top: '12px',
+    right: '-5px',
+    top: '5px',
   },
 })(Badge)
 
@@ -55,6 +55,7 @@ export default class AccountListItem extends React.PureComponent<
             variant="dot"
           >
             <Tooltip
+              enterDelay={800}
               title={
                 account.type === 'seed' ? 'Seed account' : 'Imported account'
               }
@@ -65,12 +66,12 @@ export default class AccountListItem extends React.PureComponent<
             </Tooltip>
           </CustomBadge>
           <div>
-            <Tooltip title={account.publicKey}>
+            <Tooltip enterDelay={800} title={account.publicKey}>
               <Typography component="span" variant="caption">
                 <Monospace>
                   {`${account.publicKey.slice(
                     0,
-                    3 + this.props.truncateLen
+                    this.props.truncateLen
                   )}...${account.publicKey.slice(-this.props.truncateLen)}`}
                 </Monospace>
               </Typography>

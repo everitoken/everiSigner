@@ -3,12 +3,16 @@ import { StartScreenNameType, ValidAuthenticatedStatusTypes } from '../types'
 import { get } from 'lodash'
 import { decryptAccount } from '../service/PasswordService'
 import { AccountStateType } from './reducer/accounts'
-import { isArray } from 'lodash'
 import * as PasswordService from '../service/PasswordService'
 import { RouteComponentProps } from 'react-router-dom'
 
 export const getDefaultAccount = (state: AppState) =>
   state.accounts.find(account => account.type === 'seed')
+
+export const getForHome = (state: AppState) => ({
+  mainAccount: state.accounts.find(({ isMain }) => isMain),
+  accounts: state.accounts,
+})
 
 export const getAccountByPublicKey = (
   state: AppState,

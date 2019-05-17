@@ -3,7 +3,7 @@ import {
   getPassword,
   getAccountByPublicKey,
   getAccountById,
-  getDefaultAccount,
+  getDefaultAccount as getMainAccount,
 } from './getter'
 import {
   decrypt,
@@ -31,7 +31,7 @@ class StoreProvider implements StoreProviderInterface {
     return Promise.resolve(password)
   }
   getDefaultAccount = async () => {
-    const account = getDefaultAccount(this.store.getState())
+    const account = getMainAccount(this.store.getState())
 
     if (!account) {
       return Promise.reject('Default account is not found')

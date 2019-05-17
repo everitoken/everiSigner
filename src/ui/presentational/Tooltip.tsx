@@ -2,8 +2,8 @@ import { withStyles, Tooltip } from '@material-ui/core'
 
 const MyTooltip = withStyles({
   tooltip: {
-    fontSize: '14px',
-    maxWidth: 'none',
+    fontSize: '12px',
+    maxWidth: '350px',
   },
 })(Tooltip)
 
