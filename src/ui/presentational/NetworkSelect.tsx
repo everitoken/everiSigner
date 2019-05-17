@@ -80,7 +80,7 @@ class NetworkSelect extends React.PureComponent<
                   value={network.name}
                   name="select-network"
                 />
-                <NetworkListItem network={network} />
+                <NetworkListItem network={network} compact />
               </ListItem>
             ))}
           </List>

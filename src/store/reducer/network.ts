@@ -52,10 +52,45 @@ const mainnet6 = {
   isProduction: true,
   isCustom: false,
 }
+const mainnet7 = {
+  name: 'mainnet7',
+  url: 'https://mainnet7.everitoken.io/',
+  abbr: 'SG',
+  location: 'SINGAPORE',
+  isProduction: true,
+  isCustom: false,
+}
 
+const mainnet8 = {
+  name: 'mainnet8',
+  url: 'https://mainnet7.everitoken.io/',
+  abbr: 'FRA 2',
+  location: 'FRANKFURT 2',
+  isProduction: true,
+  isCustom: false,
+}
+
+const mainnet9 = {
+  name: 'mainnet9',
+  url: 'https://mainnet9.everitoken.io/',
+  abbr: 'KL',
+  location: 'KUALA LUMPUR',
+  isProduction: true,
+  isCustom: false,
+}
 const defaultState = {
   selected: mainnet1,
-  networks: [mainnet1, mainnet2, mainnet3, mainnet4, mainnet5, mainnet6],
+  networks: [
+    mainnet1,
+    mainnet2,
+    mainnet3,
+    mainnet4,
+    mainnet5,
+    mainnet6,
+    mainnet7,
+    mainnet8,
+    mainnet9,
+  ],
 }
 
 export type NetworkStateType = {

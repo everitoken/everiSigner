@@ -1,4 +1,9 @@
-import { ToBeSignDataType, BackgroundMsgTypes, MessageMetaType } from '../types'
+import {
+  ToBeSignDataType,
+  BackgroundMsgTypes,
+  MessageMetaType,
+  NetworkItemType,
+} from '../types'
 import { AccountStateType } from '../store/reducer/accounts'
 
 export const SET_PASSWORD = 'ui/SET_PASSWORD'
@@ -13,6 +18,7 @@ export const COPY_TO_CLIPBOARD = 'ui/COPY_ADDRESS'
 
 export const SET_MAIN_ACCOUNT = 'ui/SET_MAIN_ACCOUNT'
 export const REMOVE_ACCOUNT = 'ui/REMOVE_ACCOUNT'
+export const SELECT_NETWORK = 'ui/SELECT_NETWORK'
 
 export const sign = (payload: {
   payload: ToBeSignDataType
@@ -85,4 +91,9 @@ export const setMainAccount = (account: AccountStateType) => ({
 export const removeAccount = (account: AccountStateType) => ({
   type: REMOVE_ACCOUNT,
   payload: { account },
+})
+
+export const selectNetwork = (network: NetworkItemType) => ({
+  type: SELECT_NETWORK,
+  payload: { network },
 })

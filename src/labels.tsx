@@ -19,4 +19,10 @@ export default {
   SHOW_ADDRESS_AS_QR: '地址QR码',
   ACCOUNT_CREATE_SUCCESSFUL: '成功创建账户',
   ACCOUNT_IMPORT_SUCCESSFUL: '成功导入账户',
+  NETWORK: 'Network',
+  NETWORK_NAVIGATION_SECONDARY_TEXT: 'View and create network',
+  ABOUT: 'About',
+  ABOUT_NAVIGATION_SECONDARY_TEXT: 'Learn more about everiSigner',
+  SET_NETWORK_AS_DEFAULT: '设置为默认节点',
+  REMOVE_NETWORK: '删除节点'
 }

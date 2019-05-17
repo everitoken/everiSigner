@@ -124,8 +124,8 @@ export const TopActionBar = (props: TopActionBarPropTypes) => {
 
       <Grid item>
         <div style={{ marginRight: 4 }}>
-          <IconButton>
-            <SettingsIcon onClick={props.onMoreClick} />
+          <IconButton onClick={props.onMoreClick}>
+            <SettingsIcon />
           </IconButton>
         </div>
       </Grid>

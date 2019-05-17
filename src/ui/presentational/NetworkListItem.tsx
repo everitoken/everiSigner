@@ -4,13 +4,14 @@ import { NetworkItemType } from '../../types'
 
 type PropTypes = {
   network: NetworkItemType
-  simple?: boolean
+  compact?: boolean
+  renderAction?: () => React.ReactNode
 }
 
 export default class NetworkListItem extends React.PureComponent<PropTypes> {
   static defaultProps = { simple: false }
   render() {
-    const { network, simple } = this.props
+    const { network, compact, renderAction } = this.props
     return (
       <div
         className="everitoken-mono"
@@ -20,12 +21,11 @@ export default class NetworkListItem extends React.PureComponent<PropTypes> {
           alignItems: 'center',
         }}
       >
-        <div>
+        <div style={compact ? {} : { fontSize: '14px' }}>
           <span>{`${network.location} (${network.name})`}</span>
-          {!simple ? (
-            <Typography variant="caption">{network.url}</Typography>
-          ) : null}
+          <Typography variant="caption">{network.url}</Typography>
         </div>
+        {renderAction ? renderAction() : null}
       </div>
     )
   }

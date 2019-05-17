@@ -15,8 +15,8 @@ import RefreshIcon from '@material-ui/icons/Refresh'
 import { fetchBalance } from '../action'
 
 const RefreshButton = (props: { onRefresh: () => void }) => (
-  <IconButton>
-    <RefreshIcon fontSize="large" onClick={props.onRefresh} />
+  <IconButton onClick={props.onRefresh}>
+    <RefreshIcon fontSize="large" />
   </IconButton>
 )
 

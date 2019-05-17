@@ -21,8 +21,8 @@ class NavigationBackButton extends React.PureComponent<
   }
   render() {
     return (
-      <IconButton>
-        <BackIcon fontSize="large" onClick={this.handleClick} />
+      <IconButton onClick={this.handleClick}>
+        <BackIcon fontSize="large" />
       </IconButton>
     )
   }

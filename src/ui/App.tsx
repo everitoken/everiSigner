@@ -60,9 +60,6 @@ class App extends React.PureComponent {
               <Link to="/">Home</Link>
             </li>
             <li style={{ margin: 5 }}>
-              <Link to="/settings">Settings</Link>
-            </li>
-            <li style={{ margin: 5 }}>
               <Link to="/account/list">A/List</Link>
             </li>
             <li style={{ margin: 5 }}>

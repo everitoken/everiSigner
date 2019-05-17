@@ -5,6 +5,7 @@ import MainLayout, {
 } from '../presentational/MainLayout'
 import { Route, RouteComponentProps, withRouter } from 'react-router'
 import AboutScreen from './AboutScreen'
+import NetworkScreen from './NetworkScreen'
 import ForwardIcon from '@material-ui/icons/ChevronRight'
 import InfoIcon from '@material-ui/icons/Info'
 import {
@@ -19,6 +20,8 @@ import {
 import FlexContainer from '../presentational/FlexContainer'
 import { compose } from 'redux'
 import { ConnectedNavigationBackButton } from './NavigationButtons'
+import labels from '../../labels'
+import NetworkIcon from '@material-ui/icons/CloudCircle'
 
 type PropTypes = {}
 
@@ -43,16 +46,29 @@ class Settings extends React.PureComponent<
               button
               onClick={() => this.props.history.push('/settings/about')}
             >
-              <InfoIcon style={{ color: '#ccc' }} />
+              <InfoIcon color="action" />
               <ListItemText
-                primary="About"
-                secondary="Learn more about everiSigner"
+                primary={labels.ABOUT}
+                secondary={labels.ABOUT_NAVIGATION_SECONDARY_TEXT}
               />
               <ListItemIcon>
                 <ForwardIcon />
               </ListItemIcon>
             </ListItem>
             <Divider />
+            <ListItem
+              button
+              onClick={() => this.props.history.push('/settings/network')}
+            >
+              <NetworkIcon color="action" />
+              <ListItemText
+                primary={labels.NETWORK}
+                secondary={labels.NETWORK_NAVIGATION_SECONDARY_TEXT}
+              />
+              <ListItemIcon>
+                <ForwardIcon />
+              </ListItemIcon>
+            </ListItem>
           </List>
         </FlexContainer>
       </NavigationLayout>
@@ -77,6 +93,7 @@ export default class SettingsScreen extends React.PureComponent<
       >
         <Route exact path={`${match.path}/`} component={ConnectedSettings} />
         <Route path={`${match.path}/about`} component={AboutScreen} />
+        <Route path={`${match.path}/network`} component={NetworkScreen} />
       </MainLayout>
     )
   }

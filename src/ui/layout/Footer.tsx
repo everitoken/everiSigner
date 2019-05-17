@@ -6,6 +6,7 @@ const Footer = styled.p`
   font-size: 10px;
   text-align: center;
   margin: 0;
+  background-color: #fff;
   margin-bottom: ${style.padding.standard / 4}px;
 `
 
