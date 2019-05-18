@@ -10,7 +10,7 @@ import {
   CircularProgress,
 } from '@material-ui/core'
 import FlexContainer from './FlexContainer'
-import { createSeedAccount } from '../action'
+import { createAccountWithMnemonic } from '../action'
 import InfoArea from './InfoArea'
 import SeedWordsDisplay from './SeedWordsDisplay'
 import { AccountStateType } from '../../store/reducer/accounts'
@@ -68,7 +68,7 @@ class StepDisplaySeedPhrases extends React.PureComponent<
   render() {
     return (
       <FlexContainer>
-        <FlexContainer withPadding>
+        <FlexContainer withPadding alignItems="flex-end">
           <p style={{ marginTop: 0 }}>
             Make sure to write down these words safely. In next step you will be
             asked to input these phrases in sequence.
@@ -76,9 +76,6 @@ class StepDisplaySeedPhrases extends React.PureComponent<
           <SeedWordsDisplay words={this.props.words} />
           <div
             style={{
-              position: 'absolute',
-              right: '10px',
-              bottom: '65px',
               cursor: 'pointer',
             }}
           >
@@ -118,6 +115,7 @@ type StepVerifySeedPhrasesStateTypes = {
   value: string
   error: boolean
 }
+
 class StepVerifySeedPhrases extends React.PureComponent<
   StepVerifySeedPhrasesPropTypes,
   StepVerifySeedPhrasesStateTypes
@@ -146,7 +144,7 @@ class StepVerifySeedPhrases extends React.PureComponent<
         <FlexContainer withPadding>
           <TextField
             id="seed-phrase-verify"
-            label="Input your seed phrases here"
+            label={labels.INPUT_MNEMONIC_WORDS}
             multiline
             fullWidth
             rows="5"
@@ -212,7 +210,7 @@ type AccountCreatePropTypes = {
   accountNames: string[]
   account: AccountStateType | null
   words: string
-  onClick: typeof createSeedAccount
+  onClick: typeof createAccountWithMnemonic
 }
 
 type AccountCreateStateTypes = {
@@ -238,11 +236,14 @@ class AccountCreate extends React.PureComponent<
   handleCreateAccount = () => {
     const id = uuid.v4()
 
-    this.props.onClick({
-      id,
-      name: this.state.accountName,
-      words: this.props.words,
-    })
+    this.props.onClick(
+      {
+        id,
+        name: this.state.accountName,
+        words: this.props.words,
+      },
+      true
+    )
 
     this.setState({
       currentAccountId: id,

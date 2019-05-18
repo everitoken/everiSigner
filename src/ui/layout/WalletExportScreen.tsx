@@ -29,7 +29,7 @@ class WalletExportScreen extends React.PureComponent<
   render() {
     return (
       <NavigationLayout
-        title={labels.PRIVATE_KEY}
+        title={labels.BACKUP_WALLET}
         renderLeft={() => <ConnectedNavigationBackButton />}
       >
         <PasswordProtectedView password={this.props.password}>

@@ -9,7 +9,7 @@ import { AccountStateType } from '../store/reducer/accounts'
 export const SET_PASSWORD = 'ui/SET_PASSWORD'
 export const LOG_IN = 'ui/LOG_IN'
 export const RECEIVE_BACKGROUND_MESSAGE = 'background/RECEIVE_MESSAGE'
-export const CREATE_SEED_ACCOUNT = 'ui/CREATE_SEED_ACCOUNT'
+export const CREATE_MNEMONIC_ACCOUNT = 'ui/CREATE_MNEMONIC_ACCOUNT'
 export const IMPORT_ACCOUNT = 'ui/IMPORT_ACCOUNT'
 export const SIGN = 'ui/SIGN'
 export const AUTHORIZE_ACCOUNT_ACCESS = 'ui/AUTHORIZE_ACCOUNT_ACCESS'
@@ -48,13 +48,18 @@ export const importAccount = (payload: {
   type: IMPORT_ACCOUNT,
   payload,
 })
-export const createSeedAccount = (payload: {
-  id: string
-  name: string
-  words: string
-}) => ({
-  type: CREATE_SEED_ACCOUNT,
+
+export const createAccountWithMnemonic = (
+  payload: {
+    id: string
+    name: string
+    words: string
+  },
+  isDefaultAccount: boolean = false
+) => ({
+  type: CREATE_MNEMONIC_ACCOUNT,
   payload,
+  meta: { isDefault: isDefaultAccount },
 })
 
 export const receiveBackgroundMessage = (msg: BackgroundMsgTypes) => ({

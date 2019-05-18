@@ -13,10 +13,12 @@ import {
   getSeedAccountDecrypted,
   getAccountImportScreen,
 } from '../../store/getter'
-import { createSeedAccount, importAccount } from '../action'
+import { createAccountWithMnemonic, importAccount } from '../action'
 import { NavigationLayout } from '../presentational/MainLayout'
 import { ConnectedNavigationBackButton } from './NavigationButtons'
 import AccountImport from '../presentational/AccountImport'
+import labels from '../../labels'
+import AccountMnemonicImport from '../presentational/AccountMnemonicImport'
 
 function TabContainer({ children }: { children: React.ReactNode }) {
   return (
@@ -31,7 +33,7 @@ function TabContainer({ children }: { children: React.ReactNode }) {
 
 const ConnectedAccountCreate = connect(
   getSeedAccountDecrypted,
-  { onClick: createSeedAccount }
+  { onClick: createAccountWithMnemonic }
 )(AccountCreate)
 
 const ConnectedAccountImport = connect(
@@ -39,12 +41,17 @@ const ConnectedAccountImport = connect(
   { onClick: importAccount }
 )(AccountImport)
 
+const ConnectedAccountMnemonicImport = connect(
+  getAccountImportScreen,
+  { onClick: createAccountWithMnemonic }
+)(AccountMnemonicImport)
+
 class AccountCreateBar extends React.PureComponent<{}, { value: number }> {
   state = {
     value: 0,
   }
 
-  handleChange = (event, value: number) => {
+  handleChange = (_: any, value: number) => {
     this.setState({ value })
   }
 
@@ -61,14 +68,16 @@ class AccountCreateBar extends React.PureComponent<{}, { value: number }> {
         <Container justifyContent="flex-start">
           <AppBar position="static" color="default">
             <Tabs
+              style={{ width: '400px' }}
               value={this.state.value}
               onChange={this.handleChange}
               indicatorColor="primary"
               textColor="primary"
               variant="fullWidth"
             >
-              <Tab label="创建" />
-              <Tab label="导入" />
+              <Tab label={labels.CREATE} />
+              <Tab label={labels.PRIVATE_KEY_IMPORT} />
+              <Tab label={labels.MNEMONIC_IMPORT} />
             </Tabs>
           </AppBar>
           <SwipeableViews
@@ -81,6 +90,9 @@ class AccountCreateBar extends React.PureComponent<{}, { value: number }> {
             </TabContainer>
             <TabContainer>
               <ConnectedAccountImport />
+            </TabContainer>
+            <TabContainer>
+              <ConnectedAccountMnemonicImport />
             </TabContainer>
           </SwipeableViews>
         </Container>

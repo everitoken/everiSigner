@@ -294,9 +294,9 @@ function* importAccountHandler() {
 
 function* createAccountHandler() {
   while (true) {
-    const action: ReturnType<typeof uiActions.createSeedAccount> = yield take(
-      uiActions.CREATE_SEED_ACCOUNT
-    )
+    const action: ReturnType<
+      typeof uiActions.createAccountWithMnemonic
+    > = yield take(uiActions.CREATE_MNEMONIC_ACCOUNT)
 
     if (!chain) {
       break // TODO refactor away
@@ -325,7 +325,7 @@ function* createAccountHandler() {
     // construct state
     const account: AccountStateType = {
       ...action.payload,
-      type: 'seed',
+      type: action.meta.isDefault ? 'seed' : 'imported',
       isMain: true,
       createdAt: new Date().toISOString(),
       privateKey,
@@ -339,7 +339,11 @@ function* createAccountHandler() {
     )
 
     yield put(
-      storeActions.snackbarMessageShow('Successfully created default account.')
+      storeActions.snackbarMessageShow(
+        action.meta.isDefault
+          ? labels.ACCOUNT_CREATE_SUCCESSFUL
+          : labels.ACCOUNT_IMPORT_SUCCESSFUL
+      )
     )
   }
 }

@@ -110,6 +110,12 @@ const ConnectedHomeAppBar = connect(
   { onAccountSelect: setMainAccount, onAccountAvatarClick: copyToClipboard }
 )(HomeAppBar)
 
+const AccountSetup = props => (
+  <FlexContainer withPadding justifyContent="center" alignItems="center">
+    <p>Setup required</p>
+  </FlexContainer>
+)
+
 type PropTypes = {
   mainAccount: AccountStateType
   accounts: AccountStateType[]
@@ -131,8 +137,8 @@ class Home extends React.PureComponent<
   }
 
   componentWillMount() {
-    const { mainAccount, history, match } = this.props
-    console.log('match', match)
+    const { mainAccount, history } = this.props
+
     if (!mainAccount) {
       history.push('/home/setup')
     } else {
@@ -143,30 +149,35 @@ class Home extends React.PureComponent<
   render() {
     const { match } = this.props
 
+    const hasMainAccount = Boolean(this.props.mainAccount)
+
     return (
       <AccountBarLayout>
         <FlexContainer>
           <ConnectedHomeAppBar />
-          <Route path={`${match.path}/setup`} component={() => <p>setup</p>} />
+          <Route path={`${match.path}/setup`} component={AccountSetup} />
           <Route path={`${match.path}/ft`} component={FungibleOverview} />
           <Route path={`${match.path}/nft`} component={NFTOverview} />
           <Route path={`${match.path}/detail`} component={AccountDetail} />
 
           <BottomNavigation
             style={{ width: '100%', borderTop: '1px solid #ccc' }}
-            value={this.state.index}
+            value={hasMainAccount ? this.state.index : Infinity}
             onChange={this.handleTabChange}
             showLabels
           >
             <BottomNavigationAction
+              disabled={!hasMainAccount}
               label={labels.FUNGIBLE_BALANCE}
               onClick={() => this.props.history.push(`${match.path}/ft`)}
             />
             <BottomNavigationAction
+              disabled={!hasMainAccount}
               label={labels.NFTs_LIST}
               onClick={() => this.props.history.push(`${match.path}/nft`)}
             />
             <BottomNavigationAction
+              disabled={!hasMainAccount}
               label={labels.ACCOUNT_DETAIL}
               onClick={() => this.props.history.push(`${match.path}/detail`)}
             />
