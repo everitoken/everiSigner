@@ -3,13 +3,25 @@ import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import SeedWordsDisplay from '../src/ui/presentational/SeedWordsDisplay'
 import SuccessInfoLayout from '../src/ui/presentational/SuccessInfoLayout'
-import { Button, Grid, IconButton, Divider } from '@material-ui/core'
+import {
+  Button,
+  Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+} from '@material-ui/core'
 import MonospaceText from '../src/ui/presentational/MonospaceText'
 import PasswordProtectedView from '../src/ui/presentational/PasswordProtectedView'
 import MenuIcon from '@material-ui/icons/Menu'
 import Container from '../src/ui/presentational/Container'
 import FlexContainer from '../src/ui/presentational/FlexContainer'
 import AccountAvatar from '../src/ui/presentational/AccountAvatar'
+import CircularEntity from '../src/ui/presentational/CircularEntity'
+import Divider from '../src/ui/presentational/Divider'
+import ForwardIcon from '@material-ui/icons/ChevronRight'
+import InfoIcon from '@material-ui/icons/Info'
 
 import * as fixture from '../src/fixture'
 
@@ -49,9 +61,31 @@ storiesOf('Home', module).add('default', () => (
           <AccountAvatar account={account} onClick={() => alert('fei')} />
         </Grid>
         <Grid item justify="center" xs={2} />
-        <Divider variant="fullWidth" style={{ width: '100%' }} />
+        <Divider />
       </Grid>
       <p>some other content</p>
+    </FlexContainer>
+  </Container>
+))
+
+storiesOf('AccountDetail', module).add('default', () => (
+  <Container>
+    <FlexContainer>
+      <CircularEntity title={account.name} subtitle={account.publicKey} />
+      <Divider margin="8px 0 0 0" />
+      <List style={{ width: '100%' }}>
+        <ListItem
+          divider
+          button
+          onClick={() => this.props.history.push('/settings/about')}
+        >
+          <InfoIcon color="action" />
+          <ListItemText primary="First" secondary="second" />
+          <ListItemIcon>
+            <ForwardIcon />
+          </ListItemIcon>
+        </ListItem>
+      </List>
     </FlexContainer>
   </Container>
 ))

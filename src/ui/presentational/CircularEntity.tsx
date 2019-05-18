@@ -51,7 +51,7 @@ class CircularEntity extends React.PureComponent<
         </span>
         <Typography variant="caption">
           {subtitle.length > 33
-            ? `${subtitle.substring(0, 8)}...${subtitle.slice(-8)}`
+            ? `${subtitle.slice(0, 7)}...${subtitle.slice(-7)}`
             : subtitle}
         </Typography>
       </Grid>

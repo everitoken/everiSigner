@@ -14,6 +14,12 @@ export const getForHome = (state: AppState) => ({
   accounts: state.accounts,
 })
 
+export const getForHomeAppBar = (state: AppState) => ({
+  mainAccount: state.accounts.find(({ isMain }) => isMain),
+  accounts: state.accounts,
+})
+
+
 export const getAccountByPublicKey = (
   state: AppState,
   ownProps: { publicKey: string }
