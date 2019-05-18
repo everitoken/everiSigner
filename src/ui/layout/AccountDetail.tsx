@@ -21,6 +21,7 @@ import { connect } from 'react-redux'
 import { getMainAccount } from '../../store/getter'
 import Divider from '../presentational/Divider'
 import KeyIcon from '@material-ui/icons/VpnKey'
+import ReceiveIcon from '@material-ui/icons/CallReceived'
 
 type PropTypes = {
   account: AccountStateType
@@ -83,6 +84,20 @@ class AccountOverview extends React.PureComponent<
             <ListItemText
               primary={labels.REMOVE_ACCOUNT}
               secondary={labels.REMOVE_ACCOUNT_SECONDARY_TEXT}
+            />
+            <ListItemIcon>
+              <ForwardIcon />
+            </ListItemIcon>
+          </ListItem>
+          <ListItem
+            divider
+            button
+            onClick={() => this.props.history.push(`/home/payee`)}
+          >
+            <ReceiveIcon color="action" />
+            <ListItemText
+              primary={labels.PAYEE_CODE}
+              secondary={labels.PAYEE_CODE_SECONDARY_TEXT}
             />
             <ListItemIcon>
               <ForwardIcon />

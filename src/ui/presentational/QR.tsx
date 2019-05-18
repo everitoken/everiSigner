@@ -15,17 +15,29 @@ export default class QR extends React.PureComponent<PropTypes, StateProps> {
     width: 500,
     onClick: () => null,
   }
+
   state = {
     qr: '',
   }
 
-  componentWillMount() {
+  componentWillReceiveProps(newProps: PropTypes) {
+    if (newProps.data !== this.props.data) {
+      this.generateQr(newProps)
+    }
+  }
+
+  generateQr = (props: PropTypes) => {
     qrcode
-      .toDataURL(this.props.data, {
-        width: this.props.width,
+      .toDataURL(props.data, {
+        width: props.width,
       })
       .then((qr: string) => this.setState({ qr }))
   }
+
+  componentWillMount() {
+    this.generateQr(this.props)
+  }
+
   render() {
     if (!this.state.qr) {
       return null

@@ -49,7 +49,6 @@ class AccountSelectList extends React.PureComponent<
                 role={undefined}
                 disableRipple
                 divider
-                disableTouchRipple
                 disableGutters
                 onClick={() => this.props.onSelect(account)}
               >

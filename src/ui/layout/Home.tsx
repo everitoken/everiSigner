@@ -22,6 +22,7 @@ import { compose } from 'redux'
 import AccountDetail from './AccountDetail'
 import FungibleOverview from './FungibleOverview'
 import NFTOverview from './NFTOverview'
+import ConnectedAccountPayeeCode from './ConnectedAccountPayeeCode';
 
 type HomeAppBarPropTypes = {
   mainAccount: AccountStateType | undefined
@@ -159,6 +160,7 @@ class Home extends React.PureComponent<
           <Route path={`${match.path}/ft`} component={FungibleOverview} />
           <Route path={`${match.path}/nft`} component={NFTOverview} />
           <Route path={`${match.path}/detail`} component={AccountDetail} />
+          <Route path={`${match.path}/payee`} component={ConnectedAccountPayeeCode} />
 
           <BottomNavigation
             style={{ width: '100%', borderTop: '1px solid #ccc' }}
