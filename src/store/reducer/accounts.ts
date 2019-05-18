@@ -35,7 +35,16 @@ export default (
         isMain: account.id === action.payload.id,
       }))
     case ACCOUNT_REMOVE:
-      return state.filter(account => account.id !== action.payload.id)
+      if (!action.payload.isMain) {
+        return state.filter(account => account.id !== action.payload.id)
+      }
+
+      const [first, ...accounts] = state.filter(
+        account => account.id !== action.payload.id
+      )
+
+      const newMainAccount = { ...first, isMain: true }
+      return [newMainAccount, ...accounts]
 
     case PURGE:
       return defaultState

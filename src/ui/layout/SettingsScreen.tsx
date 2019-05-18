@@ -3,11 +3,12 @@ import MainLayout, {
   HeaderTitle,
   NavigationLayout,
 } from '../presentational/MainLayout'
-import { Route, RouteComponentProps, withRouter } from 'react-router'
+import { Route, RouteComponentProps } from 'react-router'
 import AboutScreen from './AboutScreen'
 import NetworkScreen from './NetworkScreen'
 import ForwardIcon from '@material-ui/icons/ChevronRight'
 import InfoIcon from '@material-ui/icons/Info'
+import SaveIcon from '@material-ui/icons/SaveAlt'
 import {
   List,
   ListItem,
@@ -15,13 +16,14 @@ import {
   ListItemIcon,
   withStyles,
   StyledComponentProps,
-  Divider,
 } from '@material-ui/core'
 import FlexContainer from '../presentational/FlexContainer'
 import { compose } from 'redux'
 import { ConnectedNavigationBackButton } from './NavigationButtons'
 import labels from '../../labels'
 import NetworkIcon from '@material-ui/icons/CloudCircle'
+import AccountIcon from '@material-ui/icons/AccountBox'
+import WalletExportScreen from '../layout/WalletExportScreen'
 
 type PropTypes = {}
 
@@ -43,20 +45,21 @@ class Settings extends React.PureComponent<
         <FlexContainer>
           <List className={classes && classes.root}>
             <ListItem
+              divider
               button
-              onClick={() => this.props.history.push('/settings/about')}
+              onClick={() => this.props.history.push('/account/list')}
             >
-              <InfoIcon color="action" />
+              <AccountIcon color="action" />
               <ListItemText
-                primary={labels.ABOUT}
-                secondary={labels.ABOUT_NAVIGATION_SECONDARY_TEXT}
+                primary={labels.ACCOUNT_LIST}
+                secondary={labels.ACCOUNT_LIST_SECONDARY_TEXT}
               />
               <ListItemIcon>
                 <ForwardIcon />
               </ListItemIcon>
             </ListItem>
-            <Divider />
             <ListItem
+              divider
               button
               onClick={() => this.props.history.push('/settings/network')}
             >
@@ -69,6 +72,33 @@ class Settings extends React.PureComponent<
                 <ForwardIcon />
               </ListItemIcon>
             </ListItem>
+            <ListItem
+              button
+              divider
+              onClick={() => this.props.history.push('/settings/export')}
+            >
+              <SaveIcon color="action" />
+              <ListItemText
+                primary={labels.BACKUP_WALLET}
+                secondary={labels.BACKUP_WALLET_SECONDARY_TEXT}
+              />
+              <ListItemIcon>
+                <ForwardIcon />
+              </ListItemIcon>
+            </ListItem>
+            <ListItem
+              button
+              onClick={() => this.props.history.push('/settings/about')}
+            >
+              <InfoIcon color="action" />
+              <ListItemText
+                primary={labels.ABOUT}
+                secondary={labels.ABOUT_NAVIGATION_SECONDARY_TEXT}
+              />
+              <ListItemIcon>
+                <ForwardIcon />
+              </ListItemIcon>
+            </ListItem>
           </List>
         </FlexContainer>
       </NavigationLayout>
@@ -76,10 +106,7 @@ class Settings extends React.PureComponent<
   }
 }
 
-const ConnectedSettings = compose(
-  withStyles(styles),
-  withRouter
-)(Settings)
+const ConnectedSettings = compose(withStyles(styles))(Settings)
 
 export default class SettingsScreen extends React.PureComponent<
   RouteComponentProps
@@ -94,6 +121,7 @@ export default class SettingsScreen extends React.PureComponent<
         <Route exact path={`${match.path}/`} component={ConnectedSettings} />
         <Route path={`${match.path}/about`} component={AboutScreen} />
         <Route path={`${match.path}/network`} component={NetworkScreen} />
+        <Route path={`${match.path}/export`} component={WalletExportScreen} />
       </MainLayout>
     )
   }

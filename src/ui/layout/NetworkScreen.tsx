@@ -25,21 +25,15 @@ import {
 import NetworkListItem from '../presentational/NetworkListItem'
 import { NetworkItemType } from '../../types'
 import { networkSelect } from '../../store/action'
-import AddIcon from '@material-ui/icons/Add'
 import { isSameNetwork } from '../util'
 import { addCustomNetwork, removeNetwork } from '../action'
 import InfoArea from '../presentational/InfoArea'
 import { isEmpty } from 'lodash'
 import Button from '../presentational/InlineButton'
 import parseUrl from 'parse-url'
+import AddIconButton from '../presentational/AddIconButton'
 
 const ITEM_HEIGHT = 40
-
-const AddButton = (props: { onAdd: () => void }) => (
-  <IconButton onClick={props.onAdd}>
-    <AddIcon fontSize="large" />
-  </IconButton>
-)
 
 type NetworkItemMoreMenuPropTypes = {
   anchorEl: any
@@ -375,7 +369,7 @@ export default class extends React.PureComponent<RouteComponentProps> {
             return null
           }
           return (
-            <AddButton
+            <AddIconButton
               onAdd={() => this.props.history.push('/settings/network/create')}
             />
           )

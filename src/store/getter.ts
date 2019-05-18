@@ -5,6 +5,7 @@ import { decryptAccount } from '../service/PasswordService'
 import { AccountStateType } from './reducer/accounts'
 import * as PasswordService from '../service/PasswordService'
 import { RouteComponentProps } from 'react-router-dom'
+import App from '../ui/App'
 
 export const getDefaultAccount = (state: AppState) =>
   state.accounts.find(account => account.type === 'seed')
@@ -18,7 +19,6 @@ export const getForHomeAppBar = (state: AppState) => ({
   mainAccount: state.accounts.find(({ isMain }) => isMain),
   accounts: state.accounts,
 })
-
 
 export const getAccountByPublicKey = (
   state: AppState,
@@ -160,4 +160,17 @@ export const getPasswordProtectedView = (
 ) => ({
   password: get(state, 'airport.password', ''),
   account: getAccountById(state, { id: ownProps.match.params.id }),
+})
+
+export const getAccountByRouteAccountId = (
+  state: AppState,
+  ownProps: RouteComponentProps<{ id: string }>
+) => ({
+  account: getAccountById(state, {
+    id: ownProps.match.params.id,
+  }) as AccountStateType,
+})
+
+export const getMainAccount = (state: AppState) => ({
+  account: state.accounts.find(({ isMain }) => isMain) as AccountStateType,
 })

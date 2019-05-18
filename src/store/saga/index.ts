@@ -1,6 +1,5 @@
 import { get } from 'lodash'
 import { END, eventChannel } from 'redux-saga'
-import parseUrl from 'parse-url'
 import { call, fork, put, select, take, all } from 'redux-saga/effects'
 import * as PasswordService from '../../service/PasswordService'
 import { imageDataUriMap } from '../../asset'
@@ -361,7 +360,13 @@ function* removeAccountWatcher() {
       uiActions.REMOVE_ACCOUNT
     )
 
-    yield put(storeActions.accountRemove(action.payload.account))
+    const yes = confirm(
+      `${labels.CONFIRM_REMOVE_ACCOUNT}: "${action.payload.account.name}"?`
+    )
+
+    if (yes) {
+      yield put(storeActions.accountRemove(action.payload.account))
+    }
   }
 }
 

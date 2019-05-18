@@ -22,9 +22,10 @@ import {
 import MoreIcon from '@material-ui/icons/MoreVert'
 import labels from '../../labels'
 import { copyToClipboard, setMainAccount, removeAccount } from '../action'
-import { withRouter, RouteComponentProps } from 'react-router'
+import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { compose } from 'redux'
 import { Link } from 'react-router-dom'
+import AddIconButton from '../presentational/AddIconButton'
 
 const ITEM_HEIGHT = 40
 
@@ -100,18 +101,13 @@ class AccountMoreMenu extends React.Component<
             this.handleClose()
           }}
         >
-          {labels.EXPORT_PRIVATE_KEY}
+          {labels.SHOW_PRIVATE_KEY}
         </MenuItem>
 
         <MenuItem
           disabled={this.props.account.type === 'seed'}
           onClick={() => {
-            const yes = confirm(
-              `${labels.CONFIRM_REMOVE_ACCOUNT}: "${this.props.account.name}"?`
-            )
-            if (yes) {
-              this.props.onRemoveAccount(this.props.account)
-            }
+            this.props.onRemoveAccount(this.props.account)
             this.handleClose()
           }}
         >
@@ -237,7 +233,7 @@ type AccountListPropTypes = {
 type AccountListStateTypes = {}
 
 class AccountList extends React.PureComponent<
-  AccountListPropTypes,
+  AccountListPropTypes & RouteComponentProps,
   AccountListStateTypes
 > {
   render() {
@@ -245,6 +241,13 @@ class AccountList extends React.PureComponent<
       <NavigationLayout
         title={labels.ACCOUNT_LIST}
         renderLeft={() => <ConnectedNavigationBackButton />}
+        renderRight={() => {
+          return (
+            <AddIconButton
+              onAdd={() => this.props.history.push('/account/create')}
+            />
+          )
+        }}
       >
         {this.props.accounts.length ? (
           <FlexContainer>
@@ -272,7 +275,10 @@ class AccountList extends React.PureComponent<
   }
 }
 
-const ConnectedAccountList = connect(getDecryptedAccounts)(AccountList)
+const ConnectedAccountList = compose(
+  withRouter,
+  connect(getDecryptedAccounts)
+)(AccountList)
 
 export default () => (
   <WithAuthentication>

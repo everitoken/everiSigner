@@ -14,6 +14,7 @@ import { snackbarMessageDismiss } from '../store/action'
 import WalletScreen from './layout/WalletScreen'
 import SettingsScreen from './layout/SettingsScreen'
 import AccountScreen from './layout/AccountScreen'
+import Home from './layout/Home'
 
 class HackRedirect extends React.PureComponent<any> {
   componentDidMount() {
@@ -40,6 +41,7 @@ class App extends React.PureComponent {
         <HackRedirectWithRouter />
         <React.Fragment>
           <Route exact path="/" component={Start} />
+          <Route path="/home" component={Home} />
           <Route path="/wallet" component={WalletScreen} />
           <Route path="/account" component={AccountScreen} />
           <Route path="/settings" component={SettingsScreen} />

@@ -20,6 +20,7 @@ export const SET_MAIN_ACCOUNT = 'ui/SET_MAIN_ACCOUNT'
 export const REMOVE_ACCOUNT = 'ui/REMOVE_ACCOUNT'
 export const ADD_CUSTOM_NETWORK = 'ui/ADD_CUSTOM_NETWORK'
 export const REMOVE_CUSTOM_NETWORK = 'ui/REMOVE_CUSTOM_NETWORK'
+export const EXPORT_WALLET = 'ui/EXPORT_WALLET'
 
 export const sign = (payload: {
   payload: ToBeSignDataType
@@ -82,6 +83,9 @@ export const fetchBalance = (publicKey: string) => ({
 export const copyToClipboard = (payload: string) => ({
   type: COPY_TO_CLIPBOARD,
   payload,
+})
+export const exportWallet = () => ({
+  type: EXPORT_WALLET,
 })
 
 export const setMainAccount = (account: AccountStateType) => ({

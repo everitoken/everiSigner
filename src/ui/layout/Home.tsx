@@ -4,13 +4,8 @@ import FlexContainer from '../presentational/FlexContainer'
 import {
   Grid,
   IconButton,
-  Typography,
   BottomNavigation,
   BottomNavigationAction,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
 } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import { connect } from 'react-redux'
@@ -22,12 +17,11 @@ import ConnectedBalanceTable from './ConnectedBalanceTable'
 import { setMainAccount, copyToClipboard } from '../action'
 import labels from '../../labels'
 import Divider from '../presentational/Divider'
-import ForwardIcon from '@material-ui/icons/ChevronRight'
-import InfoIcon from '@material-ui/icons/Info'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
-import QR from '../presentational/QR'
-import Tooltip from '../presentational/Tooltip'
+import { RouteComponentProps, Route, withRouter } from 'react-router-dom'
 import { compose } from 'redux'
+import AccountDetail from './AccountDetail'
+import FungibleOverview from './FungibleOverview'
+import NFTOverview from './NFTOverview'
 
 type HomeAppBarPropTypes = {
   mainAccount: AccountStateType | undefined
@@ -116,139 +110,66 @@ const ConnectedHomeAppBar = connect(
   { onAccountSelect: setMainAccount, onAccountAvatarClick: copyToClipboard }
 )(HomeAppBar)
 
-type FungibleOverviewPropTypes = { publicKey: string }
-class FungibleOverview extends React.PureComponent<FungibleOverviewPropTypes> {
-  render() {
-    return (
-      <FlexContainer>
-        <Typography variant="h6" style={{ padding: '16px 0 0 16px' }}>
-          {labels.FUNGIBLE_BALANCE}
-        </Typography>
-        <ConnectedBalanceTable showLink publicKey={this.props.publicKey} />
-      </FlexContainer>
-    )
-  }
-}
-
-type AccountOverviewPropTypes = {
-  account: AccountStateType
-  onQrCodeClicked: typeof copyToClipboard
-}
-
-class AccountOverview extends React.PureComponent<
-  AccountOverviewPropTypes & RouteComponentProps
-> {
-  render() {
-    const { account } = this.props
-    return (
-      <FlexContainer alignItems="center">
-        <Tooltip title={labels.CLICK_QR_TO_COPY} enterDelay={400}>
-          <div
-            style={{
-              width: 150,
-              height: 150,
-              marginTop: '4px',
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            <QR
-              data={account.publicKey}
-              width={150}
-              onClick={this.props.onQrCodeClicked}
-            />
-          </div>
-        </Tooltip>
-        <span style={{ fontFamily: 'Roboto Mono', padding: 8 }}>
-          {account.publicKey}
-        </span>
-        <Divider />
-        <List style={{ width: '100%' }}>
-          <ListItem
-            divider
-            button
-            onClick={() => this.props.history.push('/settings/about')}
-          >
-            <InfoIcon color="action" />
-            <ListItemText primary="First" secondary="second" />
-            <ListItemIcon>
-              <ForwardIcon />
-            </ListItemIcon>
-          </ListItem>
-        </List>
-      </FlexContainer>
-    )
-  }
-}
-
-const ConnectedAccountOverview = compose(
-  withRouter,
-  connect(
-    null,
-    { onQrCodeClicked: copyToClipboard }
-  )
-)(AccountOverview)
-
 type PropTypes = {
-  mainAccount: AccountStateType | undefined
+  mainAccount: AccountStateType
   accounts: AccountStateType[]
 }
 
 type StateTypes = {
   index: number
-  showBalanceTable: boolean
-  clickedAccount: AccountStateType | null
 }
 
-class Home extends React.PureComponent<PropTypes, StateTypes> {
+class Home extends React.PureComponent<
+  PropTypes & RouteComponentProps,
+  StateTypes
+> {
   state = {
     index: 0,
-    showBalanceTable: false,
-    clickedAccount: null,
   }
   handleTabChange = (_: any, index: number) => {
     this.setState({ index })
   }
 
-  renderContent = (currentAccount: AccountStateType) => {
-    if (this.state.index === 0) {
-      const publicKey =
-        this.state.clickedAccount != null
-          ? this.state.clickedAccount.publicKey
-          : this.props.mainAccount.publicKey
-
-      return <FungibleOverview publicKey={publicKey} />
-    } else if (this.state.index === 2) {
-      const publicKey =
-        this.state.clickedAccount != null
-          ? this.state.clickedAccount.publicKey
-          : this.props.mainAccount.publicKey
-
-      return <FungibleOverview publicKey={publicKey} />
+  componentWillMount() {
+    const { mainAccount, history, match } = this.props
+    console.log('match', match)
+    if (!mainAccount) {
+      history.push('/home/setup')
+    } else {
+      history.push(`/home/ft`)
     }
-
-    return <ConnectedAccountOverview account={currentAccount} />
   }
 
   render() {
-    if (!this.props.mainAccount) {
-      return null
-    }
+    const { match } = this.props
 
     return (
       <AccountBarLayout>
         <FlexContainer>
           <ConnectedHomeAppBar />
-          {this.renderContent(this.props.mainAccount)}
+          <Route path={`${match.path}/setup`} component={() => <p>setup</p>} />
+          <Route path={`${match.path}/ft`} component={FungibleOverview} />
+          <Route path={`${match.path}/nft`} component={NFTOverview} />
+          <Route path={`${match.path}/detail`} component={AccountDetail} />
+
           <BottomNavigation
             style={{ width: '100%', borderTop: '1px solid #ccc' }}
             value={this.state.index}
             onChange={this.handleTabChange}
             showLabels
           >
-            <BottomNavigationAction label={labels.FUNGIBLE_BALANCE} />} />
-            <BottomNavigationAction label={labels.NFTs_LIST} />
-            <BottomNavigationAction label={labels.ACCOUNT_DETAIL} />
+            <BottomNavigationAction
+              label={labels.FUNGIBLE_BALANCE}
+              onClick={() => this.props.history.push(`${match.path}/ft`)}
+            />
+            <BottomNavigationAction
+              label={labels.NFTs_LIST}
+              onClick={() => this.props.history.push(`${match.path}/nft`)}
+            />
+            <BottomNavigationAction
+              label={labels.ACCOUNT_DETAIL}
+              onClick={() => this.props.history.push(`${match.path}/detail`)}
+            />
           </BottomNavigation>
         </FlexContainer>
       </AccountBarLayout>
@@ -256,7 +177,7 @@ class Home extends React.PureComponent<PropTypes, StateTypes> {
   }
 }
 
-export default connect(
-  getForHome,
-  { onAccountSelect: setMainAccount, onAccountAvatarClick: copyToClipboard }
+export default compose(
+  withRouter,
+  connect(getForHome)
 )(Home)
