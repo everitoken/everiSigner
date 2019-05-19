@@ -13,14 +13,12 @@ import CircularEntity from '../presentational/CircularEntity'
 import BottomButtonGroup from '../presentational/BottomButtonGroup'
 import AccountSelectDialog from '../presentational/AccountSelect'
 import ConnectedBalanceTable from './ConnectedBalanceTable'
+import labels from '../../labels';
 
 type PropTypes = {
   request: {} | null
   accounts: AccountStateType[]
   onAuthorize: typeof uiActions.authorizeAccountAccess
-  onAccountInfoMoreClick: (
-    publicKey: string
-  ) => ReturnType<typeof uiActions.fetchBalance>
 }
 
 type StateTypes = {
@@ -28,6 +26,7 @@ type StateTypes = {
   data: string[]
   showBalanceTable: boolean
 }
+
 class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
   state = {
     selectedAccount: this.props.accounts.find(({ isMain }) => isMain),
@@ -44,6 +43,10 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
     if (this.state.selectedAccount) {
       this.props.onAuthorize(this.state.selectedAccount, this.props.request)
     }
+  }
+
+  handleAccountSelect = (selectedAccount: AccountStateType) => {
+      this.setState({selectedAccount})
   }
   handleCancel = () => {
     if (this.state.selectedAccount) {
@@ -74,7 +77,7 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
         renderAction={() => (
           <AccountSelectDialog
             selected={selectedAccount}
-            onSelect={() => null}
+            onSelect={this.handleAccountSelect}
             accounts={accounts}
             onAccountMoreClicked={this.handleAccountMoreClicked}
             detailComponent={
@@ -105,7 +108,7 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
               margin: '0 0 3rem 0',
             }}
           >
-            <ScreenHeader title="Connect Request" />
+            <ScreenHeader title={labels.CONNECT_REQUEST} />
           </div>
 
           <Grid container xs={12} spacing={0} justify="center">
@@ -139,8 +142,8 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
           <BottomButtonGroup
             onPrimaryButtonClick={this.handleAuthorize}
             onSecondaryButtonClick={this.handleCancel}
-            primaryButtonText="Authorize"
-            secondaryButtonText="Cancel"
+            primaryButtonText={labels.AUTHORIZE_BUTTON_TEXT}
+            secondaryButtonText={labels.CANCEL_BUTTON_TEXT}
           />
         </FlexContainer>
       </Container>

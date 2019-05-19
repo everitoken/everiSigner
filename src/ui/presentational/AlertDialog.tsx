@@ -91,7 +91,7 @@ class AlertDialog extends React.Component<PropTypes> {
             color="secondary"
             onClick={this.props.onClose}
           >
-            {labels.CANCEL}
+            {labels.CANCEL_BUTTON_TEXT}
           </Button>
         </DialogActions>
       </Dialog>

@@ -89,7 +89,7 @@ class NetworkSelect extends React.PureComponent<
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} color="primary">
-            {labels.CANCEL}
+            {labels.CANCEL_BUTTON_TEXT}
           </Button>
         </DialogActions>
       </Dialog>

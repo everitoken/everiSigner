@@ -9,7 +9,7 @@ export default {
   ACCOUNT_NAME: '账户名',
   BACKUP_WALLET_SECONDARY_TEXT: '将钱包加密保存到电脑',
   BACKUP_WALLET: '备份钱包',
-  CANCEL: '取消',
+  CANCEL_BUTTON_TEXT: '取消',
   CLICK_QR_TO_COPY: '点击二维码复制地址',
   CLOSE: '关闭窗口',
   CONFIRM_REMOVE_ACCOUNT: '确定删除账户',
@@ -51,4 +51,6 @@ export default {
   STEP_NEXT: '下一步',
   PAYEE_CODE: '收款码',
   PAYEE_CODE_SECONDARY_TEXT: '用于收款',
+  AUTHORIZE_BUTTON_TEXT: '授权',
+  CONNECT_REQUEST: 'Connect Request'
 }

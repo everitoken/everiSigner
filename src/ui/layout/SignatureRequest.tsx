@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { getSigningPayload } from '../../store/getter'
 import { SigningPayloadStateType } from '../../store/reducer/signingPayload'
-import { Button, Typography, CircularProgress } from '@material-ui/core'
+import { Button, Typography  } from '@material-ui/core'
 import FlexContainer from '../presentational/FlexContainer'
 import { sign } from '../action'
 import { getDisplayableSigningPayload } from '../util'
@@ -59,7 +59,7 @@ class Signing extends React.PureComponent<PropTypes> {
             size="large"
             onClick={this.handleClick}
           >
-            {labels.CANCEL}
+            {labels.CANCEL_BUTTON_TEXT}
           </Button>
           <Button
             variant="outlined"

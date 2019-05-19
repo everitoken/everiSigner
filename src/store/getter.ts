@@ -5,7 +5,6 @@ import { decryptAccount } from '../service/PasswordService'
 import { AccountStateType } from './reducer/accounts'
 import * as PasswordService from '../service/PasswordService'
 import { RouteComponentProps } from 'react-router-dom'
-import App from '../ui/App'
 
 export const getDefaultAccount = (state: AppState) =>
   state.accounts.find(account => account.type === 'seed')
