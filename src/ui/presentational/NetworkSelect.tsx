@@ -122,4 +122,5 @@ class NetworkSelect extends React.PureComponent<
     )
   }
 }
+
 export default withStyles(styles)(NetworkSelect)

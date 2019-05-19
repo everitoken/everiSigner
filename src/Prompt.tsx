@@ -5,7 +5,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import Container from './ui/presentational/Container'
 import createStore from './store'
 import saga from './store/saga/'
-import Signing from './ui/layout/Signing'
+import SignatureRequest from './ui/layout/SignatureRequest'
 import provider from './store/provider'
 
 const { store, persistor } = createStore(saga)
@@ -19,7 +19,7 @@ class Prompt extends React.PureComponent {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <Container>
-            <Signing />
+            <SignatureRequest />
           </Container>
         </PersistGate>
       </Provider>

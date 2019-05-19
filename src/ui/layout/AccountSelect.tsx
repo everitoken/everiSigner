@@ -13,7 +13,8 @@ import CircularEntity from '../presentational/CircularEntity'
 import BottomButtonGroup from '../presentational/BottomButtonGroup'
 import AccountSelectDialog from '../presentational/AccountSelect'
 import ConnectedBalanceTable from './ConnectedBalanceTable'
-import labels from '../../labels';
+import labels from '../../labels'
+import PopupLayout from '../presentational/PopupLayout'
 
 type PropTypes = {
   request: {} | null
@@ -46,7 +47,7 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
   }
 
   handleAccountSelect = (selectedAccount: AccountStateType) => {
-      this.setState({selectedAccount})
+    this.setState({ selectedAccount })
   }
   handleCancel = () => {
     if (this.state.selectedAccount) {
@@ -55,6 +56,7 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
   }
   render() {
     const rawData = JSON.parse(this.props.request.payload.data)
+
     const { selectedAccount } = this.state
     const { accounts } = this.props
 
@@ -99,18 +101,17 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
 
     return (
       <Container>
-        <FlexContainer alignItems="center">
-          <div
-            style={{
-              display: 'flex',
-              flex: 1,
-              alignSelf: 'stretch',
-              margin: '0 0 3rem 0',
-            }}
-          >
-            <ScreenHeader title={labels.CONNECT_REQUEST} />
-          </div>
-
+        <PopupLayout
+          title={labels.CONNECT_REQUEST}
+          bottomButtonGroup={
+            <BottomButtonGroup
+              onPrimaryButtonClick={this.handleAuthorize}
+              onSecondaryButtonClick={this.handleCancel}
+              primaryButtonText={labels.AUTHORIZE_BUTTON_TEXT}
+              secondaryButtonText={labels.CANCEL_BUTTON_TEXT}
+            />
+          }
+        >
           <Grid container xs={12} spacing={0} justify="center">
             <Grid item xs={11}>
               <ConnectedEntities left={left} right={right} />
@@ -138,14 +139,7 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
               </Typography>
             </Grid>
           </Grid>
-
-          <BottomButtonGroup
-            onPrimaryButtonClick={this.handleAuthorize}
-            onSecondaryButtonClick={this.handleCancel}
-            primaryButtonText={labels.AUTHORIZE_BUTTON_TEXT}
-            secondaryButtonText={labels.CANCEL_BUTTON_TEXT}
-          />
-        </FlexContainer>
+        </PopupLayout>
       </Container>
     )
   }

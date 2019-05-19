@@ -11,6 +11,11 @@ import NetworkSelect from '../src/ui/presentational/NetworkSelect'
 import { IconButton } from '@material-ui/core'
 import BackIcon from '@material-ui/icons/ArrowBack'
 import CloseIcon from '@material-ui/icons/Close'
+import ScreenHeader from '../src/ui/presentational/ScreenHeader'
+import BottomButtonGroup from '../src/ui/presentational/BottomButtonGroup'
+import FlexContainer from '../src/ui/presentational/FlexContainer'
+import PopupLayout from '../src/ui/presentational/PopupLayout'
+import labels from '../src/labels'
 
 storiesOf('Layout', module).add('with text header', () => (
   <Container>
@@ -45,41 +50,47 @@ storiesOf('Layout', module).add('navigation layout in main layout', () => (
 const network1 = {
   name: 'mainnet1',
   url: 'https://mainnet1.everitoken.io/',
-  abbr: 'HK',
   location: 'Hong Kong',
+  isProduction: true,
+  isCustom: false,
 }
 
 const network2 = {
   name: 'mainnet2',
   url: 'https://mainnet2.everitoken.io/',
-  abbr: 'CA',
   location: 'California',
+  isProduction: true,
+  isCustom: false,
 }
 
 const network3 = {
   name: 'mainnet3',
   url: 'https://mainnet3.everitoken.io/',
-  abbr: 'TYO',
   location: 'Tokyo',
+  isProduction: true,
+  isCustom: false,
 }
 
 const network4 = {
   name: 'mainnet4',
   url: 'https://mainnet4.everitoken.io/',
-  abbr: 'FRA',
   location: 'Frankfurt',
+  isProduction: true,
+  isCustom: false,
 }
 const network5 = {
   name: 'mainnet5',
   url: 'https://mainnet5.everitoken.io/',
-  abbr: 'SEL',
   location: 'Seoul',
+  isProduction: true,
+  isCustom: false,
 }
 const network6 = {
   name: 'mainnet6',
   url: 'https://mainnet6.everitoken.io/',
-  abbr: 'BR',
   location: 'Brazil',
+  isProduction: true,
+  isCustom: false,
 }
 
 const networks = [network1, network2, network3, network4, network5, network6]
@@ -88,6 +99,8 @@ storiesOf('Layout', module).add('main header', () => (
     <MainLayout
       renderHead={() => (
         <TopActionBar
+          onLogoClick={() => null}
+          onMoreClick={() => null}
           renderMiddle={() => (
             <NetworkSelect
               selected={network1}
@@ -100,5 +113,23 @@ storiesOf('Layout', module).add('main header', () => (
     >
       <p>Body</p>
     </MainLayout>
+  </Container>
+))
+
+storiesOf('Layout', module).add('window', () => (
+  <Container>
+    <PopupLayout
+      title="Connect Request"
+      bottomButtonGroup={
+        <BottomButtonGroup
+          onPrimaryButtonClick={() => alert('primary')}
+          onSecondaryButtonClick={() => alert('secondary')}
+          primaryButtonText={labels.AUTHORIZE_BUTTON_TEXT}
+          secondaryButtonText={labels.CANCEL_BUTTON_TEXT}
+        />
+      }
+    >
+      <p>whatnot</p>
+    </PopupLayout>
   </Container>
 ))

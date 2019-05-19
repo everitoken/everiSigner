@@ -52,5 +52,7 @@ export default {
   PAYEE_CODE: '收款码',
   PAYEE_CODE_SECONDARY_TEXT: '用于收款',
   AUTHORIZE_BUTTON_TEXT: '授权',
-  CONNECT_REQUEST: 'Connect Request'
+  CONNECT_REQUEST: 'Connect Request',
+  REQUEST_SIGNATURE: 'Signature Request',
+  SIGN: 'Sign'
 }

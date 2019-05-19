@@ -2,20 +2,20 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { getSigningPayload } from '../../store/getter'
 import { SigningPayloadStateType } from '../../store/reducer/signingPayload'
-import { Button, Typography  } from '@material-ui/core'
-import FlexContainer from '../presentational/FlexContainer'
 import { sign } from '../action'
 import { getDisplayableSigningPayload } from '../util'
 import { get } from 'lodash'
 import AuthenticationProtectedView from './AuthenticationProtectedView'
+import PopupLayout from '../presentational/PopupLayout'
 import labels from '../../labels'
+import BottomButtonGroup from '../presentational/BottomButtonGroup'
 
 type PropTypes = {
   signingPayload: SigningPayloadStateType
   onClick: typeof sign
 }
 
-class Signing extends React.PureComponent<PropTypes> {
+class SignatureRequest extends React.PureComponent<PropTypes> {
   handleClick = () => {
     const { onClick, signingPayload } = this.props
 
@@ -23,6 +23,8 @@ class Signing extends React.PureComponent<PropTypes> {
       onClick(signingPayload.raw)
     }
   }
+
+  handleCancel = () => {}
 
   render() {
     const { signingPayload } = this.props
@@ -33,13 +35,17 @@ class Signing extends React.PureComponent<PropTypes> {
       signingPayload.signed === null
 
     return (
-      <FlexContainer withPadding justifyContent="space-between">
-        <div>
-          <Typography variant="h4">Signing Request</Typography>
-          <Typography variant="body2">
-            Overview of data to be signed.
-          </Typography>
-        </div>
+      <PopupLayout
+        title={labels.REQUEST_SIGNATURE}
+        bottomButtonGroup={
+          <BottomButtonGroup
+            onPrimaryButtonClick={this.handleClick}
+            onSecondaryButtonClick={this.handleCancel}
+            primaryButtonText={labels.SIGN}
+            secondaryButtonText={labels.CANCEL_BUTTON_TEXT}
+          />
+        }
+      >
         <pre>
           {JSON.stringify(
             getDisplayableSigningPayload(signingPayload),
@@ -51,26 +57,7 @@ class Signing extends React.PureComponent<PropTypes> {
         <p style={{ overflowWrap: 'break-word' }}>
           Signed: {get(signingPayload, 'signed.payload.signature', null)}
         </p>
-        <hr />
-        <div>
-          <Button
-            variant="outlined"
-            color="secondary"
-            size="large"
-            onClick={this.handleClick}
-          >
-            {labels.CANCEL_BUTTON_TEXT}
-          </Button>
-          <Button
-            variant="outlined"
-            color="primary"
-            size="large"
-            onClick={this.handleClick}
-          >
-            Sign
-          </Button>
-        </div>
-      </FlexContainer>
+      </PopupLayout>
     )
   }
 }
@@ -78,7 +65,7 @@ class Signing extends React.PureComponent<PropTypes> {
 const ConnectedSigningScreen = connect(
   getSigningPayload,
   { onClick: sign }
-)(Signing)
+)(SignatureRequest)
 
 export default () => (
   <AuthenticationProtectedView>
