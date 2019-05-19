@@ -7,6 +7,7 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import labels from '../../labels'
 import styled from 'styled-components'
+import { shortenAddress } from '../util'
 
 interface TransferFtActionType {
   actionName: string
@@ -64,9 +65,7 @@ class TransferFtAction extends React.PureComponent<{
         <span style={{ paddingRight: '6px' }}>{labels.TRANSFERFT}</span>
         <UnderLineSpan>{abi.number}</UnderLineSpan>
         <span style={{ padding: '0 6px' }}>{labels.TO}</span>
-        <UnderLineSpan>
-          {abi.to.slice(0, 7)}...${abi.to.slice(-7)}
-        </UnderLineSpan>
+        <UnderLineSpan>{shortenAddress(abi.to)}</UnderLineSpan>
       </React.Fragment>
     )
   }

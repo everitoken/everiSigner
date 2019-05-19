@@ -2,6 +2,7 @@ import * as React from 'react'
 import { AccountStateType } from '../../store/reducer/accounts'
 import FlexContainer from '../presentational/FlexContainer'
 import styled from 'styled-components'
+import { shortenAddress } from '../util'
 
 type PropTypes = {
   account: AccountStateType
@@ -32,7 +33,7 @@ class AccountAvatar extends React.PureComponent<PropTypes> {
       <FlexContainer>
         <Container onClick={() => this.props.onClick(this.props.account)}>
           <AccountName>{this.props.account.name}</AccountName>
-          <Address>{`${address.slice(0, 7)}...${address.slice(-7)}`}</Address>
+          <Address>{shortenAddress(address)}</Address>
         </Container>
       </FlexContainer>
     )

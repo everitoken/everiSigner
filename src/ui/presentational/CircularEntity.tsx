@@ -7,6 +7,7 @@ import {
   withStyles,
   StyledComponentProps,
 } from '@material-ui/core'
+import { shortenAddress } from '../util'
 
 type PropTypes = {
   title: string
@@ -50,9 +51,7 @@ class CircularEntity extends React.PureComponent<
           {renderAction ? renderAction({ title, subtitle }) : null}
         </span>
         <Typography variant="caption">
-          {subtitle.length > 33
-            ? `${subtitle.slice(0, 7)}...${subtitle.slice(-7)}`
-            : subtitle}
+          {subtitle.length > 33 ? `${shortenAddress(subtitle)}` : subtitle}
         </Typography>
       </Grid>
     )
