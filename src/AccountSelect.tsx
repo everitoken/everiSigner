@@ -5,7 +5,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import Container from './ui/presentational/Container'
 import createStore from './store/index'
 import saga from './store/saga/index'
-import AccountSelect from './ui/layout/AccountSelect'
+import ConnectRequest from './ui/layout/ConnectRequest'
 import provider from './store/provider'
 
 const { store, persistor } = createStore(saga)
@@ -19,7 +19,7 @@ class Prompt extends React.PureComponent {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <Container>
-            <AccountSelect />
+            <ConnectRequest />
           </Container>
         </PersistGate>
       </Provider>

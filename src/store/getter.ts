@@ -124,8 +124,10 @@ export const getSeedAccountDecrypted = (state: AppState) => {
   return { account: decryptAccount(password, account), words, accountNames }
 }
 
-export const getSigningPayload = ({ signingPayload }: AppState) => ({
+export const getSigningPayload = ({ signingPayload, accounts }: AppState) => ({
   signingPayload,
+  accounts,
+  mainAccount: accounts.find(({ isMain }) => isMain) as AccountStateType,
 })
 
 export const getBalanceByPublicKey = (

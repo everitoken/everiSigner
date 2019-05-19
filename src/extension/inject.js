@@ -99,19 +99,19 @@ window.everisigner = {
     return ['everitoken']
   },
 
-
   getSupportedActions() {
     return localPostMessage('everisigner/global/get.supportedactions')
   },
 
   // create sign provider
   /**
-   * @param {{message?: string, timeout?: number}} opts
+   * @param {{addresses: string[], message?: string, timeout?: number}} opts
    */
   createSignProvider: opts => data =>
     localPostMessage('everisigner/global/sign', {
       buf: data.buf.toString('hex'),
       payload: { transaction: data.transaction, actions: data.actions },
       message: opts.message,
+      addresses: opts.addresses || [],
     }),
 }

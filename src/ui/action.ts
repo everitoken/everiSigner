@@ -22,12 +22,16 @@ export const ADD_CUSTOM_NETWORK = 'ui/ADD_CUSTOM_NETWORK'
 export const REMOVE_CUSTOM_NETWORK = 'ui/REMOVE_CUSTOM_NETWORK'
 export const EXPORT_WALLET = 'ui/EXPORT_WALLET'
 
-export const sign = (payload: {
-  payload: ToBeSignDataType
-  meta?: MessageMetaType
-}) => ({
+export const sign = (
+  payload: {
+    payload: ToBeSignDataType
+    meta?: MessageMetaType
+  },
+  publicKey: string
+) => ({
   type: SIGN,
   payload,
+  meta: { publicKey },
 })
 
 export const setPassword = (password: string) => ({

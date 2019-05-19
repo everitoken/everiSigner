@@ -217,7 +217,9 @@ function* signHandler() {
     const signature = yield evtChain.signHash(
       new Buffer(data.buf, 'hex'),
       async storeProvider => {
-        const account = await storeProvider.getDefaultAccount()
+        const account = await storeProvider.getAccountByPublicKey(
+          action.meta.publicKey
+        )
         return account.privateKey
       }
     )
