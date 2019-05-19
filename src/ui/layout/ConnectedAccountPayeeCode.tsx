@@ -13,7 +13,6 @@ type ConnectedProps = {
 
 class ConnectedAccountPayeeCode extends React.Component<ConnectedProps> {
   render() {
-    console.log(this.props.account.publicKey)
     return (
       <NavigationLayout
         title={labels.PAYEE_CODE}

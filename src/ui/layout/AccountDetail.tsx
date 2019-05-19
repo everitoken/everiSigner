@@ -22,6 +22,7 @@ import { getMainAccount } from '../../store/getter'
 import Divider from '../presentational/Divider'
 import KeyIcon from '@material-ui/icons/VpnKey'
 import ReceiveIcon from '@material-ui/icons/CallReceived'
+import EncryptIcon from '@material-ui/icons/EnhancedEncryption'
 
 type PropTypes = {
   account: AccountStateType
@@ -98,6 +99,20 @@ class AccountOverview extends React.PureComponent<
             <ListItemText
               primary={labels.PAYEE_CODE}
               secondary={labels.PAYEE_CODE_SECONDARY_TEXT}
+            />
+            <ListItemIcon>
+              <ForwardIcon />
+            </ListItemIcon>
+          </ListItem>
+          <ListItem
+            divider
+            button
+            onClick={() => this.props.history.push(`/home/sign`)}
+          >
+            <EncryptIcon color="action" />
+            <ListItemText
+              primary={labels.SIGN_DATA}
+              secondary={labels.ACCOUNT_SIGN_SECONDARY_TEXT}
             />
             <ListItemIcon>
               <ForwardIcon />

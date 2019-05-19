@@ -93,17 +93,13 @@ export const getAccountImportScreen = (state: AppState) => ({
   publicKeys: state.accounts.map(({ publicKey }) => publicKey),
 })
 export const getDecryptedAccounts = (state: AppState) => {
-  {
-    const password = getPassword(state)
-    if (!password) {
-      return { accounts: [] }
-    }
+  const password = getPassword(state)
+  if (!password) {
+    return { accounts: [] }
+  }
 
-    return {
-      accounts: state.accounts.map(account =>
-        decryptAccount(password, account)
-      ),
-    }
+  return {
+    accounts: state.accounts.map(account => decryptAccount(password, account)),
   }
 }
 export const getSeedAccountDecrypted = (state: AppState) => {
@@ -175,3 +171,16 @@ export const getAccountByRouteAccountId = (
 export const getMainAccount = (state: AppState) => ({
   account: state.accounts.find(({ isMain }) => isMain) as AccountStateType,
 })
+
+export const getDecryptedMainAccount = (state: AppState) => {
+  const password = getPassword(state)
+  if (!password) {
+    return { account: null }
+  }
+
+  return {
+    account: decryptAccount(password, state.accounts.find(
+      ({ isMain }) => isMain
+    ) as AccountStateType),
+  }
+}
