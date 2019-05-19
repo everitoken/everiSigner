@@ -28,6 +28,12 @@ const handlePush = ev => {
         to: 'EVT6rn1vVAM8FfdT43Ast37yHqwRhoZkLpbxZXEtodJLYFFGA7Qzq',
         number: '10.00000 S#20',
         memo: 'Test',
+      }),
+      new EVT.EvtAction('transferft', {
+        from: publicKey,
+        to: 'EVT6rn1vVAM8FfdT43Ast37yHqwRhoZkLpbxZXEtodJLYFFGA7Qzq',
+        number: '9.00000 S#20',
+        memo: 'another transfer',
       })
     )
     .then(trx => console.log('trx: ', trx))

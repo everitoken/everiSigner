@@ -20,3 +20,9 @@ a.circular-entity-link {
   font-size: 12px;
   cursor: pointer;
 }
+
+.truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

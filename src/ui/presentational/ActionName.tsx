@@ -25,8 +25,12 @@ class SiteLocation extends React.PureComponent<PropTypes> {
       >
         <Chip
           icon={<Fiber />}
+          style={{
+            paddingRight: 0,
+            fontFamily: 'Roboto Mono',
+            fontSize: '12px',
+          }}
           label={ActionDescription[this.props.name]}
-          color="primary"
         />
       </Tooltip>
     )
