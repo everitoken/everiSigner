@@ -99,6 +99,7 @@ window.everisigner = {
     return ['everitoken']
   },
 
+
   getSupportedActions() {
     return localPostMessage('everisigner/global/get.supportedactions')
   },
@@ -106,13 +107,11 @@ window.everisigner = {
   // create sign provider
   /**
    * @param {{message?: string, timeout?: number}} opts
-   * @param {Object} data
    */
-  createSignProvider: opts => data => {
-    return localPostMessage('everisigner/global/sign', {
+  createSignProvider: opts => data =>
+    localPostMessage('everisigner/global/sign', {
       buf: data.buf.toString('hex'),
-      transaction: data.transaction,
+      payload: { transaction: data.transaction, actions: data.actions },
       message: opts.message,
-    })
-  },
+    }),
 }

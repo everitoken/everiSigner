@@ -23,39 +23,11 @@ const handlePush = ev => {
   apiCaller
     .pushTransaction(
       { maxCharge: 10000, payer: publicKey },
-      new EVT.EvtAction('newdomain', {
-        name: 'testCreateDomain5',
-        creator: publicKey,
-        issue: {
-          name: 'issue',
-          threshold: 1,
-          authorizers: [
-            {
-              ref: '[A] ' + publicKey,
-              weight: 1,
-            },
-          ],
-        },
-        transfer: {
-          name: 'transfer',
-          threshold: 1,
-          authorizers: [
-            {
-              ref: '[G] .OWNER',
-              weight: 1,
-            },
-          ],
-        },
-        manage: {
-          name: 'manage',
-          threshold: 1,
-          authorizers: [
-            {
-              ref: '[A] ' + publicKey,
-              weight: 1,
-            },
-          ],
-        },
+      new EVT.EvtAction('transferft', {
+        from: publicKey,
+        to: 'EVT6rn1vVAM8FfdT43Ast37yHqwRhoZkLpbxZXEtodJLYFFGA7Qzq',
+        number: '10.00000 S#20',
+        memo: 'Test',
       })
     )
     .then(trx => console.log('trx: ', trx))
@@ -66,6 +38,7 @@ btn.addEventListener('click', handlePush)
 getSupportedActionsBtn.addEventListener('click', () => {
   everisigner.getSupportedActions().then(actions => console.log(actions))
 })
+
 getAccountsButton.addEventListener('click', () => {
   everisigner.getAccounts().then(accounts => console.log(accounts))
 })
