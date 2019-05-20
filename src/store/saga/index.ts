@@ -34,10 +34,10 @@ const log = (msg: string, tag: string = 'unspecified') => {
   background && background.console.log(`popup(${tag}): `, msg)
 }
 
-function setupChainProviders(network: NetworkItemType) {
-  const provider: StoreProviderInterface | null = storeProvider.get()
+function* getCurrentNetwork() {
+  const { selected: network }: NetworkStateType = yield select(getNetworks)
 
-  const chainNetwork = {
+  return {
     host: network.url
       .replace(/\/$/, '')
       .replace(/^https:\/\//, '')
@@ -45,15 +45,14 @@ function setupChainProviders(network: NetworkItemType) {
     port: network.url.startsWith('https') ? 443 : 80,
     protocol: network.url.startsWith('https') ? 'https' : 'http',
   }
+}
 
-  const fallbackNetwork = {
-    host: 'mainnet14.everitoken.io',
-    port: 443,
-    protocol: 'https',
-  }
+function* setupChainProviders() {
+  const provider: StoreProviderInterface | null = storeProvider.get()
+  const network = yield call(getCurrentNetwork)
 
   if (provider != null) {
-    chain = new ChainApi(provider, chainNetwork || fallbackNetwork)
+    chain = new ChainApi(provider, network)
   }
 }
 
@@ -91,7 +90,8 @@ function* fetchBalanceWatcher() {
 
     yield put(storeActions.landPlane('balance/fetching', true))
 
-    const evtChain: ChainInterface = yield call(getEvtChain, chain)
+    const network = yield call(getCurrentNetwork)
+    const evtChain: ChainInterface = yield call(getEvtChain, chain, network)
     // get all balances by public key
     const rawBalances: string[] = yield evtChain.getBalancesByPublicKey(
       action.payload.publicKey
@@ -211,7 +211,8 @@ function* signHandler() {
       break
     }
 
-    const evtChain: ChainInterface = yield call(getEvtChain, chain)
+    const network = yield call(getCurrentNetwork)
+    const evtChain: ChainInterface = yield call(getEvtChain, chain, network)
 
     // get private key from default account
     const signature = yield evtChain.signHash(
@@ -262,7 +263,8 @@ function* importAccountHandler() {
       return
     }
 
-    const evtChain: ChainInterface = yield call(getEvtChain, chain)
+    const network = yield call(getCurrentNetwork)
+    const evtChain: ChainInterface = yield call(getEvtChain, chain, network)
 
     const { id, privateKey, name } = action.payload
 
@@ -316,7 +318,8 @@ function* createAccountHandler() {
     // 3. generate entropy
     const seed = PasswordService.mnemonicToSeed(action.payload.words)
 
-    const evtChain: ChainInterface = yield call(getEvtChain, chain)
+    const network = yield call(getCurrentNetwork)
+    const evtChain: ChainInterface = yield call(getEvtChain, chain, network)
 
     const privateKey = yield evtChain.generateSeedPrivateKey(() =>
       Promise.resolve(seed.toString('hex'))
@@ -552,14 +555,13 @@ function* rootSaga() {
         type: 'popup/initialized',
       })
     }
-    const { selected }: NetworkStateType = yield select(getNetworks)
 
     yield fork(createAccountHandler)
     yield fork(importAccountHandler)
     yield fork(setPasswordWatcher)
     yield fork(signHandler)
     yield fork(authorizeAccountAccessHandler)
-    yield fork(setupChainProviders, selected) // NOTE expose `chain` global to saga/index
+    yield fork(setupChainProviders) // NOTE expose `chain` global to saga/index
     yield fork(fetchBalanceWatcher)
     yield fork(copyToClipBoardWatcher)
     yield fork(setMainAccountWatcher)

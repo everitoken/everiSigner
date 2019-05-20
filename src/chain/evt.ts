@@ -6,7 +6,6 @@ class Evt implements ChainInterface {
   storeProvider: StoreProviderInterface
   network: {}
   constructor(storeProvider: StoreProviderInterface, network: {}) {
-    // console.log(storeProvider.getAccountByPublicKey)
     this.storeProvider = storeProvider
     this.network = network
   }
@@ -56,6 +55,9 @@ class Evt implements ChainInterface {
     })
 
     return apiCaller.getFungibleSymbolDetail(id)
+  }
+  setNetwork = (network: {}) => {
+    this.network = network
   }
 }
 

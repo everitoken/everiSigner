@@ -19,4 +19,5 @@ export default interface ChainInterface {
   ): Promise<string>
   getBalancesByPublicKey(publicKey: string): Promise<Array<string>>
   getFungibleDetail(id: number): Promise<any>
+  setNetwork(network: {}): void
 }

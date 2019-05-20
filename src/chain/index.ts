@@ -9,9 +9,13 @@ class ChainApi {
   }
   getSupportedChains = () => this.chains.map(chain => chain.getName())
 
-  getChain = (chainName: string) => {
+  getChain = (chainName: string, network?: {}) => {
     const chain = this.chains.find(c => c.getName() === chainName)
     if (chain) {
+      if (network) {
+        chain.setNetwork(network)
+      }
+
       return Promise.resolve(chain)
     }
     return Promise.reject(`Chain "${chainName}" is not supported.`)
