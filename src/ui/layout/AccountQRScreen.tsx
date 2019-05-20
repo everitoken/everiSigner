@@ -62,7 +62,7 @@ class AccountQR extends React.PureComponent<
 
 const ConnectedAccountQR = connect(getAccountDetailScreen)(AccountQR)
 
-export default (props: RouteComponentProps) => (
+export default (props: RouteComponentProps<{ id: string }>) => (
   <WithAuthentication>
     {({ status }) => {
       if (status === 'password') {
