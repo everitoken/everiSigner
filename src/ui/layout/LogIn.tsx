@@ -16,14 +16,12 @@ import * as uiActions from '../action'
 import { mapInputPassword } from '../../store/getter'
 import { verifyPassword } from '../../service/PasswordService'
 import Logo from '../presentational/Logo'
-import Container from '../presentational/Container'
 import ScreenHeader from '../presentational/ScreenHeader'
+import labels from '../../labels'
 
-type OwnProps = {
-  message: string
-}
 type PropTypes = {
-  passwordHash: string
+  message: string
+  passwordHash: string | undefined
   onUnlock: typeof uiActions.logIn
 }
 
@@ -33,7 +31,7 @@ type StateTypes = {
   showPassword: boolean
 }
 
-class Login extends React.PureComponent<OwnProps & PropTypes, StateTypes> {
+class Login extends React.PureComponent<PropTypes, StateTypes> {
   state = {
     invalid: false,
     password: '',
@@ -45,11 +43,16 @@ class Login extends React.PureComponent<OwnProps & PropTypes, StateTypes> {
   handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ password: event.target.value })
   }
+  handleKeyUp = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      this.onUnlock()
+    }
+  }
   onUnlock = () => {
-    const isPasswordValid = verifyPassword(
-      this.state.password,
-      this.props.passwordHash
-    )
+    const isPasswordValid =
+      this.props.passwordHash != null &&
+      verifyPassword(this.state.password, this.props.passwordHash)
+
     this.setState({ invalid: !isPasswordValid })
 
     if (isPasswordValid) {
@@ -58,21 +61,26 @@ class Login extends React.PureComponent<OwnProps & PropTypes, StateTypes> {
   }
   render() {
     return (
-      <Container>
-        <FlexContainer withPadding alignItems="center">
-          <FlexContainer>
-            <Logo />
-            <ScreenHeader title="Connect Request" withBackgroundColor={false} />
-            <FormControl fullWidth>
+      <FlexContainer withPadding alignItems="center">
+        <FlexContainer justifyContent="space-around">
+          <Logo />
+          <FlexContainer justifyContent="center" alignItems="center">
+            <ScreenHeader
+              title={this.props.message}
+              withBackgroundColor={false}
+            />
+            <FormControl style={{ width: '90%' }}>
               <InputLabel htmlFor="password">
-                Type password to unlock...
+                {labels.TYPE_PASSWORD_TO_UNLOCK}
               </InputLabel>
               <Input
                 error={this.state.invalid}
                 id="password"
+                autoFocus
                 type={this.state.showPassword ? 'text' : 'password'}
                 value={this.state.password || ''}
                 onChange={this.handlePasswordChange}
+                onKeyUp={this.handleKeyUp}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -90,22 +98,20 @@ class Login extends React.PureComponent<OwnProps & PropTypes, StateTypes> {
               />
             </FormControl>
           </FlexContainer>
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            onClick={this.onUnlock}
-          >
-            UNLOCK
-          </Button>
         </FlexContainer>
-      </Container>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          onClick={this.onUnlock}
+        >
+          {labels.UNLOCK}
+        </Button>
+      </FlexContainer>
     )
   }
 }
-const connector = connect(
+export default connect(
   mapInputPassword,
   { onUnlock: uiActions.logIn }
-)
-
-export default connector(Login)
+)(Login)

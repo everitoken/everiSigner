@@ -10,7 +10,7 @@ type PropTypes = {
 const Container = styled.p`
   text-align: center;
   width: 100%;
-  font-size: 20px;
+  font-size: 21px;
   font-weight: bold;
   font-family: 'Open Sans';
   padding: 20px 0;

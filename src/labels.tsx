@@ -63,5 +63,7 @@ export default {
   ACCOUNT_SIGN_SECONDARY_TEXT: '用于签名任意数据',
   ACCOUNT_SIGN_DESCRIPTION: '用当前的账户签名任意数据，签名将会出现再下方',
   DATA_TO_BE_SIGNED: '需要签名的数据',
-  SIGNED_RESULT: '签名结果'
+  SIGNED_RESULT: '签名结果',
+  UNLOCK: 'UNLOCK',
+  TYPE_PASSWORD_TO_UNLOCK: 'Type password to unlock',
 }
