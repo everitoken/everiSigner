@@ -182,7 +182,7 @@ function* authorizeAccountAccessHandler() {
         accounts:
           account == null
             ? []
-            : [{ name: account.name, publicKey: account.publicKey }],
+            : [{ name: account.name, address: account.publicKey }],
       },
       meta: request.meta,
     }
