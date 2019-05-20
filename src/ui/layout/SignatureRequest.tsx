@@ -8,7 +8,9 @@ import AuthenticationProtectedView from './AuthenticationProtectedView'
 import PopupLayout from '../presentational/PopupLayout'
 import labels from '../../labels'
 import BottomButtonGroup from '../presentational/BottomButtonGroup'
-import ActionPanel from '../presentational/ActionPanel'
+import ActionPanel, {
+  SupportedActionTypes,
+} from '../presentational/ActionPanel'
 import FlexContainer from '../presentational/FlexContainer'
 import Divider from '../presentational/Divider'
 import styled from 'styled-components'
@@ -101,7 +103,7 @@ class SignatureRequest extends React.PureComponent<PropTypes> {
               <Divider />
             </div>
             <div style={{ overflow: 'auto', height: '90%', padding: 2 }}>
-              {actions.map((action, i) => (
+              {actions.map((action: SupportedActionTypes, i: number) => (
                 <ActionPanel key={i} action={action} />
               ))}
             </div>

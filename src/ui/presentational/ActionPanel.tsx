@@ -8,6 +8,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import labels from '../../labels'
 import styled from 'styled-components'
 import { shortenAddress } from '../util'
+import { AccountStateType } from '../../store/reducer/accounts'
 
 interface TransferFtActionType {
   actionName: string
@@ -19,7 +20,7 @@ interface TransferFtActionType {
   }
 }
 
-type ActionTypes = TransferFtActionType
+export type SupportedActionTypes = TransferFtActionType
 
 const Panel = (props: {
   summary: React.ReactNode
@@ -112,18 +113,17 @@ class FallbackAction extends React.PureComponent<{ action: any }> {
   }
 }
 
-const componentMap = {
-  transferft: TransferFtAction,
-}
-
 type PropTypes = {
-  action: ActionTypes
+  action: SupportedActionTypes
 }
 
 class ActionPanel extends React.PureComponent<PropTypes> {
   render() {
-    const Comp = componentMap[this.props.action.actionName] || FallbackAction
-    return <Comp action={this.props.action} />
+    if (this.props.action.actionName === 'transferft') {
+      return <TransferFtAction action={this.props.action} />
+    }
+
+    return <FallbackAction action={this.props.action} />
   }
 }
 
