@@ -9,9 +9,9 @@ import { AccountStateType } from '../../store/reducer/accounts'
 import { getAccountDetailScreen } from '../../store/getter'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router'
-import * as qrcode from 'qrcode'
 import { get } from 'lodash'
 import styled from 'styled-components'
+import QR from '../presentational/QR'
 
 type AccountQRPropTypes = {
   account: AccountStateType | undefined
@@ -22,27 +22,12 @@ const Address = styled.span`
   font-size: 12px;
   padding-top: 16px;
 `
-type AccountQRStateTypes = { qr: null | string }
+type AccountQRStateTypes = {}
 
 class AccountQR extends React.PureComponent<
   AccountQRPropTypes,
   AccountQRStateTypes
 > {
-  state = {
-    qr: '',
-  }
-
-  componentWillMount() {
-    if (this.props.account) {
-      const { publicKey } = this.props.account
-
-      qrcode
-        .toDataURL(publicKey, {
-          width: 500,
-        })
-        .then((qr: string) => this.setState({ qr }))
-    }
-  }
   render() {
     return (
       <NavigationLayout
@@ -52,7 +37,7 @@ class AccountQR extends React.PureComponent<
         {this.props.account ? (
           <FlexContainer alignItems="center">
             <Address>{this.props.account.publicKey}</Address>
-            {this.state.qr ? <img src={this.state.qr} width="100%" /> : null}
+            <QR data={this.props.account.publicKey} />
           </FlexContainer>
         ) : null}
       </NavigationLayout>
