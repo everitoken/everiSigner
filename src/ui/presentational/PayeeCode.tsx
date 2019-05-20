@@ -1,5 +1,4 @@
 import * as React from 'react'
-import FlexContainer from './FlexContainer'
 import { StyledComponentProps } from '@material-ui/core'
 import * as Evtjs from 'evtjs'
 import QR from './QR'
@@ -44,11 +43,7 @@ class PayeeCode extends React.PureComponent<
       return null
     }
 
-    return (
-      <FlexContainer>
-        <QR data={this.state.qr} width={200} />
-      </FlexContainer>
-    )
+    return <QR data={this.state.qr} width={300} />
   }
 }
 

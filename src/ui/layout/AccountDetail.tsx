@@ -58,7 +58,7 @@ class AccountOverview extends React.PureComponent<
           {account.publicKey}
         </span>
         <Divider />
-        <List style={{ width: '100%', maxHeight: '300px', overflow: 'auto' }}>
+        <List style={{ width: '100%', maxHeight: '240px', overflow: 'auto' }}>
           <ListItem
             divider
             button

@@ -18,7 +18,9 @@ class ConnectedAccountPayeeCode extends React.Component<ConnectedProps> {
         title={labels.PAYEE_CODE}
         renderLeft={() => <ConnectedNavigationBackButton />}
       >
-        <PayeeCode publicKey={this.props.account.publicKey} />
+        <div style={{ margin: '0 auto' }}>
+          <PayeeCode publicKey={this.props.account.publicKey} />
+        </div>
       </NavigationLayout>
     )
   }
