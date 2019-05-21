@@ -37,17 +37,21 @@ class Login extends React.PureComponent<PropTypes, StateTypes> {
     password: '',
     showPassword: false,
   }
+
   handleClickShowPassword = () => {
     this.setState({ showPassword: !this.state.showPassword })
   }
+
   handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ password: event.target.value })
   }
+
   handleKeyUp = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter') {
       this.onUnlock()
     }
   }
+
   onUnlock = () => {
     const isPasswordValid =
       this.props.passwordHash != null &&
@@ -102,6 +106,7 @@ class Login extends React.PureComponent<PropTypes, StateTypes> {
         <Button
           variant="contained"
           color="primary"
+          disabled={this.state.password.length === 0}
           size="large"
           onClick={this.onUnlock}
         >
