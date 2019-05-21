@@ -10,7 +10,7 @@ import ConnectedEntities from '../presentational/ConnectedEntities'
 import CircularEntity from '../presentational/CircularEntity'
 import BottomButtonGroup from '../presentational/BottomButtonGroup'
 import AccountSelectDialog from '../presentational/AccountSelect'
-import ConnectedBalanceTable from './ConnectedBalanceTable'
+import ConnectedBalanceList from './ConnectedBalanceList'
 import labels from '../../labels'
 import PopupLayout from '../presentational/PopupLayout'
 
@@ -23,17 +23,17 @@ type PropTypes = {
 type StateTypes = {
   selectedAccount: AccountStateType | undefined
   data: string[]
-  showBalanceTable: boolean
+  showBalanceList: boolean
 }
 
 class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
   state = {
     selectedAccount: this.props.accounts.find(({ isMain }) => isMain),
     data: [],
-    showBalanceTable: false,
+    showBalanceList: false,
   }
   handleAccountMoreClicked = () => {
-    this.setState({ showBalanceTable: !this.state.showBalanceTable })
+    this.setState({ showBalanceList: !this.state.showBalanceList })
   }
   handleSelect = (selectedAccount: AccountStateType) => {
     this.setState({ selectedAccount })
@@ -81,8 +81,8 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
             accounts={accounts}
             onAccountMoreClicked={this.handleAccountMoreClicked}
             detailComponent={
-              this.state.showBalanceTable ? (
-                <ConnectedBalanceTable publicKey={selectedAccount.publicKey} />
+              this.state.showBalanceList ? (
+                <ConnectedBalanceList publicKey={selectedAccount.publicKey} />
               ) : null
             }
           >

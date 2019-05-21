@@ -1,5 +1,5 @@
 import * as React from 'react'
-import BalanceTable, { PropTypes } from '../presentational/BalanceTable'
+import BalanceList, { PropTypes } from '../presentational/BalanceList'
 import { connect } from 'react-redux'
 import { fetchBalance } from '../action'
 import { getBalanceByPublicKey } from '../../store/getter'
@@ -12,7 +12,7 @@ type ConnectedProps = {
   onMount: (publicKey: string) => ReturnType<typeof fetchBalance>
 }
 
-class ConnectedBalanceTable extends React.PureComponent<
+class ConnectedBalanceList extends React.PureComponent<
   OwnProps & ConnectedProps & PropTypes
 > {
   componentWillMount() {
@@ -20,7 +20,7 @@ class ConnectedBalanceTable extends React.PureComponent<
   }
   render() {
     return (
-      <BalanceTable
+      <BalanceList
         {...this.props}
         balances={this.props.balances}
         fetching={this.props.fetching}
@@ -32,4 +32,4 @@ class ConnectedBalanceTable extends React.PureComponent<
 export default connect(
   getBalanceByPublicKey,
   { onMount: fetchBalance }
-)(ConnectedBalanceTable)
+)(ConnectedBalanceList)

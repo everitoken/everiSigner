@@ -18,7 +18,7 @@ export type PropTypes = {
   showLink?: boolean
 }
 
-export default class BalanceTable extends React.PureComponent<PropTypes> {
+export default class BalanceList extends React.PureComponent<PropTypes> {
   static defaultProps = {
     showLink: false,
   }
