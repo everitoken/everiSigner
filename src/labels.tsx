@@ -31,7 +31,6 @@ export default {
   MNEMONIC_IMPORT: '助记词',
   MNEMONIC: '助记词',
   NETWORK_LIST: '节点列表',
-  NETWORK_LOCATION: '节点位置',
   NETWORK_NAME: '节点名称',
   NETWORK_NAVIGATION_SECONDARY_TEXT: 'View and create network',
   NETWORK_SUCCESSFULLY_CREATED: '成功添加节点',

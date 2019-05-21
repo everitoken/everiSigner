@@ -4,10 +4,9 @@ import { ConnectedNavigationBackButton } from './NavigationButtons'
 import labels from '../../labels'
 import { NetworkStateType } from '../../store/reducer/network'
 import FlexContainer from '../presentational/FlexContainer'
-import { RouteComponentProps, Route, withRouter } from 'react-router-dom'
+import { RouteComponentProps, Route } from 'react-router-dom'
 import { getNetworks } from '../../store/getter'
 import { connect } from 'react-redux'
-import { compose } from 'redux'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import {
   List,
@@ -168,12 +167,9 @@ class NetworkList extends React.PureComponent<
   }
 }
 
-const ConnectedNetworkList = compose(
-  withRouter,
-  connect(
-    getNetworks,
-    { onNetworkSelect: networkSelect, onNetworkRemove: removeNetwork }
-  )
+const ConnectedNetworkList = connect(
+  getNetworks,
+  { onNetworkSelect: networkSelect, onNetworkRemove: removeNetwork }
 )(NetworkList)
 
 type NetworkCreatePropTypes = NetworkStateType & {
@@ -231,7 +227,6 @@ class NetworkCreate extends React.PureComponent<
 
     let validUrl = true
 
-    debugger
     try {
       parseUrl(this.state.url, true)
     } catch (e) {
@@ -307,7 +302,7 @@ class NetworkCreate extends React.PureComponent<
         <FlexContainer withPadding justifyContent="space-around">
           <FormControl fullWidth>
             <InputLabel htmlFor="network-location">
-              {labels.NETWORK_LOCATION}
+              {labels.NETWORK_NAME}
             </InputLabel>
             <Input
               required
@@ -331,6 +326,7 @@ class NetworkCreate extends React.PureComponent<
           </FormControl>
           <Button
             color="primary"
+            disabled={isEmpty(this.state.location) || isEmpty(this.state.url)}
             variant="contained"
             onClick={this.handleCreateNetwork}
           >
@@ -342,12 +338,9 @@ class NetworkCreate extends React.PureComponent<
   }
 }
 
-const ConnectedNetworkCreate = compose(
-  withRouter,
-  connect(
-    getNetworks,
-    { onNetworkAdd: addCustomNetwork }
-  )
+const ConnectedNetworkCreate = connect(
+  getNetworks,
+  { onNetworkAdd: addCustomNetwork }
 )(NetworkCreate)
 
 export default class extends React.PureComponent<RouteComponentProps> {
