@@ -26,3 +26,7 @@ a.circular-entity-link {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+.fs-small {
+  font-size: 12px;
+}

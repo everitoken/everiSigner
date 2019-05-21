@@ -22,8 +22,8 @@ class MainLayout extends React.PureComponent<PropTypes & RouteComponentProps> {
       <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         <div
           style={{
-            height: 65,
-            backgroundColor: '#ececec',
+            height: style.APP_BAR_HEIGHT,
+            backgroundColor: style.APP_BAR_BACKGROUND,
             display: 'flex',
             alignContent: 'space-between',
             alignItems: 'center',
