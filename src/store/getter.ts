@@ -159,15 +159,6 @@ export const getPasswordProtectedView = (
   account: getAccountById(state, { id: ownProps.match.params.id }),
 })
 
-export const getAccountByRouteAccountId = (
-  state: AppState,
-  ownProps: RouteComponentProps<{ id: string }>
-) => ({
-  account: getAccountById(state, {
-    id: ownProps.match.params.id,
-  }) as AccountStateType,
-})
-
 export const getMainAccount = (state: AppState) => ({
   account: state.accounts.find(({ isMain }) => isMain) as AccountStateType,
 })

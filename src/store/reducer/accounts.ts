@@ -27,13 +27,15 @@ export default (
 ): StateType => {
   switch (action.type) {
     case ACCOUNT_CREATE:
-      return [...state, action.payload]
+      const hasMainAccount = state.find(({ isMain }) => isMain)
+      return [...state, { ...action.payload, isMain: !hasMainAccount }]
 
     case MAIN_ACCOUNT_SET:
       return state.map(account => ({
         ...account,
         isMain: account.id === action.payload.id,
       }))
+
     case ACCOUNT_REMOVE:
       if (!action.payload.isMain) {
         return state.filter(account => account.id !== action.payload.id)

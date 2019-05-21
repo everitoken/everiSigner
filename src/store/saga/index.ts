@@ -7,7 +7,6 @@ import {
   BackgroundMsgTypes,
   BackgroundPasswordMsgType,
   BalanceType,
-  NetworkItemType,
 } from '../../types'
 import * as uiActions from '../../ui/action'
 import * as storeActions from '../action'
