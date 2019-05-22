@@ -3,6 +3,9 @@ import { NFTType } from '../../types'
 import { ListItem, List, IconButton, CircularProgress } from '@material-ui/core'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import FlexContainer from './FlexContainer'
+import InViewDetailLayout from './InViewDetailLayout'
+import { get } from 'lodash'
+import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants'
 
 export type PropTypes = {
   data: NFTType[]
@@ -45,36 +48,54 @@ class NFTList extends React.PureComponent<PropTypes, StateProps> {
     }
 
     return (
-      <List style={{ width: '100%', padding: 0 }}>
-        {this.props.data.map(nft => (
-          <ListItem
-            style={{ padding: '0 0 0 16px' }}
-            key={`${nft.domain}-${nft.name}`}
-          >
-            <FlexContainer
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <FlexContainer
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
+      <InViewDetailLayout
+        title="NFT Detail"
+        renderDetail={() => {
+          if (!this.state.selectedNft) {
+            return <p>No NFT is selected</p>
+          }
+          return (
+            <iframe
+              style={{ width: '400px', height: '100%', border: 'none' }}
+              src={`https://evtscan.io/domain/${this.state.selectedNft.domain}`}
+            />
+          )
+        }}
+      >
+        {({ showDetail }) => (
+          <List style={{ width: '100%', padding: 0 }}>
+            {this.props.data.map(nft => (
+              <ListItem
+                style={{ padding: '0 0 0 16px' }}
+                key={`${nft.domain}-${nft.name}`}
               >
-                <div className="everitoken-mono">{nft.domain}</div>
-                <div className="everitoken-mono">{nft.name}</div>
-              </FlexContainer>
-              <IconButton
-                onClick={() => {
-                  this.handleExpandMore(nft)
-                }}
-              >
-                <ExpandMore />
-              </IconButton>
-            </FlexContainer>
-          </ListItem>
-        ))}
-      </List>
+                <FlexContainer
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <FlexContainer
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <div className="everitoken-mono">{nft.domain}</div>
+                    <div className="everitoken-mono">{nft.name}</div>
+                  </FlexContainer>
+                  <IconButton
+                    onClick={() => {
+                      this.handleExpandMore(nft)
+                      showDetail()
+                    }}
+                  >
+                    <ExpandMore />
+                  </IconButton>
+                </FlexContainer>
+              </ListItem>
+            ))}
+          </List>
+        )}
+      </InViewDetailLayout>
     )
   }
 }

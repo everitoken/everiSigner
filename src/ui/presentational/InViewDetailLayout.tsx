@@ -1,24 +1,13 @@
 import * as React from 'react'
-import { NFTType } from '../../types'
-import { IconButton } from '@material-ui/core'
+import { IconButton, Slide, Dialog } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import FlexContainer from './FlexContainer'
-import styled from 'styled-components'
 import { APP_BAR_HEIGHT } from '../../style'
 import { HeaderTitle } from './MainLayout'
 
-const Overlay = styled.div`
-  display: ${(props: { open: boolean }) => (props.open ? 'block' : 'none')};
-  position: absolute;
-  background-color: white;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-`
-
 type PropTypes = {
   children: ({ showDetail }: { showDetail: () => void }) => React.ReactNode
-  detailTitle: string
+  title: string
   renderDetail: ({
     closeDetail,
   }: {
@@ -28,6 +17,10 @@ type PropTypes = {
 
 type StateProps = {
   detailAreaOpen: boolean
+}
+
+function Transition(props: any) {
+  return <Slide direction="up" {...props} />
 }
 
 class NFTList extends React.PureComponent<PropTypes, StateProps> {
@@ -45,8 +38,13 @@ class NFTList extends React.PureComponent<PropTypes, StateProps> {
 
   render() {
     return (
-      <div style={{ position: 'relative' }}>
-        <Overlay open={this.state.detailAreaOpen}>
+      <React.Fragment>
+        <Dialog
+          fullScreen
+          open={this.state.detailAreaOpen}
+          onClose={this.handleDetailClose}
+          TransitionComponent={Transition}
+        >
           <div
             style={{
               height: APP_BAR_HEIGHT,
@@ -55,7 +53,7 @@ class NFTList extends React.PureComponent<PropTypes, StateProps> {
               alignItems: 'center',
             }}
           >
-            <HeaderTitle title={this.props.detailTitle} />
+            <HeaderTitle title={this.props.title} />
             <IconButton onClick={this.handleDetailClose}>
               <CloseIcon />
             </IconButton>
@@ -63,10 +61,9 @@ class NFTList extends React.PureComponent<PropTypes, StateProps> {
           <FlexContainer>
             {this.props.renderDetail({ closeDetail: this.handleDetailClose })}
           </FlexContainer>
-          <div style={{ position: 'absolute', top: 0, right: 0 }} />
-        </Overlay>
+        </Dialog>
         {this.props.children({ showDetail: this.handleDetailShow })}
-      </div>
+      </React.Fragment>
     )
   }
 }

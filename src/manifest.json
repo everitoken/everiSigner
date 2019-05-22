@@ -14,7 +14,8 @@
     {
       "matches": ["http://*/*", "https://*/*"],
       "js": ["./extension/content.ts"],
-      "run_at": "document_end"
+      "run_at": "document_end",
+      "all_frames": true
     }
   ],
   "web_accessible_resources": [
