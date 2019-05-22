@@ -21,6 +21,7 @@ export const REMOVE_ACCOUNT = 'ui/REMOVE_ACCOUNT'
 export const ADD_CUSTOM_NETWORK = 'ui/ADD_CUSTOM_NETWORK'
 export const REMOVE_CUSTOM_NETWORK = 'ui/REMOVE_CUSTOM_NETWORK'
 export const EXPORT_WALLET = 'ui/EXPORT_WALLET'
+export const FETCH_OWNED_TOKENS = 'ui/FETCH_OWNED_TOKENS'
 
 export const sign = (
   payload: {
@@ -115,4 +116,11 @@ export const addCustomNetwork = (network: NetworkItemType) => ({
 export const removeNetwork = (network: NetworkItemType) => ({
   type: REMOVE_CUSTOM_NETWORK,
   payload: { network },
+})
+
+export const fetchOwnedTokens = (publicKeys: string[]) => ({
+  type: FETCH_OWNED_TOKENS,
+  payload: {
+    publicKeys,
+  },
 })

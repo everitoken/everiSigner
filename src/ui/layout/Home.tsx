@@ -13,7 +13,6 @@ import { AccountStateType } from '../../store/reducer/accounts'
 import AccountAvatar from '../presentational/AccountAvatar'
 import { getForHome, getForHomeAppBar } from '../../store/getter'
 import AccountSelect from '../presentational/AccountSelect'
-import ConnectedBalanceList from './ConnectedBalanceList'
 import { setMainAccount, copyToClipboard } from '../action'
 import labels from '../../labels'
 import Divider from '../presentational/Divider'
@@ -50,16 +49,6 @@ class HomeAppBar extends React.PureComponent<
     this.setState({ showBalanceList: false, clickedAccount: null })
   }
 
-  handleAccountMoreClicked = (clickedAccount: AccountStateType) => {
-    if (this.state.showBalanceList) {
-      this.setState({ showBalanceList: false }, () => {
-        this.setState({ showBalanceList: true, clickedAccount })
-      })
-    } else {
-      this.setState({ showBalanceList: true, clickedAccount })
-    }
-  }
-
   render() {
     if (!this.props.mainAccount) {
       return null
@@ -72,18 +61,6 @@ class HomeAppBar extends React.PureComponent<
             selected={this.props.mainAccount}
             onSelect={this.props.onAccountSelect}
             accounts={this.props.accounts}
-            onAccountMoreClicked={this.handleAccountMoreClicked}
-            detailComponent={
-              this.state.showBalanceList ? (
-                <ConnectedBalanceList
-                  publicKey={
-                    this.state.clickedAccount != null
-                      ? this.state.clickedAccount.publicKey
-                      : ''
-                  }
-                />
-              ) : null
-            }
           >
             {({ handleOpen }) => (
               <IconButton onClick={handleOpen}>

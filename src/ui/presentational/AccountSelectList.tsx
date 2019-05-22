@@ -17,7 +17,7 @@ type PropTypes = {
   accounts: AccountStateType[]
   selected: AccountStateType
   onSelect: (account: AccountStateType) => any
-  onMoreClicked: (account: AccountStateType) => any
+  onMoreClicked?: (account: AccountStateType) => any
 }
 
 const styles = {
@@ -61,15 +61,17 @@ class AccountSelectList extends React.PureComponent<
                 />
                 <AccountListItem account={account} />
 
-                <ListItemSecondaryAction>
-                  <IconButton
-                    aria-label="More"
-                    onClick={() => this.props.onMoreClicked(account)}
-                    className={classes && classes.margin}
-                  >
-                    <MoreIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
+                {this.props.onMoreClicked ? (
+                  <ListItemSecondaryAction>
+                    <IconButton
+                      aria-label="More"
+                      onClick={() => this.props.onMoreClicked(account)}
+                      className={classes && classes.margin}
+                    >
+                      <MoreIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                ) : null}
               </ListItem>
             </Grid>
           </Grid>
@@ -78,4 +80,5 @@ class AccountSelectList extends React.PureComponent<
     )
   }
 }
+
 export default withStyles(styles)(AccountSelectList)

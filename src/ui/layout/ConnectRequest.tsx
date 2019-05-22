@@ -10,7 +10,7 @@ import ConnectedEntities from '../presentational/ConnectedEntities'
 import CircularEntity from '../presentational/CircularEntity'
 import BottomButtonGroup from '../presentational/BottomButtonGroup'
 import AccountSelectDialog from '../presentational/AccountSelect'
-import ConnectedBalanceList from './ConnectedBalanceList'
+import ConnectedBalanceList from './FungibleBalanceList'
 import labels from '../../labels'
 import PopupLayout from '../presentational/PopupLayout'
 

@@ -49,6 +49,14 @@ class Evt implements ChainInterface {
     return apiCaller.getFungibleBalance(publicKey)
   }
 
+  getOwnedTokens = async (publicKeys: string[]) => {
+    const apiCaller = new Evtjs.default({
+      endpoint: this.network,
+    })
+
+    return apiCaller.getOwnedTokens(publicKeys)
+  }
+
   getFungibleDetail = async (id: number) => {
     const apiCaller = new Evtjs.default({
       endpoint: this.network,

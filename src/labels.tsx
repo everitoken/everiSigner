@@ -37,6 +37,7 @@ export default {
   NETWORK_URL: '节点Url地址',
   NETWORK: '节点',
   NFTs_LIST: '非同质化通证',
+  NFT_DETAIL: 'NFT detail',
   NO_ACCOUNT_AVAILABLE: 'No account available',
   PAYEE_CODE_SECONDARY_TEXT: '用于收款',
   PAYEE_CODE: '收款码',

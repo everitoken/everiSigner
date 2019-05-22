@@ -14,9 +14,9 @@ type PropTypes = {
   selected: AccountStateType
   accounts: AccountStateType[]
   children: ({ handleOpen }: { handleOpen: () => void }) => React.ReactNode
-  onSelect: any // TODO
-  onAccountMoreClicked: (account: AccountStateType) => void
-  detailComponent: React.ReactNode
+  onSelect: (account: AccountStateType) => void
+  onAccountMoreClicked?: (account: AccountStateType) => void
+  detailComponent?: React.ReactNode
 }
 
 type StateTypes = {
@@ -63,7 +63,7 @@ export default class AccountSelect extends React.PureComponent<
             accounts={this.props.accounts}
             selected={this.state.selected}
             onSelect={this.handleSelect}
-            onMoreClicked={this.props.onAccountMoreClicked}
+            onMoreClicked={this.props.onAccountMoreClicked || null}
           />
           {this.props.detailComponent}
         </DialogContent>

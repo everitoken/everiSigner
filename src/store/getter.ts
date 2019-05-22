@@ -139,6 +139,19 @@ export const getBalanceByPublicKey = (
   }
 }
 
+export const getOwnedTokensByPublicKey = (
+  state: AppState,
+  ownProps: { publicKey: string }
+) => {
+  const ownedTokens = get(state, `airport.ownedTokens/${ownProps.publicKey}`)
+  const fetching = get(state, 'airport.ownedTokens/fetching', false)
+
+  return {
+    data: ownedTokens || [],
+    fetching,
+  }
+}
+
 export const getNetworks = (state: AppState) => state.network
 
 export const getAccountDetailScreen = (

@@ -1,4 +1,5 @@
 import StoreProviderInterface from '../store/ProviderInterface'
+import { NFTType } from '../types'
 
 export default interface ChainInterface {
   storeProvider: StoreProviderInterface
@@ -18,6 +19,7 @@ export default interface ChainInterface {
     getPrivateKey: (provider: StoreProviderInterface) => Promise<string>
   ): Promise<string>
   getBalancesByPublicKey(publicKey: string): Promise<Array<string>>
+  getOwnedTokens(publicKeys: string[]): Promise<Array<NFTType>>
   getFungibleDetail(id: number): Promise<any>
   setNetwork(network: {}): void
 }

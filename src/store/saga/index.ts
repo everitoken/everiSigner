@@ -7,6 +7,7 @@ import {
   BackgroundMsgTypes,
   BackgroundPasswordMsgType,
   BalanceType,
+  NFTType,
 } from '../../types'
 import * as uiActions from '../../ui/action'
 import * as storeActions from '../action'
@@ -75,6 +76,35 @@ function setupPopupUnloadListener() {
     },
     true
   )
+}
+function* fetchOwnedTokensWatcher() {
+  while (true) {
+    const action: ReturnType<typeof uiActions.fetchOwnedTokens> = yield take(
+      uiActions.FETCH_OWNED_TOKENS
+    )
+
+    if (!chain) {
+      break
+    }
+
+    yield put(storeActions.landPlane('ownedTokens/fetching', true))
+
+    const network = yield call(getCurrentNetwork)
+    const evtChain: ChainInterface = yield call(getEvtChain, chain, network)
+
+    const ownedTokens: NFTType[] = yield evtChain.getOwnedTokens(
+      action.payload.publicKeys
+    )
+
+    yield put(
+      storeActions.landPlane(
+        `ownedTokens/${action.payload.publicKeys[0]}`,
+        ownedTokens
+      )
+    )
+
+    yield put(storeActions.landPlane('ownedTokens/fetching', false))
+  }
 }
 
 function* fetchBalanceWatcher() {
@@ -562,6 +592,7 @@ function* rootSaga() {
     yield fork(authorizeAccountAccessHandler)
     yield fork(setupChainProviders) // NOTE expose `chain` global to saga/index
     yield fork(fetchBalanceWatcher)
+    yield fork(fetchOwnedTokensWatcher)
     yield fork(copyToClipBoardWatcher)
     yield fork(setMainAccountWatcher)
     yield fork(removeAccountWatcher)

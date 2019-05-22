@@ -1,28 +1,15 @@
 import * as React from 'react'
-import {
-  IconButton,
-  List,
-  ListItem,
-  CircularProgress,
-  Grid,
-  Link,
-} from '@material-ui/core'
+import { List, ListItem, CircularProgress, Grid } from '@material-ui/core'
 import MonoText from './MonospaceText'
 import FlexContainer from './FlexContainer'
-import ExploreIcon from '@material-ui/icons/Explore'
 import { BalanceType } from '../../types'
 
 export type PropTypes = {
   balances: BalanceType[]
   fetching: boolean
-  showLink?: boolean
 }
 
 export default class BalanceList extends React.PureComponent<PropTypes> {
-  static defaultProps = {
-    showLink: false,
-  }
-
   render() {
     const { fetching, balances } = this.props
     if (fetching) {
@@ -50,9 +37,6 @@ export default class BalanceList extends React.PureComponent<PropTypes> {
         disablePadding
         style={{
           width: '100%',
-          minHeight: '120px',
-          maxHeight: '207px',
-          overflowY: 'auto',
         }}
       >
         {this.props.balances.map(balance => (
@@ -80,19 +64,6 @@ export default class BalanceList extends React.PureComponent<PropTypes> {
                     <MonoText>{`(#${balance.id})`}</MonoText>
                   </div>
                 </Grid>
-                {this.props.showLink ? (
-                  <Grid item>
-                    <IconButton>
-                      <Link
-                        color="inherit"
-                        href={`https://evtscan.io/fungible/${balance.id}`}
-                        target="__blank"
-                      >
-                        <ExploreIcon />
-                      </Link>
-                    </IconButton>
-                  </Grid>
-                ) : null}
               </Grid>
               <div>
                 <MonoText>{balance.value}</MonoText>
