@@ -89,7 +89,7 @@ const ConnectedHomeAppBar = connect(
   { onAccountSelect: setMainAccount, onAccountAvatarClick: copyToClipboard }
 )(HomeAppBar)
 
-const AccountSetup = props => (
+const AccountSetup = () => (
   <FlexContainer withPadding justifyContent="center" alignItems="center">
     <p>Setup required</p>
   </FlexContainer>

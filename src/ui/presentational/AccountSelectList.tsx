@@ -61,11 +61,14 @@ class AccountSelectList extends React.PureComponent<
                 />
                 <AccountListItem account={account} />
 
-                {this.props.onMoreClicked ? (
+                {this.props.onMoreClicked != null ? (
                   <ListItemSecondaryAction>
                     <IconButton
                       aria-label="More"
-                      onClick={() => this.props.onMoreClicked(account)}
+                      onClick={() =>
+                        this.props.onMoreClicked &&
+                        this.props.onMoreClicked(account)
+                      }
                       className={classes && classes.margin}
                     >
                       <MoreIcon />

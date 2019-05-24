@@ -63,7 +63,7 @@ export default class AccountSelect extends React.PureComponent<
             accounts={this.props.accounts}
             selected={this.state.selected}
             onSelect={this.handleSelect}
-            onMoreClicked={this.props.onAccountMoreClicked || null}
+            onMoreClicked={this.props.onAccountMoreClicked || undefined}
           />
           {this.props.detailComponent}
         </DialogContent>
