@@ -3,12 +3,16 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
-  Button,
+  IconButton,
 } from '@material-ui/core'
 import { AccountStateType } from '../../store/reducer/accounts'
 import AccountSelectList from './AccountSelectList'
 import labels from '../../labels'
+import { APP_BAR_HEIGHT } from '../../style'
+import { HeaderTitle } from './MainLayout'
+import CloseIcon from '@material-ui/icons/Close'
+import * as style from '../../style'
+import Divider from './Divider'
 
 type PropTypes = {
   selected: AccountStateType
@@ -51,13 +55,22 @@ export default class AccountSelect extends React.PureComponent<
     }
 
     return (
-      <Dialog
-        maxWidth="xs"
-        fullWidth
-        open={this.state.open}
-        onClose={this.handleClose}
-      >
-        <DialogTitle>Select account</DialogTitle>
+      <Dialog fullScreen open={this.state.open} onClose={this.handleClose}>
+        <div
+          style={{
+            padding: `0 ${style.padding.standard}px`,
+            height: APP_BAR_HEIGHT,
+            display: 'flex',
+            alignContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <HeaderTitle title={labels.ACCOUNT_SELECT} />
+          <IconButton onClick={this.handleClose}>
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <Divider />
         <DialogContent>
           <AccountSelectList
             accounts={this.props.accounts}
@@ -67,11 +80,6 @@ export default class AccountSelect extends React.PureComponent<
           />
           {this.props.detailComponent}
         </DialogContent>
-        <DialogActions>
-          <Button onClick={this.handleClose} color="primary">
-            {labels.CLOSE}
-          </Button>
-        </DialogActions>
       </Dialog>
     )
   }

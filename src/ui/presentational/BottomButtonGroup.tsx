@@ -7,6 +7,8 @@ type PropTypes = {
   onPrimaryButtonClick: () => void
   primaryButtonText: string
   secondaryButtonText: string
+  primaryButtonDisabled?: boolean
+  secondaryButtonDisabled?: boolean
 }
 
 class BottomButtonGroup extends React.PureComponent<PropTypes> {
@@ -25,6 +27,7 @@ class BottomButtonGroup extends React.PureComponent<PropTypes> {
         <Grid item xs={6}>
           <div style={{ paddingLeft: 16 }}>
             <Button
+              disabled={this.props.secondaryButtonDisabled || false}
               variant="outlined"
               color="secondary"
               size="large"
@@ -37,6 +40,7 @@ class BottomButtonGroup extends React.PureComponent<PropTypes> {
         <Grid item xs={6}>
           <div style={{ paddingRight: 16 }}>
             <Button
+              disabled={this.props.primaryButtonDisabled || false}
               variant="contained"
               color="primary"
               size="large"

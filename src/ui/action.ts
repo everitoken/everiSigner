@@ -22,6 +22,7 @@ export const ADD_CUSTOM_NETWORK = 'ui/ADD_CUSTOM_NETWORK'
 export const REMOVE_CUSTOM_NETWORK = 'ui/REMOVE_CUSTOM_NETWORK'
 export const EXPORT_WALLET = 'ui/EXPORT_WALLET'
 export const FETCH_OWNED_TOKENS = 'ui/FETCH_OWNED_TOKENS'
+export const AUTHORIZE_ENTITY = 'ui/AUTHORIZE_ENTITY'
 
 export const sign = (
   payload: {

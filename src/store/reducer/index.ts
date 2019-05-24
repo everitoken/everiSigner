@@ -5,6 +5,7 @@ import airport from './airport'
 import message from './message'
 import signingPayload from './signingPayload'
 import network from './network'
+import authorizedEntities from './authorizedEntities'
 
 const rootReducer = combineReducers({
   airport,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   network,
   message,
   signingPayload,
+  authorizedEntities,
 })
 
 export type AppState = ReturnType<typeof rootReducer>

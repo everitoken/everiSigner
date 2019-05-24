@@ -12,6 +12,7 @@ import {
 import AccountListItem from './AccountListItem'
 import { AccountStateType } from '../../store/reducer/accounts'
 import MoreIcon from '@material-ui/icons/AccountBalanceWallet'
+import * as style from '../../style'
 
 type PropTypes = {
   accounts: AccountStateType[]
@@ -22,10 +23,10 @@ type PropTypes = {
 
 const styles = {
   root: {
-    padding: '0 8px 0 0',
+    padding: `0 ${style.padding.standard / 2}px 0 0`,
   },
   margin: {
-    margin: 8,
+    margin: style.padding.standard / 2,
   },
 }
 

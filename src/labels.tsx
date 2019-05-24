@@ -7,6 +7,7 @@ export default {
   ACCOUNT_LIST_SECONDARY_TEXT: '账户列表',
   ACCOUNT_LIST: '账户列表',
   ACCOUNT_NAME: '账户名',
+  ACCOUNT_SELECT: '选择账户',
   AUTHORIZE_BUTTON_TEXT: '授权',
   BACKUP_WALLET_SECONDARY_TEXT: '将钱包加密保存到电脑',
   BACKUP_WALLET: '备份钱包',

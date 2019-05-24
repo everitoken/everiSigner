@@ -15,7 +15,7 @@ const Container = styled.div`
 `
 type OwnProps = {
   publicKey: string
-  title: string
+  title?: string
 }
 
 type ConnectedProps = {
@@ -31,9 +31,11 @@ class ConnectedBalanceList extends React.PureComponent<
   render() {
     return (
       <Container>
-        <Typography variant="h6" style={{ padding: '16px 0 4px 16px' }}>
-          {this.props.title}
-        </Typography>
+        {this.props.title ? (
+          <Typography variant="h6" style={{ padding: '16px 0 4px 16px' }}>
+            {this.props.title}
+          </Typography>
+        ) : null}
         <BalanceList
           {...this.props}
           balances={this.props.balances}

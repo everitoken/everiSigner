@@ -197,3 +197,8 @@ export interface NetworkItemType {
   isProduction: boolean
   isCustom: boolean
 }
+
+export interface AuthorizedEntity {
+  host: string
+  authorizedAt: string
+}

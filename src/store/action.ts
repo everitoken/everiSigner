@@ -21,6 +21,7 @@ export const NETWORK_ADD = 'store/NETWORK_ADD'
 export const NETWORK_REMOVE = 'store/NETWORK_REMOVE'
 export const MAIN_ACCOUNT_SET = 'store/MAIN_ACCOUNT_SET'
 export const ACCOUNT_REMOVE = 'store/ACCOUNT_REMOVE'
+export const AUTHORIZED_ENTITY_ADD = 'store/AUTHORIZED_ENTITY_ADD'
 
 export interface MainAccountSetType {
   type: typeof MAIN_ACCOUNT_SET
@@ -92,6 +93,11 @@ export interface NetworkRemoveType {
 export interface AccountRemoveType {
   type: typeof ACCOUNT_REMOVE
   payload: AccountStateType
+}
+
+export interface AuthorizedEntityAddType {
+  type: typeof AUTHORIZED_ENTITY_ADD
+  payload: { host: string }
 }
 
 export const landPlane = (name: string, value: any): PlaneLandType => ({
@@ -182,6 +188,13 @@ export const accountRemove = (
   payload: account,
 })
 
+export const authorizedEntityAdd = (payload: {
+  host: string
+}): AuthorizedEntityAddType => ({
+  type: AUTHORIZED_ENTITY_ADD,
+  payload,
+})
+
 export type StoreActionTypes =
   | AccountCreateType
   | PasswordSetType
@@ -198,3 +211,4 @@ export type StoreActionTypes =
   | NetworkRemoveType
   | MainAccountSetType
   | AccountRemoveType
+  | AuthorizedEntityAddType
