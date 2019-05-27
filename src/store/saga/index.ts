@@ -6,7 +6,7 @@ import { imageDataUriMap } from '../../asset'
 import {
   BackgroundMsgTypes,
   BackgroundPasswordMsgType,
-  BalanceType,
+  TokenDetail,
   NFTType,
 } from '../../types'
 import * as uiActions from '../../ui/action'
@@ -144,7 +144,7 @@ function* fetchBalanceWatcher() {
     )
 
     // organize output
-    const balanceData: BalanceType[] = details.map(
+    const balanceData: TokenDetail[] = details.map(
       (balance: any, i: number) => {
         const id = rawBalanceArray[i].id
         const logoMeta = balance.metas.find(

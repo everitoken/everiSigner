@@ -6,7 +6,7 @@ export type NFTType = {
   domain: string
   name: string
 }
-export type BalanceType = {
+export interface TokenDetail {
   id: number
   displayName: string
   name: string

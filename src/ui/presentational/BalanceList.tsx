@@ -2,10 +2,10 @@ import * as React from 'react'
 import { List, ListItem, CircularProgress, Grid } from '@material-ui/core'
 import MonoText from './MonospaceText'
 import FlexContainer from './FlexContainer'
-import { BalanceType } from '../../types'
+import { TokenDetail } from '../../types'
 
 export type PropTypes = {
-  balances: BalanceType[]
+  balances: TokenDetail[]
   fetching: boolean
 }
 

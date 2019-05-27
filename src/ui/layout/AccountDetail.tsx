@@ -21,6 +21,7 @@ import { connect } from 'react-redux'
 import { getMainAccount } from '../../store/getter'
 import Divider from '../presentational/Divider'
 import KeyIcon from '@material-ui/icons/VpnKey'
+import SendIcon from '@material-ui/icons/CallMade'
 import ReceiveIcon from '@material-ui/icons/CallReceived'
 import EncryptIcon from '@material-ui/icons/EnhancedEncryption'
 
@@ -62,6 +63,34 @@ class AccountOverview extends React.PureComponent<
           <ListItem
             divider
             button
+            onClick={() => this.props.history.push('/home/transferft')}
+          >
+            <SendIcon color="action" />
+            <ListItemText
+              primary={labels.TRANSFERFT}
+              secondary={labels.TRANSFERFT_SECONDARY_TEXT}
+            />
+            <ListItemIcon>
+              <ForwardIcon />
+            </ListItemIcon>
+          </ListItem>
+          <ListItem
+            divider
+            button
+            onClick={() => this.props.history.push('/home/payee')}
+          >
+            <ReceiveIcon color="action" />
+            <ListItemText
+              primary={labels.PAYEE_CODE}
+              secondary={labels.PAYEE_CODE_SECONDARY_TEXT}
+            />
+            <ListItemIcon>
+              <ForwardIcon />
+            </ListItemIcon>
+          </ListItem>
+          <ListItem
+            divider
+            button
             onClick={() =>
               this.props.history.push(`/account/${account.id}/key`)
             }
@@ -93,21 +122,7 @@ class AccountOverview extends React.PureComponent<
           <ListItem
             divider
             button
-            onClick={() => this.props.history.push(`/home/payee`)}
-          >
-            <ReceiveIcon color="action" />
-            <ListItemText
-              primary={labels.PAYEE_CODE}
-              secondary={labels.PAYEE_CODE_SECONDARY_TEXT}
-            />
-            <ListItemIcon>
-              <ForwardIcon />
-            </ListItemIcon>
-          </ListItem>
-          <ListItem
-            divider
-            button
-            onClick={() => this.props.history.push(`/home/sign`)}
+            onClick={() => this.props.history.push('/home/sign')}
           >
             <EncryptIcon color="action" />
             <ListItemText

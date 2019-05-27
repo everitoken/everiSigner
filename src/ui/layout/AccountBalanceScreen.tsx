@@ -45,7 +45,7 @@ class AccountBalanceScreen extends React.PureComponent<
       >
         {this.props.account ? (
           <div style={{ flex: '1 1 auto', padding: 16 }}>
-            <AccountBalance publicKey={this.props.account.publicKey} showLink />
+            <AccountBalance publicKey={this.props.account.publicKey} />
           </div>
         ) : null}
       </NavigationLayout>

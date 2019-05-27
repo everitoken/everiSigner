@@ -2,10 +2,11 @@ import * as React from 'react'
 
 import { storiesOf } from '@storybook/react'
 import BalanceList from '../src/ui/presentational/BalanceList'
+import TokenSelect from '../src/ui/presentational/TokenSelect'
 import Container from '../src/ui/presentational/Container'
-import { BalanceType } from '../src/types'
+import { TokenDetail } from '../src/types'
 
-const balances: BalanceType[] = [
+const balances: TokenDetail[] = [
   {
     id: 1,
     name: 'EVT',
@@ -44,8 +45,18 @@ storiesOf('Balance', module).add('empty balance', () => (
   </Container>
 ))
 
-storiesOf('Balance', module).add('list', () => (
+storiesOf('TokenSelect', module).add('default', () => (
   <Container>
-    <BalanceList fetching={true} balances={balances} showLink />
+    <div style={{ padding: 10 }}>
+      <TokenSelect loading data={balances[0]} />
+    </div>
+  </Container>
+))
+
+storiesOf('TokenSelect', module).add('data', () => (
+  <Container>
+    <div style={{ padding: 10 }}>
+      <TokenSelect loading={false} data={balances[0]} />
+    </div>
   </Container>
 ))

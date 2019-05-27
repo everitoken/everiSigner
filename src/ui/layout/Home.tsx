@@ -23,6 +23,7 @@ import FungibleOverview from './FungibleOverview'
 import NFTOverview from './NFTOverview'
 import ConnectedAccountPayeeCode from './ConnectedAccountPayeeCode'
 import AccountSign from './AccountSign'
+import TransferFungibleToken from './TransferFungibleToken'
 
 type HomeAppBarPropTypes = {
   mainAccount: AccountStateType | undefined
@@ -141,6 +142,10 @@ class Home extends React.PureComponent<
           <Route
             path={`${match.path}/payee`}
             component={ConnectedAccountPayeeCode}
+          />
+          <Route
+            path={`${match.path}/transferft`}
+            component={TransferFungibleToken}
           />
           <Route path={`${match.path}/sign`} component={AccountSign} />
 
