@@ -32,12 +32,13 @@ const BalanceContainer = styled.div`
   margin-left: 25px;
 `
 
+const BALANCE_PLACEHOLDER = '--.--'
 class TokenSelect extends React.PureComponent<
   TokenSelectPropTypes,
   TokenSelectStateTypes
 > {
   state = {
-    balance: this.props.loading ? '--.--' : this.props.data.value,
+    balance: this.props.loading ? BALANCE_PLACEHOLDER : this.props.data.value,
   }
   render() {
     const { data } = this.props
@@ -73,7 +74,8 @@ class TokenSelect extends React.PureComponent<
         <CardActions>
           <BalanceContainer style={{ paddingLeft: 25 }}>
             <Balance>
-              {labels.BALANCE_REST}:{this.state.balance}
+              {labels.BALANCE_REST}:
+              {this.props.loading ? BALANCE_PLACEHOLDER : this.state.balance}
             </Balance>
           </BalanceContainer>
         </CardActions>

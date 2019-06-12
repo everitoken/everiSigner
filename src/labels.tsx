@@ -72,5 +72,7 @@ export default {
   TOKEN_SELECT_SECONDARY_TEXT: '选择付款币种',
   ADDRESS_TO: '地址',
   AMOUNT: '金额',
-  MEMO: '备注',
+  MEMO: '备注 (Memo)',
+  SETTINGS: '设置',
+  BROWSE_SETTINGS: '浏览设置',
 }

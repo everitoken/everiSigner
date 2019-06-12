@@ -7,6 +7,8 @@ import { ConnectedNavigationBackButton } from './NavigationButtons'
 import { FormControl, InputLabel, Input, TextField } from '@material-ui/core'
 import TokenSelect from '../presentational/TokenSelect'
 import styled from 'styled-components'
+import TokenSelectConnected from './TokenSelectConnected'
+import { TokenDetail } from '../../types'
 
 const balance = {
   id: 1,
@@ -28,15 +30,17 @@ const Container = styled.div`
 
 type PropTypes = {}
 type StateTypes = {
+  token: null | TokenDetail
   address: string
-  amount: number | undefined
+  amount: string
   memo: string
 }
 
 class TransferFungibleToken extends React.PureComponent<PropTypes, StateTypes> {
   state = {
+    token: null,
     address: '',
-    amount: undefined,
+    amount: '',
     memo: '',
   }
   handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,14 +52,18 @@ class TransferFungibleToken extends React.PureComponent<PropTypes, StateTypes> {
     this.setState({ amount: event.target.value })
   }
 
+  handleTokenReceive = (token: TokenDetail) => {
+    this.setState({ token })
+  }
+
   render() {
     return (
       <NavigationLayout
-        title={labels.PAYEE_CODE}
+        title={labels.TRANSFERFT}
         renderLeft={() => <ConnectedNavigationBackButton />}
       >
         <Container>
-          <TokenSelect loading={false} data={balance} />
+          <TokenSelectConnected onTokenReceive={this.handleTokenReceive} />
 
           <FormControl fullWidth margin="normal">
             <InputLabel htmlFor="to-address">{labels.ADDRESS_TO}</InputLabel>

@@ -39,7 +39,7 @@ class Settings extends React.PureComponent<
     const { classes } = this.props
     return (
       <NavigationLayout
-        title="Browse settings"
+        title={labels.BROWSE_SETTINGS}
         renderLeft={() => <ConnectedNavigationBackButton />}
       >
         <FlexContainer>
@@ -116,7 +116,7 @@ export default class SettingsScreen extends React.PureComponent<
     return (
       <MainLayout
         renderLogo
-        renderHead={() => <HeaderTitle title="Settings" />}
+        renderHead={() => <HeaderTitle title={labels.SETTINGS} />}
       >
         <Route exact path={`${match.path}/`} component={ConnectedSettings} />
         <Route path={`${match.path}/about`} component={AboutScreen} />

@@ -198,3 +198,15 @@ export const getDecryptedMainAccount = (state: AppState) => {
     ) as AccountStateType),
   }
 }
+
+export const getForTokenSelect = (state: AppState) => {
+  const publicKey = getMainAccount(state).account.publicKey
+  const balances = get(state, `airport.balance/${publicKey}`)
+  const fetching = get(state, 'airport.balance/fetching', false)
+
+  return {
+    publicKey,
+    balances,
+    fetching,
+  }
+}
