@@ -5,6 +5,7 @@ import {
   NetworkItemType,
 } from '../types'
 import { AccountStateType } from '../store/reducer/accounts'
+import { string } from 'prop-types'
 
 export const SET_PASSWORD = 'ui/SET_PASSWORD'
 export const LOG_IN = 'ui/LOG_IN'
@@ -23,6 +24,7 @@ export const REMOVE_CUSTOM_NETWORK = 'ui/REMOVE_CUSTOM_NETWORK'
 export const EXPORT_WALLET = 'ui/EXPORT_WALLET'
 export const FETCH_OWNED_TOKENS = 'ui/FETCH_OWNED_TOKENS'
 export const AUTHORIZE_ENTITY = 'ui/AUTHORIZE_ENTITY'
+export const TRANSFER_FT = 'ui/TRANSFER_FT'
 
 export const sign = (
   payload: {
@@ -124,4 +126,16 @@ export const fetchOwnedTokens = (publicKeys: string[]) => ({
   payload: {
     publicKeys,
   },
+})
+
+interface TransferFtPayload {
+  from: string
+  to: string
+  number: string
+  memo: string
+}
+export const transferft = (payload: TransferFtPayload, id: string) => ({
+  type: TRANSFER_FT,
+  payload,
+  meta: { id },
 })

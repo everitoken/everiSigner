@@ -1,6 +1,6 @@
 import { get } from 'lodash'
 import { END, eventChannel } from 'redux-saga'
-import { call, fork, put, select, take, all } from 'redux-saga/effects'
+import { call, fork, put, select, take, all, delay } from 'redux-saga/effects'
 import * as PasswordService from '../../service/PasswordService'
 import { imageDataUriMap } from '../../asset'
 import {
@@ -431,6 +431,23 @@ function* removeCustomNetworkWatcher() {
   }
 }
 
+function* transferftWatcher() {
+  while (true) {
+    const action: ReturnType<typeof uiActions.transferft> = yield take(
+      uiActions.TRANSFER_FT
+    )
+
+    yield delay(2000)
+
+    yield put(
+      storeActions.landPlane('transactions', [
+        { id: action.meta.id, success: true, transaction: { id: '123' } },
+      ])
+    )
+    console.log(action.payload)
+  }
+}
+
 function* setPasswordWatcher() {
   while (true) {
     const action: ReturnType<typeof uiActions.setPassword> = yield take([
@@ -598,6 +615,7 @@ function* rootSaga() {
     yield fork(removeAccountWatcher)
     yield fork(addCustomNetworkWatcher)
     yield fork(removeCustomNetworkWatcher)
+    yield fork(transferftWatcher)
   } catch (e) {
     // TODO consider restart saga
     console.log('saga root error: ', e)

@@ -33,6 +33,7 @@ class TokenSelectConnected extends React.PureComponent<PropTypes & OwnProps> {
   componentWillMount() {
     this.props.onMount(this.props.publicKey)
   }
+
   render() {
     const { fetching, balances } = this.props
     const data = TokenSelectConnected.selectCorrectBalance(balances)

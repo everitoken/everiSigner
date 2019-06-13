@@ -2180,6 +2180,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-11.12.2.tgz#d7f302e74b10e9801d52852137f652d9ee235da8"
   integrity sha512-c82MtnqWB/CqqK7/zit74Ob8H1dBdV7bK+BcErwtXbe0+nUGkgzq5NTDmRW/pAv2lFtmeNmW95b0zK2hxpeklg==
 
+"@types/node@^12.0.2":
+  version "12.0.8"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.0.8.tgz#551466be11b2adc3f3d47156758f610bd9f6b1d8"
+  integrity sha512-b8bbUOTwzIY3V5vDTY1fIJ+ePKDUBqt2hC2woVGotdQQhG/2Sh62HOKHrT7ab+VerXAcPyAiTEipPu/FsreUtg==
+
 "@types/prop-types@*":
   version "15.7.0"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.0.tgz#4c48fed958d6dcf9487195a0ef6456d5f6e0163a"
@@ -5884,11 +5889,12 @@ evt-fcbuffer@^2.2.0:
     bytebuffer "^5.0.1"
     ieee-float "^0.6.0"
 
-evtjs@^5.4.6:
-  version "5.4.6"
-  resolved "https://registry.yarnpkg.com/evtjs/-/evtjs-5.4.6.tgz#77b12e45a1802bee6ec0cf61fd4cece5ae8ddcf2"
-  integrity sha512-uFFLeZw0u9dxOq5Y2c6UwsYdtHb5NwZAMem2DTm6TJm2mzi8srNH+A2CdPAsDtPSS0wzzT0g5gd/l2GQ64Gdsw==
+evtjs@^5.4.15:
+  version "5.4.15"
+  resolved "https://registry.yarnpkg.com/evtjs/-/evtjs-5.4.15.tgz#68dbbf63dc3a248d2bc9bd158eb24291509fdf24"
+  integrity sha512-FN+gjYA3HJNJmY2Hn8dVIpd7/WVHKhECFxG3V7NELRjdL4IZGjNZy2YX8zziEh0n+z98IkJdd7qmfzIGwMyDsQ==
   dependencies:
+    "@types/node" "^12.0.2"
     babel-preset-env "^1.7.0"
     bs58 "^4.0.1"
     create-hash "^1.1.3"

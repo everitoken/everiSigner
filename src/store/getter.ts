@@ -199,9 +199,17 @@ export const getDecryptedMainAccount = (state: AppState) => {
   }
 }
 
+export const getForTransferFungible = (
+  state: AppState
+): { transactions: any[]; account: AccountStateType } => {
+  return {
+    transactions: get(state.airport, 'transactions', []) as any[],
+    ...getMainAccount(state),
+  }
+}
 export const getForTokenSelect = (state: AppState) => {
   const publicKey = getMainAccount(state).account.publicKey
-  const balances = get(state, `airport.balance/${publicKey}`)
+  const balances = get(state, `airport.balance/${publicKey}`, [])
   const fetching = get(state, 'airport.balance/fetching', false)
 
   return {
