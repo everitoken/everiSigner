@@ -25,6 +25,7 @@ export const EXPORT_WALLET = 'ui/EXPORT_WALLET'
 export const FETCH_OWNED_TOKENS = 'ui/FETCH_OWNED_TOKENS'
 export const AUTHORIZE_ENTITY = 'ui/AUTHORIZE_ENTITY'
 export const TRANSFER_FT = 'ui/TRANSFER_FT'
+export const TRANSFER_FT_ACKNOWLEDGE = 'ui/TRANSFER_FT_ACKNOWLEDGE'
 
 export const sign = (
   payload: {
@@ -86,10 +87,11 @@ export const authorizeAccountAccess = (
   },
 })
 
-export const fetchBalance = (publicKey: string) => ({
+export const fetchBalance = (publicKey: string, scope: string = 'default') => ({
   type: FETCH_BALANCE,
   payload: {
     publicKey,
+    scope,
   },
 })
 
@@ -138,4 +140,9 @@ export const transferft = (payload: TransferFtPayload, id: string) => ({
   type: TRANSFER_FT,
   payload,
   meta: { id },
+})
+
+export const transferftAcknowledge = (id: string) => ({
+  type: TRANSFER_FT_ACKNOWLEDGE,
+  payload: { id },
 })

@@ -11,7 +11,7 @@ import { TokenDetail } from '../../types'
 import Evtjs from 'evtjs'
 import { get } from 'lodash'
 import { connect } from 'react-redux'
-import { transferft } from '../action'
+import { transferft, transferftAcknowledge } from '../action'
 import { getForTransferFungible } from '../../store/getter'
 import { AccountStateType } from '../../store/reducer/accounts'
 import uuid = require('uuid')
@@ -28,6 +28,7 @@ const Container = styled.div`
 
 type PropTypes = {
   onSubmit: typeof transferft
+  onSucceed: typeof transferftAcknowledge
   account: AccountStateType
   transactions: any[]
 }
@@ -58,6 +59,8 @@ class TransferFungibleToken extends React.PureComponent<PropTypes, StateTypes> {
   }
 
   reset = () => {
+    this.props.onSucceed(this.state.sessionId)
+
     this.setState({
       ...TransferFungibleToken.defaultState,
       sessionId: uuid.v4(),
@@ -135,6 +138,11 @@ class TransferFungibleToken extends React.PureComponent<PropTypes, StateTypes> {
     if (transactionSuccess === false) {
       alert(get(transaction, 'errorMsg', 'Error in transferring.'))
     }
+    let transferring = this.state.transferring
+
+    if (transaction) {
+      transferring = false
+    }
 
     return (
       <Container>
@@ -201,11 +209,11 @@ class TransferFungibleToken extends React.PureComponent<PropTypes, StateTypes> {
           size="large"
           disabled={
             this.shouldDisableTransferButton() ||
-            (this.state.transferring && transaction === undefined)
+            (transferring && transaction === undefined)
           }
           onClick={this.handleTransferft}
         >
-          {this.state.transferring && transactionSuccess !== false
+          {transferring && transactionSuccess !== false
             ? labels.TRANSFERRING
             : labels.TRANSFERFT}
         </Button>
@@ -260,6 +268,6 @@ class TransferFungibleToken extends React.PureComponent<PropTypes, StateTypes> {
 
 const ConnectedTransferFungible = connect(
   getForTransferFungible,
-  { onSubmit: transferft }
+  { onSubmit: transferft, onSucceed: transferftAcknowledge }
 )(TransferFungibleToken)
 export default ConnectedTransferFungible

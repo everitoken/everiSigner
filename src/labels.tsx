@@ -79,4 +79,5 @@ export default {
   BROWSE_SETTINGS: '浏览设置',
   TRANSFERRING: '转账进行中...',
   TRANSFER_FUNGIBLE_SUCCEED: '转账成功',
+  TRANSFER_FAILED_ERROR_MSG: '转账失败',
 }

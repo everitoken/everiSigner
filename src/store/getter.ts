@@ -140,8 +140,8 @@ export const getBalanceByPublicKey = (
   state: AppState,
   ownProps: { publicKey: string }
 ) => {
-  const balances = get(state, `airport.balance/${ownProps.publicKey}`)
-  const fetching = get(state, 'airport.balance/fetching', false)
+  const balances = get(state, `airport.balance/default/${ownProps.publicKey}`)
+  const fetching = get(state, 'airport.balance/default/fetching', false)
 
   return {
     balances: balances || [],
@@ -207,10 +207,10 @@ export const getForTransferFungible = (
     ...getMainAccount(state),
   }
 }
-export const getForTokenSelect = (state: AppState) => {
+export const getForTokenSelect = (scope: string) => (state: AppState) => {
   const publicKey = getMainAccount(state).account.publicKey
-  const balances = get(state, `airport.balance/${publicKey}`, [])
-  const fetching = get(state, 'airport.balance/fetching', false)
+  const balances = get(state, `airport.balance/${scope}/${publicKey}`, [])
+  const fetching = get(state, `airport.balance/${scope}/fetching`, false)
 
   return {
     publicKey,

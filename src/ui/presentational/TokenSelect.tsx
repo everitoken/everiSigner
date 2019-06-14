@@ -40,6 +40,12 @@ class TokenSelect extends React.PureComponent<
   state = {
     balance: this.props.loading ? BALANCE_PLACEHOLDER : this.props.data.value,
   }
+  componentWillReceiveProps(nextProps: TokenSelectPropTypes) {
+    if (nextProps.data !== this.props.data) {
+      console.log('not equal')
+      this.forceUpdate()
+    }
+  }
   render() {
     const { data } = this.props
     return (
@@ -75,7 +81,7 @@ class TokenSelect extends React.PureComponent<
           <BalanceContainer style={{ paddingLeft: 25 }}>
             <Balance>
               {labels.BALANCE_REST}:
-              {this.props.loading ? BALANCE_PLACEHOLDER : this.state.balance}
+              {this.props.loading ? BALANCE_PLACEHOLDER : this.props.data.value}
             </Balance>
           </BalanceContainer>
         </CardActions>

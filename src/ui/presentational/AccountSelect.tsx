@@ -1,10 +1,5 @@
 import * as React from 'react'
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  IconButton,
-} from '@material-ui/core'
+import { Dialog, DialogContent, IconButton } from '@material-ui/core'
 import { AccountStateType } from '../../store/reducer/accounts'
 import AccountSelectList from './AccountSelectList'
 import labels from '../../labels'

@@ -16,6 +16,7 @@ import {
   getPasswordHash,
   getAuthenticateAccountRequest,
   getNetworks,
+  getDecryptedMainAccount,
 } from '../getter'
 import { AccountStateType } from '../reducer/accounts'
 import storeProvider from '../provider'
@@ -25,6 +26,7 @@ import ChainInterface from '../../chain/ChainInterface'
 import StoreProviderInterface from '../ProviderInterface'
 import labels from '../../labels'
 import { NetworkStateType } from '../reducer/network'
+import * as Evtjs from 'evtjs'
 
 let backgroundPort: chrome.runtime.Port | null = null
 let chain: ChainApi | null = null
@@ -117,7 +119,9 @@ function* fetchBalanceWatcher() {
       break
     }
 
-    yield put(storeActions.landPlane('balance/fetching', true))
+    yield put(
+      storeActions.landPlane(`balance/${action.payload.scope}/fetching`, true)
+    )
 
     const network = yield call(getCurrentNetwork)
     const evtChain: ChainInterface = yield call(getEvtChain, chain, network)
@@ -162,12 +166,15 @@ function* fetchBalanceWatcher() {
     )
 
     yield put(
-      storeActions.landPlane(`balance/${action.payload.publicKey}`, [
-        ...balanceData,
-      ])
+      storeActions.landPlane(
+        `balance/${action.payload.scope}/${action.payload.publicKey}`,
+        [...balanceData]
+      )
     )
 
-    yield put(storeActions.landPlane('balance/fetching', false))
+    yield put(
+      storeActions.landPlane(`balance/${action.payload.scope}/fetching`, false)
+    )
   }
 }
 
@@ -430,21 +437,72 @@ function* removeCustomNetworkWatcher() {
     yield put(storeActions.networkRemove(action.payload.network))
   }
 }
-
+function* transferftAcknowledgeWatcher() {
+  while (true) {
+    yield take(uiActions.TRANSFER_FT_ACKNOWLEDGE)
+    yield put(storeActions.landPlane('transactions', []))
+  }
+}
 function* transferftWatcher() {
   while (true) {
     const action: ReturnType<typeof uiActions.transferft> = yield take(
       uiActions.TRANSFER_FT
     )
 
-    yield delay(2000)
-
-    yield put(
-      storeActions.landPlane('transactions', [
-        { id: action.meta.id, success: true, transaction: { id: '123' } },
-      ])
+    const network = yield call(getCurrentNetwork)
+    const { account }: { account: AccountStateType | null } = yield select(
+      getDecryptedMainAccount
     )
-    console.log(action.payload)
+
+    if (!account) {
+      continue
+    }
+
+    const apiCaller = new Evtjs.default({
+      endpoint: network,
+      keyProvider: [account.privateKey],
+    })
+
+    try {
+      const trx = yield apiCaller.pushTransaction(
+        { maxCharge: 10000000 }, // limit of the transaction fee
+        new Evtjs.EvtAction('transferft', {
+          ...action.payload,
+        })
+      )
+      yield put(
+        storeActions.landPlane('transactions', [
+          {
+            id: action.meta.id,
+            success: true,
+            transaction: { id: trx.transactionId },
+          },
+        ])
+      )
+    } catch (e) {
+      const errorMsg = get(
+        e,
+        'rawServerError.error.details[0].message',
+        labels.TRANSFER_FAILED_ERROR_MSG
+      )
+      yield put(
+        storeActions.landPlane('transactions', [
+          {
+            id: action.meta.id,
+            success: false,
+            errorMsg,
+          },
+        ])
+      )
+      yield delay(1000)
+      yield put(
+        storeActions.landPlane('transactions', [
+          {
+            id: action.meta.id,
+          },
+        ])
+      )
+    }
   }
 }
 
@@ -616,6 +674,7 @@ function* rootSaga() {
     yield fork(addCustomNetworkWatcher)
     yield fork(removeCustomNetworkWatcher)
     yield fork(transferftWatcher)
+    yield fork(transferftAcknowledgeWatcher)
   } catch (e) {
     // TODO consider restart saga
     console.log('saga root error: ', e)

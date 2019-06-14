@@ -30,8 +30,14 @@ class TokenSelectConnected extends React.PureComponent<PropTypes & OwnProps> {
 
     return getEmptyEvtBalance()
   }
-  componentWillMount() {
-    this.props.onMount(this.props.publicKey)
+  componentDidMount() {
+    this.props.onMount(this.props.publicKey, 'transferft')
+  }
+
+  componentWillReceiveProps(nextProps: PropTypes) {
+    if (nextProps.publicKey !== this.props.publicKey) {
+      nextProps.onMount(nextProps.publicKey, 'transferft')
+    }
   }
 
   render() {
@@ -44,6 +50,6 @@ class TokenSelectConnected extends React.PureComponent<PropTypes & OwnProps> {
 }
 
 export default connect(
-  getForTokenSelect,
+  getForTokenSelect('transferft'),
   { onMount: fetchBalance }
 )(TokenSelectConnected)
