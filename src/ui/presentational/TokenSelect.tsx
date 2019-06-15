@@ -14,6 +14,7 @@ import styled from 'styled-components'
 type TokenSelectPropTypes = {
   loading: boolean
   data: TokenDetail
+  onClick: () => void
 }
 type TokenSelectStateTypes = {
   balance: string
@@ -40,17 +41,12 @@ class TokenSelect extends React.PureComponent<
   state = {
     balance: this.props.loading ? BALANCE_PLACEHOLDER : this.props.data.value,
   }
-  componentWillReceiveProps(nextProps: TokenSelectPropTypes) {
-    if (nextProps.data !== this.props.data) {
-      console.log('not equal')
-      this.forceUpdate()
-    }
-  }
+
   render() {
     const { data } = this.props
     return (
       <Card>
-        <CardActionArea>
+        <CardActionArea onClick={this.props.onClick}>
           {this.props.loading ? (
             <div style={{ textAlign: 'center', padding: 10 }}>
               <CircularProgress disableShrink size={20} />

@@ -77,7 +77,6 @@ export const generateMnemonicWords = (
   wordlist: SupportedWordlist
 ): string => {
   const digest = sha256(hashPassword(password))
-  console.log(digest.slice(0, 32))
   return bip39.entropyToMnemonic(digest.slice(0, 32), wordlists[wordlist])
 }
 
