@@ -8,6 +8,7 @@ import {
   ClientLocalMsgTypes,
   PopupSignedMsgType,
   PopupReceiveAccountsMsgType,
+  PopupSignCancelledMsgType,
 } from '../types'
 import { isPopMessage, isClientMessage } from '../util/background'
 import { get } from 'lodash'
@@ -95,6 +96,20 @@ const signedHandler = (message: PopupSignedMsgType, _: PostMessageType) => {
   if (tabId) {
     chrome.tabs.sendMessage(tabId, {
       type: 'background/signed',
+      payload: message.payload,
+    })
+  }
+}
+
+const signCancelledHandler = (
+  message: PopupSignCancelledMsgType,
+  _: PostMessageType
+) => {
+  const tabId = get(message, 'payload.meta.tabId', null)
+
+  if (tabId) {
+    chrome.tabs.sendMessage(tabId, {
+      type: 'background/signCancelled',
       payload: message.payload,
     })
   }
@@ -193,6 +208,9 @@ const handlePopupMessage = (
       break
     case 'popup/signed':
       signedHandler(message, postMessage)
+      break
+    case 'popup/signCancelled':
+      signCancelledHandler(message, postMessage)
       break
     case 'popup/receive.accounts':
       receiveAccountHandler(message)

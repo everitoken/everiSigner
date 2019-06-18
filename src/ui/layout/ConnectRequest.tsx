@@ -63,6 +63,9 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
     if (this.state.selectedAccount) {
       this.props.onAuthorizeEntity({ host })
       this.props.onAuthorize(this.state.selectedAccount, this.props.request)
+      setTimeout(() => {
+        window.close()
+      }, 200)
     }
   }
 
@@ -74,6 +77,7 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
     if (this.state.selectedAccount) {
       this.props.onAuthorize(null, this.props.request)
     }
+    window.close()
   }
 
   handleAddAuthorizedEntityCheck = (event: any) => {

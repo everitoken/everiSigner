@@ -32,11 +32,12 @@ export const sign = (
     payload: ToBeSignDataType
     meta?: MessageMetaType
   },
-  publicKey: string
+  publicKey: string,
+  cancel: boolean = false
 ) => ({
   type: SIGN,
   payload,
-  meta: { publicKey },
+  meta: { publicKey, cancel },
 })
 
 export const setPassword = (password: string) => ({

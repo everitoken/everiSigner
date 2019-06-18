@@ -67,6 +67,12 @@ export type PopupSignedMsgType = {
   meta?: MessageMetaType
 }
 
+export type PopupSignCancelledMsgType = {
+  type: 'popup/signCancelled'
+  payload: SignedDataType
+  meta?: MessageMetaType
+}
+
 export type PopupInitializedMsgType = {
   type: 'popup/initialized'
   payload: {
@@ -80,6 +86,7 @@ export type PopupMsgTypes =
   | PopupInitializedMsgType
   | PopupStartedMsgType
   | PopupSignedMsgType
+  | PopupSignCancelledMsgType
   | PopupReceiveAccountsMsgType
 
 /* Background message types */
@@ -156,6 +163,11 @@ export type ClientGlobalSignMsgType = {
   payload: ToBeSignDataType
 }
 
+export type ClientGlobalSignCancelledMsgType = {
+  type: 'everisigner/global/signCancelled'
+  payload: ToBeSignDataType
+}
+
 export type ClientGlobalAccountsMsgType = {
   type: 'everisigner/global/receive.accounts'
   payload: ToBeSignDataType
@@ -178,6 +190,7 @@ export type ClientLocalMsgTypes =
 
 export type ClientGlobalMsgTypes =
   | ClientGlobalSignMsgType
+  | ClientGlobalSignCancelledMsgType
   | ClientGlobalAccountsMsgType
   | ClientGlobalSignedMsgType
   | ClientGlobalSupportedActionsMsgType

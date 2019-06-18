@@ -27,16 +27,23 @@ window.addEventListener(
     const { type, payload } = event.data
     // listens for signed message
 
+    if (type === 'everisigner/global/signCancelled') {
+      const id = get(payload, 'id')
+      const listener = get(listeners, id)
+      listener[1]('Signing is cancelled on user side')
+    }
+
     if (type === 'everisigner/global/signed') {
       const id = get(payload, 'id')
       const listener = get(listeners, id)
+
       // if there is a listener, invoke the listener with signed payload
       // then remove the listener
       const signature = get(payload, 'payload.signature', null)
       if (signature) {
         listener[0]([signature])
       } else {
-        listener[1]('Sign failed')
+        listener[1]('Failed to extract signature')
       }
       removeListener(payload.id)
     } else if (type === 'everisigner/global/receive.supportedactions') {

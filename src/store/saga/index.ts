@@ -233,8 +233,22 @@ function* authorizeAccountAccessHandler() {
 
 function* signHandler() {
   while (true) {
-    const action = yield take(uiActions.SIGN)
+    const action: ReturnType<typeof uiActions.sign> = yield take(uiActions.SIGN)
     let data = null
+
+    if (action.meta.cancel) {
+      backgroundPort &&
+        backgroundPort.postMessage({
+          type: 'popup/signCancelled',
+          payload: {
+            id: action.payload.payload.id,
+            payload: null,
+            meta: action.payload.meta,
+          },
+        })
+
+      continue
+    }
 
     // skip direct when chain is not setup
     if (!chain) {

@@ -38,9 +38,16 @@ class SignatureRequest extends React.PureComponent<PropTypes> {
     if (signingPayload.raw) {
       onClick(signingPayload.raw, publicKey)
     }
+    window.close()
   }
 
-  handleCancel = () => {}
+  handleCancel = () => {
+    const { onClick, signingPayload } = this.props
+    if (signingPayload.raw) {
+      onClick(signingPayload.raw, '', true)
+    }
+    window.close()
+  }
 
   render() {
     const { signingPayload, accounts, mainAccount } = this.props

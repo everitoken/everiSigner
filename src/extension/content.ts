@@ -38,6 +38,11 @@ chrome.runtime.onMessage.addListener(message => {
       type: 'everisigner/global/signed',
       payload: message.payload,
     })
+  } else if (message.type === 'background/signCancelled') {
+    postGlobalMessage({
+      type: 'everisigner/global/signCancelled',
+      payload: message.payload,
+    })
   } else if (message.type === 'background/get.supportedactions') {
     postGlobalMessage({
       type: 'everisigner/global/receive.supportedactions',
