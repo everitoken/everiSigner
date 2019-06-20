@@ -1,8 +1,21 @@
 // @ts-check
 import * as uuid from 'uuid'
-import { get } from 'lodash'
+import { get, omit } from 'lodash'
 
 let listeners = {}
+let timeoutListeners = {}
+
+/**
+ *
+ * @param {string} id uuid of the request
+ * @param {function} reject promise reject
+ * @param {number} timeout milliseconds
+ */
+const registerTimeout = (id, reject, timeout) => {
+  timeoutListeners[id] = setTimeout(() => {
+    reject('Timeout')
+  }, timeout)
+}
 
 /**
  *
@@ -21,6 +34,17 @@ const removeListener = id => {
   delete listeners[id]
 }
 
+/**
+ *
+ * @param {string|undefined} id
+ */
+const removeTimeoutListener = id => {
+  if (id && timeoutListeners[id]) {
+    clearTimeout(timeoutListeners[id])
+    delete timeoutListeners[id]
+  }
+}
+
 window.addEventListener(
   'message',
   ev => {
@@ -31,6 +55,7 @@ window.addEventListener(
       const id = get(payload, 'id')
       const listener = get(listeners, id)
       listener[1]('Signing is cancelled on user side')
+      removeTimeoutListener(id)
     }
 
     if (type === 'everisigner/global/signed') {
@@ -46,15 +71,18 @@ window.addEventListener(
         listener[1]('Failed to extract signature')
       }
       removeListener(payload.id)
+      removeTimeoutListener(payload.id)
     } else if (type === 'everisigner/global/receive.supportedactions') {
       const listener = get(listeners, payload.id)
       listener[0](payload.actions || [])
       removeListener(payload.id)
+      removeTimeoutListener(payload.id)
     } else if (type === 'everisigner/global/receive.accounts') {
       const listener = get(listeners, payload.id)
       const accounts = get(payload, 'payload.accounts', [])
       listener[0](accounts)
       removeListener(payload.id)
+      removeTimeoutListener(payload.id)
     }
   },
   false
@@ -67,6 +95,7 @@ window.addEventListener(
  */
 const localPostMessage = (type, data = {}) => {
   const id = uuid.v4()
+  const timeout = data.timeout || 1000 * 20
   window.postMessage(
     {
       type,
@@ -85,6 +114,7 @@ const localPostMessage = (type, data = {}) => {
   // TODO implement timeout
   return new Promise((resolve, reject) => {
     registerListener(id, [resolve, reject])
+    registerTimeout(id, reject, timeout)
   })
 }
 
