@@ -520,6 +520,13 @@ function* transferftWatcher() {
   }
 }
 
+function* removePasswordWatcher() {
+  while (true) {
+    yield take(uiActions.REMOVE_PASSWORD)
+    yield put(storeActions.takeOffPlane('password'))
+  }
+}
+
 function* setPasswordWatcher() {
   while (true) {
     const action: ReturnType<typeof uiActions.setPassword> = yield take([
@@ -531,7 +538,6 @@ function* setPasswordWatcher() {
 
     // hash password with bcrypt
     const hash = PasswordService.hashPassword(password)
-    console.log(hash)
 
     // store hash in store
     yield put(storeActions.passwordSet(hash))
@@ -677,6 +683,7 @@ function* rootSaga() {
     yield fork(createAccountHandler)
     yield fork(importAccountHandler)
     yield fork(setPasswordWatcher)
+    yield fork(removePasswordWatcher)
     yield fork(signHandler)
     yield fork(authorizeAccountAccessHandler)
     yield fork(setupChainProviders) // NOTE expose `chain` global to saga/index

@@ -44,6 +44,7 @@ const resetPopup = () => {
 }
 
 const backgroundMethods: BackgroundMethodsInterface = {
+  removePassword,
   startTimer: (milliseconds: number = TIMEOUT) => {
     if (timerHandler) {
       clearTimeout(timerHandler)

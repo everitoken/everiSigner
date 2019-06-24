@@ -5,9 +5,9 @@ import {
   NetworkItemType,
 } from '../types'
 import { AccountStateType } from '../store/reducer/accounts'
-import { string } from 'prop-types'
 
 export const SET_PASSWORD = 'ui/SET_PASSWORD'
+export const REMOVE_PASSWORD = 'ui/REMOVE_PASSWORD'
 export const LOG_IN = 'ui/LOG_IN'
 export const RECEIVE_BACKGROUND_MESSAGE = 'background/RECEIVE_MESSAGE'
 export const CREATE_MNEMONIC_ACCOUNT = 'ui/CREATE_MNEMONIC_ACCOUNT'
@@ -43,6 +43,10 @@ export const sign = (
 export const setPassword = (password: string) => ({
   type: SET_PASSWORD,
   payload: password,
+})
+
+export const removePassword = () => ({
+  type: REMOVE_PASSWORD,
 })
 
 export const logIn = (password: string) => ({

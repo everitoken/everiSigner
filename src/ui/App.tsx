@@ -1,12 +1,7 @@
 import * as React from 'react'
-import {
-  withRouter,
-  BrowserRouter as Router,
-  Route,
-  Link,
-} from 'react-router-dom'
+import { withRouter, BrowserRouter as Router, Route } from 'react-router-dom'
 import Start from './layout/Start'
-import Footer from './layout/Footer'
+
 import { connect } from 'react-redux'
 import { getSnackbarMessage } from '../store/getter'
 import SnackbarMessage from './presentational/SnackbarMessage'

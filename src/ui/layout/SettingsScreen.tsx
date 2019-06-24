@@ -9,6 +9,7 @@ import NetworkScreen from './NetworkScreen'
 import ForwardIcon from '@material-ui/icons/ChevronRight'
 import InfoIcon from '@material-ui/icons/Info'
 import SaveIcon from '@material-ui/icons/SaveAlt'
+import LockIcon from '@material-ui/icons/Lock'
 import {
   List,
   ListItem,
@@ -24,8 +25,12 @@ import labels from '../../labels'
 import NetworkIcon from '@material-ui/icons/CloudCircle'
 import AccountIcon from '@material-ui/icons/AccountBox'
 import WalletExportScreen from '../layout/WalletExportScreen'
+import { removePassword } from '../action'
+import { connect } from 'react-redux'
 
-type PropTypes = {}
+type PropTypes = {
+  onLock: typeof removePassword
+}
 
 const styles = {
   root: {
@@ -44,6 +49,20 @@ class Settings extends React.PureComponent<
       >
         <FlexContainer>
           <List className={classes && classes.root}>
+            <ListItem
+              divider
+              button
+              onClick={() => {
+                this.props.onLock()
+                this.props.history.push('/')
+              }}
+            >
+              <LockIcon color="action" />
+              <ListItemText
+                primary={labels.LOCK_WALLET}
+                secondary={labels.LOCK_WALLET_SECONDARY_TEXT}
+              />
+            </ListItem>
             <ListItem
               divider
               button
@@ -106,7 +125,13 @@ class Settings extends React.PureComponent<
   }
 }
 
-const ConnectedSettings = compose(withStyles(styles))(Settings)
+const ConnectedSettings = compose(
+  connect(
+    null,
+    { onLock: removePassword }
+  ),
+  withStyles(styles)
+)(Settings)
 
 export default class SettingsScreen extends React.PureComponent<
   RouteComponentProps
