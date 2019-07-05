@@ -64,6 +64,12 @@ class TokenSelectConnected extends React.PureComponent<
     if (nextProps.publicKey !== this.props.publicKey) {
       nextProps.onMount(nextProps.publicKey, 'transferft')
     }
+
+    if (nextProps.balances !== this.props.balances) {
+      this.setState({
+        selected: TokenSelectConnected.selectCorrectBalance(nextProps.balances),
+      })
+    }
   }
 
   handleOpenSelection = () => {

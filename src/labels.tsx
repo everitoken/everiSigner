@@ -70,7 +70,7 @@ export default {
   UNLOCK: '解锁钱包',
   LOCK_WALLET: 'Lock Wallet',
   LOCK_WALLET_SECONDARY_TEXT: '将会锁定钱包，通过输入密码可重新开启',
-  TYPE_PASSWORD_TO_UNLOCK: 'Type password to unlock',
+  TYPE_PASSWORD_TO_UNLOCK: '输入密码解锁钱包',
   TOKEN_SELECT_SECONDARY_TEXT: '选择付款币种',
   ADDRESS_TO: '地址',
   ADDRESS_FORMAT_INVALID: '无效地址',
