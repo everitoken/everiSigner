@@ -15,62 +15,51 @@ import labels from '../../labels'
 
 type PropTypes = {
   password: string
-  children: (props: { password: string }) => React.ReactNode
+  children: (props: { password: string }) => React.ReactElement
 }
 
-type StateTypes = {
-  password: string
-  error: string
-  showPassword: boolean
-}
-class PasswordProtectedView extends React.PureComponent<PropTypes, StateTypes> {
-  state = { password: '', error: '', showPassword: false }
+const PasswordProtectedView = (props: PropTypes) => {
+  const [password, setPassword] = React.useState('')
+  const [showPassword, toggleShowPassword] = React.useState(false)
 
-  handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ password: event.target.value })
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value)
   }
 
-  handleClickShowPassword = () => {
-    this.setState({ showPassword: !this.state.showPassword })
+  if (
+    !isEmpty(props.password) &&
+    !isEmpty(password) &&
+    password === props.password
+  ) {
+    return props.children({ password })
   }
 
-  render() {
-    if (
-      !isEmpty(this.props.password) &&
-      !isEmpty(this.state.password) &&
-      this.state.password === this.props.password
-    ) {
-      return this.props.children({ password: this.state.password })
-    }
-
-    return (
-      <FlexContainer justifyContent="center" withPadding>
-        <FormControl fullWidth>
-          <InputLabel htmlFor="password">
-            {labels.TYPE_PASSWORD_TO_UNLOCK}
-          </InputLabel>
-          <Input
-            error={Boolean(this.state.error)}
-            id="password"
-            type={this.state.showPassword ? 'text' : 'password'}
-            value={this.state.password || ''}
-            onChange={this.handlePasswordChange}
-            autoFocus
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="Toggle password visibility"
-                  onClick={this.handleClickShowPassword}
-                >
-                  {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            }
-          />
-        </FormControl>
-      </FlexContainer>
-    )
-  }
+  return (
+    <FlexContainer justifyContent="center" withPadding>
+      <FormControl fullWidth>
+        <InputLabel htmlFor="password">
+          {labels.TYPE_PASSWORD_TO_UNLOCK}
+        </InputLabel>
+        <Input
+          id="password"
+          type={showPassword ? 'text' : 'password'}
+          value={password}
+          onChange={handlePasswordChange}
+          autoFocus
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="Toggle password visibility"
+                onClick={() => toggleShowPassword(!showPassword)}
+              >
+                {showPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </FormControl>
+    </FlexContainer>
+  )
 }
 
 export default PasswordProtectedView

@@ -104,8 +104,12 @@ export const copyToClipboard = (payload: string) => ({
   type: COPY_TO_CLIPBOARD,
   payload,
 })
-export const exportWallet = () => ({
+export const exportWallet = (payload: {
+  walletPassword: string
+  backupPassword: string
+}) => ({
   type: EXPORT_WALLET,
+  payload,
 })
 
 export const setMainAccount = (account: AccountStateType) => ({

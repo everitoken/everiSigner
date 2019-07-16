@@ -28,6 +28,7 @@ import labels from '../../labels'
 import { NetworkStateType } from '../reducer/network'
 import * as Evtjs from 'evtjs'
 import * as FileSaver from 'file-saver'
+import { AppState } from '../reducer/index'
 
 let backgroundPort: chrome.runtime.Port | null = null
 let chain: ChainApi | null = null
@@ -465,9 +466,32 @@ function* exportWalletWatcher() {
       uiActions.EXPORT_WALLET
     )
 
-    var file = new File(['Hello, world!'], 'hello world.txt', {
-      type: 'text/plain;charset=utf-8',
-    })
+    const { version } = chrome.runtime.getManifest()
+    const state: AppState = yield select()
+
+    const content = {
+      version: version,
+      createdAt: Date.now(),
+      wallet: {
+        accounts: state.accounts.map(account =>
+          PasswordService.decryptAccount(action.payload.walletPassword, account)
+        ),
+        authorizedEntities: state.authorizedEntities,
+      },
+    }
+
+    var file = new File(
+      [
+        PasswordService.encrypt(
+          action.payload.backupPassword,
+          JSON.stringify(content)
+        ),
+      ],
+      'everisigner-wallet-export.txt',
+      {
+        type: 'text/plain;charset=utf-8',
+      }
+    )
 
     FileSaver.saveAs(file)
   }

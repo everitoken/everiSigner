@@ -13,8 +13,11 @@ export default {
   BACKUP_INFO_TEXT_SAVE_TO_COMPUTER: '加密备份钱包至硬盘',
   BACKUP_INFO_TEXT_ADDITIONAL_PASSPHRASE:
     '钱包备份需要额外密码来保证安全。请妥善保存此密码用于恢复备份',
+  BACKUP_WALLET_ADDITIONAL_PASSPHRASE_BTN_LABEL:
+    '备份钱包需要额外密码密码以保证安全',
   BACKUP_INFO_TEXT_VERIFY_BACKUP: '验证备份',
   BACKUP_WALLET: '备份钱包',
+  BACKUP_WALLET_BTN_TEXT: '备份钱包至本地',
   VERIFY_WALLET: '验证钱包',
   CANCEL_BUTTON_TEXT: '取消',
   CLICK_QR_TO_COPY: '点击二维码复制地址',
