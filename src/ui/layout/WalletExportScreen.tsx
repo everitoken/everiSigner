@@ -13,6 +13,7 @@ import PasswordProtectedView from '../presentational/PasswordProtectedView'
 import { copyToClipboard, exportWallet } from '../action'
 import InfoArea from '../presentational/InfoArea'
 import BackupIcon from '@material-ui/icons/SaveAlt'
+import SecurityIcon from '@material-ui/icons/Security'
 
 type PropTypes = {
   password: string
@@ -33,14 +34,16 @@ class WalletExportScreen extends React.PureComponent<
         renderLeft={() => <ConnectedNavigationBackButton />}
       >
         <PasswordProtectedView password={this.props.password}>
-          {({ password }) => {
+          {() => {
             return (
               <FlexContainer>
                 <div style={{ width: '100%' }}>
                   <InfoArea>
-                    <p style={{ padding: 8 }}>
-                      {labels.GUARD_PRIVATE_KEY_SAFELY}
-                    </p>
+                    <ul style={{ paddingRight: '11px' }}>
+                      <li>{labels.BACKUP_INFO_TEXT_SAVE_TO_COMPUTER}</li>
+                      <li>{labels.BACKUP_INFO_TEXT_ADDITIONAL_PASSPHRASE}</li>
+                      <li>{labels.BACKUP_INFO_TEXT_VERIFY_BACKUP}</li>
+                    </ul>
                   </InfoArea>
                 </div>
                 <FlexContainer
@@ -48,15 +51,30 @@ class WalletExportScreen extends React.PureComponent<
                   justifyContent="center"
                   alignItems="center"
                 >
-                  <FlexContainer justifyContent="center" alignItems="center">
+                  <FlexContainer
+                    justifyContent="center"
+                    alignItems="center"
+                    direction="row"
+                  >
                     <FlexContainer justifyContent="center" alignItems="center">
                       <div
                         onClick={() => this.props.onExportWallet()}
                         style={{ cursor: 'pointer' }}
                       >
-                        <BackupIcon style={{ fontSize: '5rem' }} />
+                        <BackupIcon style={{ fontSize: '3rem' }} />
                         <div style={{ textAlign: 'center' }}>
                           <p>{labels.BACKUP_WALLET}</p>
+                        </div>
+                      </div>
+                    </FlexContainer>
+                    <FlexContainer justifyContent="center" alignItems="center">
+                      <div
+                        onClick={() => alert(labels.VERIFY_WALLET)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <SecurityIcon style={{ fontSize: '3rem' }} />
+                        <div style={{ textAlign: 'center' }}>
+                          <p>{labels.VERIFY_WALLET}</p>
                         </div>
                       </div>
                     </FlexContainer>

@@ -10,7 +10,12 @@ export default {
   ACCOUNT_SELECT: '选择账户',
   AUTHORIZE_BUTTON_TEXT: '授权',
   BACKUP_WALLET_SECONDARY_TEXT: '将钱包加密保存到电脑',
+  BACKUP_INFO_TEXT_SAVE_TO_COMPUTER: '加密备份钱包至硬盘',
+  BACKUP_INFO_TEXT_ADDITIONAL_PASSPHRASE:
+    '钱包备份需要额外密码来保证安全。请妥善保存此密码用于恢复备份',
+  BACKUP_INFO_TEXT_VERIFY_BACKUP: '验证备份',
   BACKUP_WALLET: '备份钱包',
+  VERIFY_WALLET: '验证钱包',
   CANCEL_BUTTON_TEXT: '取消',
   CLICK_QR_TO_COPY: '点击二维码复制地址',
   CLOSE: '关闭窗口',

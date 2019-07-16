@@ -11,6 +11,7 @@ import {
 
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
+import labels from '../../labels'
 
 type PropTypes = {
   password: string
@@ -46,7 +47,7 @@ class PasswordProtectedView extends React.PureComponent<PropTypes, StateTypes> {
       <FlexContainer justifyContent="center" withPadding>
         <FormControl fullWidth>
           <InputLabel htmlFor="password">
-            Type password to continue...
+            {labels.TYPE_PASSWORD_TO_UNLOCK}
           </InputLabel>
           <Input
             error={Boolean(this.state.error)}
@@ -54,6 +55,7 @@ class PasswordProtectedView extends React.PureComponent<PropTypes, StateTypes> {
             type={this.state.showPassword ? 'text' : 'password'}
             value={this.state.password || ''}
             onChange={this.handlePasswordChange}
+            autoFocus
             endAdornment={
               <InputAdornment position="end">
                 <IconButton

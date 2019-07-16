@@ -27,6 +27,7 @@ import StoreProviderInterface from '../ProviderInterface'
 import labels from '../../labels'
 import { NetworkStateType } from '../reducer/network'
 import * as Evtjs from 'evtjs'
+import * as FileSaver from 'file-saver'
 
 let backgroundPort: chrome.runtime.Port | null = null
 let chain: ChainApi | null = null
@@ -457,6 +458,21 @@ function* transferftAcknowledgeWatcher() {
     yield put(storeActions.landPlane('transactions', []))
   }
 }
+
+function* exportWalletWatcher() {
+  while (true) {
+    const action: ReturnType<typeof uiActions.exportWallet> = yield take(
+      uiActions.EXPORT_WALLET
+    )
+
+    var file = new File(['Hello, world!'], 'hello world.txt', {
+      type: 'text/plain;charset=utf-8',
+    })
+
+    FileSaver.saveAs(file)
+  }
+}
+
 function* transferftWatcher() {
   while (true) {
     const action: ReturnType<typeof uiActions.transferft> = yield take(
@@ -696,6 +712,7 @@ function* rootSaga() {
     yield fork(removeCustomNetworkWatcher)
     yield fork(transferftWatcher)
     yield fork(transferftAcknowledgeWatcher)
+    yield fork(exportWalletWatcher)
   } catch (e) {
     // TODO consider restart saga
     console.log('saga root error: ', e)
