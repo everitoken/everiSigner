@@ -5,22 +5,20 @@ type PropTypes = {
   children: React.ReactNode
 }
 
-export default class InfoArea extends React.PureComponent<PropTypes> {
-  render() {
-    return (
-      <FlexContainer>
-        <div
-          style={{
-            padding: '10 30',
-            display: 'flex',
-            alignSelf: 'stretch',
-            fontFamily: 'Roboto Mono',
-            backgroundColor: 'rgba(4, 56, 129, 0.2)',
-          }}
-        >
-          {this.props.children}
-        </div>
-      </FlexContainer>
-    )
-  }
+export default function InfoArea(props: PropTypes) {
+  return (
+    <FlexContainer>
+      <div
+        style={{
+          padding: '10 30',
+          display: 'flex',
+          alignSelf: 'stretch',
+          fontFamily: 'Roboto Mono',
+          backgroundColor: 'rgba(4, 56, 129, 0.2)',
+        }}
+      >
+        {props.children}
+      </div>
+    </FlexContainer>
+  )
 }

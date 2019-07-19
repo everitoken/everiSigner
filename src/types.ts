@@ -6,6 +6,7 @@ export type NFTType = {
   domain: string
   name: string
 }
+
 export interface TokenDetail {
   id: number
   displayName: string

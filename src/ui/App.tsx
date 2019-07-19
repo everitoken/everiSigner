@@ -1,15 +1,15 @@
 import * as React from 'react'
-import { withRouter, BrowserRouter as Router, Route } from 'react-router-dom'
-import Start from './layout/Start'
-
 import { connect } from 'react-redux'
+import { withRouter, BrowserRouter as Router, Route } from 'react-router-dom'
+
+import Start from './layout/Start'
 import { getSnackbarMessage } from '../store/getter'
 import SnackbarMessage from './presentational/SnackbarMessage'
-import { snackbarMessageDismiss } from '../store/action'
 import WalletScreen from './layout/WalletScreen'
 import SettingsScreen from './layout/SettingsScreen'
 import AccountScreen from './layout/AccountScreen'
 import Home from './layout/Home'
+import { snackbarMessageDismiss } from '../store/action'
 
 class HackRedirect extends React.PureComponent<any> {
   componentDidMount() {
@@ -29,51 +29,20 @@ const ConnectedMessage = connect(
   { onClose: snackbarMessageDismiss }
 )(SnackbarMessage)
 
-class App extends React.PureComponent {
-  render() {
-    return (
-      <Router>
-        <HackRedirectWithRouter />
-        <React.Fragment>
-          <Route exact path="/" component={Start} />
-          <Route path="/home" component={Home} />
-          <Route path="/wallet" component={WalletScreen} />
-          <Route path="/account" component={AccountScreen} />
-          <Route path="/settings" component={SettingsScreen} />
-          <ConnectedMessage />
-        </React.Fragment>
-        {/* <hr />
-        <div style={{ zIndex: 100 }}>
-          <ul
-            style={{
-              listStyle: 'none',
-              margin: 0,
-              padding: 0,
-              display: 'flex',
-              flexWrap: 'wrap',
-            }}
-          >
-            <li style={{ margin: 5 }}>
-              <Link to="/">Home</Link>
-            </li>
-            <li style={{ margin: 5 }}>
-              <Link to="/account/list">A/List</Link>
-            </li>
-            <li style={{ margin: 5 }}>
-              <Link to="/account/create">A/create</Link>
-            </li>
-            <li style={{ margin: 5 }}>
-              <Link to="/wallet/import">W/import</Link>
-            </li>
-            <li style={{ margin: 5 }}>
-              <Link to="/wallet/create">W/create</Link>
-            </li>
-          </ul>
-        </div>
-        <Footer /> */}
-      </Router>
-    )
-  }
+function App() {
+  return (
+    <Router>
+      <HackRedirectWithRouter />
+      <React.Fragment>
+        <Route exact path="/" component={Start} />
+        <Route path="/home" component={Home} />
+        <Route path="/wallet" component={WalletScreen} />
+        <Route path="/account" component={AccountScreen} />
+        <Route path="/settings" component={SettingsScreen} />
+        <ConnectedMessage />
+      </React.Fragment>
+    </Router>
+  )
 }
 
 export default App

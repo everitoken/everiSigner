@@ -16,7 +16,6 @@ import { NavigationLayout } from '../presentational/MainLayout'
 import { ConnectedNavigationBackButton } from './NavigationButtons'
 import InfoArea from '../presentational/InfoArea'
 import Button from '../presentational/InlineButton'
-import { Divider } from '@material-ui/core'
 
 type PropTypes = {
   setPassword: typeof uiActions.setPassword

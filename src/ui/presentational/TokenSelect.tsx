@@ -11,11 +11,13 @@ import {
 import labels from '../../labels'
 import ForwardIcon from '@material-ui/icons/ChevronRight'
 import styled from 'styled-components'
+
 type TokenSelectPropTypes = {
   loading: boolean
   data: TokenDetail
   onClick: () => void
 }
+
 type TokenSelectStateTypes = {
   balance: string
 }
@@ -34,6 +36,7 @@ const BalanceContainer = styled.div`
 `
 
 const BALANCE_PLACEHOLDER = '--.--'
+
 class TokenSelect extends React.PureComponent<
   TokenSelectPropTypes,
   TokenSelectStateTypes
