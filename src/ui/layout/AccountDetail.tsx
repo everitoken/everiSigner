@@ -31,6 +31,32 @@ type PropTypes = {
   onAccountRemove: typeof removeAccount
 }
 
+type CustomListItemType = {
+  onClick: () => void
+  LeftIcon: React.ReactNode
+  children: React.ReactNode
+  disabled?: boolean
+}
+
+export const CustomListItem = ({
+  LeftIcon,
+  children,
+  onClick,
+  disabled = false,
+}: CustomListItemType) => {
+  return (
+    <ListItem divider button onClick={onClick} disabled={disabled}>
+      <div style={{ paddingRight: 16 }}>
+        <LeftIcon color="action" />
+      </div>
+      {children}
+      <div>
+        <ForwardIcon />
+      </div>
+    </ListItem>
+  )
+}
+
 const QRContainer = styled.div`
   width: 150px;
   height: 150px;
@@ -60,79 +86,54 @@ class AccountOverview extends React.PureComponent<
         </span>
         <Divider />
         <List style={{ width: '100%', maxHeight: '220px', overflow: 'auto' }}>
-          <ListItem
-            divider
-            button
+          <CustomListItem
             onClick={() => this.props.history.push('/home/transferft')}
+            LeftIcon={SendIcon}
           >
-            <SendIcon color="action" />
             <ListItemText
               primary={labels.TRANSFERFT}
               secondary={labels.TRANSFERFT_SECONDARY_TEXT}
             />
-            <ListItemIcon>
-              <ForwardIcon />
-            </ListItemIcon>
-          </ListItem>
-          <ListItem
-            divider
-            button
+          </CustomListItem>
+          <CustomListItem
             onClick={() => this.props.history.push('/home/payee')}
+            LeftIcon={ReceiveIcon}
           >
-            <ReceiveIcon color="action" />
             <ListItemText
               primary={labels.PAYEE_CODE}
               secondary={labels.PAYEE_CODE_SECONDARY_TEXT}
             />
-            <ListItemIcon>
-              <ForwardIcon />
-            </ListItemIcon>
-          </ListItem>
-          <ListItem
-            divider
-            button
+          </CustomListItem>
+          <CustomListItem
             onClick={() =>
               this.props.history.push(`/account/${account.id}/key`)
             }
+            LeftIcon={KeyIcon}
           >
-            <KeyIcon color="action" />
             <ListItemText
               primary={labels.SHOW_PRIVATE_KEY}
               secondary={labels.SHOW_PRIVATE_KEY_SECONDARY_TEXT}
             />
-            <ListItemIcon>
-              <ForwardIcon />
-            </ListItemIcon>
-          </ListItem>
-          <ListItem
-            divider
-            button
+          </CustomListItem>
+          <CustomListItem
             onClick={() => this.props.onAccountRemove(account)}
             disabled={account.type === 'seed'}
+            LeftIcon={DeleteIcon}
           >
-            <DeleteIcon color="action" />
             <ListItemText
               primary={labels.REMOVE_ACCOUNT}
               secondary={labels.REMOVE_ACCOUNT_SECONDARY_TEXT}
             />
-            <ListItemIcon>
-              <ForwardIcon />
-            </ListItemIcon>
-          </ListItem>
-          <ListItem
-            divider
-            button
+          </CustomListItem>
+          <CustomListItem
             onClick={() => this.props.history.push('/home/sign')}
+            LeftIcon={EncryptIcon}
           >
-            <EncryptIcon color="action" />
             <ListItemText
               primary={labels.SIGN_DATA}
               secondary={labels.ACCOUNT_SIGN_SECONDARY_TEXT}
             />
-            <ListItemIcon>
-              <ForwardIcon />
-            </ListItemIcon>
-          </ListItem>
+          </CustomListItem>
         </List>
       </FlexContainer>
     )

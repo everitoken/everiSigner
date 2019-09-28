@@ -3,6 +3,7 @@ import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import SeedWordsDisplay from '../src/ui/presentational/SeedWordsDisplay'
 import SuccessInfoLayout from '../src/ui/presentational/SuccessInfoLayout'
+import { CustomListItem } from '../src/ui/layout/AccountDetail'
 import {
   Button,
   Grid,
@@ -20,7 +21,6 @@ import FlexContainer from '../src/ui/presentational/FlexContainer'
 import AccountAvatar from '../src/ui/presentational/AccountAvatar'
 import CircularEntity from '../src/ui/presentational/CircularEntity'
 import Divider from '../src/ui/presentational/Divider'
-import ForwardIcon from '@material-ui/icons/ChevronRight'
 import InfoIcon from '@material-ui/icons/Info'
 
 import * as fixture from '../src/fixture'
@@ -74,17 +74,9 @@ storiesOf('AccountDetail', module).add('default', () => (
       <CircularEntity title={account.name} subtitle={account.publicKey} />
       <Divider margin="8px 0 0 0" />
       <List style={{ width: '100%' }}>
-        <ListItem
-          divider
-          button
-          onClick={() => this.props.history.push('/settings/about')}
-        >
-          <InfoIcon color="action" />
+        <CustomListItem onClick={() => alert('whatnot')} LeftIcon={InfoIcon}>
           <ListItemText primary="First" secondary="second" />
-          <ListItemIcon>
-            <ForwardIcon />
-          </ListItemIcon>
-        </ListItem>
+        </CustomListItem>
       </List>
     </FlexContainer>
   </Container>

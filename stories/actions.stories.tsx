@@ -1,10 +1,7 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import ActionName from '../src/ui/presentational/ActionName'
 import Container from '../src/ui/presentational/Container'
 import FlexContainer from '../src/ui/presentational/FlexContainer'
-import SiteLocation from '../src/ui/presentational/SiteLocation'
-import SigningMessage from '../src/ui/presentational/SigningMessage'
 import ActionPanel from '../src/ui/presentational/ActionPanel'
 import Address from '../src/ui/presentational/Address'
 
@@ -37,13 +34,7 @@ storiesOf('action related', module).add('panel', () => (
   </Container>
 ))
 
-storiesOf('action related', module).add('action name', () => (
-  <ActionName name="transferft" />
-))
 
-storiesOf('action related', module).add('site location', () => (
-  <SiteLocation url="https://google.com:88" />
-))
 
 storiesOf('action related', module).add('signing message', () => (
   <SigningMessage message="this is the signing message comming with the signing request" />
