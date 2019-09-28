@@ -56,8 +56,8 @@ class HomeAppBar extends React.PureComponent<
     }
 
     return (
-      <Grid container spacing={8} justify="space-between">
-        <Grid item xs={2} spacing={8}>
+      <Grid container justify="space-between" spacing={0}>
+        <Grid item>
           <AccountSelect
             selected={this.props.mainAccount}
             onSelect={this.props.onAccountSelect}
@@ -70,7 +70,11 @@ class HomeAppBar extends React.PureComponent<
             )}
           </AccountSelect>
         </Grid>
-        <Grid item justify="center" style={{ alignSelf: 'center' }}>
+        <Grid
+          item
+          justify="center"
+          style={{ alignSelf: 'center', marginLeft: '-50px' }}
+        >
           <AccountAvatar
             account={this.props.mainAccount}
             onClick={account =>
@@ -78,7 +82,7 @@ class HomeAppBar extends React.PureComponent<
             }
           />
         </Grid>
-        <Grid item justify="center" xs={2} />
+        <Grid item justify="center" />
         <Divider />
       </Grid>
     )

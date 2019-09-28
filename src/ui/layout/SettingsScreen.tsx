@@ -6,15 +6,12 @@ import MainLayout, {
 import { Route, RouteComponentProps } from 'react-router'
 import AboutScreen from './AboutScreen'
 import NetworkScreen from './NetworkScreen'
-import ForwardIcon from '@material-ui/icons/ChevronRight'
 import InfoIcon from '@material-ui/icons/Info'
 import SaveIcon from '@material-ui/icons/SaveAlt'
 import LockIcon from '@material-ui/icons/Lock'
 import {
   List,
-  ListItem,
   ListItemText,
-  ListItemIcon,
   withStyles,
   StyledComponentProps,
 } from '@material-ui/core'
@@ -27,6 +24,7 @@ import AccountIcon from '@material-ui/icons/AccountBox'
 import WalletExportScreen from '../layout/WalletExportScreen'
 import { removePassword } from '../action'
 import { connect } from 'react-redux'
+import CustomListItem from '../presentational/CustomListItem'
 
 type PropTypes = {
   onLock: typeof removePassword
@@ -49,75 +47,56 @@ class Settings extends React.PureComponent<
       >
         <FlexContainer>
           <List className={classes && classes.root}>
-            <ListItem
-              divider
-              button
+            <CustomListItem
               onClick={() => {
                 this.props.onLock()
                 this.props.history.push('/')
               }}
+              LeftIcon={LockIcon}
+              forward={false}
             >
-              <LockIcon color="action" />
               <ListItemText
                 primary={labels.LOCK_WALLET}
                 secondary={labels.LOCK_WALLET_SECONDARY_TEXT}
               />
-            </ListItem>
-            <ListItem
-              divider
-              button
+            </CustomListItem>
+            <CustomListItem
               onClick={() => this.props.history.push('/account/list')}
+              LeftIcon={AccountIcon}
             >
-              <AccountIcon color="action" />
               <ListItemText
                 primary={labels.ACCOUNT_LIST}
                 secondary={labels.ACCOUNT_LIST_SECONDARY_TEXT}
               />
-              <ListItemIcon>
-                <ForwardIcon />
-              </ListItemIcon>
-            </ListItem>
-            <ListItem
-              divider
-              button
+            </CustomListItem>
+            <CustomListItem
               onClick={() => this.props.history.push('/settings/network')}
+              LeftIcon={NetworkIcon}
             >
-              <NetworkIcon color="action" />
               <ListItemText
                 primary={labels.NETWORK}
                 secondary={labels.NETWORK_NAVIGATION_SECONDARY_TEXT}
               />
-              <ListItemIcon>
-                <ForwardIcon />
-              </ListItemIcon>
-            </ListItem>
-            <ListItem
-              button
-              divider
+            </CustomListItem>
+            <CustomListItem
               onClick={() => this.props.history.push('/settings/export')}
+              LeftIcon={SaveIcon}
             >
-              <SaveIcon color="action" />
               <ListItemText
                 primary={labels.BACKUP_WALLET}
                 secondary={labels.BACKUP_WALLET_SECONDARY_TEXT}
               />
-              <ListItemIcon>
-                <ForwardIcon />
-              </ListItemIcon>
-            </ListItem>
-            <ListItem
-              button
+            </CustomListItem>
+            <CustomListItem
               onClick={() => this.props.history.push('/settings/about')}
+              LeftIcon={InfoIcon}
+              divider={false}
             >
-              <InfoIcon color="action" />
               <ListItemText
                 primary={labels.ABOUT}
                 secondary={labels.ABOUT_NAVIGATION_SECONDARY_TEXT}
               />
-              <ListItemIcon>
-                <ForwardIcon />
-              </ListItemIcon>
-            </ListItem>
+            </CustomListItem>
           </List>
         </FlexContainer>
       </NavigationLayout>

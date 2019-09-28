@@ -3,7 +3,7 @@ import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import SeedWordsDisplay from '../src/ui/presentational/SeedWordsDisplay'
 import SuccessInfoLayout from '../src/ui/presentational/SuccessInfoLayout'
-import { CustomListItem } from '../src/ui/layout/AccountDetail'
+import CustomListItem from '../src/ui/presentational/CustomListItem'
 import {
   Button,
   Grid,

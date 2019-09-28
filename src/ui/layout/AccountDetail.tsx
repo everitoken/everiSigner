@@ -3,19 +3,14 @@ import { AccountStateType } from '../../store/reducer/accounts'
 import { copyToClipboard, removeAccount } from '../action'
 import styled from 'styled-components'
 import { RouteComponentProps } from 'react-router'
-import {
-  Tooltip,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-} from '@material-ui/core'
+import { Tooltip, List } from '@material-ui/core'
 import labels from '../../labels'
 import QR from '../presentational/QR'
 import { compose } from 'redux'
 import FlexContainer from '../presentational/FlexContainer'
 
-import ForwardIcon from '@material-ui/icons/ChevronRight'
+import {  ListItemText } from '@material-ui/core'
+import CustomListItem from '../presentational/CustomListItem'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { connect } from 'react-redux'
 import { getMainAccount } from '../../store/getter'
@@ -29,32 +24,6 @@ type PropTypes = {
   account: AccountStateType
   onQrCodeClicked: typeof copyToClipboard
   onAccountRemove: typeof removeAccount
-}
-
-type CustomListItemType = {
-  onClick: () => void
-  LeftIcon: React.ReactNode
-  children: React.ReactNode
-  disabled?: boolean
-}
-
-export const CustomListItem = ({
-  LeftIcon,
-  children,
-  onClick,
-  disabled = false,
-}: CustomListItemType) => {
-  return (
-    <ListItem divider button onClick={onClick} disabled={disabled}>
-      <div style={{ paddingRight: 16 }}>
-        <LeftIcon color="action" />
-      </div>
-      {children}
-      <div>
-        <ForwardIcon />
-      </div>
-    </ListItem>
-  )
 }
 
 const QRContainer = styled.div`
