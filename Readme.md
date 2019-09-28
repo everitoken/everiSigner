@@ -2,6 +2,9 @@
 
 Official browser extension from [everiToken](https://everitoken.io) for signing.
 
+
+## Development 
+
 ## Stack
 
 - typescript
