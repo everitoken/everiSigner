@@ -4,10 +4,9 @@ import * as style from '../../style'
 import {
   Chip,
   Dialog,
-  DialogTitle,
+  IconButton,
+  Divider,
   DialogContent,
-  DialogActions,
-  Button,
   List,
   ListItem,
   Radio,
@@ -15,9 +14,12 @@ import {
   StyledComponentProps,
 } from '@material-ui/core'
 import ExpandMore from '@material-ui/icons/ExpandMore'
+import CloseIcon from '@material-ui/icons/Close'
 import NetworkListItem from './NetworkListItem'
 import { isSameNetwork } from '../util'
 import labels from '../../labels'
+import { APP_BAR_HEIGHT } from '../../style'
+import { HeaderTitle } from './MainLayout'
 
 type PropTypes = {
   selected: NetworkItemType
@@ -63,8 +65,22 @@ class NetworkSelect extends React.PureComponent<
     }
 
     return (
-      <Dialog fullWidth open={this.state.open} onClose={this.handleClose}>
-        <DialogTitle>Select network</DialogTitle>
+      <Dialog fullScreen open={this.state.open}>
+        <div
+          style={{
+            padding: `0 ${style.padding.standard}px`,
+            height: APP_BAR_HEIGHT,
+            display: 'flex',
+            alignContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <HeaderTitle title={labels.NETWORK_SELECT} />
+          <IconButton onClick={this.handleClose}>
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <Divider />
         <DialogContent>
           <List>
             {this.props.networks.map(network => (
@@ -87,11 +103,6 @@ class NetworkSelect extends React.PureComponent<
             ))}
           </List>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={this.handleClose} color="primary">
-            {labels.CANCEL_BUTTON_TEXT}
-          </Button>
-        </DialogActions>
       </Dialog>
     )
   }

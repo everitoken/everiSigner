@@ -22,7 +22,7 @@ export default class NetworkListItem extends React.PureComponent<PropTypes> {
         }}
       >
         <div style={compact ? {} : { fontSize: '14px' }}>
-          <span>{`${network.location} (${network.name})`}</span>
+          <Typography variant="inherit" component="p">{network.location}</Typography>
           <Typography variant="caption">{network.url}</Typography>
         </div>
         {renderAction ? renderAction() : null}

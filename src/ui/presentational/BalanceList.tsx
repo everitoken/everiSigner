@@ -47,10 +47,10 @@ export default class BalanceList extends React.PureComponent<PropTypes> {
               justify="space-between"
               direction="row"
             >
-              <Grid container spacing={8} alignItems="center" xs={6}>
+              <Grid container alignItems="center" xs={6}>
                 <Grid item>
                   <img
-                    style={{ marginBottom: '-5px' }}
+                    style={{ marginBottom: '-5px', marginRight: '5px' }}
                     width="30"
                     src={balance.logoDataUri}
                     alt={balance.name}

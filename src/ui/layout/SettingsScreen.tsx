@@ -35,98 +35,93 @@ const styles = {
     width: '100%',
   },
 }
-class Settings extends React.PureComponent<
-  PropTypes & StyledComponentProps & RouteComponentProps
-> {
-  render() {
-    const { classes } = this.props
-    return (
-      <NavigationLayout
-        title={labels.BROWSE_SETTINGS}
-        renderLeft={() => <ConnectedNavigationBackButton />}
-      >
-        <FlexContainer>
-          <List className={classes && classes.root}>
-            <CustomListItem
-              onClick={() => {
-                this.props.onLock()
-                this.props.history.push('/')
-              }}
-              LeftIcon={LockIcon}
-              forward={false}
-            >
-              <ListItemText
-                primary={labels.LOCK_WALLET}
-                secondary={labels.LOCK_WALLET_SECONDARY_TEXT}
-              />
-            </CustomListItem>
-            <CustomListItem
-              onClick={() => this.props.history.push('/account/list')}
-              LeftIcon={AccountIcon}
-            >
-              <ListItemText
-                primary={labels.ACCOUNT_LIST}
-                secondary={labels.ACCOUNT_LIST_SECONDARY_TEXT}
-              />
-            </CustomListItem>
-            <CustomListItem
-              onClick={() => this.props.history.push('/settings/network')}
-              LeftIcon={NetworkIcon}
-            >
-              <ListItemText
-                primary={labels.NETWORK}
-                secondary={labels.NETWORK_NAVIGATION_SECONDARY_TEXT}
-              />
-            </CustomListItem>
-            <CustomListItem
-              onClick={() => this.props.history.push('/settings/export')}
-              LeftIcon={SaveIcon}
-            >
-              <ListItemText
-                primary={labels.BACKUP_WALLET}
-                secondary={labels.BACKUP_WALLET_SECONDARY_TEXT}
-              />
-            </CustomListItem>
-            <CustomListItem
-              onClick={() => this.props.history.push('/settings/about')}
-              LeftIcon={InfoIcon}
-              divider={false}
-            >
-              <ListItemText
-                primary={labels.ABOUT}
-                secondary={labels.ABOUT_NAVIGATION_SECONDARY_TEXT}
-              />
-            </CustomListItem>
-          </List>
-        </FlexContainer>
-      </NavigationLayout>
-    )
-  }
+
+function Settings(
+  props: PropTypes & StyledComponentProps & RouteComponentProps
+) {
+  const { classes } = props
+
+  return (
+    <NavigationLayout
+      title={labels.BROWSE_SETTINGS}
+      renderLeft={() => <ConnectedNavigationBackButton />}
+    >
+      <FlexContainer>
+        <List className={classes && classes.root}>
+          <CustomListItem
+            onClick={() => {
+              props.onLock()
+              props.history.push('/')
+            }}
+            LeftIcon={LockIcon}
+            forward={false}
+          >
+            <ListItemText
+              primary={labels.LOCK_WALLET}
+              secondary={labels.LOCK_WALLET_SECONDARY_TEXT}
+            />
+          </CustomListItem>
+          <CustomListItem
+            onClick={() => props.history.push('/account/list')}
+            LeftIcon={AccountIcon}
+          >
+            <ListItemText
+              primary={labels.ACCOUNT_LIST}
+              secondary={labels.ACCOUNT_LIST_SECONDARY_TEXT}
+            />
+          </CustomListItem>
+          <CustomListItem
+            onClick={() => props.history.push('/settings/network')}
+            LeftIcon={NetworkIcon}
+          >
+            <ListItemText
+              primary={labels.NETWORK}
+              secondary={labels.NETWORK_NAVIGATION_SECONDARY_TEXT}
+            />
+          </CustomListItem>
+          <CustomListItem
+            onClick={() => props.history.push('/settings/export')}
+            LeftIcon={SaveIcon}
+          >
+            <ListItemText
+              primary={labels.BACKUP_WALLET}
+              secondary={labels.BACKUP_WALLET_SECONDARY_TEXT}
+            />
+          </CustomListItem>
+          <CustomListItem
+            onClick={() => props.history.push('/settings/about')}
+            LeftIcon={InfoIcon}
+            divider={false}
+          >
+            <ListItemText
+              primary={labels.ABOUT}
+              secondary={labels.ABOUT_NAVIGATION_SECONDARY_TEXT}
+            />
+          </CustomListItem>
+        </List>
+      </FlexContainer>
+    </NavigationLayout>
+  )
 }
 
 const ConnectedSettings = compose(
   connect(
     null,
     { onLock: removePassword }
-  ),
+  )
   withStyles(styles)
 )(Settings)
 
-export default class SettingsScreen extends React.PureComponent<
-  RouteComponentProps
-> {
-  render() {
-    const { match } = this.props
-    return (
-      <MainLayout
-        renderLogo
-        renderHead={() => <HeaderTitle title={labels.SETTINGS} />}
-      >
-        <Route exact path={`${match.path}/`} component={ConnectedSettings} />
-        <Route path={`${match.path}/about`} component={AboutScreen} />
-        <Route path={`${match.path}/network`} component={NetworkScreen} />
-        <Route path={`${match.path}/export`} component={WalletExportScreen} />
-      </MainLayout>
-    )
-  }
+export default function SettingsScreen({ match }: RouteComponentProps) {
+  return (
+    <MainLayout
+      renderLogo
+      renderHead={() => <HeaderTitle title={labels.SETTINGS} />}
+    >
+      <Route exact path={`${match.path}/`} component={ConnectedSettings} />
+      <Route path={`${match.path}/about`} component={AboutScreen} />
+      <Route path={`${match.path}/network`} component={NetworkScreen} />
+      <Route path={`${match.path}/export`} component={WalletExportScreen} />
+    </MainLayout>
+  )
 }

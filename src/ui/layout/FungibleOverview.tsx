@@ -7,15 +7,13 @@ import { getMainAccount } from '../../store/getter'
 
 type FungibleOverviewPropTypes = { account: AccountStateType }
 
-class FungibleOverview extends React.PureComponent<FungibleOverviewPropTypes> {
-  render() {
-    return (
-      <FungibleBalanceList
-        title={labels.FUNGIBLE_BALANCE}
-        publicKey={this.props.account.publicKey}
-      />
-    )
-  }
+function FungibleOverview(props: FungibleOverviewPropTypes) {
+  return (
+    <FungibleBalanceList
+      title={labels.FUNGIBLE_BALANCE}
+      publicKey={props.account.publicKey}
+    />
+  )
 }
 
 export default connect(getMainAccount)(FungibleOverview)

@@ -40,6 +40,7 @@ export default {
   MAKE_DEFAULT_ACCOUNT: '设置为默认账户',
   MNEMONIC_IMPORT: '助记词',
   MNEMONIC: '助记词',
+  NETWORK_SELECT: '选择节点',
   NETWORK_LIST: '节点列表',
   NETWORK_NAME: '节点名称',
   NETWORK_NAVIGATION_SECONDARY_TEXT: 'View and create network',

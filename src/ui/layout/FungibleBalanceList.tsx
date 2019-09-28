@@ -22,28 +22,25 @@ type ConnectedProps = {
   onMount: (publicKey: string) => ReturnType<typeof fetchBalance>
 }
 
-class ConnectedBalanceList extends React.PureComponent<
-  OwnProps & ConnectedProps & PropTypes
-> {
-  componentWillMount() {
-    this.props.onMount(this.props.publicKey)
-  }
-  render() {
-    return (
-      <Container>
-        {this.props.title ? (
-          <Typography variant="h6" style={{ padding: '16px 0 4px 16px' }}>
-            {this.props.title}
-          </Typography>
-        ) : null}
-        <BalanceList
-          {...this.props}
-          balances={this.props.balances}
-          fetching={this.props.fetching}
-        />
-      </Container>
-    )
-  }
+function ConnectedBalanceList(props: OwnProps & ConnectedProps & PropTypes) {
+  React.useEffect(() => {
+    props.onMount(props.publicKey)
+  }, [props.publicKey])
+
+  return (
+    <Container>
+      {props.title ? (
+        <Typography variant="h6" style={{ padding: '16px 0 4px 16px' }}>
+          {props.title}
+        </Typography>
+      ) : null}
+      <BalanceList
+        {...props}
+        balances={props.balances}
+        fetching={props.fetching}
+      />
+    </Container>
+  )
 }
 
 export default connect(

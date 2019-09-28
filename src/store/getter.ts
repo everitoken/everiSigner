@@ -135,6 +135,8 @@ export const getSigningPayload = ({ signingPayload, accounts }: AppState) => ({
   mainAccount: accounts.find(({ isMain }) => isMain) as AccountStateType,
 })
 
+const emptyArray: any[] = []
+
 export const getBalanceByPublicKey = (
   state: AppState,
   ownProps: { publicKey: string }
@@ -143,7 +145,7 @@ export const getBalanceByPublicKey = (
   const fetching = get(state, 'airport.balance/default/fetching', false)
 
   return {
-    balances: balances || [],
+    balances: balances || emptyArray,
     fetching,
   }
 }

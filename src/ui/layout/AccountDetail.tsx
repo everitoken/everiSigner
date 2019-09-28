@@ -9,7 +9,7 @@ import QR from '../presentational/QR'
 import { compose } from 'redux'
 import FlexContainer from '../presentational/FlexContainer'
 
-import {  ListItemText } from '@material-ui/core'
+import { ListItemText } from '@material-ui/core'
 import CustomListItem from '../presentational/CustomListItem'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { connect } from 'react-redux'
