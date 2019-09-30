@@ -1,3 +1,5 @@
+import * as React from 'react'
+import { getSelectedNetwork } from '../../context/Network'
 import { get } from 'lodash'
 import { END, eventChannel } from 'redux-saga'
 import { call, fork, put, select, take, all, delay } from 'redux-saga/effects'
@@ -15,7 +17,6 @@ import {
   getPassword,
   getPasswordHash,
   getAuthenticateAccountRequest,
-  getNetworks,
   getDecryptedMainAccount,
 } from '../getter'
 import { AccountStateType } from '../reducer/accounts'
@@ -25,7 +26,6 @@ import { getEvtChain } from '../../chain/util'
 import ChainInterface from '../../chain/ChainInterface'
 import StoreProviderInterface from '../ProviderInterface'
 import labels from '../../labels'
-import { NetworkStateType } from '../reducer/network'
 import * as Evtjs from 'evtjs'
 import * as FileSaver from 'file-saver'
 import { AppState } from '../reducer/index'
@@ -39,7 +39,7 @@ const log = (msg: string, tag: string = 'unspecified') => {
 }
 
 function* getCurrentNetwork() {
-  const { selected: network }: NetworkStateType = yield select(getNetworks)
+  const network = getSelectedNetwork()
 
   return {
     host: network.url

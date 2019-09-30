@@ -122,11 +122,13 @@ export const removeAccount = (account: AccountStateType) => ({
   payload: { account },
 })
 
+// FIXME: REMOVE
 export const addCustomNetwork = (network: NetworkItemType) => ({
   type: ADD_CUSTOM_NETWORK,
   payload: { network },
 })
 
+// FIXME REMOVE
 export const removeNetwork = (network: NetworkItemType) => ({
   type: REMOVE_CUSTOM_NETWORK,
   payload: { network },

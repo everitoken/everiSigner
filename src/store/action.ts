@@ -154,19 +154,6 @@ export const signedPayloadReceive = (
   payload,
 })
 
-export const networkSelect = (network: NetworkItemType): NetworkSelectType => ({
-  type: NETWORK_SELECT,
-  payload: {
-    network,
-  },
-})
-
-export const networkAdd = (network: NetworkItemType): NetworkAddType => ({
-  type: NETWORK_ADD,
-  payload: {
-    network,
-  },
-})
 export const networkRemove = (network: NetworkItemType): NetworkRemoveType => ({
   type: NETWORK_REMOVE,
   payload: {

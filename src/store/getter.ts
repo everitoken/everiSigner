@@ -163,8 +163,6 @@ export const getOwnedTokensByPublicKey = (
   }
 }
 
-export const getNetworks = (state: AppState) => state.network
-
 export const getAccountDetailScreen = (
   state: AppState,
   ownProps: RouteComponentProps<{ id: string }>
