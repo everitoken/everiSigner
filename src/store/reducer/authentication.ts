@@ -1,6 +1,7 @@
 import * as actions from '../action'
 import { PURGE } from 'redux-persist/es/constants'
 
+// Here only save the password hash
 type AuthenticationStateType = {
   password?: string
 }

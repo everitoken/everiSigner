@@ -32,77 +32,53 @@ type StepDisplaySeedPhrasesPropTypes = {
   buttonText: string
   onNextClick: () => void
 }
-type StepDisplaySeedPhrasesStateTypes = {
-  copied: boolean
-}
 
-class StepDisplaySeedPhrases extends React.PureComponent<
-  StepDisplaySeedPhrasesPropTypes,
-  StepDisplaySeedPhrasesStateTypes
-> {
-  timeoutHandler: any
-  constructor(props: StepDisplaySeedPhrasesPropTypes) {
-    super(props)
-    this.timeoutHandler = null
-  }
+function StepDisplaySeedPhrases(props: StepDisplaySeedPhrasesPropTypes) {
+  const [copied, setCopied] = React.useState(false)
 
-  state = {
-    copied: false,
-  }
-
-  componentDidMount() {
-    if (this.timeoutHandler) {
-      clearTimeout(this.timeoutHandler)
-    }
-  }
-
-  handleCopy = () => {
-    navigator.clipboard.writeText(this.props.words).then(() => {
-      this.setState({ copied: true })
-      this.timeoutHandler = setTimeout(() => {
-        this.setState({ copied: false })
+  const handleCopy = () => {
+    navigator.clipboard.writeText(props.words).then(() => {
+      setCopied(true)
+      setTimeout(() => {
+        setCopied(false)
       }, 3000)
     })
   }
 
-  render() {
-    return (
-      <FlexContainer>
-        <FlexContainer withPadding alignItems="flex-end">
-          <p style={{ marginTop: 0 }}>
-            Make sure to write down these words safely. In next step you will be
-            asked to input these phrases in sequence.
-          </p>
-          <SeedWordsDisplay words={this.props.words} />
-          <div
-            style={{
-              cursor: 'pointer',
-            }}
-          >
-            <Link onClick={this.handleCopy}>
-              {this.state.copied ? 'copied' : 'copy?'}
-            </Link>
-          </div>
-        </FlexContainer>
-        <div style={{ alignSelf: 'stretch' }}>
-          <FlexContainer
-            withPadding
-            alignItems="stretch"
-            justifyContent="flex-end"
-          >
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              onClick={this.props.onNextClick}
-            >
-              {this.props.buttonText}
-            </Button>
-          </FlexContainer>
+  return (
+    <FlexContainer>
+      <FlexContainer withPadding alignItems="flex-end">
+        <p style={{ marginTop: 0 }}>
+          Make sure to write down these words safely. In next step you will be
+          asked to input these phrases in sequence.
+        </p>
+        <SeedWordsDisplay words={props.words} />
+        <div
+          style={{
+            cursor: 'pointer',
+          }}
+        >
+          <Link onClick={handleCopy}>{copied ? 'copied' : 'copy?'}</Link>
         </div>
       </FlexContainer>
-    )
-  }
+      <div style={{ alignSelf: 'stretch' }}>
+        <FlexContainer
+          withPadding
+          alignItems="stretch"
+          justifyContent="flex-end"
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={props.onNextClick}
+          >
+            {props.buttonText}
+          </Button>
+        </FlexContainer>
+      </div>
+    </FlexContainer>
+  )
 }
 
 type StepVerifySeedPhrasesPropTypes = {
@@ -111,97 +87,84 @@ type StepVerifySeedPhrasesPropTypes = {
   onNextClick: () => void
 }
 
-type StepVerifySeedPhrasesStateTypes = {
-  value: string
-  error: boolean
-}
 
-class StepVerifySeedPhrases extends React.PureComponent<
-  StepVerifySeedPhrasesPropTypes,
-  StepVerifySeedPhrasesStateTypes
-> {
-  state = {
-    value: '',
-    error: false,
-  }
+function StepVerifySeedPhrases(props: StepVerifySeedPhrasesPropTypes) {
+  const [value, setValue] = React.useState('')
+  const [hasError, setError] = React.useState(false)
 
-  handleSubmit = () => {
-    if (this.state.value.trim() !== this.props.words) {
-      this.setState({ error: true })
+  const handleSubmit = () => {
+    if (value.trim() !== props.words) {
+      setError(true)
     } else {
-      this.props.onNextClick()
+      props.onNextClick()
     }
   }
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
-    this.setState({ value })
+    setValue(value)
   }
 
-  render() {
-    return (
-      <FlexContainer>
-        <FlexContainer withPadding>
-          <TextField
-            id="seed-phrase-verify"
-            label={labels.INPUT_MNEMONIC_WORDS}
-            multiline
-            fullWidth
-            rows="5"
-            inputProps={{
-              style: { fontSize: '1.2rem', fontFamily: 'Roboto Mono' },
-            }}
-            error={this.state.error}
-            margin="normal"
-            required
-            onChange={this.handleChange}
-            variant="outlined"
-          />
-        </FlexContainer>
-        <div style={{ alignSelf: 'stretch' }}>
-          <FlexContainer
-            withPadding
-            alignItems="stretch"
-            justifyContent="flex-end"
-          >
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              onClick={this.handleSubmit}
-            >
-              {this.props.buttonText}
-            </Button>
-          </FlexContainer>
-        </div>
+  return (
+    <FlexContainer>
+      <FlexContainer withPadding>
+        <TextField
+          id="seed-phrase-verify"
+          label={labels.INPUT_MNEMONIC_WORDS}
+          multiline
+          fullWidth
+          rows="5"
+          inputProps={{
+            style: { fontSize: '1.2rem', fontFamily: 'Roboto Mono' },
+          }}
+          error={hasError}
+          margin="normal"
+          required
+          onChange={handleChange}
+          variant="outlined"
+        />
       </FlexContainer>
-    )
-  }
+      <div style={{ alignSelf: 'stretch' }}>
+        <FlexContainer
+          withPadding
+          alignItems="stretch"
+          justifyContent="flex-end"
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={handleSubmit}
+          >
+            {props.buttonText}
+          </Button>
+        </FlexContainer>
+      </div>
+    </FlexContainer>
+  )
 }
 
-class StepSuccess extends React.PureComponent<RouteComponentProps> {
-  render() {
-    return (
-      <SuccessInfoLayout>
-        <p
-          style={{
-            padding: '8px 0',
-            fontFamily: 'Roboto Mono',
-            fontSize: '1.1rem',
-          }}
-        >
-          {labels.ACCOUNT_CREATE_SUCCESSFUL}
-        </p>
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={() => this.props.history.push('/')}
-        >
-          Go to Account
-        </Button>
-      </SuccessInfoLayout>
-    )
-  }
+function StepSuccess({ history }: RouteComponentProps) {
+  return (
+    <SuccessInfoLayout>
+      <p
+        style={{
+          padding: '8px 0',
+          fontFamily: 'Roboto Mono',
+          fontSize: '1.1rem',
+        }}
+      >
+        {labels.ACCOUNT_CREATE_SUCCESSFUL}
+      </p>
+      <Button
+        variant="outlined"
+        color="primary"
+        onClick={() => history.push('/')}
+      >
+        Go to Account
+      </Button>
+    </SuccessInfoLayout>
+  )
 }
 
 const ConnectedStepSuccess = withRouter(StepSuccess)
@@ -213,80 +176,66 @@ type AccountCreatePropTypes = {
   onClick: typeof createAccountWithMnemonic
 }
 
-type AccountCreateStateTypes = {
-  activeStep: number
-  accountName: string
-  currentAccountId: string | null
-}
+function AccountCreate(props: AccountCreatePropTypes) {
+  const [activeStep, setActiveStep] = React.useState(0)
+  const [currentAccountId, setCurrentAccountId] = React.useState<null | string>(
+    null
+  )
+  const [accountName, setAccountName] = React.useState('')
 
-class AccountCreate extends React.PureComponent<
-  AccountCreatePropTypes,
-  AccountCreateStateTypes
-> {
-  state = {
-    activeStep: 0,
-    currentAccountId: null,
-    accountName: '',
+  const handleNextStep = () => {
+    setActiveStep(activeStep + 1)
   }
 
-  handleNextStep = () => {
-    this.setState({ activeStep: this.state.activeStep + 1 })
-  }
-
-  handleCreateAccount = () => {
+  const handleCreateAccount = () => {
     const id = uuid.v4()
 
-    this.props.onClick(
+    props.onClick(
       {
         id,
-        name: this.state.accountName,
-        words: this.props.words,
+        name: accountName,
+        words: props.words,
       },
       true
     )
 
-    this.setState({
-      currentAccountId: id,
-    })
+    setCurrentAccountId(id)
   }
 
-  renderStep = () => {
-    if (this.state.activeStep === 0) {
+  const renderStep = () => {
+    if (activeStep === 0) {
       return (
         <AccountNameComponent
-          accountNames={this.props.accountNames}
+          accountNames={props.accountNames}
           autoFocus
           onNextClick={accountName => {
-            this.setState({ accountName })
-            this.handleNextStep()
+            setAccountName(accountName)
+            handleNextStep()
           }}
-          buttonText={STEPS[this.state.activeStep].action}
+          buttonText={STEPS[activeStep].action}
         />
       )
-    } else if (this.state.activeStep === 1) {
+    } else if (activeStep === 1) {
       return (
         <StepDisplaySeedPhrases
-          accountName={this.state.accountName}
-          words={this.props.words}
-          buttonText={STEPS[this.state.activeStep].action}
-          onNextClick={this.handleNextStep}
+          accountName={accountName}
+          words={props.words}
+          buttonText={STEPS[activeStep].action}
+          onNextClick={handleNextStep}
         />
       )
-    } else if (this.state.activeStep === STEPS.length - 1) {
+    } else if (activeStep === STEPS.length - 1) {
       return (
         <StepVerifySeedPhrases
-          buttonText={STEPS[this.state.activeStep].action}
-          words={this.props.words}
+          buttonText={STEPS[activeStep].action}
+          words={props.words}
           onNextClick={() => {
-            this.handleNextStep()
-            this.handleCreateAccount()
+            handleNextStep()
+            handleCreateAccount()
           }}
         />
       )
-    } else if (
-      this.props.account &&
-      this.props.account.id === this.state.currentAccountId
-    ) {
+    } else if (props.account && props.account.id === currentAccountId) {
       return <ConnectedStepSuccess />
     }
 
@@ -297,49 +246,47 @@ class AccountCreate extends React.PureComponent<
     )
   }
 
-  render() {
-    if (this.props.account && this.state.currentAccountId === null) {
-      return (
-        <FlexContainer>
-          <div>
-            <InfoArea>
-              <p style={{ padding: '8px 16px' }}>
-                A default account has been created, now you can only create
-                loose account. (TODO: better wording)
-              </p>
-            </InfoArea>
-          </div>
-          <FlexContainer withPadding alignSelf="stretch" alignItems="stretch">
-            <p>A default account has been created.</p>
-          </FlexContainer>
-        </FlexContainer>
-      )
-    }
-
+  if (props.account && currentAccountId === null) {
     return (
       <FlexContainer>
         <div>
           <InfoArea>
             <p style={{ padding: '8px 16px' }}>
-              This is your <b>seed account</b>, this account will be recoverable
-              with your seed phrases.
+              A default account has been created, now you can only create loose
+              account. (TODO: better wording)
             </p>
           </InfoArea>
         </div>
-        <FlexContainer alignSelf="stretch" alignItems="stretch">
-          <Stepper activeStep={this.state.activeStep} style={{ padding: 16 }}>
-            {STEPS.map(({ step }) => (
-              <Step key={step}>
-                <StepLabel>{step}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          <Divider />
-          {this.renderStep()}
+        <FlexContainer withPadding alignSelf="stretch" alignItems="stretch">
+          <p>A default account has been created.</p>
         </FlexContainer>
       </FlexContainer>
     )
   }
+
+  return (
+    <FlexContainer>
+      <div>
+        <InfoArea>
+          <p style={{ padding: '8px 16px' }}>
+            This is your <b>seed account</b>, this account will be recoverable
+            with your seed phrases.
+          </p>
+        </InfoArea>
+      </div>
+      <FlexContainer alignSelf="stretch" alignItems="stretch">
+        <Stepper activeStep={activeStep} style={{ padding: 16 }}>
+          {STEPS.map(({ step }) => (
+            <Step key={step}>
+              <StepLabel>{step}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+        <Divider />
+        {renderStep()}
+      </FlexContainer>
+    </FlexContainer>
+  )
 }
 
 export default AccountCreate

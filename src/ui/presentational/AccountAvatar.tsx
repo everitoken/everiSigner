@@ -26,18 +26,17 @@ const Container = styled.div`
     background: #ececec;
   }
 `
-class AccountAvatar extends React.PureComponent<PropTypes> {
-  render() {
-    const address = this.props.account.publicKey
-    return (
-      <FlexContainer>
-        <Container onClick={() => this.props.onClick(this.props.account)}>
-          <AccountName>{this.props.account.name}</AccountName>
-          <Address>{shortenAddress(address)}</Address>
-        </Container>
-      </FlexContainer>
-    )
-  }
+
+function AccountAvatar(props: PropTypes) {
+  const address = props.account.publicKey
+  return (
+    <FlexContainer>
+      <Container onClick={() => props.onClick(props.account)}>
+        <AccountName>{props.account.name}</AccountName>
+        <Address>{shortenAddress(address)}</Address>
+      </Container>
+    </FlexContainer>
+  )
 }
 
 export default AccountAvatar
