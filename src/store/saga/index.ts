@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { getSelectedNetwork } from '../../context/Network'
 import { get } from 'lodash'
 import { END, eventChannel } from 'redux-saga'
@@ -431,28 +430,6 @@ function* removeAccountWatcher() {
   }
 }
 
-function* addCustomNetworkWatcher() {
-  while (true) {
-    const action: ReturnType<typeof uiActions.addCustomNetwork> = yield take(
-      uiActions.ADD_CUSTOM_NETWORK
-    )
-
-    yield put(storeActions.networkAdd(action.payload.network))
-    yield put(
-      storeActions.snackbarMessageShow(labels.NETWORK_SUCCESSFULLY_CREATED)
-    )
-  }
-}
-
-function* removeCustomNetworkWatcher() {
-  while (true) {
-    const action: ReturnType<typeof uiActions.removeNetwork> = yield take(
-      uiActions.REMOVE_CUSTOM_NETWORK
-    )
-
-    yield put(storeActions.networkRemove(action.payload.network))
-  }
-}
 function* transferftAcknowledgeWatcher() {
   while (true) {
     yield take(uiActions.TRANSFER_FT_ACKNOWLEDGE)
@@ -732,8 +709,6 @@ function* rootSaga() {
     yield fork(copyToClipBoardWatcher)
     yield fork(setMainAccountWatcher)
     yield fork(removeAccountWatcher)
-    yield fork(addCustomNetworkWatcher)
-    yield fork(removeCustomNetworkWatcher)
     yield fork(transferftWatcher)
     yield fork(transferftAcknowledgeWatcher)
     yield fork(exportWalletWatcher)

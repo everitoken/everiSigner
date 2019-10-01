@@ -3,8 +3,6 @@ import { noop } from 'lodash'
 import { NetworkItemType } from '../types'
 import { useLocalStorageState } from 'react-storage-hooks'
 
-let selectedNetworkCached: NetworkItemType | null = null
-
 const mainnet1 = {
   name: 'mainnet1',
   url: 'https://mainnet1.everitoken.io',
@@ -104,13 +102,16 @@ const NETWORKS = [
   mainnet14,
 ]
 
+const defaultnetwork = mainnet1
 export const NetworkContext = createContext({
   networks: NETWORKS,
-  selected: mainnet1,
+  selected: defaultnetwork,
   selectNetwork: noop,
   addNetwork: noop,
   removeNetwork: noop,
 })
+
+let selectedNetworkCached: NetworkItemType = defaultnetwork
 
 type PropTypes = {
   children: React.ReactNode
@@ -155,7 +156,7 @@ export default function NetworkContextProvider(props: PropTypes) {
 
   const selectNetwork = (network: NetworkItemType) => {
     setSelectedLocal(network)
-      selectedNetworkCached = network
+    selectedNetworkCached = network
     setSelectedInStorage(network)
   }
 
@@ -176,9 +177,5 @@ export default function NetworkContextProvider(props: PropTypes) {
 
 // TODO: Think of refactoring
 export const getSelectedNetwork = () => {
-  if (selectedNetworkCached == null) {
-    throw new Error('Network context is not yet initialized')
-  }
-
   return selectedNetworkCached
 }
