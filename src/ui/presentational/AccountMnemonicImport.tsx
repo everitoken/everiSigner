@@ -26,90 +26,78 @@ type StepInputSeedPhrasesPropTypes = {
   onNextClick: (words: string) => void
 }
 
-type StepInputSeedPhrasesStateTypes = {
-  value: string
-}
 
-class StepInputSeedPhrases extends React.PureComponent<
-  StepInputSeedPhrasesPropTypes,
-  StepInputSeedPhrasesStateTypes
-> {
-  state = {
-    value: '',
+function StepInputSeedPhrases(props: StepInputSeedPhrasesPropTypes) {
+  const [value, setValue] = React.useState('')
+
+  const handleSubmit = () => {
+    props.onNextClick(value.trim())
   }
 
-  handleSubmit = () => {
-    this.props.onNextClick(this.state.value.trim())
-  }
-
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
-    this.setState({ value })
+    setValue(value)
   }
 
-  render() {
-    return (
-      <FlexContainer>
-        <FlexContainer withPadding>
-          <TextField
-            id="seed-phrase-input"
-            label={labels.INPUT_MNEMONIC_WORDS}
-            multiline
-            fullWidth
-            rows="5"
-            inputProps={{
-              style: { fontSize: '1.2rem', fontFamily: 'Roboto Mono' },
-            }}
-            margin="normal"
-            required
-            onChange={this.handleChange}
-            variant="outlined"
-          />
-        </FlexContainer>
-        <div style={{ alignSelf: 'stretch' }}>
-          <FlexContainer
-            withPadding
-            alignItems="stretch"
-            justifyContent="flex-end"
-          >
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              onClick={this.handleSubmit}
-            >
-              {this.props.buttonText}
-            </Button>
-          </FlexContainer>
-        </div>
+  return (
+    <FlexContainer>
+      <FlexContainer withPadding>
+        <TextField
+          id="seed-phrase-input"
+          label={labels.INPUT_MNEMONIC_WORDS}
+          multiline
+          fullWidth
+          rows="5"
+          inputProps={{
+            style: { fontSize: '1.2rem', fontFamily: 'Roboto Mono' },
+          }}
+          margin="normal"
+          required
+          onChange={handleChange}
+          variant="outlined"
+        />
       </FlexContainer>
-    )
-  }
+      <div style={{ alignSelf: 'stretch' }}>
+        <FlexContainer
+          withPadding
+          alignItems="stretch"
+          justifyContent="flex-end"
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={handleSubmit}
+          >
+            {props.buttonText}
+          </Button>
+        </FlexContainer>
+      </div>
+    </FlexContainer>
+  )
 }
 
-class StepSuccess extends React.PureComponent<RouteComponentProps> {
-  render() {
-    return (
-      <SuccessInfoLayout>
-        <p
-          style={{
-            padding: '8px 0',
-            fontFamily: 'Roboto Mono',
-            fontSize: '1.1rem',
-          }}
-        >
-          {labels.ACCOUNT_IMPORT_SUCCESSFUL}
-        </p>
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={() => this.props.history.push('/')}
-        >
-          Go to Account
-        </Button>
-      </SuccessInfoLayout>
-    )
-  }
+function StepSuccess({ history }: RouteComponentProps) {
+  return (
+    <SuccessInfoLayout>
+      <p
+        style={{
+          padding: '8px 0',
+          fontFamily: 'Roboto Mono',
+          fontSize: '1.1rem',
+        }}
+      >
+        {labels.ACCOUNT_IMPORT_SUCCESSFUL}
+      </p>
+      <Button
+        variant="outlined"
+        color="primary"
+        onClick={() => history.push('/')}
+      >
+        Go to Account
+      </Button>
+    </SuccessInfoLayout>
+  )
 }
 
 const ConnectedStepSuccess = withRouter(StepSuccess)
@@ -120,58 +108,46 @@ type AccountImportPropType = {
   onClick: typeof createAccountWithMnemonic
 }
 
-type AccountImportStateTypes = {
-  activeStep: number
-  name: string
-  importedAccountIds: string[]
-}
+function AccountMnemonicImport(props: AccountImportPropType) {
+  const [activeStep, setActiveStep] = React.useState(0)
+  const [name, setName] = React.useState('')
 
-class AccountMnemonicImport extends React.PureComponent<
-  AccountImportPropType,
-  AccountImportStateTypes
-> {
-  state = {
-    activeStep: 0,
-    name: '',
-    importedAccountIds: [],
-  }
-
-  handleCreateAccount = (words: string) => {
-    this.props.onClick(
+  const handleCreateAccount = (words: string) => {
+    props.onClick(
       {
         id: uuid.v4(),
         words,
-        name: this.state.name,
+        name,
       },
       false
     )
 
-    this.handleNextStep()
+    handleNextStep()
   }
 
-  handleNextStep = () => {
-    this.setState({ activeStep: this.state.activeStep + 1 })
+  const handleNextStep = () => {
+    setActiveStep(activeStep + 1)
   }
 
-  renderStep = () => {
-    if (this.state.activeStep === 0) {
+  const renderStep = () => {
+    if (activeStep === 0) {
       return (
         <AccountNameComponent
-          accountNames={this.props.accountNames}
+          accountNames={props.accountNames}
           onNextClick={name => {
-            this.setState({ name })
-            this.handleNextStep()
+            setName(name)
+            handleNextStep()
           }}
-          buttonText={STEPS[this.state.activeStep].action}
+          buttonText={STEPS[activeStep].action}
         />
       )
-    } else if (this.state.activeStep === 1) {
+    } else if (activeStep === 1) {
       return (
         <StepInputSeedPhrases
-          buttonText={STEPS[this.state.activeStep].action}
+          buttonText={STEPS[activeStep].action}
           onNextClick={(words: string) => {
-            this.handleNextStep()
-            this.handleCreateAccount(words)
+            handleNextStep()
+            handleCreateAccount(words)
           }}
         />
       )
@@ -180,31 +156,28 @@ class AccountMnemonicImport extends React.PureComponent<
     return <ConnectedStepSuccess />
   }
 
-  render() {
-    return (
-      <FlexContainer>
-        <div>
-          <InfoArea>
-            <p style={{ padding: '8px 16px' }}>
-              You can directly import your account with the{' '}
-              <b>Mnemonic words</b>.
-            </p>
-          </InfoArea>
-        </div>
-        <FlexContainer alignSelf="stretch" alignItems="stretch">
-          <Stepper activeStep={this.state.activeStep} style={{ padding: 16 }}>
-            {STEPS.map(({ step }) => (
-              <Step key={step}>
-                <StepLabel>{step}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          <Divider />
-          {this.renderStep()}
-        </FlexContainer>
+  return (
+    <FlexContainer>
+      <div>
+        <InfoArea>
+          <p style={{ padding: '8px 16px' }}>
+            You can directly import your account with the <b>Mnemonic words</b>.
+          </p>
+        </InfoArea>
+      </div>
+      <FlexContainer alignSelf="stretch" alignItems="stretch">
+        <Stepper activeStep={activeStep} style={{ padding: 16 }}>
+          {STEPS.map(({ step }) => (
+            <Step key={step}>
+              <StepLabel>{step}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+        <Divider />
+        {renderStep()}
       </FlexContainer>
-    )
-  }
+    </FlexContainer>
+  )
 }
 
 export default AccountMnemonicImport

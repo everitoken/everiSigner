@@ -18,39 +18,31 @@ type PropTypes = {
   detailComponent?: React.ReactNode
 }
 
-type StateTypes = {
-  selected: AccountStateType
-  open: boolean
-}
 
-export default class AccountSelect extends React.PureComponent<
-  PropTypes,
-  StateTypes
-> {
-  state = {
-    selected: this.props.selected,
-    open: false,
+export default function AccountSelect(props: PropTypes) {
+  const [selected, setSelected] = React.useState(props.selected)
+  const [open, setOpen] = React.useState(false)
+  const handleOpen = () => {
+    setOpen(true)
   }
-  handleOpen = () => {
-    this.setState({ open: true })
+  const handleClose = () => {
+    setOpen(false)
   }
-  handleClose = () => {
-    this.setState({ open: false })
-  }
-  handleSelect = (account: AccountStateType) => {
-    this.setState({ selected: account, open: false })
-    if (this.state.selected.id !== account.id) {
-      this.props.onSelect(account)
+  const handleSelect = (account: AccountStateType) => {
+    setSelected(account)
+    setOpen(false)
+    if (selected.id !== account.id) {
+      props.onSelect(account)
     }
   }
 
-  renderSelectAccount = () => {
-    if (!this.state.open) {
+  const renderSelectAccount = () => {
+    if (!open) {
       return null
     }
 
     return (
-      <Dialog fullScreen open={this.state.open} onClose={this.handleClose}>
+      <Dialog fullScreen open={open} onClose={handleClose}>
         <div
           style={{
             padding: `0 ${style.padding.standard}px`,
@@ -61,30 +53,28 @@ export default class AccountSelect extends React.PureComponent<
           }}
         >
           <HeaderTitle title={labels.ACCOUNT_SELECT} />
-          <IconButton onClick={this.handleClose}>
+          <IconButton onClick={handleClose}>
             <CloseIcon />
           </IconButton>
         </div>
         <Divider />
         <DialogContent>
           <AccountSelectList
-            accounts={this.props.accounts}
-            selected={this.state.selected}
-            onSelect={this.handleSelect}
-            onMoreClicked={this.props.onAccountMoreClicked || undefined}
+            accounts={props.accounts}
+            selected={selected}
+            onSelect={handleSelect}
+            onMoreClicked={props.onAccountMoreClicked || undefined}
           />
-          {this.props.detailComponent}
+          {props.detailComponent}
         </DialogContent>
       </Dialog>
     )
   }
 
-  render() {
-    return (
-      <React.Fragment>
-        {this.renderSelectAccount()}
-        {this.props.children({ handleOpen: this.handleOpen })}
-      </React.Fragment>
-    )
-  }
+  return (
+    <React.Fragment>
+      {renderSelectAccount()}
+      {props.children({ handleOpen })}
+    </React.Fragment>
+  )
 }

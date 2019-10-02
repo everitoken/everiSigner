@@ -18,17 +18,18 @@ type PropTypes = {
   open: boolean
   onClose: () => void
 }
+import { UNIT } from '../../style'
 
 const DialogTitle = withStyles(theme => ({
   root: {
     borderBottom: `1px solid ${theme.palette.divider}`,
     margin: 0,
-    padding: theme.spacing.unit * 2,
+    padding: UNIT * 2,
   },
   closeButton: {
     position: 'absolute',
-    right: theme.spacing.unit,
-    top: theme.spacing.unit,
+    right: UNIT,
+    top: UNIT,
     color: theme.palette.grey[500],
   },
 }))(
@@ -55,48 +56,41 @@ const DialogTitle = withStyles(theme => ({
     )
   }
 )
-const DialogContent = withStyles(theme => ({
+
+const DialogContent = withStyles(() => ({
   root: {
     margin: 0,
-    padding: theme.spacing.unit * 3,
+    padding: UNIT * 3,
   },
 }))(MuiDialogContent)
 
-const DialogActions = withStyles(theme => ({
+const DialogActions = withStyles(() => ({
   root: {
     margin: 0,
-    padding: theme.spacing.unit,
+    padding: UNIT,
   },
 }))(MuiDialogActions)
 
-class AlertDialog extends React.Component<PropTypes> {
-  render() {
-    return (
-      <Dialog
-        disableBackdropClick
-        disableEscapeKeyDown
-        fullWidth
-        maxWidth="xl"
-        open={this.props.open}
-        onClose={this.props.onClose}
-        aria-labelledby="alert-dialog-title"
-      >
-        <DialogTitle onClose={this.props.onClose}>
-          {this.props.title}
-        </DialogTitle>
-        <DialogContent>{this.props.children}</DialogContent>
-        <DialogActions>
-          <Button
-            variant="outlined"
-            color="secondary"
-            onClick={this.props.onClose}
-          >
-            {labels.CANCEL_BUTTON_TEXT}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    )
-  }
+function AlertDialog(props: PropTypes) {
+  return (
+    <Dialog
+      disableBackdropClick
+      disableEscapeKeyDown
+      fullWidth
+      maxWidth="xl"
+      open={props.open}
+      onClose={props.onClose}
+      aria-labelledby="alert-dialog-title"
+    >
+      <DialogTitle onClose={props.onClose}>{props.title}</DialogTitle>
+      <DialogContent>{props.children}</DialogContent>
+      <DialogActions>
+        <Button variant="outlined" color="secondary" onClick={props.onClose}>
+          {labels.CANCEL_BUTTON_TEXT}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
 }
 
 export default AlertDialog

@@ -15,34 +15,26 @@ type PropTypes = {
   buttonText: string
   onNextClick: (accountName: string) => void
 }
-type StateProps = {
-  accountName: string
-  errorMessage: string
-}
 
-class AccountNameComponent extends React.PureComponent<PropTypes, StateProps> {
-  static defaultState = { autoFocus: false }
-  state = {
-    accountName: '',
-    errorMessage: '',
-  }
+function AccountNameComponent(props:PropTypes){
+  const autoFocus = props.autoFocus || false
+  const [accountName, setAccountName] = React.useState('')
+  const [errorMessage, setErrorMessage] = React.useState('')
 
-  handleAccountChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAccountChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = target
-    this.setState({ accountName: value })
+    setAccountName(value)
   }
-  isValid = () => {
-    if (this.props.accountNames.includes(this.state.accountName)) {
+  const validate = () => {
+    if (props.accountNames.includes(accountName)) {
       return {
         isValid: false,
-        errorMessage: `Account name: "${
-          this.state.accountName
-        }" already exists.`,
+        errorMessage: `Account name: "${ accountName }" already exists.`,
       }
     }
     if (
-      this.state.accountName.length === 0 ||
-      this.state.accountName.length > 25
+      accountName.length === 0 ||
+      accountName.length > 25
     ) {
       return {
         isValid: false,
@@ -52,28 +44,27 @@ class AccountNameComponent extends React.PureComponent<PropTypes, StateProps> {
 
     return { isValid: true, errorMessage: '' }
   }
-  handleClick = () => {
-    const { isValid, errorMessage } = this.isValid()
+  const handleClick = () => {
+    const { isValid, errorMessage } = validate()
 
-    this.setState({ errorMessage })
+    setErrorMessage(errorMessage)
 
     if (!isValid) {
       return
     }
 
-    this.props.onNextClick(this.state.accountName)
+    props.onNextClick(accountName)
   }
-  render() {
     return (
       <React.Fragment>
         <AlertDialog
           title="Error"
-          open={this.state.errorMessage.length !== 0}
+          open={errorMessage.length !== 0}
           onClose={() => {
-            this.setState({ errorMessage: '' })
+            setErrorMessage('')
           }}
         >
-          <Typography>{this.state.errorMessage}</Typography>
+          <Typography>{errorMessage}</Typography>
         </AlertDialog>
         <FlexContainer>
           <FlexContainer
@@ -86,12 +77,12 @@ class AccountNameComponent extends React.PureComponent<PropTypes, StateProps> {
                 Specify account name (less than 25 chars)
               </InputLabel>
               <Input
-                autoFocus={this.props.autoFocus}
+                autoFocus={autoFocus}
                 style={{ fontSize: 24 }}
-                error={this.state.errorMessage.length !== 0}
+                error={errorMessage.length !== 0}
                 id="account-name"
-                value={this.state.accountName}
-                onChange={this.handleAccountChange}
+                value={accountName}
+                onChange={handleAccountChange}
               />
             </FormControl>
           </FlexContainer>
@@ -105,16 +96,15 @@ class AccountNameComponent extends React.PureComponent<PropTypes, StateProps> {
                 variant="contained"
                 color="primary"
                 size="large"
-                onClick={this.handleClick}
+                onClick={handleClick}
               >
-                {this.props.buttonText}
+                {props.buttonText}
               </Button>
             </FlexContainer>
           </div>
         </FlexContainer>
       </React.Fragment>
     )
-  }
 }
 
 export default AccountNameComponent

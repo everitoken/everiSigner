@@ -8,7 +8,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import labels from '../../labels'
 import styled from 'styled-components'
 import { shortenAddress } from '../util'
-import { AccountStateType } from '../../store/reducer/accounts'
 
 interface TransferFtActionType {
   actionName: string

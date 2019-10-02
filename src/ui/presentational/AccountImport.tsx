@@ -30,40 +30,29 @@ type StepInputPrivateKeyPropTypes = {
   onNextClick: (privateKey: string) => void
 }
 
-type StepInputPrivateKeyStateProps = {
-  privateKey: string
-  publicKey: string
-  error: boolean
-  errorMessage: string
-}
 
-class StepInputPrivateKey extends React.PureComponent<
-  StepInputPrivateKeyPropTypes,
-  StepInputPrivateKeyStateProps
-> {
-  state = {
-    privateKey: '',
-    publicKey: '',
-    error: false,
-    errorMessage: '',
-  }
+function StepInputPrivateKey(props: StepInputPrivateKeyPropTypes) {
+  const [privateKey, setPrivateKey] = React.useState('')
+  const [publicKey, setPublicKey] = React.useState('')
+  const [hasError, setError] = React.useState(false)
+  const [errorMessage, setErrorMessage] = React.useState('')
 
-  handleSubmit = () => {
+  const handleSubmit = () => {
     const { EvtKey } = Evtjs // TODO extract to plugin system
-    if (!EvtKey.isValidPrivateKey(this.state.privateKey)) {
-      this.setState({ error: true })
+    if (!EvtKey.isValidPrivateKey(privateKey)) {
+      setError(true)
     } else {
-      const publicKey = EvtKey.privateToPublic(this.state.privateKey)
+      const publicKey = EvtKey.privateToPublic(privateKey)
 
-      if (this.props.publicKeys.includes(publicKey)) {
-        this.setState({ errorMessage: labels.PRIVATE_KEY_IMPORTED_ALREADY })
+      if (props.publicKeys.includes(publicKey)) {
+        setErrorMessage(labels.PRIVATE_KEY_IMPORTED_ALREADY)
       } else {
-        this.props.onNextClick(this.state.privateKey)
+        props.onNextClick(privateKey)
       }
     }
   }
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
     const { EvtKey } = Evtjs // TODO extract to plugin system
     let publicKey = ''
@@ -71,38 +60,61 @@ class StepInputPrivateKey extends React.PureComponent<
       publicKey = EvtKey.privateToPublic(value)
     } catch (e) {}
 
-    this.setState({ privateKey: value, publicKey })
+    setPrivateKey(value)
+    setPublicKey(publicKey)
   }
 
-  render() {
-    return (
-      <React.Fragment>
-        <AlertDialog
-          title="Error"
-          open={this.state.errorMessage.length !== 0}
-          onClose={() => {
-            this.setState({ errorMessage: '' })
+  return (
+    <React.Fragment>
+      <AlertDialog
+        title="Error"
+        open={errorMessage.length !== 0}
+        onClose={() => {
+          setErrorMessage('')
+        }}
+      >
+        <Typography>{errorMessage}</Typography>
+      </AlertDialog>
+      <FlexContainer>
+        <div
+          style={{
+            display: 'flex',
+            flex: 1,
+            flexDirection: 'column',
+            padding: '12px 16px',
+            alignSelf: 'stretch',
           }}
         >
-          <Typography>{this.state.errorMessage}</Typography>
-        </AlertDialog>
-        <FlexContainer>
-          <div
-            style={{
-              display: 'flex',
-              flex: 1,
-              flexDirection: 'column',
-              padding: '12px 16px',
-              alignSelf: 'stretch',
-            }}
-          >
+          <FlexContainer>
+            <TextField
+              id="seed-phrase-verify"
+              label="输入要导入的私钥"
+              multiline
+              rows="2"
+              fullWidth
+              inputProps={{
+                style: {
+                  fontSize: '0.8rem',
+                  fontFamily: 'Roboto Mono',
+                },
+                spellCheck: false,
+              }}
+              error={hasError}
+              required
+              onChange={handleChange}
+              variant="outlined"
+            />
+          </FlexContainer>
+
+          {publicKey ? (
             <FlexContainer>
               <TextField
                 id="seed-phrase-verify"
-                label="输入要导入的私钥"
+                label="对应的公钥"
                 multiline
                 rows="2"
                 fullWidth
+                value={publicKey}
                 inputProps={{
                   style: {
                     fontSize: '0.8rem',
@@ -110,80 +122,54 @@ class StepInputPrivateKey extends React.PureComponent<
                   },
                   spellCheck: false,
                 }}
-                error={this.state.error}
-                required
-                onChange={this.handleChange}
                 variant="outlined"
               />
             </FlexContainer>
+          ) : null}
+        </div>
 
-            {this.state.publicKey ? (
-              <FlexContainer>
-                <TextField
-                  id="seed-phrase-verify"
-                  label="对应的公钥"
-                  multiline
-                  rows="2"
-                  fullWidth
-                  value={this.state.publicKey}
-                  inputProps={{
-                    style: {
-                      fontSize: '0.8rem',
-                      fontFamily: 'Roboto Mono',
-                    },
-                    spellCheck: false,
-                  }}
-                  variant="outlined"
-                />
-              </FlexContainer>
-            ) : null}
-          </div>
-
-          <div style={{ alignSelf: 'stretch' }}>
-            <FlexContainer
-              withPadding
-              alignItems="stretch"
-              justifyContent="flex-end"
+        <div style={{ alignSelf: 'stretch' }}>
+          <FlexContainer
+            withPadding
+            alignItems="stretch"
+            justifyContent="flex-end"
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              onClick={handleSubmit}
             >
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                onClick={this.handleSubmit}
-              >
-                {this.props.buttonText}
-              </Button>
-            </FlexContainer>
-          </div>
-        </FlexContainer>
-      </React.Fragment>
-    )
-  }
+              {props.buttonText}
+            </Button>
+          </FlexContainer>
+        </div>
+      </FlexContainer>
+    </React.Fragment>
+  )
 }
 
-class StepSuccess extends React.PureComponent<RouteComponentProps> {
-  render() {
-    return (
-      <SuccessInfoLayout>
-        <p
-          style={{
-            padding: '8px 0',
-            fontFamily: 'Roboto Mono',
-            fontSize: '1.1rem',
-          }}
-        >
-          {labels.ACCOUNT_IMPORT_SUCCESSFUL}
-        </p>
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={() => this.props.history.push('/')}
-        >
-          Go to Account
-        </Button>
-      </SuccessInfoLayout>
-    )
-  }
+function StepSuccess({ history }: RouteComponentProps) {
+  return (
+    <SuccessInfoLayout>
+      <p
+        style={{
+          padding: '8px 0',
+          fontFamily: 'Roboto Mono',
+          fontSize: '1.1rem',
+        }}
+      >
+        {labels.ACCOUNT_IMPORT_SUCCESSFUL}
+      </p>
+      <Button
+        variant="outlined"
+        color="primary"
+        onClick={() => history.push('/')}
+      >
+        Go to Account
+      </Button>
+    </SuccessInfoLayout>
+  )
 }
 
 const ConnectedStepSuccess = withRouter(StepSuccess)
@@ -194,53 +180,41 @@ type AccountImportPropType = {
   onClick: typeof importAccount
 }
 
-type AccountImportStateTypes = {
-  activeStep: number
-  name: string
-  importedAccountIds: string[]
-}
+function AccountImport(props: AccountImportPropType) {
+  const [activeStep, setActiveStep] = React.useState(0)
+  const [name, setName] = React.useState('')
 
-class AccountImport extends React.PureComponent<
-  AccountImportPropType,
-  AccountImportStateTypes
-> {
-  state = {
-    activeStep: 0,
-    name: '',
-    importedAccountIds: [],
-  }
-
-  handleImportAccount = (privateKey: string) => {
-    this.props.onClick({
+  const handleImportAccount = (privateKey: string) => {
+    props.onClick({
       id: uuid.v4(),
       privateKey,
-      name: this.state.name,
+      name,
     })
-    this.handleNextStep()
+    handleNextStep()
   }
 
-  handleNextStep = () => {
-    this.setState({ activeStep: this.state.activeStep + 1 })
+  const handleNextStep = () => {
+    setActiveStep(activeStep + 1)
   }
 
-  renderStep = () => {
-    if (this.state.activeStep === 0) {
+  const renderStep = () => {
+    if (activeStep === 0) {
       return (
         <AccountNameComponent
-          accountNames={this.props.accountNames}
+          accountNames={props.accountNames}
           onNextClick={name => {
-            this.setState({ name })
-            this.handleNextStep()
+            setName(name)
+            handleNextStep()
           }}
-          buttonText={STEPS[this.state.activeStep].action}
+          buttonText={STEPS[activeStep].action}
         />
       )
-    } else if (this.state.activeStep === 1) {
+    } else if (activeStep === 1) {
       return (
         <StepInputPrivateKey
-          publicKeys={this.props.publicKeys}
-          onNextClick={this.handleImportAccount}
-          buttonText={STEPS[this.state.activeStep].action}
+          publicKeys={props.publicKeys}
+          onNextClick={handleImportAccount}
+          buttonText={STEPS[activeStep].action}
         />
       )
     }
@@ -248,30 +222,28 @@ class AccountImport extends React.PureComponent<
     return <ConnectedStepSuccess />
   }
 
-  render() {
-    return (
-      <FlexContainer>
-        <div>
-          <InfoArea>
-            <p style={{ padding: '8px 16px' }}>
-              You can directly import your account with the <b>private key</b>.
-            </p>
-          </InfoArea>
-        </div>
-        <FlexContainer alignSelf="stretch" alignItems="stretch">
-          <Stepper activeStep={this.state.activeStep} style={{ padding: 16 }}>
-            {STEPS.map(({ step }) => (
-              <Step key={step}>
-                <StepLabel>{step}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          <Divider />
-          {this.renderStep()}
-        </FlexContainer>
+  return (
+    <FlexContainer>
+      <div>
+        <InfoArea>
+          <p style={{ padding: '8px 16px' }}>
+            You can directly import your account with the <b>private key</b>.
+          </p>
+        </InfoArea>
+      </div>
+      <FlexContainer alignSelf="stretch" alignItems="stretch">
+        <Stepper activeStep={activeStep} style={{ padding: 16 }}>
+          {STEPS.map(({ step }) => (
+            <Step key={step}>
+              <StepLabel>{step}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+        <Divider />
+        {renderStep()}
       </FlexContainer>
-    )
-  }
+    </FlexContainer>
+  )
 }
 
 export default AccountImport

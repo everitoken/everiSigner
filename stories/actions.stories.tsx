@@ -3,7 +3,6 @@ import { storiesOf } from '@storybook/react'
 import Container from '../src/ui/presentational/Container'
 import FlexContainer from '../src/ui/presentational/FlexContainer'
 import ActionPanel from '../src/ui/presentational/ActionPanel'
-import Address from '../src/ui/presentational/Address'
 
 const action = {
   actionName: 'transferft',
@@ -34,29 +33,3 @@ storiesOf('action related', module).add('panel', () => (
   </Container>
 ))
 
-
-
-storiesOf('action related', module).add('signing message', () => (
-  <SigningMessage message="this is the signing message comming with the signing request" />
-))
-
-storiesOf('action related', module).add('Address', () => (
-  <React.Fragment>
-    <Address
-      type="from"
-      address="EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"
-    />
-    <Address
-      type="to"
-      address="EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"
-    />
-    <Address
-      type="address"
-      address="EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"
-    />
-    <Address
-      type="payer"
-      address="EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"
-    />
-  </React.Fragment>
-))

@@ -30,59 +30,54 @@ const styles = {
   },
 }
 
-class AccountSelectList extends React.PureComponent<
-  PropTypes & StyledComponentProps
-> {
-  render() {
-    const { classes } = this.props
-    return (
-      <List>
-        {this.props.accounts.map(account => (
-          <Grid
-            key={account.id}
-            container
-            justify="space-between"
-            alignItems="center"
-            spacing={0}
-          >
-            <Grid item xs={12}>
-              <ListItem
-                role={undefined}
-                disableRipple
-                divider
-                disableGutters
-                onClick={() => this.props.onSelect(account)}
-              >
-                <Radio
-                  checked={account.id === this.props.selected.id}
-                  className={classes && classes.root}
-                  tabIndex={-1}
-                  value={account.name}
-                  name="select-account"
-                />
-                <AccountListItem account={account} />
+function AccountSelectList(props: PropTypes & StyledComponentProps) {
+  const { classes } = props
+  return (
+    <List>
+      {props.accounts.map(account => (
+        <Grid
+          key={account.id}
+          container
+          justify="space-between"
+          alignItems="center"
+          spacing={0}
+        >
+          <Grid item xs={12}>
+            <ListItem
+              role={undefined}
+              disableRipple
+              divider
+              disableGutters
+              onClick={() => props.onSelect(account)}
+            >
+              <Radio
+                checked={account.id === props.selected.id}
+                className={classes && classes.root}
+                tabIndex={-1}
+                value={account.name}
+                name="select-account"
+              />
+              <AccountListItem account={account} />
 
-                {this.props.onMoreClicked != null ? (
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      aria-label="More"
-                      onClick={() =>
-                        this.props.onMoreClicked &&
-                        this.props.onMoreClicked(account)
-                      }
-                      className={classes && classes.margin}
-                    >
-                      <MoreIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                ) : null}
-              </ListItem>
-            </Grid>
+              {props.onMoreClicked != null ? (
+                <ListItemSecondaryAction>
+                  <IconButton
+                    aria-label="More"
+                    onClick={() =>
+                      props.onMoreClicked && props.onMoreClicked(account)
+                    }
+                    className={classes && classes.margin}
+                  >
+                    <MoreIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              ) : null}
+            </ListItem>
           </Grid>
-        ))}
-      </List>
-    )
-  }
+        </Grid>
+      ))}
+    </List>
+  )
 }
 
 export default withStyles(styles)(AccountSelectList)
