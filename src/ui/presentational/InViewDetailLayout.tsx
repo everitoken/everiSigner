@@ -15,15 +15,12 @@ type PropTypes = {
   }) => React.ReactNode
 }
 
-type StateProps = {
-  detailAreaOpen: boolean
-}
 
 function Transition(props: any) {
   return <Slide direction="up" {...props} />
 }
 
-function NFTList(props: PropTypes & StateProps) {
+function NFTList(props: PropTypes) {
   const [detailAreaOpen, setDetailAreaOpen] = React.useState(false)
 
   const handleDetailShow = () => {
