@@ -14,83 +14,78 @@ import PasswordProtectedView from '../presentational/PasswordProtectedView'
 import { AccountStateType } from '../../store/reducer/accounts'
 import { decryptAccount } from '../../service/PasswordService'
 import { TextField } from '@material-ui/core'
-import { copyToClipboard } from '../action'
 import InfoArea from '../presentational/InfoArea'
+import { useCopyToClipboard } from '../../hooks/componentHooks'
 
 type PropTypes = {
   account: AccountStateType | undefined
   password: string
-  onCopyClicked: typeof copyToClipboard
 }
 
-type StateProps = {}
+function AccountExportPrivateKeyScreen(
+  props: PropTypes & RouteComponentProps<{ id: string }>
+) {
+  const [, handleCopy] = useCopyToClipboard(labels.COPY_PRIVATE_KEY_SUCCESSFUL)
 
-class AccountExportPrivateKeyScreen extends React.PureComponent<
-  PropTypes & RouteComponentProps<{ id: string }>,
-  StateProps
-> {
-  render() {
-    return (
-      <NavigationLayout
-        title={labels.PRIVATE_KEY}
-        renderLeft={() => <ConnectedNavigationBackButton />}
-      >
-        <PasswordProtectedView password={this.props.password}>
-          {({ password }) => {
-            if (this.props.account == null) {
-              return <p>{labels.FAIL_FIND_ACCOUNT}</p>
-            }
+  return (
+    <NavigationLayout
+      title={labels.PRIVATE_KEY}
+      renderLeft={() => <ConnectedNavigationBackButton />}
+    >
+      <PasswordProtectedView password={props.password}>
+        {({ password }) => {
+          if (props.account == null) {
+            return <p>{labels.FAIL_FIND_ACCOUNT}</p>
+          }
 
-            const account = decryptAccount(password, this.props.account)
+          const account = decryptAccount(password, props.account)
 
-            return (
-              <FlexContainer>
-                <div style={{ width: '100%' }}>
-                  <InfoArea>
-                    <p style={{ padding: 8 }}>
-                      {labels.GUARD_PRIVATE_KEY_SAFELY}
-                    </p>
-                  </InfoArea>
-                </div>
-                <FlexContainer withPadding justifyContent="space-around">
-                  <TextField
-                    label={labels.PRIVATE_KEY}
-                    multiline
-                    rows="2"
-                    fullWidth
-                    value={account.privateKey}
-                    inputProps={{
-                      style: {
-                        fontSize: '0.8rem',
-                        fontFamily: 'Roboto Mono',
-                      },
-                      spellCheck: false,
-                    }}
-                    variant="outlined"
-                  />
+          return (
+            <FlexContainer>
+              <div style={{ width: '100%' }}>
+                <InfoArea>
+                  <p style={{ padding: 8 }}>
+                    {labels.GUARD_PRIVATE_KEY_SAFELY}
+                  </p>
+                </InfoArea>
+              </div>
+              <FlexContainer withPadding justifyContent="space-around">
+                <TextField
+                  label={labels.PRIVATE_KEY}
+                  multiline
+                  rows="2"
+                  fullWidth
+                  value={account.privateKey}
+                  inputProps={{
+                    style: {
+                      fontSize: '0.8rem',
+                      fontFamily: 'Roboto Mono',
+                    },
+                    spellCheck: false,
+                  }}
+                  variant="outlined"
+                />
 
-                  <Button
-                    style={{ marginTop: 20 }}
-                    variant="contained"
-                    color="primary"
-                    onClick={() => this.props.onCopyClicked(account.privateKey)}
-                  >
-                    {labels.COPY_PRIVATE_KEY}
-                  </Button>
-                </FlexContainer>
+                <Button
+                  style={{ marginTop: 20 }}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleCopy(account.privateKey)}
+                >
+                  {labels.COPY_PRIVATE_KEY}
+                </Button>
               </FlexContainer>
-            )
-          }}
-        </PasswordProtectedView>
-      </NavigationLayout>
-    )
-  }
+            </FlexContainer>
+          )
+        }}
+      </PasswordProtectedView>
+    </NavigationLayout>
+  )
 }
 
-const ConnectedView = connect(
-  getPasswordProtectedView,
-  { onCopyClicked: copyToClipboard }
-)(AccountExportPrivateKeyScreen)
+const ConnectedView = connect(getPasswordProtectedView)(
+  AccountExportPrivateKeyScreen
+)
 
 export default (props: RouteComponentProps<{ id: string }>) => (
   <WithAuthentication>

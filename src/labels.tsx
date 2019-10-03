@@ -27,6 +27,8 @@ export default {
   COPIED_TO_CLIPBOARD: '已复制!',
   COPY_ADDRESS: '复制地址',
   COPY_PRIVATE_KEY: '复制私钥',
+  COPY_ADDRESS_SUCCESSFUL: '成功复制地址',
+  COPY_PRIVATE_KEY_SUCCESSFUL: '成功复制私钥',
   CREATE_NETWORK: '创建节点',
   CREATE_NEW_ACCOUNT: '创建新账户',
   CREATE: '创建',

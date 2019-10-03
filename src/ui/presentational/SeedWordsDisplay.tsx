@@ -16,7 +16,6 @@ export type PropTypes = {
 }
 
 function SeedWordsDisplay(props: PropTypes) {
-
   return (
     <SeedListContainer>
       {props.words.split(' ').map((word, i) => (
@@ -30,4 +29,5 @@ function SeedWordsDisplay(props: PropTypes) {
     </SeedListContainer>
   )
 }
+
 export default SeedWordsDisplay

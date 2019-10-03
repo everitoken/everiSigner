@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router'
 import labels from '../../labels'
 import PasswordProtectedView from '../presentational/PasswordProtectedView'
-import { copyToClipboard, exportWallet } from '../action'
+import { exportWallet } from '../action'
 import InfoArea from '../presentational/InfoArea'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
@@ -29,7 +29,6 @@ import { useCallback } from 'react'
 type PropTypes = {
   password: string
   onExportWallet: typeof exportWallet
-  onCopyClicked: typeof copyToClipboard
 }
 
 function PaperDropzone() {

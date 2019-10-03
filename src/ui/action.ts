@@ -100,10 +100,6 @@ export const fetchBalance = (publicKey: string, scope: string = 'default') => ({
   },
 })
 
-export const copyToClipboard = (payload: string) => ({
-  type: COPY_TO_CLIPBOARD,
-  payload,
-})
 export const exportWallet = (payload: {
   walletPassword: string
   backupPassword: string

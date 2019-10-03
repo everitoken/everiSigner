@@ -12,8 +12,6 @@ export const PASSWORD_SET = 'store/PASSWORD_SET'
 export const PASSWORD_REMOVE = 'store/PASSWORD_REMOVE'
 export const PLANE_LAND = 'store/PLANE_LAND'
 export const PLANE_TAKEOFF = 'store/PLANE_TAKEOFF'
-export const SNACKBAR_MESSAGE_SHOW = 'SNACKBAR_MESSAGE_SHOW'
-export const SNACKBAR_MESSAGE_DISMISS = 'SNACKBAR_MESSAGE_DISMISS'
 export const SIGNING_PAYLOAD_RECEIVE = 'SIGNING_PAYLOAD_RECEIVE'
 export const SIGNED_PAYLOAD_RECEIVE = 'SIGNED_PAYLOAD_RECEIVE'
 export const NETWORK_SELECT = 'store/NETWORK_SELECT'
@@ -36,15 +34,6 @@ export interface SigningPayloadReceiveType {
   type: typeof SIGNING_PAYLOAD_RECEIVE
   payload: ToBeSignDataType
   meta?: MessageMetaType
-}
-
-export interface SnackbarMessageShowType {
-  type: typeof SNACKBAR_MESSAGE_SHOW
-  payload: { message: string; variant: string }
-}
-
-export interface SnackbarMessageDismissType {
-  type: typeof SNACKBAR_MESSAGE_DISMISS
 }
 
 export interface PurgeType {
@@ -126,18 +115,6 @@ export const accountCreate = (
   payload: account,
 })
 
-export const snackbarMessageShow = (
-  message: string,
-  variant: string = 'info'
-): SnackbarMessageShowType => ({
-  type: SNACKBAR_MESSAGE_SHOW,
-  payload: { message, variant },
-})
-
-export const snackbarMessageDismiss = (): SnackbarMessageDismissType => ({
-  type: SNACKBAR_MESSAGE_DISMISS,
-})
-
 export const signingPayloadReceive = (
   payload: ToBeSignDataType,
   meta?: MessageMetaType
@@ -187,8 +164,6 @@ export type StoreActionTypes =
   | PasswordSetType
   | PasswordRemoveType
   | PlaneLandType
-  | SnackbarMessageShowType
-  | SnackbarMessageDismissType
   | PurgeType
   | PlaneTakeoffType
   | SigningPayloadReceiveType

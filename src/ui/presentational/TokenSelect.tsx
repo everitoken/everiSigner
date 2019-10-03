@@ -34,7 +34,6 @@ const BalanceContainer = styled.div`
 const BALANCE_PLACEHOLDER = '--.--'
 
 function TokenSelect(props: TokenSelectPropTypes) {
-
   const { data } = props
   return (
     <Card>

@@ -1,3 +1,5 @@
+import * as React from 'react'
+import MessageContext from '../../context/Message'
 import { getSelectedNetwork } from '../../context/Network'
 import { get } from 'lodash'
 import { END, eventChannel } from 'redux-saga'
@@ -340,10 +342,6 @@ function* importAccountHandler() {
         PasswordService.encryptAccount(password, account)
       )
     )
-
-    yield put(
-      storeActions.snackbarMessageShow('Successfully imported account.')
-    )
   }
 }
 
@@ -391,14 +389,6 @@ function* createAccountHandler() {
     yield put(
       storeActions.accountCreate(
         PasswordService.encryptAccount(password, account)
-      )
-    )
-
-    yield put(
-      storeActions.snackbarMessageShow(
-        action.meta.isDefault
-          ? labels.ACCOUNT_CREATE_SUCCESSFUL
-          : labels.ACCOUNT_IMPORT_SUCCESSFUL
       )
     )
   }
@@ -569,23 +559,6 @@ function* setPasswordWatcher() {
   }
 }
 
-function* copyToClipBoardWatcher() {
-  while (true) {
-    const action: ReturnType<typeof uiActions.copyToClipboard> = yield take(
-      uiActions.COPY_TO_CLIPBOARD
-    )
-
-    try {
-      yield call([navigator.clipboard, 'writeText'], action.payload)
-      yield put(storeActions.snackbarMessageShow(labels.COPIED_TO_CLIPBOARD))
-    } catch (e) {
-      yield put(
-        storeActions.snackbarMessageShow(labels.FAILED_COPIED_TO_CLIPBOARD)
-      )
-    }
-  }
-}
-
 function* backgroundSendMessageChannelHandler() {
   const chan = yield call(setupSendMessageChannel)
 
@@ -706,7 +679,6 @@ function* rootSaga() {
     yield fork(setupChainProviders) // NOTE expose `chain` global to saga/index
     yield fork(fetchBalanceWatcher)
     yield fork(fetchOwnedTokensWatcher)
-    yield fork(copyToClipBoardWatcher)
     yield fork(setMainAccountWatcher)
     yield fork(removeAccountWatcher)
     yield fork(transferftWatcher)

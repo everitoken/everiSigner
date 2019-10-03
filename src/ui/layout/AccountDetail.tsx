@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { AccountStateType } from '../../store/reducer/accounts'
-import { copyToClipboard, removeAccount } from '../action'
+import { removeAccount } from '../action'
 import styled from 'styled-components'
 import { RouteComponentProps } from 'react-router'
 import { Tooltip, List } from '@material-ui/core'
@@ -19,10 +19,10 @@ import KeyIcon from '@material-ui/icons/VpnKey'
 import SendIcon from '@material-ui/icons/CallMade'
 import ReceiveIcon from '@material-ui/icons/CallReceived'
 import EncryptIcon from '@material-ui/icons/EnhancedEncryption'
+import { useCopyToClipboard } from '../../hooks/componentHooks'
 
 type PropTypes = {
   account: AccountStateType
-  onQrCodeClicked: typeof copyToClipboard
   onAccountRemove: typeof removeAccount
 }
 
@@ -33,86 +33,77 @@ const QRContainer = styled.div`
   display: flex;
   flex-direction: column;
 `
-class AccountOverview extends React.PureComponent<
-  PropTypes & RouteComponentProps
-> {
-  render() {
-    const { account } = this.props
+function AccountOverview(props: PropTypes & RouteComponentProps) {
+  const { account } = props
+  const [, handleCopy] = useCopyToClipboard(labels.COPY_ADDRESS_SUCCESSFUL)
 
-    return (
-      <FlexContainer alignItems="center">
-        <Tooltip title={labels.CLICK_QR_TO_COPY} enterDelay={400}>
-          <QRContainer>
-            <QR
-              data={account.publicKey}
-              width={150}
-              onClick={this.props.onQrCodeClicked}
-            />
-          </QRContainer>
-        </Tooltip>
-        <span style={{ fontFamily: 'Roboto Mono', padding: 8 }}>
-          {account.publicKey}
-        </span>
-        <Divider />
-        <List style={{ width: '100%', maxHeight: '220px', overflow: 'auto' }}>
-          <CustomListItem
-            onClick={() => this.props.history.push('/home/transferft')}
-            LeftIcon={SendIcon}
-          >
-            <ListItemText
-              primary={labels.TRANSFERFT}
-              secondary={labels.TRANSFERFT_SECONDARY_TEXT}
-            />
-          </CustomListItem>
-          <CustomListItem
-            onClick={() => this.props.history.push('/home/payee')}
-            LeftIcon={ReceiveIcon}
-          >
-            <ListItemText
-              primary={labels.PAYEE_CODE}
-              secondary={labels.PAYEE_CODE_SECONDARY_TEXT}
-            />
-          </CustomListItem>
-          <CustomListItem
-            onClick={() =>
-              this.props.history.push(`/account/${account.id}/key`)
-            }
-            LeftIcon={KeyIcon}
-          >
-            <ListItemText
-              primary={labels.SHOW_PRIVATE_KEY}
-              secondary={labels.SHOW_PRIVATE_KEY_SECONDARY_TEXT}
-            />
-          </CustomListItem>
-          <CustomListItem
-            onClick={() => this.props.onAccountRemove(account)}
-            disabled={account.type === 'seed'}
-            LeftIcon={DeleteIcon}
-          >
-            <ListItemText
-              primary={labels.REMOVE_ACCOUNT}
-              secondary={labels.REMOVE_ACCOUNT_SECONDARY_TEXT}
-            />
-          </CustomListItem>
-          <CustomListItem
-            onClick={() => this.props.history.push('/home/sign')}
-            LeftIcon={EncryptIcon}
-          >
-            <ListItemText
-              primary={labels.SIGN_DATA}
-              secondary={labels.ACCOUNT_SIGN_SECONDARY_TEXT}
-            />
-          </CustomListItem>
-        </List>
-      </FlexContainer>
-    )
-  }
+  return (
+    <FlexContainer alignItems="center">
+      <Tooltip title={labels.CLICK_QR_TO_COPY} enterDelay={400}>
+        <QRContainer>
+          <QR data={account.publicKey} width={150} onClick={handleCopy} />
+        </QRContainer>
+      </Tooltip>
+      <span style={{ fontFamily: 'Roboto Mono', padding: 8 }}>
+        {account.publicKey}
+      </span>
+      <Divider />
+      <List style={{ width: '100%', maxHeight: '220px', overflow: 'auto' }}>
+        <CustomListItem
+          onClick={() => props.history.push('/home/transferft')}
+          LeftIcon={SendIcon}
+        >
+          <ListItemText
+            primary={labels.TRANSFERFT}
+            secondary={labels.TRANSFERFT_SECONDARY_TEXT}
+          />
+        </CustomListItem>
+        <CustomListItem
+          onClick={() => props.history.push('/home/payee')}
+          LeftIcon={ReceiveIcon}
+        >
+          <ListItemText
+            primary={labels.PAYEE_CODE}
+            secondary={labels.PAYEE_CODE_SECONDARY_TEXT}
+          />
+        </CustomListItem>
+        <CustomListItem
+          onClick={() => props.history.push(`/account/${account.id}/key`)}
+          LeftIcon={KeyIcon}
+        >
+          <ListItemText
+            primary={labels.SHOW_PRIVATE_KEY}
+            secondary={labels.SHOW_PRIVATE_KEY_SECONDARY_TEXT}
+          />
+        </CustomListItem>
+        <CustomListItem
+          onClick={() => props.onAccountRemove(account)}
+          disabled={account.type === 'seed'}
+          LeftIcon={DeleteIcon}
+        >
+          <ListItemText
+            primary={labels.REMOVE_ACCOUNT}
+            secondary={labels.REMOVE_ACCOUNT_SECONDARY_TEXT}
+          />
+        </CustomListItem>
+        <CustomListItem
+          onClick={() => props.history.push('/home/sign')}
+          LeftIcon={EncryptIcon}
+        >
+          <ListItemText
+            primary={labels.SIGN_DATA}
+            secondary={labels.ACCOUNT_SIGN_SECONDARY_TEXT}
+          />
+        </CustomListItem>
+      </List>
+    </FlexContainer>
+  )
 }
 
 const ConnectedAccountDetail = compose(
   connect(
     getMainAccount,
-    { onQrCodeClicked: copyToClipboard, onAccountRemove: removeAccount }
+    { onAccountRemove: removeAccount }
   )
 )(AccountOverview)
 

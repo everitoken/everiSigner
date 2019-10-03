@@ -13,7 +13,7 @@ import { AccountStateType } from '../../store/reducer/accounts'
 import AccountAvatar from '../presentational/AccountAvatar'
 import { getForHome, getForHomeAppBar } from '../../store/getter'
 import AccountSelect from '../presentational/AccountSelect'
-import { setMainAccount, copyToClipboard } from '../action'
+import { setMainAccount } from '../action'
 import labels from '../../labels'
 import Divider from '../presentational/Divider'
 import { RouteComponentProps, Route, withRouter } from 'react-router-dom'
@@ -24,74 +24,55 @@ import NFTOverview from './NFTOverview'
 import ConnectedAccountPayeeCode from './ConnectedAccountPayeeCode'
 import AccountSign from './AccountSign'
 import TransferFungibleToken from './TransferFungibleToken'
+import { useCopyToClipboard } from '../../hooks/componentHooks'
 
 type HomeAppBarPropTypes = {
   mainAccount: AccountStateType | undefined
   accounts: AccountStateType[]
   onAccountSelect: typeof setMainAccount
-  onAccountAvatarClick: typeof copyToClipboard
 }
 
-type HomeAppBarStateProps = {
-  showBalanceList: boolean
-  clickedAccount: AccountStateType | null
-}
-
-class HomeAppBar extends React.PureComponent<
-  HomeAppBarPropTypes,
-  HomeAppBarStateProps
-> {
-  state = {
-    showBalanceList: false,
-    clickedAccount: null,
+function HomeAppBar(props: HomeAppBarPropTypes) {
+  if (!props.mainAccount) {
+    return null
   }
 
-  componentWillUnmount() {
-    this.setState({ showBalanceList: false, clickedAccount: null })
-  }
+  const [, handleCopy] = useCopyToClipboard(labels.COPY_ADDRESS_SUCCESSFUL)
 
-  render() {
-    if (!this.props.mainAccount) {
-      return null
-    }
-
-    return (
-      <Grid container justify="space-between" spacing={0}>
-        <Grid item>
-          <AccountSelect
-            selected={this.props.mainAccount}
-            onSelect={this.props.onAccountSelect}
-            accounts={this.props.accounts}
-          >
-            {({ handleOpen }) => (
-              <IconButton onClick={handleOpen}>
-                <MenuIcon />
-              </IconButton>
-            )}
-          </AccountSelect>
-        </Grid>
-        <Grid
-          item
-          justify="center"
-          style={{ alignSelf: 'center', marginLeft: '-50px' }}
+  return (
+    <Grid container justify="space-between" spacing={0}>
+      <Grid item>
+        <AccountSelect
+          selected={props.mainAccount}
+          onSelect={props.onAccountSelect}
+          accounts={props.accounts}
         >
-          <AccountAvatar
-            account={this.props.mainAccount}
-            onClick={account =>
-              this.props.onAccountAvatarClick(account.publicKey)
-            }
-          />
-        </Grid>
-        <Grid item justify="center" />
-        <Divider />
+          {({ handleOpen }) => (
+            <IconButton onClick={handleOpen}>
+              <MenuIcon />
+            </IconButton>
+          )}
+        </AccountSelect>
       </Grid>
-    )
-  }
+      <Grid
+        item
+        justify="center"
+        style={{ alignSelf: 'center', marginLeft: '-50px' }}
+      >
+        <AccountAvatar
+          account={props.mainAccount}
+          onClick={account => handleCopy(account.publicKey)}
+        />
+      </Grid>
+      <Grid item justify="center" />
+      <Divider />
+    </Grid>
+  )
 }
 
 const ConnectedHomeAppBar = connect(
   getForHomeAppBar,
-  { onAccountSelect: setMainAccount, onAccountAvatarClick: copyToClipboard }
+  { onAccountSelect: setMainAccount }
 )(HomeAppBar)
 
 const AccountSetup = () => (

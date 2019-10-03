@@ -21,11 +21,12 @@ import {
 } from '@material-ui/core'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import labels from '../../labels'
-import { copyToClipboard, setMainAccount, removeAccount } from '../action'
+import { setMainAccount, removeAccount } from '../action'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { compose } from 'redux'
 import { Link } from 'react-router-dom'
 import AddIconButton from '../presentational/AddIconButton'
+import { useCopyToClipboard } from '../../hooks/componentHooks'
 
 const ITEM_HEIGHT = 40
 
@@ -33,89 +34,87 @@ type AccountMoreMenuPropTypes = {
   anchorEl: any
   account: AccountStateType
   onClose: () => void
-  onCopyAddressClicked: typeof copyToClipboard
   onSetMainAccountClicked: typeof setMainAccount
   onRemoveAccount: typeof removeAccount
 }
 
-class AccountMoreMenu extends React.Component<
-  AccountMoreMenuPropTypes & RouteComponentProps
-> {
-  handleClose = () => {
-    this.props.onClose()
+function AccountMoreMenu(
+  props: AccountMoreMenuPropTypes & RouteComponentProps
+) {
+  const [, handleCopy] = useCopyToClipboard(labels.COPY_ADDRESS_SUCCESSFUL)
+  const handleClose = () => {
+    props.onClose()
   }
 
-  render() {
-    const { anchorEl } = this.props
-    const open = Boolean(anchorEl)
+  const { anchorEl } = props
+  const open = Boolean(anchorEl)
 
-    return (
-      <Menu
-        disableAutoFocusItem
-        anchorEl={anchorEl}
-        open={open}
-        onClose={this.handleClose}
-        PaperProps={{
-          style: {
-            maxHeight: ITEM_HEIGHT * 4.5,
-            width: 200,
-          },
+  return (
+    <Menu
+      disableAutoFocusItem
+      anchorEl={anchorEl}
+      open={open}
+      onClose={handleClose}
+      PaperProps={{
+        style: {
+          maxHeight: ITEM_HEIGHT * 4.5,
+          width: 200,
+        },
+      }}
+    >
+      <MenuItem
+        onClick={() => {
+          handleCopy(props.account.publicKey)
+          handleClose()
         }}
       >
-        <MenuItem
-          onClick={() => {
-            this.props.onCopyAddressClicked(this.props.account.publicKey)
-            this.handleClose()
-          }}
-        >
-          {labels.COPY_ADDRESS}
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            this.props.history.push(`/account/${this.props.account.id}/qr`)
-            this.handleClose()
-          }}
-        >
-          {labels.SHOW_ADDRESS_AS_QR}
-        </MenuItem>
-        <MenuItem
-          disabled={this.props.account.isMain}
-          onClick={() => {
-            this.props.onSetMainAccountClicked(this.props.account)
-            this.handleClose()
-          }}
-        >
-          {labels.MAKE_DEFAULT_ACCOUNT}
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            this.props.history.push(`/account/${this.props.account.id}/balance`)
-            this.handleClose()
-          }}
-        >
-          {labels.SHOW_ACCOUNT_BALANCE}
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            this.props.history.push(`/account/${this.props.account.id}/key`)
-            this.handleClose()
-          }}
-        >
-          {labels.SHOW_PRIVATE_KEY}
-        </MenuItem>
+        {labels.COPY_ADDRESS}
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          props.history.push(`/account/${props.account.id}/qr`)
+          handleClose()
+        }}
+      >
+        {labels.SHOW_ADDRESS_AS_QR}
+      </MenuItem>
+      <MenuItem
+        disabled={props.account.isMain}
+        onClick={() => {
+          props.onSetMainAccountClicked(props.account)
+          handleClose()
+        }}
+      >
+        {labels.MAKE_DEFAULT_ACCOUNT}
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          props.history.push(`/account/${props.account.id}/balance`)
+          handleClose()
+        }}
+      >
+        {labels.SHOW_ACCOUNT_BALANCE}
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          props.history.push(`/account/${props.account.id}/key`)
+          handleClose()
+        }}
+      >
+        {labels.SHOW_PRIVATE_KEY}
+      </MenuItem>
 
-        <MenuItem
-          disabled={this.props.account.type === 'seed'}
-          onClick={() => {
-            this.props.onRemoveAccount(this.props.account)
-            this.handleClose()
-          }}
-        >
-          {labels.REMOVE_ACCOUNT}
-        </MenuItem>
-      </Menu>
-    )
-  }
+      <MenuItem
+        disabled={props.account.type === 'seed'}
+        onClick={() => {
+          props.onRemoveAccount(props.account)
+          handleClose()
+        }}
+      >
+        {labels.REMOVE_ACCOUNT}
+      </MenuItem>
+    </Menu>
+  )
 }
 
 const ConnectedAccountMoreMenu = compose(
@@ -123,7 +122,6 @@ const ConnectedAccountMoreMenu = compose(
   connect(
     null,
     {
-      onCopyAddressClicked: copyToClipboard,
       onSetMainAccountClicked: setMainAccount,
       onRemoveAccount: removeAccount,
     }

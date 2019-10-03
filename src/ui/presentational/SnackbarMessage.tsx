@@ -6,7 +6,6 @@ import CloseIcon from '@material-ui/icons/Close'
 type PropTypes = {
   message: string
   open: boolean
-  variant: string
   onClose: () => void
 }
 

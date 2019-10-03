@@ -95,8 +95,6 @@ export const mapInputPassword = (state: AppState) => ({
   passwordHash: getPasswordHash(state),
 })
 
-export const getSnackbarMessage = ({ message }: AppState) => message
-
 export const getAccountImportScreen = (state: AppState) => ({
   accountNames: state.accounts.map(({ name }) => name),
   publicKeys: state.accounts.map(({ publicKey }) => publicKey),
