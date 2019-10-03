@@ -23,49 +23,45 @@ function Transition(props: any) {
   return <Slide direction="up" {...props} />
 }
 
-class NFTList extends React.PureComponent<PropTypes, StateProps> {
-  state = {
-    detailAreaOpen: false,
+function NFTList(props: PropTypes & StateProps) {
+  const [detailAreaOpen, setDetailAreaOpen] = React.useState(false)
+
+  const handleDetailShow = () => {
+    setDetailAreaOpen(true)
   }
 
-  handleDetailShow = () => {
-    this.setState({ detailAreaOpen: true })
+  const handleDetailClose = () => {
+    setDetailAreaOpen(false)
   }
 
-  handleDetailClose = () => {
-    this.setState({ detailAreaOpen: false })
-  }
-
-  render() {
-    return (
-      <React.Fragment>
-        <Dialog
-          fullScreen
-          open={this.state.detailAreaOpen}
-          onClose={this.handleDetailClose}
-          TransitionComponent={Transition}
+  return (
+    <React.Fragment>
+      <Dialog
+        fullScreen
+        open={detailAreaOpen}
+        onClose={handleDetailClose}
+        TransitionComponent={Transition}
+      >
+        <div
+          style={{
+            height: APP_BAR_HEIGHT,
+            display: 'flex',
+            alignContent: 'space-between',
+            alignItems: 'center',
+          }}
         >
-          <div
-            style={{
-              height: APP_BAR_HEIGHT,
-              display: 'flex',
-              alignContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <HeaderTitle title={this.props.title} />
-            <IconButton onClick={this.handleDetailClose}>
-              <CloseIcon />
-            </IconButton>
-          </div>
-          <FlexContainer>
-            {this.props.renderDetail({ closeDetail: this.handleDetailClose })}
-          </FlexContainer>
-        </Dialog>
-        {this.props.children({ showDetail: this.handleDetailShow })}
-      </React.Fragment>
-    )
-  }
+          <HeaderTitle title={props.title} />
+          <IconButton onClick={handleDetailClose}>
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <FlexContainer>
+          {props.renderDetail({ closeDetail: handleDetailClose })}
+        </FlexContainer>
+      </Dialog>
+      {props.children({ showDetail: handleDetailShow })}
+    </React.Fragment>
+  )
 }
 
 export default NFTList

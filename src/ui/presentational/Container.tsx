@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import * as style from '../../style'
 
-const Container = styled.div`
+const StyledContainer = styled.div`
   overflow: hidden;
   width: ${style.WINDOW_WIDTH}px;
   height: ${style.WINDOW_HEIGHT}px;
@@ -10,8 +10,6 @@ const Container = styled.div`
   flex-direction: column;
 `
 
-export default class extends React.PureComponent {
-  render() {
-    return <Container>{this.props.children}</Container>
-  }
+export default function Container(props: {children: React.ReactNode}) {
+  return <StyledContainer>{props.children}</StyledContainer>
 }

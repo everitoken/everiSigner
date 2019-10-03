@@ -1,8 +1,7 @@
 import * as React from 'react'
 import logo from '../../asset/logo@2x.png'
 
-class Logo extends React.PureComponent {
-  render() {
+function Logo (){
     return (
       <img
         src={logo}
@@ -16,7 +15,6 @@ class Logo extends React.PureComponent {
         }}
       />
     )
-  }
 }
 
 export default Logo

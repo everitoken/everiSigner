@@ -33,34 +33,30 @@ const Line = styled.div`
   border-bottom: 2px dashed #ccc;
 `
 
-class ConnectedEntities extends React.PureComponent<
-  PropTypes & StyledComponentProps
-> {
-  render() {
-    const { left, right, classes } = this.props
-    return (
-      <Grid container spacing={0} direction="row" alignItems="flex-start">
-        <Grid className={classes && classes.item} item xs={5}>
-          {left}
-        </Grid>
-
-        <LineContainer>
-          <Line />
-          <div>
-            <CheckCircle
-              className={classes && classes.root}
-              color="primary"
-              fontSize="large"
-            />
-          </div>
-          <Line />
-        </LineContainer>
-        <Grid className={classes && classes.item} item xs={5}>
-          {right}
-        </Grid>
+function ConnectedEntities(props: PropTypes & StyledComponentProps) {
+  const { left, right, classes } = props
+  return (
+    <Grid container spacing={0} direction="row" alignItems="flex-start">
+      <Grid className={classes && classes.item} item xs={5}>
+        {left}
       </Grid>
-    )
-  }
+
+      <LineContainer>
+        <Line />
+        <div>
+          <CheckCircle
+            className={classes && classes.root}
+            color="primary"
+            fontSize="large"
+          />
+        </div>
+        <Line />
+      </LineContainer>
+      <Grid className={classes && classes.item} item xs={5}>
+        {right}
+      </Grid>
+    </Grid>
+  )
 }
 
 export default withStyles(styles)(ConnectedEntities)

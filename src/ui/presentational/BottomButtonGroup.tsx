@@ -11,48 +11,49 @@ type PropTypes = {
   secondaryButtonDisabled?: boolean
 }
 
-class BottomButtonGroup extends React.PureComponent<PropTypes> {
-  render() {
-    const {
-      onSecondaryButtonClick,
-      onPrimaryButtonClick,
-      primaryButtonText,
-      secondaryButtonText,
-    } = this.props
-    return (
-      <Grid container spacing={16}>
-        <Grid item xs={12}>
-          <Divider />
-        </Grid>
-        <Grid item xs={6}>
-          <div style={{ paddingLeft: 16 }}>
-            <Button
-              disabled={this.props.secondaryButtonDisabled || false}
-              variant="outlined"
-              color="secondary"
-              size="large"
-              onClick={onSecondaryButtonClick}
-            >
-              {secondaryButtonText}
-            </Button>
-          </div>
-        </Grid>
-        <Grid item xs={6}>
-          <div style={{ paddingRight: 16 }}>
-            <Button
-              disabled={this.props.primaryButtonDisabled || false}
-              variant="contained"
-              color="primary"
-              size="large"
-              onClick={onPrimaryButtonClick}
-            >
-              {primaryButtonText}
-            </Button>
-          </div>
-        </Grid>
+function BottomButtonGroup(props: PropTypes) {
+  const {
+    onSecondaryButtonClick,
+    onPrimaryButtonClick,
+    primaryButtonText,
+    secondaryButtonText,
+    primaryButtonDisabled,
+    secondaryButtonDisabled,
+  } = props
+
+  return (
+    <Grid container>
+      <Grid item xs={12}>
+        <Divider />
       </Grid>
-    )
-  }
+      <Grid item xs={6}>
+        <div style={{ paddingLeft: 16 }}>
+          <Button
+            disabled={secondaryButtonDisabled || false}
+            variant="outlined"
+            color="secondary"
+            size="large"
+            onClick={onSecondaryButtonClick}
+          >
+            {secondaryButtonText}
+          </Button>
+        </div>
+      </Grid>
+      <Grid item xs={6}>
+        <div style={{ paddingRight: 16 }}>
+          <Button
+            disabled={primaryButtonDisabled || false}
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={onPrimaryButtonClick}
+          >
+            {primaryButtonText}
+          </Button>
+        </div>
+      </Grid>
+    </Grid>
+  )
 }
 
 export default BottomButtonGroup
