@@ -22,27 +22,21 @@ const Address = styled.span`
   font-size: 12px;
   padding-top: 16px;
 `
-type AccountQRStateTypes = {}
 
-class AccountQR extends React.PureComponent<
-  AccountQRPropTypes,
-  AccountQRStateTypes
-> {
-  render() {
-    return (
-      <NavigationLayout
-        title={get(this.props.account, 'name', '')}
-        renderLeft={() => <ConnectedNavigationBackButton />}
-      >
-        {this.props.account ? (
-          <FlexContainer alignItems="center">
-            <Address>{this.props.account.publicKey}</Address>
-            <QR data={this.props.account.publicKey} />
-          </FlexContainer>
-        ) : null}
-      </NavigationLayout>
-    )
-  }
+function AccountQR(props: AccountQRPropTypes) {
+  return (
+    <NavigationLayout
+      title={get(props.account, 'name', '')}
+      renderLeft={() => <ConnectedNavigationBackButton />}
+    >
+      {props.account ? (
+        <FlexContainer alignItems="center">
+          <Address>{props.account.publicKey}</Address>
+          <QR data={props.account.publicKey} />
+        </FlexContainer>
+      ) : null}
+    </NavigationLayout>
+  )
 }
 
 const ConnectedAccountQR = connect(getAccountDetailScreen)(AccountQR)

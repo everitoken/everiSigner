@@ -21,15 +21,14 @@ const Container = styled.p`
   color: ${style.colors.headerPrimary};
 `
 
-export default class ScreenHeader extends React.PureComponent<PropTypes> {
-  static defaultProps = {
-    withBackgroundColor: true,
-  }
-  render() {
-    return (
-      <Container withBackgroundColor={!!this.props.withBackgroundColor}>
-        {this.props.title}
-      </Container>
-    )
-  }
+// TODO: check validity
+export default function ScreenHeader(props: PropTypes) {
+  const withBackgroundColor =
+    props.withBackgroundColor === undefined ? true : !!props.withBackgroundColor
+
+  return (
+    <Container withBackgroundColor={withBackgroundColor}>
+      {props.title}
+    </Container>
+  )
 }

@@ -15,22 +15,19 @@ export type PropTypes = {
   words: string
 }
 
-class SeedWordsDisplay extends React.PureComponent<PropTypes> {
-  render() {
-    const { props } = this
+function SeedWordsDisplay(props: PropTypes) {
 
-    return (
-      <SeedListContainer>
-        {props.words.split(' ').map((word, i) => (
-          <li key={word} style={{ margin: '0 3px 3px 0' }}>
-            <Chip
-              label={`${i + 1} ${word}`}
-              style={{ fontFamily: 'Roboto Mono' }}
-            />
-          </li>
-        ))}
-      </SeedListContainer>
-    )
-  }
+  return (
+    <SeedListContainer>
+      {props.words.split(' ').map((word, i) => (
+        <li key={word} style={{ margin: '0 3px 3px 0' }}>
+          <Chip
+            label={`${i + 1} ${word}`}
+            style={{ fontFamily: 'Roboto Mono' }}
+          />
+        </li>
+      ))}
+    </SeedListContainer>
+  )
 }
 export default SeedWordsDisplay

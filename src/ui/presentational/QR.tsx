@@ -6,51 +6,31 @@ type PropTypes = {
   width?: number
   onClick?: (data: string) => void
 }
-type StateProps = {
-  qr: string
+
+function generateQr(props: PropTypes, cb: (qr: string) => void) {
+  qrcode
+    .toDataURL(props.data, {
+      width: props.width || 500,
+    })
+    .then(cb)
 }
 
-export default class QR extends React.PureComponent<PropTypes, StateProps> {
-  static defaultProps = {
-    width: 500,
-    onClick: () => null,
+export default function QR(props: PropTypes) {
+  const [qr, setQr] = React.useState('')
+
+  React.useEffect(() => {
+    generateQr(props, setQr)
+  }, [props.data])
+
+  if (!qr) {
+    return null
   }
 
-  state = {
-    qr: '',
-  }
-
-  componentWillReceiveProps(newProps: PropTypes) {
-    if (newProps.data !== this.props.data) {
-      this.generateQr(newProps)
-    }
-  }
-
-  generateQr = (props: PropTypes) => {
-    qrcode
-      .toDataURL(props.data, {
-        width: props.width,
-      })
-      .then((qr: string) => this.setState({ qr }))
-  }
-
-  componentWillMount() {
-    this.generateQr(this.props)
-  }
-
-  render() {
-    if (!this.state.qr) {
-      return null
-    }
-
-    return (
-      <img
-        src={this.state.qr}
-        width="100%"
-        onClick={() =>
-          this.props.onClick && this.props.onClick(this.props.data)
-        }
-      />
-    )
-  }
+  return (
+    <img
+      src={qr}
+      width="100%"
+      onClick={() => props.onClick && props.onClick(props.data)}
+    />
+  )
 }

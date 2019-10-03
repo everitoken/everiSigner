@@ -8,26 +8,22 @@ type PropTypes = {
   bottomButtonGroup: React.ReactNode
 }
 
-class PopupLayout extends React.PureComponent<PropTypes> {
-  render() {
-    return (
-      <FlexContainer>
-        <div
-          style={{
-            alignSelf: 'stretch',
-          }}
-        >
-          <ScreenHeader title={this.props.title} />
-        </div>
-        <FlexContainer alignSelf="stretch" withPadding>
-          {this.props.children}
-        </FlexContainer>
-        <div style={{ alignSelf: 'stretch' }}>
-          {this.props.bottomButtonGroup}
-        </div>
+function PopupLayout(props: PropTypes) {
+  return (
+    <FlexContainer>
+      <div
+        style={{
+          alignSelf: 'stretch',
+        }}
+      >
+        <ScreenHeader title={props.title} />
+      </div>
+      <FlexContainer alignSelf="stretch" withPadding>
+        {props.children}
       </FlexContainer>
-    )
-  }
+      <div style={{ alignSelf: 'stretch' }}>{props.bottomButtonGroup}</div>
+    </FlexContainer>
+  )
 }
 
 export default PopupLayout

@@ -18,10 +18,6 @@ type TokenSelectPropTypes = {
   onClick: () => void
 }
 
-type TokenSelectStateTypes = {
-  balance: string
-}
-
 const TokenName = styled.p`
   font-family: 'Roboto Mono';
   margin-bottom: 4px;
@@ -37,56 +33,48 @@ const BalanceContainer = styled.div`
 
 const BALANCE_PLACEHOLDER = '--.--'
 
-class TokenSelect extends React.PureComponent<
-  TokenSelectPropTypes,
-  TokenSelectStateTypes
-> {
-  state = {
-    balance: this.props.loading ? BALANCE_PLACEHOLDER : this.props.data.value,
-  }
+function TokenSelect(props: TokenSelectPropTypes) {
 
-  render() {
-    const { data } = this.props
-    return (
-      <Card>
-        <CardActionArea onClick={this.props.onClick}>
-          {this.props.loading ? (
-            <div style={{ textAlign: 'center', padding: 10 }}>
-              <CircularProgress disableShrink size={20} />
-            </div>
-          ) : (
-            <FlexContainer
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <img
-                src={data.logoDataUri}
-                alt="logo"
-                width={20}
-                style={{ padding: 8 }}
-              />
-              <FlexContainer>
-                <TokenName>{`${data.name} (#${data.id})`}</TokenName>
-                <Typography variant="caption" style={{ marginBottom: '8px' }}>
-                  {labels.TOKEN_SELECT_SECONDARY_TEXT}
-                </Typography>
-              </FlexContainer>
-              <ForwardIcon />
+  const { data } = props
+  return (
+    <Card>
+      <CardActionArea onClick={props.onClick}>
+        {props.loading ? (
+          <div style={{ textAlign: 'center', padding: 10 }}>
+            <CircularProgress disableShrink size={20} />
+          </div>
+        ) : (
+          <FlexContainer
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <img
+              src={data.logoDataUri}
+              alt="logo"
+              width={20}
+              style={{ padding: 8 }}
+            />
+            <FlexContainer>
+              <TokenName>{`${data.name} (#${data.id})`}</TokenName>
+              <Typography variant="caption" style={{ marginBottom: '8px' }}>
+                {labels.TOKEN_SELECT_SECONDARY_TEXT}
+              </Typography>
             </FlexContainer>
-          )}
-        </CardActionArea>
-        <CardActions>
-          <BalanceContainer style={{ paddingLeft: 25 }}>
-            <Balance>
-              {labels.BALANCE_REST}:
-              {this.props.loading ? BALANCE_PLACEHOLDER : this.props.data.value}
-            </Balance>
-          </BalanceContainer>
-        </CardActions>
-      </Card>
-    )
-  }
+            <ForwardIcon />
+          </FlexContainer>
+        )}
+      </CardActionArea>
+      <CardActions>
+        <BalanceContainer style={{ paddingLeft: 25 }}>
+          <Balance>
+            {labels.BALANCE_REST}:
+            {props.loading ? BALANCE_PLACEHOLDER : props.data.value}
+          </Balance>
+        </BalanceContainer>
+      </CardActions>
+    </Card>
+  )
 }
 
 export default TokenSelect

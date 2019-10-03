@@ -7,44 +7,29 @@ type PropTypes = {
   publicKey: string
 }
 
-type StateTypes = {
-  qr: string
-}
-class PayeeCode extends React.PureComponent<
-  PropTypes & StyledComponentProps,
-  StateTypes
-> {
-  state = {
-    qr: '',
-  }
-
-  generate = (props: PropTypes) => {
+const generate = (props: PropTypes, cb: (qr:string) => void) => {
     const { EvtLink } = Evtjs
 
     EvtLink.getEvtLinkForPayeeCode({
       address: props.publicKey,
-    }).then((data: { rawText: string }) => {
-      this.setState({ qr: data.rawText })
+    }).then(({rawText}: { rawText: string }) => {
+      cb(rawText)
     })
   }
 
-  componentWillReceiveProps(newProps: PropTypes) {
-    if (newProps.publicKey !== this.props.publicKey) {
-      this.generate(newProps)
-    }
-  }
+function PayeeCode (props: PropTypes & StyledComponentProps) {
+  const [qr, setQr] = React.useState('')
 
-  componentWillMount() {
-    this.generate(this.props)
-  }
 
-  render() {
-    if (!this.state.qr) {
+
+  React.useEffect(() => {
+    generate(props, setQr)
+  }, [props.publicKey])
+    if (!qr) {
       return null
     }
 
-    return <QR data={this.state.qr} width={300} />
-  }
+    return <QR data={qr} width={300} />
 }
 
 export default PayeeCode
