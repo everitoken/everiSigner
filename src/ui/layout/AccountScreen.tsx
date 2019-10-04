@@ -8,25 +8,23 @@ import AccountBalanceScreen from './AccountBalanceScreen'
 import AccountPrivateKeyScreen from './AccountPrivateKeyScreen'
 
 type PropTypes = {}
-export default class AccountScreen extends React.PureComponent<
-  PropTypes & RouteComponentProps
-> {
-  render() {
-    const { match } = this.props
-    return (
-      <MainLayout renderLogo renderHead={() => <HeaderTitle title="账户" />}>
-        <Route path={`${match.path}/create`} component={AccountCreateScreen} />
-        <Route path={`${match.path}/list`} component={AccountListScreen} />
-        <Route path={`${match.path}/:id/qr`} component={AccountQRScreen} />
-        <Route
-          path={`${match.path}/:id/balance`}
-          component={AccountBalanceScreen}
-        />
-        <Route
-          path={`${match.path}/:id/key`}
-          component={AccountPrivateKeyScreen}
-        />
-      </MainLayout>
-    )
-  }
+
+export default function AccountScreen({
+  match,
+}: PropTypes & RouteComponentProps) {
+  return (
+    <MainLayout renderLogo renderHead={() => <HeaderTitle title="账户" />}>
+      <Route path={`${match.path}/create`} component={AccountCreateScreen} />
+      <Route path={`${match.path}/list`} component={AccountListScreen} />
+      <Route path={`${match.path}/:id/qr`} component={AccountQRScreen} />
+      <Route
+        path={`${match.path}/:id/balance`}
+        component={AccountBalanceScreen}
+      />
+      <Route
+        path={`${match.path}/:id/key`}
+        component={AccountPrivateKeyScreen}
+      />
+    </MainLayout>
+  )
 }

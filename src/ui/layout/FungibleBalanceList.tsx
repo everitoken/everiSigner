@@ -1,10 +1,11 @@
 import * as React from 'react'
-import BalanceList, { PropTypes } from '../presentational/BalanceList'
-import { connect } from 'react-redux'
+import BalanceList from '../presentational/BalanceList'
+import { useSelector, useDispatch } from 'react-redux'
 import { fetchBalance } from '../action'
 import { getBalanceByPublicKey } from '../../store/getter'
 import styled from 'styled-components'
 import { Typography } from '@material-ui/core'
+import { AppState } from '../../store/reducer'
 
 const Container = styled.div`
   height: 426px;
@@ -18,13 +19,13 @@ type OwnProps = {
   title?: string
 }
 
-type ConnectedProps = {
-  onMount: (publicKey: string) => ReturnType<typeof fetchBalance>
-}
-
-function ConnectedBalanceList(props: OwnProps & ConnectedProps & PropTypes) {
+function BalanceListConnected(props: OwnProps) {
+  const { balances, fetching } = useSelector((state: AppState) =>
+    getBalanceByPublicKey(state, { publicKey: props.publicKey })
+  )
+  const dispatch = useDispatch()
   React.useEffect(() => {
-    props.onMount(props.publicKey)
+    dispatch(fetchBalance(props.publicKey))
   }, [props.publicKey])
 
   return (
@@ -34,16 +35,9 @@ function ConnectedBalanceList(props: OwnProps & ConnectedProps & PropTypes) {
           {props.title}
         </Typography>
       ) : null}
-      <BalanceList
-        {...props}
-        balances={props.balances}
-        fetching={props.fetching}
-      />
+      <BalanceList {...props} balances={balances} fetching={fetching} />
     </Container>
   )
 }
 
-export default connect(
-  getBalanceByPublicKey,
-  { onMount: fetchBalance }
-)(ConnectedBalanceList)
+export default BalanceListConnected

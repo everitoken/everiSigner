@@ -4,7 +4,7 @@ import InvalidRoute from './InvalidRoute'
 import FlexContainer from '../presentational/FlexContainer'
 
 import { NavigationLayout } from '../presentational/MainLayout'
-import { ConnectedNavigationBackButton } from './NavigationButtons'
+import ConnectedNavigationBackButton from './NavigationButtons'
 import { getPasswordProtectedView } from '../../store/getter'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router'

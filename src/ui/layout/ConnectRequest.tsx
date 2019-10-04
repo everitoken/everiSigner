@@ -11,7 +11,7 @@ import ConnectedEntities from '../presentational/ConnectedEntities'
 import CircularEntity from '../presentational/CircularEntity'
 import BottomButtonGroup from '../presentational/BottomButtonGroup'
 import AccountSelectDialog from '../presentational/AccountSelect'
-import ConnectedBalanceList from './FungibleBalanceList'
+import BalanceListConnected from './FungibleBalanceList'
 import labels from '../../labels'
 import PopupLayout from '../presentational/PopupLayout'
 import { get } from 'lodash'
@@ -116,7 +116,7 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
             onAccountMoreClicked={this.handleAccountMoreClicked}
             detailComponent={
               this.state.showBalanceList ? (
-                <ConnectedBalanceList publicKey={selectedAccount.publicKey} />
+                <BalanceListConnected publicKey={selectedAccount.publicKey} />
               ) : null
             }
           >

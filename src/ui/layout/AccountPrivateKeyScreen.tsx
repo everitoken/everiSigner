@@ -5,7 +5,7 @@ import FlexContainer from '../presentational/FlexContainer'
 import Button from '../presentational/InlineButton'
 
 import { NavigationLayout } from '../presentational/MainLayout'
-import { ConnectedNavigationBackButton } from './NavigationButtons'
+import ConnectedNavigationBackButton from './NavigationButtons'
 import { getPasswordProtectedView } from '../../store/getter'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router'

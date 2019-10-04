@@ -39,9 +39,7 @@ export default ({ children }: { children: React.ReactNode }) => (
       }
 
       if (status === 'hash') {
-        return (
-            <LogIn message="Unlock to continue" />
-        )
+        return <LogIn message="Unlock to continue" />
       }
 
       return children

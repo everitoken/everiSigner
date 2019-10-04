@@ -22,6 +22,7 @@ export default (
         ...state,
         password: action.payload,
       }
+
     case actions.PASSWORD_REMOVE:
       return defaultState
 

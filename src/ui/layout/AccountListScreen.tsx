@@ -4,7 +4,7 @@ import InvalidRoute from './InvalidRoute'
 
 import FlexContainer from '../presentational/FlexContainer'
 import { NavigationLayout } from '../presentational/MainLayout'
-import { ConnectedNavigationBackButton } from './NavigationButtons'
+import ConnectedNavigationBackButton from './NavigationButtons'
 import { AccountStateType } from '../../store/reducer/accounts'
 import { getDecryptedAccounts } from '../../store/getter'
 import { connect } from 'react-redux'

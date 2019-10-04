@@ -207,6 +207,7 @@ export type MessageMetaType = {
 export interface NetworkItemType {
   name: string
   url: string
+  isSelected?: boolean
   location: string
   isProduction: boolean
   isCustom: boolean

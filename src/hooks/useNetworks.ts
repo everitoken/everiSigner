@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { NetworkItemType } from '../types'
-import { useLocalStorageState } from 'react-storage-hooks'
+import createPersistedState from 'use-persisted-state'
+const useNetworkState = createPersistedState('networks')
 
 const mainnet1 = {
   name: 'mainnet1',
@@ -103,24 +104,21 @@ export const NETWORKS = [
 export const DEFAULT_NETWORK = mainnet1
 
 type NetworkOperation = (network: NetworkItemType) => void
+type SelectNetork = () => NetworkItemType
 
-function useNetwork(): [
+function useNetwork(
+  initialNetworks: NetworkItemType[]
+): [
   Array<NetworkItemType>,
-  NetworkItemType,
+  SelectNetork,
   NetworkOperation,
   NetworkOperation,
   NetworkOperation
 ] {
-  const [networksInStorage, setNetworksInStorage] = useLocalStorageState(
-    'networks',
-    NETWORKS
-  )
-  const [selectedNetorkInStorage, setSelectedInStorage] = useLocalStorageState(
-    'network.selected',
-    mainnet1
-  )
-  const [networks, setNetworksLocal] = React.useState(networksInStorage)
-  const [selected, setSelectedLocal] = React.useState(selectedNetorkInStorage)
+  const [networks, setNetworks]: [
+    NetworkItemType[],
+    (networks: NetworkItemType[]) => void
+  ] = useNetworkState(initialNetworks)
 
   const addNetwork = (network: NetworkItemType) => {
     const hasNetwork = networks.find(n => n.url === network.url)
@@ -130,27 +128,38 @@ function useNetwork(): [
     }
 
     const newNetworks = [...networks, network]
-    setNetworksLocal(newNetworks)
-    setNetworksInStorage(newNetworks)
+    setNetworks(newNetworks)
   }
 
   const removeNetwork = (network: NetworkItemType) => {
     const newNetworks = networks.filter(n => n.url !== network.url)
+    const selected = getSelected()
     if (network.url === selected.url) {
-      setSelectedLocal(newNetworks[0])
-      setSelectedInStorage(newNetworks[0])
+      selectNetwork(newNetworks[0])
     }
 
-    setNetworksLocal(newNetworks)
-    setNetworksInStorage(newNetworks)
+    setNetworks(newNetworks)
   }
 
   const selectNetwork = (network: NetworkItemType) => {
-    setSelectedLocal(network)
-    setSelectedInStorage(network)
+    const newNetworks = networks.map(n => {
+      if (n.url === network.url) {
+        return { ...n, isSelected: true }
+      }
+      return { ...n, isSelected: false }
+    })
+    setNetworks(newNetworks)
   }
 
-  return [networks, selected, selectNetwork, addNetwork, removeNetwork]
+  const getSelected = () => {
+    const hasSelected = networks.find(n => !!n.isSelected)
+    if (!hasSelected) {
+      selectNetwork(networks[0])
+    }
+    return networks.find(n => !!n.isSelected) as NetworkItemType
+  }
+
+  return [networks, getSelected, selectNetwork, addNetwork, removeNetwork]
 }
 
 export default useNetwork

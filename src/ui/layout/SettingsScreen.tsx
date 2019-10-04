@@ -17,7 +17,7 @@ import {
 } from '@material-ui/core'
 import FlexContainer from '../presentational/FlexContainer'
 import { compose } from 'redux'
-import { ConnectedNavigationBackButton } from './NavigationButtons'
+import ConnectedNavigationBackButton from './NavigationButtons'
 import labels from '../../labels'
 import NetworkIcon from '@material-ui/icons/CloudCircle'
 import AccountIcon from '@material-ui/icons/AccountBox'

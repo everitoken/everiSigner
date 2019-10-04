@@ -4,12 +4,12 @@ import MonoText from './MonospaceText'
 import FlexContainer from './FlexContainer'
 import { TokenDetail } from '../../types'
 
-export type PropTypes = {
+type PropTypes = {
   balances: TokenDetail[]
   fetching: boolean
 }
 
-export default function BalanceList(props: PropTypes) {
+export default function BalanceListConnected(props: PropTypes) {
   const { fetching, balances } = props
 
   if (fetching) {

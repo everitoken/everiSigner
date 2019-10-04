@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { NavigationLayout } from '../presentational/MainLayout'
-import { ConnectedNavigationBackButton } from './NavigationButtons'
+import ConnectedNavigationBackButton from './NavigationButtons'
 import labels from '../../labels'
 import FlexContainer from '../presentational/FlexContainer'
 import { RouteComponentProps, Route } from 'react-router-dom'

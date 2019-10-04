@@ -8,12 +8,11 @@ import {
   BottomNavigationAction,
 } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
-import { connect } from 'react-redux'
+import { connect, useSelector, useDispatch } from 'react-redux'
 import { AccountStateType } from '../../store/reducer/accounts'
 import AccountAvatar from '../presentational/AccountAvatar'
-import { getForHome, getForHomeAppBar } from '../../store/getter'
+import { getForHome } from '../../store/getter'
 import AccountSelect from '../presentational/AccountSelect'
-import { setMainAccount } from '../action'
 import labels from '../../labels'
 import Divider from '../presentational/Divider'
 import { RouteComponentProps, Route, withRouter } from 'react-router-dom'
@@ -21,19 +20,17 @@ import { compose } from 'redux'
 import AccountDetail from './AccountDetail'
 import FungibleOverview from './FungibleOverview'
 import NFTOverview from './NFTOverview'
-import ConnectedAccountPayeeCode from './ConnectedAccountPayeeCode'
+import AccountPayeeCode from './AccountPayeeCode'
 import AccountSign from './AccountSign'
 import TransferFungibleToken from './TransferFungibleToken'
 import { useCopyToClipboard } from '../../hooks/componentHooks'
+import { setMainAccount } from '../action'
 
-type HomeAppBarPropTypes = {
-  mainAccount: AccountStateType | undefined
-  accounts: AccountStateType[]
-  onAccountSelect: typeof setMainAccount
-}
+function HomeAppBar() {
+  const { mainAccount, accounts } = useSelector(getForHome)
+  const dispatch = useDispatch()
 
-function HomeAppBar(props: HomeAppBarPropTypes) {
-  if (!props.mainAccount) {
+  if (!mainAccount) {
     return null
   }
 
@@ -43,9 +40,9 @@ function HomeAppBar(props: HomeAppBarPropTypes) {
     <Grid container justify="space-between" spacing={0}>
       <Grid item>
         <AccountSelect
-          selected={props.mainAccount}
-          onSelect={props.onAccountSelect}
-          accounts={props.accounts}
+          selected={mainAccount}
+          onSelect={account => dispatch(setMainAccount(account))}
+          accounts={accounts}
         >
           {({ handleOpen }) => (
             <IconButton onClick={handleOpen}>
@@ -60,7 +57,7 @@ function HomeAppBar(props: HomeAppBarPropTypes) {
         style={{ alignSelf: 'center', marginLeft: '-50px' }}
       >
         <AccountAvatar
-          account={props.mainAccount}
+          account={mainAccount}
           onClick={account => handleCopy(account.publicKey)}
         />
       </Grid>
@@ -69,11 +66,6 @@ function HomeAppBar(props: HomeAppBarPropTypes) {
     </Grid>
   )
 }
-
-const ConnectedHomeAppBar = connect(
-  getForHomeAppBar,
-  { onAccountSelect: setMainAccount }
-)(HomeAppBar)
 
 const AccountSetup = () => (
   <FlexContainer withPadding justifyContent="center" alignItems="center">
@@ -119,15 +111,12 @@ class Home extends React.PureComponent<
     return (
       <AccountBarLayout>
         <FlexContainer>
-          <ConnectedHomeAppBar />
+          <HomeAppBar />
           <Route path={`${match.path}/setup`} component={AccountSetup} />
           <Route path={`${match.path}/ft`} component={FungibleOverview} />
           <Route path={`${match.path}/nft`} component={NFTOverview} />
           <Route path={`${match.path}/detail`} component={AccountDetail} />
-          <Route
-            path={`${match.path}/payee`}
-            component={ConnectedAccountPayeeCode}
-          />
+          <Route path={`${match.path}/payee`} component={AccountPayeeCode} />
           <Route
             path={`${match.path}/transferft`}
             component={TransferFungibleToken}

@@ -18,11 +18,6 @@ export const getForHome = (state: AppState) => ({
   accounts: state.accounts,
 })
 
-export const getForHomeAppBar = (state: AppState) => ({
-  mainAccount: state.accounts.find(({ isMain }) => isMain),
-  accounts: state.accounts,
-})
-
 export const getAccountByPublicKey = (
   state: AppState,
   ownProps: { publicKey: string }
@@ -90,10 +85,6 @@ export const getStartScreenName = (
 
   return { name: 'GET_STARTED' }
 }
-
-export const mapInputPassword = (state: AppState) => ({
-  passwordHash: getPasswordHash(state),
-})
 
 export const getAccountImportScreen = (state: AppState) => ({
   accountNames: state.accounts.map(({ name }) => name),

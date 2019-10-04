@@ -13,7 +13,7 @@ import AuthProtectedView from './WithAuthentication'
 import InvalidRoute from './InvalidRoute'
 import FlexContainer from '../presentational/FlexContainer'
 import { NavigationLayout } from '../presentational/MainLayout'
-import { ConnectedNavigationBackButton } from './NavigationButtons'
+import ConnectedNavigationBackButton from './NavigationButtons'
 import InfoArea from '../presentational/InfoArea'
 import Button from '../presentational/InlineButton'
 

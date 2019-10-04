@@ -8,6 +8,21 @@ import {
 } from '../types'
 
 export const ACCOUNT_CREATE = 'store/ACCOUNT_CREATE'
+export const MAIN_ACCOUNT_SET = 'store/MAIN_ACCOUNT_SET'
+export const ACCOUNT_REMOVE = 'store/ACCOUNT_REMOVE'
+export interface MainAccountSetType {
+  type: typeof MAIN_ACCOUNT_SET
+  payload: AccountStateType
+}
+export interface AccountCreateType {
+  type: typeof ACCOUNT_CREATE
+  payload: AccountStateType
+}
+export interface AccountRemoveType {
+  type: typeof ACCOUNT_REMOVE
+  payload: AccountStateType
+}
+
 export const PASSWORD_SET = 'store/PASSWORD_SET'
 export const PASSWORD_REMOVE = 'store/PASSWORD_REMOVE'
 export const PLANE_LAND = 'store/PLANE_LAND'
@@ -17,14 +32,8 @@ export const SIGNED_PAYLOAD_RECEIVE = 'SIGNED_PAYLOAD_RECEIVE'
 export const NETWORK_SELECT = 'store/NETWORK_SELECT'
 export const NETWORK_ADD = 'store/NETWORK_ADD'
 export const NETWORK_REMOVE = 'store/NETWORK_REMOVE'
-export const MAIN_ACCOUNT_SET = 'store/MAIN_ACCOUNT_SET'
-export const ACCOUNT_REMOVE = 'store/ACCOUNT_REMOVE'
 export const AUTHORIZED_ENTITY_ADD = 'store/AUTHORIZED_ENTITY_ADD'
 
-export interface MainAccountSetType {
-  type: typeof MAIN_ACCOUNT_SET
-  payload: AccountStateType
-}
 export interface SignedPayloadReceiveType {
   type: typeof SIGNED_PAYLOAD_RECEIVE
   payload: SignedDataType
@@ -38,11 +47,6 @@ export interface SigningPayloadReceiveType {
 
 export interface PurgeType {
   type: typeof PURGE
-}
-
-export interface AccountCreateType {
-  type: typeof ACCOUNT_CREATE
-  payload: AccountStateType
 }
 
 export interface PasswordSetType {
@@ -79,11 +83,6 @@ export interface NetworkRemoveType {
   payload: { network: NetworkItemType }
 }
 
-export interface AccountRemoveType {
-  type: typeof ACCOUNT_REMOVE
-  payload: AccountStateType
-}
-
 export interface AuthorizedEntityAddType {
   type: typeof AUTHORIZED_ENTITY_ADD
   payload: { host: string }
@@ -106,13 +105,6 @@ export const passwordSet = (hash: string): PasswordSetType => ({
 
 export const passwordRemove = (): PasswordRemoveType => ({
   type: PASSWORD_REMOVE,
-})
-
-export const accountCreate = (
-  account: AccountStateType
-): AccountCreateType => ({
-  type: ACCOUNT_CREATE,
-  payload: account,
 })
 
 export const signingPayloadReceive = (
@@ -138,6 +130,12 @@ export const networkRemove = (network: NetworkItemType): NetworkRemoveType => ({
   },
 })
 
+export const accountCreate = (
+  account: AccountStateType
+): AccountCreateType => ({
+  type: ACCOUNT_CREATE,
+  payload: account,
+})
 export const mainAccountSet = (
   account: AccountStateType
 ): MainAccountSetType => ({
@@ -161,6 +159,8 @@ export const authorizedEntityAdd = (payload: {
 
 export type StoreActionTypes =
   | AccountCreateType
+  | MainAccountSetType
+  | AccountRemoveType
   | PasswordSetType
   | PasswordRemoveType
   | PlaneLandType
@@ -171,6 +171,4 @@ export type StoreActionTypes =
   | NetworkSelectType
   | NetworkAddType
   | NetworkRemoveType
-  | MainAccountSetType
-  | AccountRemoveType
   | AuthorizedEntityAddType

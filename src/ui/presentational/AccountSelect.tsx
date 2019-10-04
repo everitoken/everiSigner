@@ -18,7 +18,6 @@ type PropTypes = {
   detailComponent?: React.ReactNode
 }
 
-
 export default function AccountSelect(props: PropTypes) {
   const [selected, setSelected] = React.useState(props.selected)
   const [open, setOpen] = React.useState(false)

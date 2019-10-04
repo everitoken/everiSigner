@@ -15,7 +15,7 @@ import {
 } from '../../store/getter'
 import { createAccountWithMnemonic, importAccount } from '../action'
 import { NavigationLayout } from '../presentational/MainLayout'
-import { ConnectedNavigationBackButton } from './NavigationButtons'
+import ConnectedNavigationBackButton from './NavigationButtons'
 import AccountImport from '../presentational/AccountImport'
 import labels from '../../labels'
 import AccountMnemonicImport from '../presentational/AccountMnemonicImport'

@@ -1,10 +1,11 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { fetchOwnedTokens } from '../action'
 import { getOwnedTokensByPublicKey } from '../../store/getter'
-import NFTList, { PropTypes } from '../presentational/NFTList'
+import NFTList from '../presentational/NFTList'
 import styled from 'styled-components'
 import { Typography } from '@material-ui/core'
+import { AppState } from '../../store/reducer'
 
 const Container = styled.div`
   height: 426px;
@@ -14,35 +15,28 @@ const Container = styled.div`
   align-self: stretch;
 `
 
-type OwnProps = {
+type PropTypes = {
   publicKey: string
   title: string
 }
 
-type ConnectedProps = {
-  onMount: (publicKeys: string[]) => ReturnType<typeof fetchOwnedTokens>
+export default function NFTListScreen(props: PropTypes) {
+  const { data, fetching } = useSelector((state: AppState) =>
+    getOwnedTokensByPublicKey(state, { publicKey: props.publicKey })
+  )
+
+  const dispatch = useDispatch()
+
+  React.useEffect(() => {
+    dispatch(fetchOwnedTokens([props.publicKey]))
+  }, [props.publicKey])
+
+  return (
+    <Container>
+      <Typography variant="h6" style={{ padding: '16px 0 4px 16px' }}>
+        {props.title}
+      </Typography>
+      <NFTList data={data} fetching={fetching} />
+    </Container>
+  )
 }
-
-class NFTListScreen extends React.PureComponent<
-  OwnProps & ConnectedProps & PropTypes
-> {
-  componentWillMount() {
-    this.props.onMount([this.props.publicKey])
-  }
-
-  render() {
-    return (
-      <Container>
-        <Typography variant="h6" style={{ padding: '16px 0 4px 16px' }}>
-          {this.props.title}
-        </Typography>
-        <NFTList data={this.props.data} fetching={this.props.fetching} />
-      </Container>
-    )
-  }
-}
-
-export default connect(
-  getOwnedTokensByPublicKey,
-  { onMount: fetchOwnedTokens }
-)(NFTListScreen)

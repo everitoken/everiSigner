@@ -1,31 +1,26 @@
 import * as React from 'react'
 
 import BackIcon from '@material-ui/icons/ArrowBack'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { IconButton } from '@material-ui/core'
 import * as H from 'history'
+import { useHistory } from 'react-router'
 
 type PropTypes = {
   onClick?: (history: H.History) => void
 }
-
-class NavigationBackButton extends React.PureComponent<
-  PropTypes & RouteComponentProps
-> {
-  handleClick = () => {
-    if (this.props.onClick) {
-      this.props.onClick(this.props.history)
+export default function NavigationBackButton(props: PropTypes) {
+  const history = useHistory()
+  const handleClick = () => {
+    if (props.onClick) {
+      props.onClick(history)
     } else {
-      this.props.history.goBack()
+      history.goBack()
     }
   }
-  render() {
-    return (
-      <IconButton onClick={this.handleClick}>
-        <BackIcon fontSize="large" />
-      </IconButton>
-    )
-  }
-}
 
-export const ConnectedNavigationBackButton = withRouter(NavigationBackButton)
+  return (
+    <IconButton onClick={handleClick}>
+      <BackIcon fontSize="large" />
+    </IconButton>
+  )
+}

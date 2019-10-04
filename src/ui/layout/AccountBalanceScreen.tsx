@@ -3,7 +3,7 @@ import WithAuthentication from './WithAuthentication'
 import InvalidRoute from './InvalidRoute'
 
 import { NavigationLayout } from '../presentational/MainLayout'
-import { ConnectedNavigationBackButton } from './NavigationButtons'
+import ConnectedNavigationBackButton from './NavigationButtons'
 import { AccountStateType } from '../../store/reducer/accounts'
 import { getAccountDetailScreen } from '../../store/getter'
 import { connect } from 'react-redux'

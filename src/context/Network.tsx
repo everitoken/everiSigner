@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { noop } from 'lodash'
-import useNetwork, { NETWORKS, DEFAULT_NETWORK } from '../hooks/useNetwork'
-
+import useNetworks, { NETWORKS, DEFAULT_NETWORK } from '../hooks/useNetworks'
 
 export const NetworkContext = React.createContext({
   networks: NETWORKS,
@@ -20,12 +19,13 @@ let selectedNetworkCached = DEFAULT_NETWORK
 export default function NetworkContextProvider(props: PropTypes) {
   const [
     networks,
-    selected,
+    getSelected,
     selectNetwork,
     addNetwork,
     removeNetwork,
-  ] = useNetwork()
+  ] = useNetworks(NETWORKS)
 
+  const selected = getSelected()
   selectedNetworkCached = selected
 
   return (
