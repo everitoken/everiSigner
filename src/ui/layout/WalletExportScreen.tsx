@@ -26,6 +26,7 @@ import {
 import Button from '../presentational/InlineButton'
 import { useDropzone } from 'react-dropzone'
 import { useCallback } from 'react'
+
 type PropTypes = {
   password: string
   onExportWallet: typeof exportWallet
@@ -112,7 +113,6 @@ const WalletExportScreen = (
                     }
                   />
                 </FormControl>
-                <PaperDropzone />
                 <Button
                   disabled={disableExportBtn}
                   variant="contained"
