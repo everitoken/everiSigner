@@ -8,6 +8,7 @@ import AccountScreen from './layout/AccountScreen'
 import Home from './layout/Home'
 import { MessageContextProvider } from '../context/Message'
 import { AccountContextProvider } from '../context/Account'
+import { AuthenticationStateProvider } from '../context/AuthenticationState'
 
 class HackRedirect extends React.PureComponent<any> {
   componentDidMount() {
@@ -26,16 +27,18 @@ function App() {
   return (
     <AccountContextProvider>
       <MessageContextProvider>
-        <Router>
-          <HackRedirectWithRouter />
-          <React.Fragment>
-            <Route exact path="/" component={Start} />
-            <Route path="/home" component={Home} />
-            <Route path="/wallet" component={WalletScreen} />
-            <Route path="/account" component={AccountScreen} />
-            <Route path="/settings" component={SettingsScreen} />
-          </React.Fragment>
-        </Router>
+        <AuthenticationStateProvider>
+          <Router>
+            <HackRedirectWithRouter />
+            <React.Fragment>
+              <Route exact path="/" component={Start} />
+              <Route path="/home" component={Home} />
+              <Route path="/wallet" component={WalletScreen} />
+              <Route path="/account" component={AccountScreen} />
+              <Route path="/settings" component={SettingsScreen} />
+            </React.Fragment>
+          </Router>
+        </AuthenticationStateProvider>
       </MessageContextProvider>
     </AccountContextProvider>
   )
