@@ -156,10 +156,9 @@ class WalletCreate extends React.Component<PropTypes, StateTypes> {
   }
 }
 
-const ConnectedComponent = connect(
-  null,
-  { setPassword: uiActions.setPassword }
-)(WalletCreate)
+const ConnectedComponent = connect(null, {
+  setPassword: uiActions.setPassword,
+})(WalletCreate)
 
 export default (props: any) => (
   <AuthProtectedView>

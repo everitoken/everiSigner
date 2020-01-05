@@ -424,6 +424,16 @@ function* transferftAcknowledgeWatcher() {
   }
 }
 
+function* importWalletWatcher() {
+  while (true) {
+    const action: ReturnType<typeof uiActions.importWallet> = yield take(
+      uiActions.IMPORT_WALLET
+    )
+
+    console.log(JSON.stringify(action))
+  }
+}
+
 function* exportWalletWatcher() {
   while (true) {
     const action: ReturnType<typeof uiActions.exportWallet> = yield take(
@@ -682,6 +692,7 @@ function* rootSaga() {
     yield fork(transferftWatcher)
     yield fork(transferftAcknowledgeWatcher)
     yield fork(exportWalletWatcher)
+    yield fork(importWalletWatcher)
   } catch (e) {
     // TODO consider restart saga
     console.log('saga root error: ', e)

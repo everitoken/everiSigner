@@ -1,14 +1,27 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import CheckCircle from '@material-ui/icons/CheckCircle'
+import { useDispatch } from 'react-redux'
+import Visibility from '@material-ui/icons/Visibility'
+import VisibilityOff from '@material-ui/icons/VisibilityOff'
+import Button from '../presentational/InlineButton'
+import FlexContainer from '../presentational/FlexContainer'
+import {
+  RootRef,
+  FormControl,
+  InputLabel,
+  Input,
+  InputAdornment,
+  IconButton,
+} from '@material-ui/core'
+import { useDropzone } from 'react-dropzone'
+import * as PasswordService from '../../service/PasswordService'
 
 import { NavigationLayout } from '../presentational/MainLayout'
 import ConnectedNavigationBackButton from './NavigationButtons'
-import FlexContainer from '../presentational/FlexContainer'
-import { RootRef } from '@material-ui/core'
-import { useDropzone } from 'react-dropzone'
 import InfoArea from '../presentational/InfoArea'
 import labels from '../../labels'
+import { importWallet } from '../action'
 
 const DropZoneContainer = styled.div`
   width: 100%;
@@ -22,13 +35,16 @@ const DropZoneContainer = styled.div`
 
 function PaperDropzone() {
   const [fileContent, setFileContent] = React.useState<string | null>(null)
+  const [showPassword, toggleShowPassword] = React.useState(false)
+  const [password, setPassword] = React.useState('')
+
+  const dispatch = useDispatch()
   const onDrop = React.useCallback(acceptedFiles => {
     const reader = new FileReader()
 
     reader.onabort = () => alert(labels.IMPORT_WALLET_FAILED)
     reader.onerror = () => alert(labels.IMPORT_WALLET_FAILED)
     reader.onload = () => {
-      // Do whatever you want with the file contents
       const binaryStr = reader.result
       setFileContent(String(binaryStr))
     }
@@ -36,35 +52,97 @@ function PaperDropzone() {
     acceptedFiles.forEach((file: any) => reader.readAsBinaryString(file))
   }, [])
 
+  function handlePasswordChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setPassword(event.target.value)
+  }
+
+  function handleClickShowPassword() {
+    toggleShowPassword(!showPassword)
+  }
+
+  function handleImportWallet() {
+    if (!password || !fileContent) {
+      return
+    }
+
+    const rst = PasswordService.decrypt(password, fileContent)
+
+    if (!rst.success) {
+      alert(labels.IMPORT_WALLET_FAILED)
+      return
+    }
+
+    dispatch(importWallet(rst.data as string))
+  }
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
   const { ref, ...rootProps } = getRootProps()
 
   return (
     <RootRef rootRef={ref}>
-      <div
-        {...rootProps}
-        style={{ padding: '8px', width: 'calc(100% - 16px)' }}
-      >
-        <input {...getInputProps()} />
-        <DropZoneContainer isDragActive={isDragActive}>
-          {fileContent ? (
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <CheckCircle color="primary" />
-              <p style={{ paddingLeft: '5px' }}>
-                {labels.WALLET_BACKUP_FILE_LOADED}
+      <>
+        <div
+          {...rootProps}
+          style={{ padding: '8px', width: 'calc(100% - 16px)' }}
+        >
+          <input {...getInputProps()} />
+          <DropZoneContainer isDragActive={isDragActive}>
+            {fileContent ? (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <CheckCircle color="primary" />
+                <p style={{ paddingLeft: '5px' }}>
+                  {labels.WALLET_BACKUP_FILE_LOADED}
+                </p>
+              </div>
+            ) : (
+              <p>
+                {isDragActive ? labels.FILE_DETECTED : labels.SELECT_OR_DND}
               </p>
-            </div>
-          ) : (
-            <p>{isDragActive ? labels.FILE_DETECTED : labels.SELECT_OR_DND}</p>
-          )}
-        </DropZoneContainer>
-      </div>
+            )}
+          </DropZoneContainer>
+        </div>
+
+        <FlexContainer withPadding alignItems="stretch">
+          <FormControl>
+            <InputLabel htmlFor="password">
+              {labels.INPUT_WALLET_RECOEVER_PASSWORD}
+            </InputLabel>
+            <Input
+              id="password"
+              type={showPassword ? 'text' : 'password'}
+              value={password || ''}
+              onChange={handlePasswordChange}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="Toggle password visibility"
+                    onClick={handleClickShowPassword}
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+
+          <div style={{ paddingTop: '16px' }}>
+            <Button
+              disabled={!password || !fileContent}
+              variant="contained"
+              color="primary"
+              onClick={handleImportWallet}
+            >
+              {labels.IMPORT_WALLET_BTN}
+            </Button>
+          </div>
+        </FlexContainer>
+      </>
     </RootRef>
   )
 }
@@ -72,13 +150,17 @@ function PaperDropzone() {
 export default function WalletImportScreen() {
   return (
     <NavigationLayout
-      title="导入钱包"
+      title={labels.IMPORT_WALLET_TITLE}
       renderLeft={() => <ConnectedNavigationBackButton />}
     >
       <FlexContainer>
         <div style={{ width: '100%' }}>
           <InfoArea>
-            <p style={{ padding: 8 }}>{labels.ACCOUNT_SIGN_DESCRIPTION}</p>
+            <ul>
+              <li>{labels.IMPORT_WALLET_DESCRIPTION_0}</li>
+              <li>{labels.IMPORT_WALLET_DESCRIPTION_1}</li>
+              <li>{labels.IMPORT_WALLET_DESCRIPTION_2}</li>
+            </ul>
           </InfoArea>
         </div>
         <PaperDropzone />

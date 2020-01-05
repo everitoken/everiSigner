@@ -26,5 +26,6 @@ module.exports = {
     'comma-dangle': 'off',
     'prettier/prettier': 'error',
     '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/member-delimiter-style': 'off',
   },
 }

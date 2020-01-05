@@ -1,9 +1,4 @@
-import {
-  ToBeSignDataType,
-  BackgroundMsgTypes,
-  MessageMetaType,
-  NetworkItemType,
-} from '../types'
+import { ToBeSignDataType, BackgroundMsgTypes, MessageMetaType } from '../types'
 import { AccountStateType } from '../store/reducer/accounts'
 
 export const SET_PASSWORD = 'ui/SET_PASSWORD'
@@ -22,6 +17,7 @@ export const REMOVE_ACCOUNT = 'ui/REMOVE_ACCOUNT'
 export const ADD_CUSTOM_NETWORK = 'ui/ADD_CUSTOM_NETWORK'
 export const REMOVE_CUSTOM_NETWORK = 'ui/REMOVE_CUSTOM_NETWORK'
 export const EXPORT_WALLET = 'ui/EXPORT_WALLET'
+export const IMPORT_WALLET = 'ui/IMPORT_WALLET'
 export const FETCH_OWNED_TOKENS = 'ui/FETCH_OWNED_TOKENS'
 export const AUTHORIZE_ENTITY = 'ui/AUTHORIZE_ENTITY'
 export const TRANSFER_FT = 'ui/TRANSFER_FT'
@@ -33,7 +29,7 @@ export const sign = (
     meta?: MessageMetaType
   },
   publicKey: string,
-  cancel: boolean = false
+  cancel = false
 ) => ({
   type: SIGN,
   payload,
@@ -69,7 +65,7 @@ export const createAccountWithMnemonic = (
     name: string
     words: string
   },
-  isDefaultAccount: boolean = false
+  isDefaultAccount = false
 ) => ({
   type: CREATE_MNEMONIC_ACCOUNT,
   payload,
@@ -92,7 +88,7 @@ export const authorizeAccountAccess = (
   },
 })
 
-export const fetchBalance = (publicKey: string, scope: string = 'default') => ({
+export const fetchBalance = (publicKey: string, scope = 'default') => ({
   type: FETCH_BALANCE,
   payload: {
     publicKey,
@@ -106,6 +102,11 @@ export const exportWallet = (payload: {
 }) => ({
   type: EXPORT_WALLET,
   payload,
+})
+
+export const importWallet = (wallet: string) => ({
+  type: IMPORT_WALLET,
+  wallet,
 })
 
 export const setMainAccount = (account: AccountStateType) => ({

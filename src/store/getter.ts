@@ -5,7 +5,6 @@ import {
   AuthorizedEntity,
 } from '../types'
 import { get } from 'lodash'
-import { decryptAccount } from '../service/PasswordService'
 import { AccountStateType } from './reducer/accounts'
 import * as PasswordService from '../service/PasswordService'
 import { RouteComponentProps } from 'react-router-dom'
@@ -97,7 +96,9 @@ export const getDecryptedAccounts = (state: AppState) => {
   }
 
   return {
-    accounts: state.accounts.map(account => decryptAccount(password, account)),
+    accounts: state.accounts.map(account =>
+      PasswordService.decryptAccount(password, account)
+    ),
   }
 }
 export const getSeedAccountDecrypted = (state: AppState) => {
@@ -115,7 +116,11 @@ export const getSeedAccountDecrypted = (state: AppState) => {
     return { account: null, words, accountNames }
   }
 
-  return { account: decryptAccount(password, account), words, accountNames }
+  return {
+    account: PasswordService.decryptAccount(password, account),
+    words,
+    accountNames,
+  }
 }
 
 export const getSigningPayload = ({ signingPayload, accounts }: AppState) => ({
@@ -181,9 +186,10 @@ export const getDecryptedMainAccount = (state: AppState) => {
   }
 
   return {
-    account: decryptAccount(password, state.accounts.find(
-      ({ isMain }) => isMain
-    ) as AccountStateType),
+    account: PasswordService.decryptAccount(
+      password,
+      state.accounts.find(({ isMain }) => isMain) as AccountStateType
+    ),
   }
 }
 

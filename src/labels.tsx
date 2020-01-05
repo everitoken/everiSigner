@@ -4,6 +4,7 @@ export default {
   ACCOUNT_CREATE_SUCCESSFUL: '成功创建账户',
   ACCOUNT_DETAIL: '账户',
   ACCOUNT_IMPORT_SUCCESSFUL: '成功导入账户',
+
   ACCOUNT_LIST_SECONDARY_TEXT: '账户列表',
   ACCOUNT_LIST: '账户列表',
   ACCOUNT_NAME: '账户名',
@@ -13,6 +14,12 @@ export default {
   WALLET_BACKUP_FILE_LOADED: '钱包备份文件已导入',
   FILE_DETECTED: '检测到文件',
   SELECT_OR_DND: '选择备份文件或者将备份文件拖拽到此',
+  IMPORT_WALLET_TITLE: '导入钱包',
+  IMPORT_WALLET_BTN: '导入钱包',
+  IMPORT_WALLET_DESCRIPTION_0: '选择钱包备份文件',
+  IMPORT_WALLET_DESCRIPTION_1: '提供备份文件的密码',
+  IMPORT_WALLET_DESCRIPTION_2: 'everiSigner将验证备份文件并导入钱包',
+  INPUT_WALLET_RECOEVER_PASSWORD: '输入备份文件解锁密码',
   BACKUP_WALLET_SECONDARY_TEXT: '将钱包加密保存到电脑',
   BACKUP_INFO_TEXT_SAVE_TO_COMPUTER: '加密备份钱包至硬盘',
   BACKUP_INFO_TEXT_ADDITIONAL_PASSPHRASE:
