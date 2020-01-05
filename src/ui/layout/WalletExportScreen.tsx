@@ -20,43 +20,12 @@ import {
   Input,
   InputAdornment,
   IconButton,
-  RootRef,
-  Paper,
 } from '@material-ui/core'
 import Button from '../presentational/InlineButton'
-import { useDropzone } from 'react-dropzone'
-import { useCallback } from 'react'
 
 type PropTypes = {
   password: string
   onExportWallet: typeof exportWallet
-}
-
-function PaperDropzone() {
-  const onDrop = useCallback(acceptedFiles => {
-    const reader = new FileReader()
-
-    reader.onabort = () => console.log('file reading was aborted')
-    reader.onerror = () => console.log('file reading has failed')
-    reader.onload = () => {
-      // Do whatever you want with the file contents
-      const binaryStr = reader.result
-      console.log(binaryStr)
-    }
-
-    acceptedFiles.forEach((file: any) => reader.readAsBinaryString(file))
-  }, [])
-  const { getRootProps, getInputProps } = useDropzone({ onDrop })
-  const { ref, ...rootProps } = getRootProps()
-
-  return (
-    <RootRef rootRef={ref}>
-      <Paper {...rootProps}>
-        <input {...getInputProps()} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
-      </Paper>
-    </RootRef>
-  )
 }
 
 const WalletExportScreen = (
@@ -136,10 +105,9 @@ const WalletExportScreen = (
   )
 }
 
-const ConnectedView = connect(
-  getPasswordProtectedView,
-  { onExportWallet: exportWallet }
-)(WalletExportScreen)
+const ConnectedView = connect(getPasswordProtectedView, {
+  onExportWallet: exportWallet,
+})(WalletExportScreen)
 
 export default (props: RouteComponentProps<{ id: string }>) => (
   <WithAuthentication>

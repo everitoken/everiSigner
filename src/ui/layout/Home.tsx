@@ -1,6 +1,4 @@
 import * as React from 'react'
-import AccountBarLayout from './AccountBarLayout'
-import FlexContainer from '../presentational/FlexContainer'
 import {
   Grid,
   IconButton,
@@ -14,8 +12,16 @@ import AccountAvatar from '../presentational/AccountAvatar'
 import { getForHome } from '../../store/getter'
 import AccountSelect from '../presentational/AccountSelect'
 import labels from '../../labels'
+import AccountBarLayout from './AccountBarLayout'
+import FlexContainer from '../presentational/FlexContainer'
 import Divider from '../presentational/Divider'
-import { RouteComponentProps, Route, withRouter } from 'react-router-dom'
+import {
+  RouteComponentProps,
+  Route,
+  withRouter,
+  useHistory,
+  useRouteMatch,
+} from 'react-router-dom'
 import { compose } from 'redux'
 import AccountDetail from './AccountDetail'
 import FungibleOverview from './FungibleOverview'
@@ -25,6 +31,7 @@ import AccountSign from './AccountSign'
 import TransferFungibleToken from './TransferFungibleToken'
 import { useCopyToClipboard } from '../../hooks/componentHooks'
 import { setMainAccount } from '../action'
+import WalletImportScreen from './WalletImportScreen'
 
 function HomeAppBar() {
   const { mainAccount, accounts } = useSelector(getForHome)
@@ -36,35 +43,8 @@ function HomeAppBar() {
 
   const [, handleCopy] = useCopyToClipboard(labels.COPY_ADDRESS_SUCCESSFUL)
 
-  return (
-    <Grid container justify="space-between" spacing={0}>
-      <Grid item>
-        <AccountSelect
-          selected={mainAccount}
-          onSelect={account => dispatch(setMainAccount(account))}
-          accounts={accounts}
-        >
-          {({ handleOpen }) => (
-            <IconButton onClick={handleOpen}>
-              <MenuIcon />
-            </IconButton>
-          )}
-        </AccountSelect>
-      </Grid>
-      <Grid
-        item
-        justify="center"
-        style={{ alignSelf: 'center', marginLeft: '-50px' }}
-      >
-        <AccountAvatar
-          account={mainAccount}
-          onClick={account => handleCopy(account.publicKey)}
-        />
-      </Grid>
-      <Grid item justify="center" />
-      <Divider />
-    </Grid>
-  )
+  // FIXME: revert
+  return <WalletImportScreen />
 }
 
 const AccountSetup = () => (
@@ -74,84 +54,73 @@ const AccountSetup = () => (
 )
 
 type PropTypes = {
-  mainAccount: AccountStateType
+  mainAccount?: AccountStateType
   accounts: AccountStateType[]
 }
 
-type StateTypes = {
-  index: number
-}
+function Home(props: PropTypes) {
+  const [index, setIndex] = React.useState(0)
+  const history = useHistory()
+  const match = useRouteMatch()
 
-class Home extends React.PureComponent<
-  PropTypes & RouteComponentProps,
-  StateTypes
-> {
-  state = {
-    index: 0,
-  }
-  handleTabChange = (_: any, index: number) => {
-    this.setState({ index })
+  function handleTabChange(_: any, index: number) {
+    setIndex(index)
   }
 
-  componentWillMount() {
-    const { mainAccount, history } = this.props
-
-    if (!mainAccount) {
+  React.useEffect(() => {
+    if (!props.mainAccount) {
       history.push('/home/setup')
     } else {
-      history.push(`/home/ft`)
+      history.push('/home/ft')
     }
+  }, [props.mainAccount])
+
+  const hasMainAccount = Boolean(props.mainAccount)
+
+  if (!match) {
+    return null
   }
 
-  render() {
-    const { match } = this.props
+  return (
+    <AccountBarLayout>
+      <FlexContainer>
+        <HomeAppBar />
+        <Route path={`${match.path}/setup`} component={AccountSetup} />
+        <Route path={`${match.path}/ft`} component={FungibleOverview} />
+        <Route path={`${match.path}/nft`} component={NFTOverview} />
+        <Route path={`${match.path}/detail`} component={AccountDetail} />
+        <Route path={`${match.path}/payee`} component={AccountPayeeCode} />
+        <Route
+          path={`${match.path}/transferft`}
+          component={TransferFungibleToken}
+        />
+        <Route path={`${match.path}/sign`} component={AccountSign} />
 
-    const hasMainAccount = Boolean(this.props.mainAccount)
-
-    return (
-      <AccountBarLayout>
-        <FlexContainer>
-          <HomeAppBar />
-          <Route path={`${match.path}/setup`} component={AccountSetup} />
-          <Route path={`${match.path}/ft`} component={FungibleOverview} />
-          <Route path={`${match.path}/nft`} component={NFTOverview} />
-          <Route path={`${match.path}/detail`} component={AccountDetail} />
-          <Route path={`${match.path}/payee`} component={AccountPayeeCode} />
-          <Route
-            path={`${match.path}/transferft`}
-            component={TransferFungibleToken}
+        <BottomNavigation
+          style={{ width: '100%', borderTop: '1px solid #ccc' }}
+          value={hasMainAccount ? index : Infinity}
+          onChange={handleTabChange}
+          showLabels
+        >
+          <BottomNavigationAction
+            disabled={!hasMainAccount}
+            label={labels.FUNGIBLE_BALANCE}
+            onClick={() => history.push(`${match.path}/ft`)}
           />
-          <Route path={`${match.path}/sign`} component={AccountSign} />
-
-          <BottomNavigation
-            style={{ width: '100%', borderTop: '1px solid #ccc' }}
-            value={hasMainAccount ? this.state.index : Infinity}
-            onChange={this.handleTabChange}
-            showLabels
-          >
-            <BottomNavigationAction
-              disabled={!hasMainAccount}
-              label={labels.FUNGIBLE_BALANCE}
-              onClick={() => this.props.history.push(`${match.path}/ft`)}
-            />
-            <BottomNavigationAction
-              disabled={!hasMainAccount}
-              label={labels.NFTs_LIST}
-              onClick={() => this.props.history.push(`${match.path}/nft`)}
-            />
-            <BottomNavigationAction
-              disabled={!hasMainAccount}
-              label={labels.ACCOUNT_DETAIL}
-              onClick={() => this.props.history.push(`${match.path}/detail`)}
-            />
-          </BottomNavigation>
-        </FlexContainer>
-      </AccountBarLayout>
-    )
-  }
+          <BottomNavigationAction
+            disabled={!hasMainAccount}
+            label={labels.NFTs_LIST}
+            onClick={() => history.push(`${match.path}/nft`)}
+          />
+          <BottomNavigationAction
+            disabled={!hasMainAccount}
+            label={labels.ACCOUNT_DETAIL}
+            onClick={() => history.push(`${match.path}/detail`)}
+          />
+        </BottomNavigation>
+      </FlexContainer>
+    </AccountBarLayout>
+  )
 }
 
-export default compose(
-  withRouter,
-  connect(getForHome)
-)(Home)
+export default connect(getForHome)(Home)

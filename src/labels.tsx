@@ -9,6 +9,10 @@ export default {
   ACCOUNT_NAME: '账户名',
   ACCOUNT_SELECT: '选择账户',
   AUTHORIZE_BUTTON_TEXT: '授权',
+  IMPORT_WALLET_FAILED: '导入账户失败',
+  WALLET_BACKUP_FILE_LOADED: '钱包备份文件已导入',
+  FILE_DETECTED: '检测到文件',
+  SELECT_OR_DND: '选择备份文件或者将备份文件拖拽到此',
   BACKUP_WALLET_SECONDARY_TEXT: '将钱包加密保存到电脑',
   BACKUP_INFO_TEXT_SAVE_TO_COMPUTER: '加密备份钱包至硬盘',
   BACKUP_INFO_TEXT_ADDITIONAL_PASSPHRASE:

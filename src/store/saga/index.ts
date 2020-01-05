@@ -1,5 +1,3 @@
-import * as React from 'react'
-import MessageContext from '../../context/Message'
 import { getSelectedNetwork } from '../../context/Network'
 import { get } from 'lodash'
 import { END, eventChannel } from 'redux-saga'
@@ -62,9 +60,7 @@ function* setupChainProviders() {
 }
 
 function* waitBackgroundResponse(type: string) {
-  const action: ReturnType<
-    typeof uiActions.receiveBackgroundMessage
-  > = yield take(
+  const action: ReturnType<typeof uiActions.receiveBackgroundMessage> = yield take(
     (a: any) =>
       a.type === uiActions.RECEIVE_BACKGROUND_MESSAGE && a.payload.type === type
   )
@@ -82,6 +78,7 @@ function setupPopupUnloadListener() {
     true
   )
 }
+
 function* fetchOwnedTokensWatcher() {
   while (true) {
     const action: ReturnType<typeof uiActions.fetchOwnedTokens> = yield take(
@@ -207,9 +204,9 @@ function* backgroundMessageWatcher() {
 
 function* authorizeAccountAccessHandler() {
   while (true) {
-    const action: ReturnType<
-      typeof uiActions.authorizeAccountAccess
-    > = yield take(uiActions.AUTHORIZE_ACCOUNT_ACCESS)
+    const action: ReturnType<typeof uiActions.authorizeAccountAccess> = yield take(
+      uiActions.AUTHORIZE_ACCOUNT_ACCESS
+    )
 
     const { request } = yield select(getAuthenticateAccountRequest)
     const { account } = action.payload
@@ -347,9 +344,9 @@ function* importAccountHandler() {
 
 function* createAccountHandler() {
   while (true) {
-    const action: ReturnType<
-      typeof uiActions.createAccountWithMnemonic
-    > = yield take(uiActions.CREATE_MNEMONIC_ACCOUNT)
+    const action: ReturnType<typeof uiActions.createAccountWithMnemonic> = yield take(
+      uiActions.CREATE_MNEMONIC_ACCOUNT
+    )
 
     if (!chain) {
       break // TODO refactor away
@@ -446,6 +443,7 @@ function* exportWalletWatcher() {
         authorizedEntities: state.authorizedEntities,
       },
     }
+    console.log('export content', content)
 
     var file = new File(
       [
