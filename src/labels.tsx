@@ -15,6 +15,8 @@ export default {
   FILE_DETECTED: '检测到文件',
   SELECT_OR_DND: '选择备份文件或者将备份文件拖拽到此',
   IMPORT_WALLET_TITLE: '导入钱包',
+  IMPORT_WALLET_DESCRIPTION:
+    '使用钱包备份文件初始化钱包,此选项会导入备份文件中所有账户，助记词等。',
   IMPORT_WALLET_BTN: '导入钱包',
   IMPORT_WALLET_DESCRIPTION_0: '选择钱包备份文件',
   IMPORT_WALLET_DESCRIPTION_1: '提供备份文件的密码',

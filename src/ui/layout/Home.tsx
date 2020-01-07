@@ -15,14 +15,7 @@ import labels from '../../labels'
 import AccountBarLayout from './AccountBarLayout'
 import FlexContainer from '../presentational/FlexContainer'
 import Divider from '../presentational/Divider'
-import {
-  RouteComponentProps,
-  Route,
-  withRouter,
-  useHistory,
-  useRouteMatch,
-} from 'react-router-dom'
-import { compose } from 'redux'
+import { Route, useHistory, useRouteMatch } from 'react-router-dom'
 import AccountDetail from './AccountDetail'
 import FungibleOverview from './FungibleOverview'
 import NFTOverview from './NFTOverview'
@@ -31,7 +24,6 @@ import AccountSign from './AccountSign'
 import TransferFungibleToken from './TransferFungibleToken'
 import { useCopyToClipboard } from '../../hooks/componentHooks'
 import { setMainAccount } from '../action'
-import WalletImportScreen from './WalletImportScreen'
 
 function HomeAppBar() {
   const { mainAccount, accounts } = useSelector(getForHome)
@@ -43,8 +35,35 @@ function HomeAppBar() {
 
   const [, handleCopy] = useCopyToClipboard(labels.COPY_ADDRESS_SUCCESSFUL)
 
-  // FIXME: revert
-  return <WalletImportScreen />
+  return (
+    <Grid container justify="space-between" spacing={0}>
+      <Grid item>
+        <AccountSelect
+          selected={mainAccount}
+          onSelect={account => dispatch(setMainAccount(account))}
+          accounts={accounts}
+        >
+          {({ handleOpen }) => (
+            <IconButton onClick={handleOpen}>
+              <MenuIcon />
+            </IconButton>
+          )}
+        </AccountSelect>
+      </Grid>
+      <Grid
+        item
+        justify="center"
+        style={{ alignSelf: 'center', marginLeft: '-50px' }}
+      >
+        <AccountAvatar
+          account={mainAccount}
+          onClick={account => handleCopy(account.publicKey)}
+        />
+      </Grid>
+      <Grid item justify="center" />
+      <Divider />
+    </Grid>
+  )
 }
 
 const AccountSetup = () => (

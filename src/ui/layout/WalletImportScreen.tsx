@@ -37,7 +37,6 @@ function PaperDropzone() {
   const [fileContent, setFileContent] = React.useState<string | null>(null)
   const [showPassword, toggleShowPassword] = React.useState(false)
   const [password, setPassword] = React.useState('')
-
   const dispatch = useDispatch()
   const onDrop = React.useCallback(acceptedFiles => {
     const reader = new FileReader()
