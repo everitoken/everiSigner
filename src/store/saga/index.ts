@@ -539,6 +539,12 @@ function* removePasswordWatcher() {
   while (true) {
     yield take(uiActions.REMOVE_PASSWORD)
     yield put(storeActions.takeOffPlane('password'))
+
+    // eslint-disable-next-line
+    const background = chrome.extension.getBackgroundPage()
+
+    // eslint-disable-next-line
+    background && background.window.everisigner.removePassword()
   }
 }
 
