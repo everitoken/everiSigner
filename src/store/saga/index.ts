@@ -468,7 +468,6 @@ function* exportWalletWatcher() {
         authorizedEntities: state.authorizedEntities,
       },
     }
-    console.log('export content', content)
 
     const file = new File(
       [

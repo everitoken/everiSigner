@@ -96,17 +96,3 @@ function AccountCreate() {
 }
 
 export default AccountCreate
-
-// export default () => (
-//   <WithAuthentication>
-//     {({ status }) => {
-//       if (status === 'password') {
-//         return <AccountCreate />
-//       }
-//
-//       return (
-//         <InvalidRoute message="everiSigner needs to be unlock in order to create an Account." />
-//       )
-//     }}
-//   </WithAuthentication>
-// )
