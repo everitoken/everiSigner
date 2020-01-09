@@ -88,10 +88,9 @@ const testnet = {
 }
 
 export const NETWORKS = [
-  testnet,
   mainnet1,
-  mainnet2,
   mainnet3,
+  mainnet2,
   mainnet4,
   mainnet5,
   mainnet6,
@@ -99,6 +98,7 @@ export const NETWORKS = [
   mainnet8,
   mainnet9,
   mainnet14,
+  testnet,
 ]
 
 export const DEFAULT_NETWORK = mainnet1
@@ -154,7 +154,7 @@ function useNetwork(
   const getSelected = () => {
     const hasSelected = networks.find(n => !!n.isSelected)
     if (!hasSelected) {
-      selectNetwork(networks[0])
+      selectNetwork(DEFAULT_NETWORK)
     }
     return networks.find(n => !!n.isSelected) as NetworkItemType
   }

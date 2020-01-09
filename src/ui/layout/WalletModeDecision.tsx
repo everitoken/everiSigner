@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { withRouter } from 'react-router-dom'
-import { WithRouterType } from '../../types'
+import { useHistory } from 'react-router-dom'
+import labels from '../../labels'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
@@ -10,15 +10,14 @@ import FlexContainer from '../presentational/FlexContainer'
 import { List, ListItem, CardActionArea } from '@material-ui/core'
 import ForwardIcon from '@material-ui/icons/ChevronRight'
 
-type PropTypes = {} & WithRouterType
-
 type OptionType = {
   onClick: () => void
   title: string
   description: string
 }
+
 const Option = (props: OptionType) => (
-  <Card raised>
+  <Card raised style={{ width: '100%' }}>
     <CardActionArea onClick={props.onClick}>
       <CardContent>
         <FlexContainer direction="row" alignItems="center">
@@ -34,36 +33,35 @@ const Option = (props: OptionType) => (
     </CardActionArea>
   </Card>
 )
-class WalletDecision extends React.PureComponent<PropTypes> {
-  render() {
-    const { history } = this.props
 
-    return (
-      <NavigationLayout
-        title="设置新钱包"
-        renderLeft={() => <ConnectedNavigationBackButton />}
-      >
-        <FlexContainer justifyContent="space-between">
-          <List>
-            <ListItem>
-              <Option
-                onClick={() => history.push('/wallet/import')}
-                title="Import a wallet"
-                description="Import your existing wallet using a 12 word seed phrase. Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum quos laboriosam asperiores, quibusdam alias id maiores error beatae."
-              />
-            </ListItem>
-            <ListItem>
-              <Option
-                onClick={() => history.push('/wallet/create')}
-                title="Create a wallet"
-                description="This will create a new wallet and seed phrase and multiple Evt accounts can be created."
-              />
-            </ListItem>
-          </List>
-        </FlexContainer>
-      </NavigationLayout>
-    )
-  }
+function WalletDecision() {
+  const history = useHistory()
+
+  return (
+    <NavigationLayout
+      title="设置新钱包"
+      renderLeft={() => <ConnectedNavigationBackButton />}
+    >
+      <FlexContainer justifyContent="space-between">
+        <List>
+          <ListItem>
+            <Option
+              onClick={() => history.push('/wallet/create')}
+              title={labels.WALLET_CREATE}
+              description={labels.WALLET_CREATE_DESCRIPTION}
+            />
+          </ListItem>
+          <ListItem>
+            <Option
+              onClick={() => history.push('/wallet/import')}
+              title={labels.IMPORT_WALLET_TITLE}
+              description={labels.IMPORT_WALLET_DESCRIPTION}
+            />
+          </ListItem>
+        </List>
+      </FlexContainer>
+    </NavigationLayout>
+  )
 }
 
-export default withRouter(WalletDecision)
+export default WalletDecision

@@ -1,4 +1,5 @@
 import {
+  ACCOUNT_IMPORT,
   ACCOUNT_CREATE,
   StoreActionTypes,
   MAIN_ACCOUNT_SET,
@@ -26,17 +27,23 @@ export default (
   action: StoreActionTypes
 ): StateType => {
   switch (action.type) {
-    case ACCOUNT_CREATE:
+    case ACCOUNT_IMPORT: {
+      return action.payload
+    }
+
+    case ACCOUNT_CREATE: {
       const hasMainAccount = state.find(({ isMain }) => isMain)
       return [...state, { ...action.payload, isMain: !hasMainAccount }]
+    }
 
-    case MAIN_ACCOUNT_SET:
+    case MAIN_ACCOUNT_SET: {
       return state.map(account => ({
         ...account,
         isMain: account.id === action.payload.id,
       }))
+    }
 
-    case ACCOUNT_REMOVE:
+    case ACCOUNT_REMOVE: {
       if (!action.payload.isMain) {
         return state.filter(account => account.id !== action.payload.id)
       }
@@ -47,6 +54,7 @@ export default (
 
       const newMainAccount = { ...first, isMain: true }
       return [newMainAccount, ...accounts]
+    }
 
     case PURGE:
       return defaultState

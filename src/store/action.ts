@@ -7,6 +7,7 @@ import {
   NetworkItemType,
 } from '../types'
 
+export const ACCOUNT_IMPORT = 'store/ACCOUNT_IMPORT'
 export const ACCOUNT_CREATE = 'store/ACCOUNT_CREATE'
 export const MAIN_ACCOUNT_SET = 'store/MAIN_ACCOUNT_SET'
 export const ACCOUNT_REMOVE = 'store/ACCOUNT_REMOVE'
@@ -14,6 +15,11 @@ export interface MainAccountSetType {
   type: typeof MAIN_ACCOUNT_SET
   payload: AccountStateType
 }
+export interface AccountImportType {
+  payload: AccountStateType[]
+  type: typeof ACCOUNT_IMPORT
+}
+
 export interface AccountCreateType {
   type: typeof ACCOUNT_CREATE
   payload: AccountStateType
@@ -130,12 +136,20 @@ export const networkRemove = (network: NetworkItemType): NetworkRemoveType => ({
   },
 })
 
+export const accountImport = (
+  accounts: AccountStateType[]
+): AccountImportType => ({
+  type: ACCOUNT_IMPORT,
+  payload: accounts,
+})
+
 export const accountCreate = (
   account: AccountStateType
 ): AccountCreateType => ({
   type: ACCOUNT_CREATE,
   payload: account,
 })
+
 export const mainAccountSet = (
   account: AccountStateType
 ): MainAccountSetType => ({
@@ -158,6 +172,7 @@ export const authorizedEntityAdd = (payload: {
 })
 
 export type StoreActionTypes =
+  | AccountImportType
   | AccountCreateType
   | MainAccountSetType
   | AccountRemoveType

@@ -1,5 +1,3 @@
-import * as React from 'react'
-import MessageContext from '../../context/Message'
 import { getSelectedNetwork } from '../../context/Network'
 import { get } from 'lodash'
 import { END, eventChannel } from 'redux-saga'
@@ -62,9 +60,7 @@ function* setupChainProviders() {
 }
 
 function* waitBackgroundResponse(type: string) {
-  const action: ReturnType<
-    typeof uiActions.receiveBackgroundMessage
-  > = yield take(
+  const action: ReturnType<typeof uiActions.receiveBackgroundMessage> = yield take(
     (a: any) =>
       a.type === uiActions.RECEIVE_BACKGROUND_MESSAGE && a.payload.type === type
   )
@@ -82,6 +78,7 @@ function setupPopupUnloadListener() {
     true
   )
 }
+
 function* fetchOwnedTokensWatcher() {
   while (true) {
     const action: ReturnType<typeof uiActions.fetchOwnedTokens> = yield take(
@@ -207,9 +204,9 @@ function* backgroundMessageWatcher() {
 
 function* authorizeAccountAccessHandler() {
   while (true) {
-    const action: ReturnType<
-      typeof uiActions.authorizeAccountAccess
-    > = yield take(uiActions.AUTHORIZE_ACCOUNT_ACCESS)
+    const action: ReturnType<typeof uiActions.authorizeAccountAccess> = yield take(
+      uiActions.AUTHORIZE_ACCOUNT_ACCESS
+    )
 
     const { request } = yield select(getAuthenticateAccountRequest)
     const { account } = action.payload
@@ -347,9 +344,9 @@ function* importAccountHandler() {
 
 function* createAccountHandler() {
   while (true) {
-    const action: ReturnType<
-      typeof uiActions.createAccountWithMnemonic
-    > = yield take(uiActions.CREATE_MNEMONIC_ACCOUNT)
+    const action: ReturnType<typeof uiActions.createAccountWithMnemonic> = yield take(
+      uiActions.CREATE_MNEMONIC_ACCOUNT
+    )
 
     if (!chain) {
       break // TODO refactor away
@@ -427,6 +424,31 @@ function* transferftAcknowledgeWatcher() {
   }
 }
 
+function* importWalletWatcher() {
+  while (true) {
+    const action: ReturnType<typeof uiActions.importWallet> = yield take(
+      uiActions.IMPORT_WALLET
+    )
+
+    const password: string | false = yield select(getPassword)
+
+    if (!password) {
+      alert('Invalid password, Default account creation failed')
+      return
+    }
+
+    const { wallet } = action
+    const walletObj = JSON.parse(wallet)
+
+    const accounts = walletObj.wallet.accounts.map(
+      (account: AccountStateType) =>
+        PasswordService.encryptAccount(password, account)
+    )
+
+    yield put(storeActions.accountImport(accounts))
+  }
+}
+
 function* exportWalletWatcher() {
   while (true) {
     const action: ReturnType<typeof uiActions.exportWallet> = yield take(
@@ -447,7 +469,7 @@ function* exportWalletWatcher() {
       },
     }
 
-    var file = new File(
+    const file = new File(
       [
         PasswordService.encrypt(
           action.payload.backupPassword,
@@ -531,6 +553,12 @@ function* removePasswordWatcher() {
   while (true) {
     yield take(uiActions.REMOVE_PASSWORD)
     yield put(storeActions.takeOffPlane('password'))
+
+    // eslint-disable-next-line
+    const background = chrome.extension.getBackgroundPage()
+
+    // eslint-disable-next-line
+    background && background.window.everisigner.removePassword()
   }
 }
 
@@ -684,6 +712,7 @@ function* rootSaga() {
     yield fork(transferftWatcher)
     yield fork(transferftAcknowledgeWatcher)
     yield fork(exportWalletWatcher)
+    yield fork(importWalletWatcher)
   } catch (e) {
     // TODO consider restart saga
     console.log('saga root error: ', e)

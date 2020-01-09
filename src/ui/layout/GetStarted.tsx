@@ -33,7 +33,7 @@ function GetStarted() {
             color="primary"
             variant="contained"
             size="large"
-            onClick={() => history.push('/wallet/decide')}
+            onClick={() => history.push('/wallet/setpassword')}
           >
             GET STARTED
           </Button>
