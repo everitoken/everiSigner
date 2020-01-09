@@ -15,7 +15,7 @@ import labels from '../../labels'
 import AccountBarLayout from './AccountBarLayout'
 import FlexContainer from '../presentational/FlexContainer'
 import Divider from '../presentational/Divider'
-import { Route, useHistory, useRouteMatch } from 'react-router-dom'
+import { Route, useHistory, useRouteMatch, Link } from 'react-router-dom'
 import AccountDetail from './AccountDetail'
 import FungibleOverview from './FungibleOverview'
 import NFTOverview from './NFTOverview'
@@ -67,8 +67,16 @@ function HomeAppBar() {
 }
 
 const AccountSetup = () => (
-  <FlexContainer withPadding justifyContent="center" alignItems="center">
-    <p>Setup required</p>
+  <FlexContainer justifyContent="center" alignItems="center">
+    <p>{labels.WALLET_NEED_SETUP}</p>
+    <div>
+      <Link
+        style={{ fontSize: 16, textDecoration: 'none' }}
+        to="/wallet/decide"
+      >
+        {labels.WALLET_SETUP_BUTTON}
+      </Link>
+    </div>
   </FlexContainer>
 )
 

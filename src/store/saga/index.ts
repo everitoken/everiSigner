@@ -430,7 +430,22 @@ function* importWalletWatcher() {
       uiActions.IMPORT_WALLET
     )
 
-    console.log(JSON.stringify(action))
+    const password: string | false = yield select(getPassword)
+
+    if (!password) {
+      alert('Invalid password, Default account creation failed')
+      return
+    }
+
+    const { wallet } = action
+    const walletObj = JSON.parse(wallet)
+
+    const accounts = walletObj.wallet.accounts.map(
+      (account: AccountStateType) =>
+        PasswordService.encryptAccount(password, account)
+    )
+
+    yield put(storeActions.accountImport(accounts))
   }
 }
 
@@ -455,7 +470,7 @@ function* exportWalletWatcher() {
     }
     console.log('export content', content)
 
-    var file = new File(
+    const file = new File(
       [
         PasswordService.encrypt(
           action.payload.backupPassword,

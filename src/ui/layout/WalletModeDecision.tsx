@@ -46,16 +46,16 @@ function WalletDecision() {
         <List>
           <ListItem>
             <Option
-              onClick={() => history.push('/wallet/import')}
-              title={labels.IMPORT_WALLET_TITLE}
-              description={labels.IMPORT_WALLET_DESCRIPTION}
+              onClick={() => history.push('/wallet/create')}
+              title={labels.WALLET_CREATE}
+              description={labels.WALLET_CREATE_DESCRIPTION}
             />
           </ListItem>
           <ListItem>
             <Option
-              onClick={() => history.push('/wallet/create')}
-              title="Create a wallet"
-              description="This will create a new wallet and seed phrase and multiple Evt accounts can be created."
+              onClick={() => history.push('/wallet/import')}
+              title={labels.IMPORT_WALLET_TITLE}
+              description={labels.IMPORT_WALLET_DESCRIPTION}
             />
           </ListItem>
         </List>

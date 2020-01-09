@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import CheckCircle from '@material-ui/icons/CheckCircle'
+import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
@@ -38,6 +39,7 @@ function PaperDropzone() {
   const [showPassword, toggleShowPassword] = React.useState(false)
   const [password, setPassword] = React.useState('')
   const dispatch = useDispatch()
+  const history = useHistory()
   const onDrop = React.useCallback(acceptedFiles => {
     const reader = new FileReader()
 
@@ -72,6 +74,8 @@ function PaperDropzone() {
     }
 
     dispatch(importWallet(rst.data as string))
+    // TODO: refactor
+    setTimeout(() => history.push('/'), 1000)
   }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
