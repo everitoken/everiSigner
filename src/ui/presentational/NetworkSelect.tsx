@@ -19,7 +19,6 @@ function NetworkSelect(props: StyledComponentProps) {
   const { networks, selected, selectNetwork } = React.useContext(NetworkContext)
 
   const handleSelect = (network: NetworkItemType) => {
-    console.log('FEI1', network)
     if (!isSameNetwork(selected, network)) {
       selectNetwork(network)
     }
