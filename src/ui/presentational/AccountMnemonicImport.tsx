@@ -1,7 +1,4 @@
 import * as React from 'react'
-import FlexContainer from './FlexContainer'
-import { createAccountWithMnemonic } from '../action'
-import InfoArea from './InfoArea'
 import {
   Divider,
   Stepper,
@@ -10,11 +7,16 @@ import {
   TextField,
   Button,
 } from '@material-ui/core'
+import * as uuid from 'uuid'
+
+import { RouteComponentProps, withRouter } from 'react-router-dom'
+
+import FlexContainer from './FlexContainer'
+import { createAccountWithMnemonic } from '../action'
+import InfoArea from './InfoArea'
 import AccountNameComponent from './AccountNameComponent'
-import uuid = require('uuid')
 import labels from '../../labels'
 import SuccessInfoLayout from './SuccessInfoLayout'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
 
 const STEPS = [
   { step: labels.ACCOUNT_NAME, action: labels.STEP_NEXT },
@@ -25,7 +27,6 @@ type StepInputSeedPhrasesPropTypes = {
   buttonText: string
   onNextClick: (words: string) => void
 }
-
 
 function StepInputSeedPhrases(props: StepInputSeedPhrasesPropTypes) {
   const [value, setValue] = React.useState('')
@@ -94,7 +95,7 @@ function StepSuccess({ history }: RouteComponentProps) {
         color="primary"
         onClick={() => history.push('/')}
       >
-        Go to Account
+        {labels.GO_BACK}
       </Button>
     </SuccessInfoLayout>
   )
@@ -112,6 +113,10 @@ function AccountMnemonicImport(props: AccountImportPropType) {
   const [activeStep, setActiveStep] = React.useState(0)
   const [name, setName] = React.useState('')
 
+  function handleNextStep() {
+    setActiveStep(activeStep + 1)
+  }
+
   const handleCreateAccount = (words: string) => {
     props.onClick(
       {
@@ -123,10 +128,6 @@ function AccountMnemonicImport(props: AccountImportPropType) {
     )
 
     handleNextStep()
-  }
-
-  const handleNextStep = () => {
-    setActiveStep(activeStep + 1)
   }
 
   const renderStep = () => {

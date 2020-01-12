@@ -30,7 +30,6 @@ type StepInputPrivateKeyPropTypes = {
   onNextClick: (privateKey: string) => void
 }
 
-
 function StepInputPrivateKey(props: StepInputPrivateKeyPropTypes) {
   const [privateKey, setPrivateKey] = React.useState('')
   const [publicKey, setPublicKey] = React.useState('')
@@ -166,7 +165,7 @@ function StepSuccess({ history }: RouteComponentProps) {
         color="primary"
         onClick={() => history.push('/')}
       >
-        Go to Account
+        {labels.GO_BACK}
       </Button>
     </SuccessInfoLayout>
   )
@@ -184,6 +183,10 @@ function AccountImport(props: AccountImportPropType) {
   const [activeStep, setActiveStep] = React.useState(0)
   const [name, setName] = React.useState('')
 
+  const handleNextStep = () => {
+    setActiveStep(activeStep + 1)
+  }
+
   const handleImportAccount = (privateKey: string) => {
     props.onClick({
       id: uuid.v4(),
@@ -191,10 +194,6 @@ function AccountImport(props: AccountImportPropType) {
       name,
     })
     handleNextStep()
-  }
-
-  const handleNextStep = () => {
-    setActiveStep(activeStep + 1)
   }
 
   const renderStep = () => {

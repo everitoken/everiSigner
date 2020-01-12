@@ -87,7 +87,6 @@ type StepVerifySeedPhrasesPropTypes = {
   onNextClick: () => void
 }
 
-
 function StepVerifySeedPhrases(props: StepVerifySeedPhrasesPropTypes) {
   const [value, setValue] = React.useState('')
   const [hasError, setError] = React.useState(false)
@@ -161,7 +160,7 @@ function StepSuccess({ history }: RouteComponentProps) {
         color="primary"
         onClick={() => history.push('/')}
       >
-        Go to Account
+        {labels.GO_BACK}
       </Button>
     </SuccessInfoLayout>
   )

@@ -1,4 +1,5 @@
 export default {
+  GO_BACK: '返回',
   GET_STARTED: '开始设置钱包',
   GET_STARTED_DESCRIPTION:
     'Decentralized signature, identity and authentication system for everiToken public chain.',
@@ -55,6 +56,7 @@ export default {
   COPY_PRIVATE_KEY_SUCCESSFUL: '成功复制私钥',
   CREATE_NETWORK: '创建节点',
   CREATE_NEW_ACCOUNT: '创建新账户',
+  ACCOUNT_NAME_TEXT: '输入账户名称（最多25个字符）',
   CREATE: '创建',
   FAIL_FIND_ACCOUNT: '无找到指定账户',
   FAILED_COPIED_TO_CLIPBOARD: '复制失败!',
