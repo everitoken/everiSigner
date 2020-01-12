@@ -1,5 +1,4 @@
 import * as React from 'react'
-import WithAuthentication from './WithAuthentication'
 import InvalidRoute from './InvalidRoute'
 import SwipeableViews from 'react-swipeable-views'
 import AppBar from '@material-ui/core/AppBar'
