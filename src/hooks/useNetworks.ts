@@ -34,6 +34,7 @@ const mainnet4 = {
   isProduction: true,
   isCustom: false,
 }
+
 const mainnet5 = {
   name: 'mainnet5',
   url: 'https://mainnet5.everitoken.io',
@@ -41,6 +42,7 @@ const mainnet5 = {
   isProduction: true,
   isCustom: false,
 }
+
 const mainnet6 = {
   name: 'mainnet6',
   url: 'https://mainnet6.everitoken.io',
@@ -48,6 +50,7 @@ const mainnet6 = {
   isProduction: true,
   isCustom: false,
 }
+
 const mainnet7 = {
   name: 'mainnet7',
   url: 'https://mainnet7.everitoken.io',
@@ -71,10 +74,51 @@ const mainnet9 = {
   isProduction: true,
   isCustom: false,
 }
+
+const mainnet10 = {
+  name: 'mainnet10',
+  url: 'https://mainnet10.everitoken.io',
+  location: 'TOKYO 2',
+  isProduction: true,
+  isCustom: false,
+}
+
+const mainnet11 = {
+  name: 'mainnet11',
+  url: 'https://mainnet11.everitoken.io',
+  location: 'CALIFORNIA 2',
+  isProduction: true,
+  isCustom: false,
+}
+
+const mainnet12 = {
+  name: 'mainnet12',
+  url: 'https://mainnet12.everitoken.io',
+  location: 'HONG KONG 2',
+  isProduction: true,
+  isCustom: false,
+}
+
+const mainnet13 = {
+  name: 'mainnet13',
+  url: 'https://mainnet13.everitoken.io',
+  location: 'OHIO',
+  isProduction: true,
+  isCustom: false,
+}
+
 const mainnet14 = {
   name: 'mainnet14',
-  url: 'https://mainnet14.everitoken.io',
+  url: 'https://mainnet14.evtnd.com',
   location: 'SHANG HAI',
+  isProduction: true,
+  isCustom: false,
+}
+
+const mainnet15 = {
+  name: 'mainnet15',
+  url: 'https://mainnet15.everitoken.io',
+  location: 'SINGAPORE 2',
   isProduction: true,
   isCustom: false,
 }
@@ -89,15 +133,20 @@ const testnet = {
 
 export const NETWORKS = [
   mainnet1,
-  mainnet3,
   mainnet2,
+  mainnet3,
   mainnet4,
   mainnet5,
   mainnet6,
   mainnet7,
   mainnet8,
   mainnet9,
+  mainnet10,
+  mainnet11,
+  mainnet12,
+  mainnet13,
   mainnet14,
+  mainnet15,
   testnet,
 ]
 
