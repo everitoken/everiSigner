@@ -6,6 +6,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore'
 import { isSameNetwork } from '../util'
 import NetworkSelectionDialog from './NetworkSelectionDialog'
 import { NetworkContext } from '../../context/Network'
+import labels from '../../labels'
 
 const styles = {
   root: {
@@ -45,7 +46,7 @@ function NetworkSelect(props: StyledComponentProps) {
             className="everitoken-mono"
             style={{ fontSize: '12px', color: style.colors.headerPrimary }}
           >
-            <b>Network: </b>
+            <b>{labels.NETWORK}: </b>
             {selected.location.toUpperCase()}
           </p>
         }

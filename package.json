@@ -4,7 +4,7 @@
   "description": "Signing provider",
   "main": "index.js",
   "scripts": {
-    "watch": "NODE_ENV=development parcel watch --no-hmr src/manifest.json",
+    "watch": "NODE_ENV=development parcel watch --no-hmr src/manifest.json --no-cache",
     "test": "jest",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"

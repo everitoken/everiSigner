@@ -87,7 +87,6 @@ type StepVerifySeedPhrasesPropTypes = {
   onNextClick: () => void
 }
 
-
 function StepVerifySeedPhrases(props: StepVerifySeedPhrasesPropTypes) {
   const [value, setValue] = React.useState('')
   const [hasError, setError] = React.useState(false)
@@ -161,7 +160,7 @@ function StepSuccess({ history }: RouteComponentProps) {
         color="primary"
         onClick={() => history.push('/')}
       >
-        Go to Account
+        {labels.GO_BACK}
       </Button>
     </SuccessInfoLayout>
   )
@@ -252,13 +251,13 @@ function AccountCreate(props: AccountCreatePropTypes) {
         <div>
           <InfoArea>
             <p style={{ padding: '8px 16px' }}>
-              A default account has been created, now you can only create loose
-              account. (TODO: better wording)
+              A seed account has been created, now you can only create loose
+              account.
             </p>
           </InfoArea>
         </div>
         <FlexContainer withPadding alignSelf="stretch" alignItems="stretch">
-          <p>A default account has been created.</p>
+          <p>A seed account has been created.</p>
         </FlexContainer>
       </FlexContainer>
     )

@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core'
 import FlexContainer from './FlexContainer'
 import AlertDialog from './AlertDialog'
+import labels from '../../labels'
 
 type PropTypes = {
   autoFocus?: boolean
@@ -16,12 +17,14 @@ type PropTypes = {
   onNextClick: (accountName: string) => void
 }
 
-function AccountNameComponent(props:PropTypes){
+function AccountNameComponent(props: PropTypes) {
   const autoFocus = props.autoFocus || false
   const [accountName, setAccountName] = React.useState('')
   const [errorMessage, setErrorMessage] = React.useState('')
 
-  const handleAccountChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAccountChange = ({
+    target,
+  }: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = target
     setAccountName(value)
   }
@@ -29,16 +32,13 @@ function AccountNameComponent(props:PropTypes){
     if (props.accountNames.includes(accountName)) {
       return {
         isValid: false,
-        errorMessage: `Account name: "${ accountName }" already exists.`,
+        errorMessage: `账户名: "${accountName}" 已存在。`,
       }
     }
-    if (
-      accountName.length === 0 ||
-      accountName.length > 25
-    ) {
+    if (accountName.length === 0 || accountName.length > 25) {
       return {
         isValid: false,
-        errorMessage: 'Account name exceeds max length.',
+        errorMessage: '无效账户名',
       }
     }
 
@@ -55,56 +55,52 @@ function AccountNameComponent(props:PropTypes){
 
     props.onNextClick(accountName)
   }
-    return (
-      <React.Fragment>
-        <AlertDialog
-          title="Error"
-          open={errorMessage.length !== 0}
-          onClose={() => {
-            setErrorMessage('')
-          }}
-        >
-          <Typography>{errorMessage}</Typography>
-        </AlertDialog>
-        <FlexContainer>
-          <FlexContainer
-            alignItems="stretch"
-            justifyContent="center"
-            withPadding
-          >
-            <FormControl>
-              <InputLabel htmlFor="account-name">
-                Specify account name (less than 25 chars)
-              </InputLabel>
-              <Input
-                autoFocus={autoFocus}
-                style={{ fontSize: 24 }}
-                error={errorMessage.length !== 0}
-                id="account-name"
-                value={accountName}
-                onChange={handleAccountChange}
-              />
-            </FormControl>
-          </FlexContainer>
-          <div style={{ alignSelf: 'stretch' }}>
-            <FlexContainer
-              withPadding
-              alignItems="stretch"
-              justifyContent="flex-end"
-            >
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                onClick={handleClick}
-              >
-                {props.buttonText}
-              </Button>
-            </FlexContainer>
-          </div>
+  return (
+    <React.Fragment>
+      <AlertDialog
+        title="Error"
+        open={errorMessage.length !== 0}
+        onClose={() => {
+          setErrorMessage('')
+        }}
+      >
+        <Typography>{errorMessage}</Typography>
+      </AlertDialog>
+      <FlexContainer>
+        <FlexContainer alignItems="stretch" justifyContent="center" withPadding>
+          <FormControl>
+            <InputLabel htmlFor="account-name">
+              {labels.ACCOUNT_NAME_TEXT}
+            </InputLabel>
+            <Input
+              autoFocus={autoFocus}
+              style={{ fontSize: 24 }}
+              error={errorMessage.length !== 0}
+              id="account-name"
+              value={accountName}
+              onChange={handleAccountChange}
+            />
+          </FormControl>
         </FlexContainer>
-      </React.Fragment>
-    )
+        <div style={{ alignSelf: 'stretch' }}>
+          <FlexContainer
+            withPadding
+            alignItems="stretch"
+            justifyContent="flex-end"
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              onClick={handleClick}
+            >
+              {props.buttonText}
+            </Button>
+          </FlexContainer>
+        </div>
+      </FlexContainer>
+    </React.Fragment>
+  )
 }
 
 export default AccountNameComponent
