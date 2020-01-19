@@ -1,10 +1,11 @@
 export default {
+  ABOUT_TITLE: '关于 everiSigner',
   GO_BACK: '返回',
   GET_STARTED: '开始设置钱包',
   GET_STARTED_DESCRIPTION:
     'Decentralized signature, identity and authentication system for everiToken public chain.',
-  ABOUT_NAVIGATION_SECONDARY_TEXT: 'Learn more about everiSigner',
-  ABOUT: 'About',
+  ABOUT_NAVIGATION_SECONDARY_TEXT: '版本，相关连接及其他信息',
+  ABOUT: '关于everiSigner',
   ACCOUNT_CREATE_SUCCESSFUL: '成功创建账户',
   ACCOUNT_DETAIL: '账户',
   ACCOUNT_IMPORT_SUCCESSFUL: '成功导入账户',
