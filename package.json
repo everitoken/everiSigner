@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "watch": "NODE_ENV=development parcel watch --no-hmr src/manifest.json --no-cache",
+    "build:prod": "NODE_ENV=production parcel build src/manifest.json --no-cache",
+    "publish": "zip -r everisigner.zip dist",
     "test": "jest",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
