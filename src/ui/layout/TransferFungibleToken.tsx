@@ -1,4 +1,6 @@
 import * as React from 'react'
+import * as uuid from 'uuid'
+import NumberFormat from 'react-number-format'
 import { NavigationLayout } from '../presentational/MainLayout'
 import Button from '../presentational/InlineButton'
 import FlexContainer from '../presentational/FlexContainer'
@@ -14,7 +16,6 @@ import { connect } from 'react-redux'
 import { transferft, transferftAcknowledge } from '../action'
 import { getForTransferFungible } from '../../store/getter'
 import { AccountStateType } from '../../store/reducer/accounts'
-import uuid = require('uuid')
 import SuccessInfoLayout from '../presentational/SuccessInfoLayout'
 
 const Container = styled.div`
@@ -42,6 +43,29 @@ type StateTypes = {
   addressErrorMsg: string
   amountErrorMsg: string
   transferring: boolean
+}
+
+function NumberFormatCustom(props) {
+  const { inputRef, onChange, precision, ...other } = props
+
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={values => {
+        onChange({
+          target: {
+            value: values.value,
+          },
+        })
+      }}
+      decimalScale={precision || 5}
+      fixedDecimalScale
+      allowNegative={false}
+      thousandSeparator
+      isNumericString
+    />
+  )
 }
 
 class TransferFungibleToken extends React.PureComponent<PropTypes, StateTypes> {
@@ -177,11 +201,21 @@ class TransferFungibleToken extends React.PureComponent<PropTypes, StateTypes> {
               margin="normal"
               error={Boolean(this.state.amountErrorMsg)}
             >
-              <InputLabel htmlFor="amount">{labels.AMOUNT}</InputLabel>
-              <Input
-                id="amount"
+              <TextField
+                margin="normal"
+                label={labels.AMOUNT}
                 value={this.state.amount}
                 onChange={this.handleAmountChange}
+                InputProps={{
+                  inputComponent: NumberFormatCustom,
+                }}
+                inputProps={{
+                  precision: this.state.token?.precision || 5,
+                  style: {
+                    fontFamily: 'Roboto Mono',
+                  },
+                  spellCheck: false,
+                }}
               />
             </FormControl>
           </div>
@@ -266,8 +300,8 @@ class TransferFungibleToken extends React.PureComponent<PropTypes, StateTypes> {
   }
 }
 
-const ConnectedTransferFungible = connect(
-  getForTransferFungible,
-  { onSubmit: transferft, onSucceed: transferftAcknowledge }
-)(TransferFungibleToken)
+const ConnectedTransferFungible = connect(getForTransferFungible, {
+  onSubmit: transferft,
+  onSucceed: transferftAcknowledge,
+})(TransferFungibleToken)
 export default ConnectedTransferFungible

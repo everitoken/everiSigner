@@ -65,7 +65,7 @@ function TokenSelect(props: TokenSelectPropTypes) {
         )}
       </CardActionArea>
       <CardActions>
-        <BalanceContainer style={{ paddingLeft: 25 }}>
+        <BalanceContainer>
           <Balance>
             {labels.BALANCE_REST}:
             {props.loading ? BALANCE_PLACEHOLDER : props.data.value}
