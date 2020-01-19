@@ -10,6 +10,7 @@ export type NFTType = {
 export interface TokenDetail {
   id: number
   displayName: string
+  precision: number
   name: string
   logoDataUri: string
   value: string

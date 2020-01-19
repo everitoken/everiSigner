@@ -129,7 +129,6 @@ class TokenSelectConnected extends React.PureComponent<
   }
 }
 
-export default connect(
-  getForTokenSelect('transferft'),
-  { onMount: fetchBalance }
-)(TokenSelectConnected)
+export default connect(getForTokenSelect('transferft'), {
+  onMount: fetchBalance,
+})(TokenSelectConnected)

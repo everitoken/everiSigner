@@ -27,6 +27,7 @@ export const getEmptyEvtBalance = (): TokenDetail => {
   return {
     id: 1,
     displayName: 'EVT',
+    precision: 5,
     name: 'EVT',
     logoDataUri: imageDataUriMap['1.transparent'],
     value: '0.00000',

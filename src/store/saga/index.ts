@@ -154,11 +154,18 @@ function* fetchBalanceWatcher() {
         const logoMeta = balance.metas.find(
           (meta: any) => meta.key === 'symbol-icon'
         )
+
+        const { sym }: { sym: string } = balance
+        const [precision] = sym.split(',')
+
         return {
           id,
+          precision: Number(precision) || 5,
           displayName: balance.name,
           logoDataUri:
-            imageDataUriMap[String(id)] || logoMeta || imageDataUriMap.default,
+            imageDataUriMap[String(id)] ||
+            logoMeta?.value ||
+            imageDataUriMap.default,
           name: balance.sym_name,
           value: rawBalanceArray[i].value,
         }
