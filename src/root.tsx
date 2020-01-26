@@ -3,6 +3,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import Container from './ui/presentational/Container'
+import './i18n'
 
 import createStore from './store'
 import App from './ui/App'

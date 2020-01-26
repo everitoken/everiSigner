@@ -36,6 +36,7 @@ class AccountBalanceScreen extends React.PureComponent<
       this.props.onRefresh(this.props.account.publicKey)
     }
   }
+
   render() {
     return (
       <NavigationLayout
@@ -53,10 +54,9 @@ class AccountBalanceScreen extends React.PureComponent<
   }
 }
 
-const ConnectedAccountQR = connect(
-  getAccountDetailScreen,
-  { onRefresh: fetchBalance }
-)(AccountBalanceScreen)
+const ConnectedAccountQR = connect(getAccountDetailScreen, {
+  onRefresh: fetchBalance,
+})(AccountBalanceScreen)
 
 export default (props: RouteComponentProps<{ id: string }>) => (
   <WithAuthentication>
