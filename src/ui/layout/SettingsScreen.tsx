@@ -17,7 +17,9 @@ import ConnectedNavigationBackButton from './NavigationButtons'
 import labels from '../../labels'
 import NetworkIcon from '@material-ui/icons/CloudCircle'
 import AccountIcon from '@material-ui/icons/AccountBox'
+import LanguageIcon from '@material-ui/icons/Language'
 import WalletExportScreen from '../layout/WalletExportScreen'
+import WalletMiscSettings from '../layout/WalletMiscSettings'
 import { removePassword } from '../action'
 import CustomListItem from '../presentational/CustomListItem'
 
@@ -74,6 +76,15 @@ function Settings() {
             />
           </CustomListItem>
           <CustomListItem
+            onClick={() => history.push('/settings/misc')}
+            LeftIcon={LanguageIcon}
+          >
+            <ListItemText
+              primary={t('LANGUAGE')}
+              secondary={t('LANGUAGE_DESC')}
+            />
+          </CustomListItem>
+          <CustomListItem
             onClick={() => history.push('/settings/about')}
             LeftIcon={InfoIcon}
             divider={false}
@@ -101,6 +112,7 @@ export default function SettingsScreen({ match }: RouteComponentProps) {
       <Route path={`${match.path}/about`} component={AboutScreen} />
       <Route path={`${match.path}/network`} component={NetworkScreen} />
       <Route path={`${match.path}/export`} component={WalletExportScreen} />
+      <Route path={`${match.path}/misc`} component={WalletMiscSettings} />
     </MainLayout>
   )
 }

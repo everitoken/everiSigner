@@ -1,30 +1,25 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
-import labels from './labels'
+import zh from './messages/zh'
+import en from './messages/en'
 
 const resources = {
-  cn: {
-    translation: {
-      ...labels,
-    },
+  'zh-CN': {
+    translation: zh,
   },
-  en: {
-    translation: {
-      ...labels,
-      ABOUT_TITLE: 'About everiSigner',
-    },
+  'en-US': {
+    translation: en,
   },
 }
 
-i18n
-  .use(initReactI18next) // passes i18n down to react-i18next
-  .init({
-    resources,
-    lng: 'en',
-    keySeparator: false, // we do not use keys in form messages.welcome
-    interpolation: {
-      escapeValue: false, // react already safes from xss
-    },
-  })
+i18n.use(initReactI18next).init({
+  resources,
+  fallbackLng: 'zh-CN',
+  lng: navigator.language,
+  keySeparator: false,
+  interpolation: {
+    escapeValue: false,
+  },
+})
 
 export default i18n

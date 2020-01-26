@@ -5,7 +5,7 @@ import Logo from '../presentational/Logo'
 import FlexContainer from '../presentational/FlexContainer'
 import { Typography } from '@material-ui/core'
 import styled from 'styled-components'
-import labels from '../../labels'
+import { useTranslation } from 'react-i18next'
 
 const Container = styled.div`
   text-align: center;
@@ -18,21 +18,20 @@ const Container = styled.div`
 
 function GetStarted() {
   const history = useHistory()
+  const { t } = useTranslation()
 
   return (
     <FlexContainer justifyContent="space-evenly" alignItems="center">
       <Logo />
       <Container>
-        <Typography variant="body2">
-          {labels.GET_STARTED_DESCRIPTION}
-        </Typography>
+        <Typography variant="body2">{t('GET_STARTED_DESCRIPTION')}</Typography>
         <Button
           color="primary"
           variant="contained"
           size="large"
           onClick={() => history.push('/wallet/setpassword')}
         >
-          {labels.GET_STARTED}
+          {t('GET_STARTED')}
         </Button>
       </Container>
     </FlexContainer>

@@ -11,7 +11,7 @@ class FungibleOverview extends React.PureComponent<FungibleOverviewPropTypes> {
   render() {
     return (
       <NFTListScreen
-        title={labels.FUNGIBLE_BALANCE}
+        title={labels.NFTs_LIST}
         publicKey={this.props.account.publicKey}
       />
     )

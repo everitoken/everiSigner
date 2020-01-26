@@ -17,7 +17,7 @@ import InfoArea from '../presentational/InfoArea'
 import Button from '../presentational/InlineButton'
 import useAuthenticationState from '../../hooks/useAuthenticationState'
 import { useHistory } from 'react-router-dom'
-import labels from '../../labels'
+import { useTranslation } from 'react-i18next'
 
 function WalletSetpassword() {
   const [password, setPassword] = React.useState('')
@@ -26,6 +26,7 @@ function WalletSetpassword() {
   const [showPassword, setShowPassword] = React.useState(false)
   const dispatch = useDispatch()
   const history = useHistory()
+  const { t } = useTranslation()
 
   const [state] = useAuthenticationState()
 
@@ -72,20 +73,20 @@ function WalletSetpassword() {
 
   return (
     <NavigationLayout
-      title={labels.WALLET_CREATE_SET_PASSWORD}
+      title={t('WALLET_CREATE_SET_PASSWORD')}
       renderLeft={() => <ConnectedNavigationBackButton />}
     >
       <FlexContainer>
         <InfoArea>
           <ul>
-            <li>{labels.WALLET_CREATE_SET_PASSWORD_HINT_0}</li>
-            <li>{labels.WALLET_CREATE_SET_PASSWORD_HINT_1}</li>
-            <li>{labels.WALLET_CREATE_SET_PASSWORD_HINT_2}</li>
+            <li>{t('WALLET_CREATE_SET_PASSWORD_HINT_0')}</li>
+            <li>{t('WALLET_CREATE_SET_PASSWORD_HINT_1')}</li>
+            <li>{t('WALLET_CREATE_SET_PASSWORD_HINT_2')}</li>
           </ul>
         </InfoArea>
         <FlexContainer withPadding alignItems="stretch">
           <FormControl>
-            <InputLabel htmlFor="password">{labels.NEW_PASSWORD}</InputLabel>
+            <InputLabel htmlFor="password">{t('NEW_PASSWORD')}</InputLabel>
             <Input
               id="password"
               type={showPassword ? 'text' : 'password'}
@@ -106,7 +107,7 @@ function WalletSetpassword() {
           <div style={{ height: 32 }} />
           <FormControl>
             <InputLabel htmlFor="password-confirm">
-              {labels.CONFIRM_PASSWORD}
+              {t('CONFIRM_PASSWORD')}
             </InputLabel>
             <Input
               error={
@@ -135,7 +136,7 @@ function WalletSetpassword() {
             color="primary"
             onClick={handleSetPassword}
           >
-            设置钱包密码
+            {t('WALLET_CREATE_SET_PASSWORD')}
           </Button>
         </FlexContainer>
       </FlexContainer>

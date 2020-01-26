@@ -11,6 +11,13 @@ export const ACCOUNT_IMPORT = 'store/ACCOUNT_IMPORT'
 export const ACCOUNT_CREATE = 'store/ACCOUNT_CREATE'
 export const MAIN_ACCOUNT_SET = 'store/MAIN_ACCOUNT_SET'
 export const ACCOUNT_REMOVE = 'store/ACCOUNT_REMOVE'
+export const LANG_SETTING_SET = 'store/SETTING_SET'
+
+export interface LangSettingSet {
+  type: typeof LANG_SETTING_SET
+  payload: 'en-US' | 'zh-CN'
+}
+
 export interface MainAccountSetType {
   type: typeof MAIN_ACCOUNT_SET
   payload: AccountStateType
@@ -171,6 +178,11 @@ export const authorizedEntityAdd = (payload: {
   payload,
 })
 
+export const setLanguage = (lang: 'en-US' | 'zh-CN'): LangSettingSet => ({
+  type: LANG_SETTING_SET,
+  payload: lang,
+})
+
 export type StoreActionTypes =
   | AccountImportType
   | AccountCreateType
@@ -187,3 +199,4 @@ export type StoreActionTypes =
   | NetworkAddType
   | NetworkRemoveType
   | AuthorizedEntityAddType
+  | LangSettingSet
