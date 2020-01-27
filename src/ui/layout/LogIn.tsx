@@ -17,7 +17,7 @@ import { getPasswordHash } from '../../store/getter'
 import { verifyPassword } from '../../service/PasswordService'
 import Logo from '../presentational/Logo'
 import ScreenHeader from '../presentational/ScreenHeader'
-import labels from '../../labels'
+import { useTranslation } from 'react-i18next'
 
 type PropTypes = {
   message: string
@@ -29,6 +29,7 @@ function Login(props: PropTypes) {
   const [showPassword, setShowPassword] = React.useState(false)
   const passwordHash = useSelector(getPasswordHash)
   const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword)
@@ -61,7 +62,7 @@ function Login(props: PropTypes) {
           <ScreenHeader title={props.message} withBackgroundColor={false} />
           <FormControl style={{ width: '90%' }}>
             <InputLabel htmlFor="password">
-              {labels.TYPE_PASSWORD_TO_UNLOCK}
+              {t('TYPE_PASSWORD_TO_UNLOCK')}
             </InputLabel>
             <Input
               error={invalid}
@@ -92,7 +93,7 @@ function Login(props: PropTypes) {
         size="large"
         onClick={onUnlock}
       >
-        {labels.UNLOCK}
+        {t('UNLOCK')}
       </Button>
     </FlexContainer>
   )

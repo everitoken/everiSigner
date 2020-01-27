@@ -14,7 +14,6 @@ import LockIcon from '@material-ui/icons/Lock'
 import { List, ListItemText } from '@material-ui/core'
 import FlexContainer from '../presentational/FlexContainer'
 import ConnectedNavigationBackButton from './NavigationButtons'
-import labels from '../../labels'
 import NetworkIcon from '@material-ui/icons/CloudCircle'
 import AccountIcon from '@material-ui/icons/AccountBox'
 import LanguageIcon from '@material-ui/icons/Language'
@@ -45,7 +44,7 @@ function Settings() {
           >
             <ListItemText
               primary={t('LOCK_WALLET')}
-              secondary={labels.LOCK_WALLET_SECONDARY_TEXT}
+              secondary={t('LOCK_WALLET_SECONDARY_TEXT')}
             />
           </CustomListItem>
           <CustomListItem

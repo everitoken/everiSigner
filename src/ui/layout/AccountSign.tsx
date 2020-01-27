@@ -36,9 +36,10 @@ class ConnectedAccountPayeeCode extends React.Component<
   handleSign = () => {
     const { EvtKey } = Evtjs
     if (this.props.account) {
-      EvtKey.sign(this.state.value, this.props.account.privateKey).then(
-        (signature: string) => this.setState({ signature })
-      )
+      EvtKey.sign(
+        this.state.value,
+        this.props.account.privateKey
+      ).then((signature: string) => this.setState({ signature }))
     }
   }
 

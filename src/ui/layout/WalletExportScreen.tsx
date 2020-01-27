@@ -8,7 +8,6 @@ import ConnectedNavigationBackButton from './NavigationButtons'
 import { getPasswordProtectedView } from '../../store/getter'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router'
-import labels from '../../labels'
 import PasswordProtectedView from '../presentational/PasswordProtectedView'
 import { exportWallet } from '../action'
 import InfoArea from '../presentational/InfoArea'
@@ -22,6 +21,7 @@ import {
   IconButton,
 } from '@material-ui/core'
 import Button from '../presentational/InlineButton'
+import { useTranslation } from 'react-i18next'
 
 type PropTypes = {
   password: string
@@ -31,6 +31,7 @@ type PropTypes = {
 const WalletExportScreen = (
   props: PropTypes & RouteComponentProps<{ id: string }>
 ) => {
+  const { t } = useTranslation()
   const [password, setPassword] = React.useState('')
   const [showPassword, toggleShowPassword] = React.useState(false)
   const [disableExportBtn, setDisableExportBtn] = React.useState(true)
@@ -44,7 +45,7 @@ const WalletExportScreen = (
 
   return (
     <NavigationLayout
-      title={labels.BACKUP_WALLET}
+      title={t('BACKUP_WALLET')}
       renderLeft={() => <ConnectedNavigationBackButton />}
     >
       <PasswordProtectedView password={props.password}>
@@ -54,15 +55,15 @@ const WalletExportScreen = (
               <div style={{ width: '100%' }}>
                 <InfoArea>
                   <ul style={{ paddingRight: '11px' }}>
-                    <li>{labels.BACKUP_INFO_TEXT_SAVE_TO_COMPUTER}</li>
-                    <li>{labels.BACKUP_INFO_TEXT_ADDITIONAL_PASSPHRASE}</li>
+                    <li>{t('BACKUP_INFO_TEXT_SAVE_TO_COMPUTER')}</li>
+                    <li>{t('BACKUP_INFO_TEXT_ADDITIONAL_PASSPHRASE')}</li>
                   </ul>
                 </InfoArea>
               </div>
               <FlexContainer withPadding justifyContent="space-around">
                 <FormControl fullWidth>
                   <InputLabel htmlFor="password">
-                    {labels.BACKUP_WALLET_ADDITIONAL_PASSPHRASE_BTN_LABEL}
+                    {t('BACKUP_WALLET_ADDITIONAL_PASSPHRASE_BTN_LABEL')}
                   </InputLabel>
                   <Input
                     id="additional-password"
@@ -94,7 +95,7 @@ const WalletExportScreen = (
                     })
                   }
                 >
-                  {labels.BACKUP_WALLET_BTN_TEXT}
+                  {t('BACKUP_WALLET_BTN_TEXT')}
                 </Button>
               </FlexContainer>
             </FlexContainer>

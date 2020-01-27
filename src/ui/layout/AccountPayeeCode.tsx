@@ -4,13 +4,15 @@ import { getMainAccount } from '../../store/getter'
 import PayeeCode from '../presentational/PayeeCode'
 import { NavigationLayout } from '../presentational/MainLayout'
 import ConnectedNavigationBackButton from './NavigationButtons'
-import labels from '../../labels'
+import { useTranslation } from 'react-i18next'
 
 function AccountPayeeCode() {
   const { account } = useSelector(getMainAccount)
+  const { t } = useTranslation()
+
   return (
     <NavigationLayout
-      title={labels.PAYEE_CODE}
+      title={t('PAYEE_CODE')}
       renderLeft={() => <ConnectedNavigationBackButton />}
     >
       <div style={{ margin: '0 auto' }}>

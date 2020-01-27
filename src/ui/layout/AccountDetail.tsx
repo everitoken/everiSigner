@@ -4,7 +4,6 @@ import { removeAccount } from '../action'
 import styled from 'styled-components'
 import { RouteComponentProps } from 'react-router'
 import { Tooltip, List } from '@material-ui/core'
-import labels from '../../labels'
 import QR from '../presentational/QR'
 import { compose } from 'redux'
 import FlexContainer from '../presentational/FlexContainer'
@@ -20,6 +19,7 @@ import SendIcon from '@material-ui/icons/CallMade'
 import ReceiveIcon from '@material-ui/icons/CallReceived'
 import EncryptIcon from '@material-ui/icons/EnhancedEncryption'
 import { useCopyToClipboard } from '../../hooks/componentHooks'
+import { useTranslation } from 'react-i18next'
 
 type PropTypes = {
   account: AccountStateType
@@ -35,11 +35,12 @@ const QRContainer = styled.div`
 `
 function AccountOverview(props: PropTypes & RouteComponentProps) {
   const { account } = props
-  const [, handleCopy] = useCopyToClipboard(labels.COPY_ADDRESS_SUCCESSFUL)
+  const { t } = useTranslation()
+  const [, handleCopy] = useCopyToClipboard(t('COPY_ADDRESS_SUCCESSFUL'))
 
   return (
     <FlexContainer alignItems="center">
-      <Tooltip title={labels.CLICK_QR_TO_COPY} enterDelay={400}>
+      <Tooltip title={t('CLICK_QR_TO_COPY')} enterDelay={400}>
         <QRContainer>
           <QR data={account.publicKey} width={150} onClick={handleCopy} />
         </QRContainer>
@@ -54,8 +55,8 @@ function AccountOverview(props: PropTypes & RouteComponentProps) {
           LeftIcon={SendIcon}
         >
           <ListItemText
-            primary={labels.TRANSFERFT}
-            secondary={labels.TRANSFERFT_SECONDARY_TEXT}
+            primary={t('TRANSFERFT')}
+            secondary={t('TRANSFERFT_SECONDARY_TEXT')}
           />
         </CustomListItem>
         <CustomListItem
@@ -63,8 +64,8 @@ function AccountOverview(props: PropTypes & RouteComponentProps) {
           LeftIcon={ReceiveIcon}
         >
           <ListItemText
-            primary={labels.PAYEE_CODE}
-            secondary={labels.PAYEE_CODE_SECONDARY_TEXT}
+            primary={t('PAYEE_CODE')}
+            secondary={t('PAYEE_CODE_SECONDARY_TEXT')}
           />
         </CustomListItem>
         <CustomListItem
@@ -72,8 +73,8 @@ function AccountOverview(props: PropTypes & RouteComponentProps) {
           LeftIcon={KeyIcon}
         >
           <ListItemText
-            primary={labels.SHOW_PRIVATE_KEY}
-            secondary={labels.SHOW_PRIVATE_KEY_SECONDARY_TEXT}
+            primary={t('SHOW_PRIVATE_KEY')}
+            secondary={t('SHOW_PRIVATE_KEY_SECONDARY_TEXT')}
           />
         </CustomListItem>
         <CustomListItem
@@ -82,8 +83,8 @@ function AccountOverview(props: PropTypes & RouteComponentProps) {
           LeftIcon={DeleteIcon}
         >
           <ListItemText
-            primary={labels.REMOVE_ACCOUNT}
-            secondary={labels.REMOVE_ACCOUNT_SECONDARY_TEXT}
+            primary={t('REMOVE_ACCOUNT')}
+            secondary={t('REMOVE_ACCOUNT_SECONDARY_TEXT')}
           />
         </CustomListItem>
         <CustomListItem
@@ -91,8 +92,8 @@ function AccountOverview(props: PropTypes & RouteComponentProps) {
           LeftIcon={EncryptIcon}
         >
           <ListItemText
-            primary={labels.SIGN_DATA}
-            secondary={labels.ACCOUNT_SIGN_SECONDARY_TEXT}
+            primary={t('SIGN_DATA')}
+            secondary={t('ACCOUNT_SIGN_SECONDARY_TEXT')}
           />
         </CustomListItem>
       </List>
@@ -101,10 +102,7 @@ function AccountOverview(props: PropTypes & RouteComponentProps) {
 }
 
 const ConnectedAccountDetail = compose(
-  connect(
-    getMainAccount,
-    { onAccountRemove: removeAccount }
-  )
+  connect(getMainAccount, { onAccountRemove: removeAccount })
 )(AccountOverview)
 
 export default ConnectedAccountDetail
