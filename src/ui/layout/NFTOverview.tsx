@@ -1,21 +1,14 @@
 import * as React from 'react'
-import labels from '../../labels'
-import { connect } from 'react-redux'
-import { AccountStateType } from '../../store/reducer/accounts'
+import { useSelector } from 'react-redux'
 import { getMainAccount } from '../../store/getter'
 import NFTListScreen from './NFTListScreen'
+import { useTranslation } from 'react-i18next'
 
-type FungibleOverviewPropTypes = { account: AccountStateType }
+function FungibleOverview() {
+  const { t } = useTranslation()
+  const { account } = useSelector(getMainAccount)
 
-class FungibleOverview extends React.PureComponent<FungibleOverviewPropTypes> {
-  render() {
-    return (
-      <NFTListScreen
-        title={labels.FUNGIBLE_BALANCE}
-        publicKey={this.props.account.publicKey}
-      />
-    )
-  }
+  return <NFTListScreen title={t('NFTs_LIST')} publicKey={account.publicKey} />
 }
 
-export default connect(getMainAccount)(FungibleOverview)
+export default FungibleOverview

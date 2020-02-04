@@ -11,7 +11,6 @@ import { AccountStateType } from '../../store/reducer/accounts'
 import AccountAvatar from '../presentational/AccountAvatar'
 import { getForHome } from '../../store/getter'
 import AccountSelect from '../presentational/AccountSelect'
-import labels from '../../labels'
 import AccountBarLayout from './AccountBarLayout'
 import FlexContainer from '../presentational/FlexContainer'
 import Divider from '../presentational/Divider'
@@ -24,16 +23,18 @@ import AccountSign from './AccountSign'
 import TransferFungibleToken from './TransferFungibleToken'
 import { useCopyToClipboard } from '../../hooks/componentHooks'
 import { setMainAccount } from '../action'
+import { useTranslation } from 'react-i18next'
 
 function HomeAppBar() {
   const { mainAccount, accounts } = useSelector(getForHome)
   const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   if (!mainAccount) {
     return null
   }
 
-  const [, handleCopy] = useCopyToClipboard(labels.COPY_ADDRESS_SUCCESSFUL)
+  const [, handleCopy] = useCopyToClipboard(t('COPY_ADDRESS_SUCCESSFUL'))
 
   return (
     <Grid container justify="space-between" spacing={0}>
@@ -66,19 +67,23 @@ function HomeAppBar() {
   )
 }
 
-const AccountSetup = () => (
-  <FlexContainer justifyContent="center" alignItems="center">
-    <p>{labels.WALLET_NEED_SETUP}</p>
-    <div>
-      <Link
-        style={{ fontSize: 16, textDecoration: 'none' }}
-        to="/wallet/decide"
-      >
-        {labels.WALLET_SETUP_BUTTON}
-      </Link>
-    </div>
-  </FlexContainer>
-)
+const AccountSetup = () => {
+  const { t } = useTranslation()
+
+  return (
+    <FlexContainer justifyContent="center" alignItems="center">
+      <p>{t('WALLET_NEED_SETUP')}</p>
+      <div>
+        <Link
+          style={{ fontSize: 16, textDecoration: 'none' }}
+          to="/wallet/decide"
+        >
+          {t('WALLET_SETUP_BUTTON')}
+        </Link>
+      </div>
+    </FlexContainer>
+  )
+}
 
 type PropTypes = {
   mainAccount?: AccountStateType
@@ -89,6 +94,7 @@ function Home(props: PropTypes) {
   const [index, setIndex] = React.useState(0)
   const history = useHistory()
   const match = useRouteMatch()
+  const { t } = useTranslation()
 
   function handleTabChange(_: any, index: number) {
     setIndex(index)
@@ -131,17 +137,17 @@ function Home(props: PropTypes) {
         >
           <BottomNavigationAction
             disabled={!hasMainAccount}
-            label={labels.FUNGIBLE_BALANCE}
+            label={t('FUNGIBLE_BALANCE')}
             onClick={() => history.push(`${match.path}/ft`)}
           />
           <BottomNavigationAction
             disabled={!hasMainAccount}
-            label={labels.NFTs_LIST}
+            label={t('NFTs_LIST')}
             onClick={() => history.push(`${match.path}/nft`)}
           />
           <BottomNavigationAction
             disabled={!hasMainAccount}
-            label={labels.ACCOUNT_DETAIL}
+            label={t('ACCOUNT_DETAIL')}
             onClick={() => history.push(`${match.path}/detail`)}
           />
         </BottomNavigation>

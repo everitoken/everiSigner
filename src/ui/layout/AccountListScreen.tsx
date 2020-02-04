@@ -1,5 +1,4 @@
 import * as React from 'react'
-import WithAuthentication from './WithAuthentication'
 import InvalidRoute from './InvalidRoute'
 
 import FlexContainer from '../presentational/FlexContainer'
@@ -7,7 +6,7 @@ import { NavigationLayout } from '../presentational/MainLayout'
 import ConnectedNavigationBackButton from './NavigationButtons'
 import { AccountStateType } from '../../store/reducer/accounts'
 import { getDecryptedAccounts } from '../../store/getter'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import {
   List,
   ListItem,
@@ -20,13 +19,18 @@ import {
   Badge,
 } from '@material-ui/core'
 import MoreIcon from '@material-ui/icons/MoreVert'
-import labels from '../../labels'
 import { setMainAccount, removeAccount } from '../action'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
+import {
+  Link,
+  withRouter,
+  RouteComponentProps,
+  useHistory,
+} from 'react-router-dom'
 import { compose } from 'redux'
-import { Link } from 'react-router-dom'
 import AddIconButton from '../presentational/AddIconButton'
 import { useCopyToClipboard } from '../../hooks/componentHooks'
+import { useTranslation } from 'react-i18next'
+import useAuthenticationState from '../../hooks/useAuthenticationState'
 
 const ITEM_HEIGHT = 40
 
@@ -41,7 +45,8 @@ type AccountMoreMenuPropTypes = {
 function AccountMoreMenu(
   props: AccountMoreMenuPropTypes & RouteComponentProps
 ) {
-  const [, handleCopy] = useCopyToClipboard(labels.COPY_ADDRESS_SUCCESSFUL)
+  const { t } = useTranslation()
+  const [, handleCopy] = useCopyToClipboard(t('COPY_ADDRESS_SUCCESSFUL'))
   const handleClose = () => {
     props.onClose()
   }
@@ -68,7 +73,7 @@ function AccountMoreMenu(
           handleClose()
         }}
       >
-        {labels.COPY_ADDRESS}
+        {t('COPY_ADDRESS')}
       </MenuItem>
       <MenuItem
         onClick={() => {
@@ -76,7 +81,7 @@ function AccountMoreMenu(
           handleClose()
         }}
       >
-        {labels.SHOW_ADDRESS_AS_QR}
+        {t('SHOW_ADDRESS_AS_QR')}
       </MenuItem>
       <MenuItem
         disabled={props.account.isMain}
@@ -85,7 +90,7 @@ function AccountMoreMenu(
           handleClose()
         }}
       >
-        {labels.MAKE_DEFAULT_ACCOUNT}
+        {t('MAKE_DEFAULT_ACCOUNT')}
       </MenuItem>
       <MenuItem
         onClick={() => {
@@ -93,7 +98,7 @@ function AccountMoreMenu(
           handleClose()
         }}
       >
-        {labels.SHOW_ACCOUNT_BALANCE}
+        {t('SHOW_ACCOUNT_BALANCE')}
       </MenuItem>
       <MenuItem
         onClick={() => {
@@ -101,7 +106,7 @@ function AccountMoreMenu(
           handleClose()
         }}
       >
-        {labels.SHOW_PRIVATE_KEY}
+        {t('SHOW_PRIVATE_KEY')}
       </MenuItem>
 
       <MenuItem
@@ -111,7 +116,7 @@ function AccountMoreMenu(
           handleClose()
         }}
       >
-        {labels.REMOVE_ACCOUNT}
+        {t('REMOVE_ACCOUNT')}
       </MenuItem>
     </Menu>
   )
@@ -119,13 +124,10 @@ function AccountMoreMenu(
 
 const ConnectedAccountMoreMenu = compose(
   withRouter,
-  connect(
-    null,
-    {
-      onSetMainAccountClicked: setMainAccount,
-      onRemoveAccount: removeAccount,
-    }
-  )
+  connect(null, {
+    onSetMainAccountClicked: setMainAccount,
+    onRemoveAccount: removeAccount,
+  })
 )(AccountMoreMenu)
 
 type AccountListItemPropTypes = {
@@ -224,70 +226,49 @@ class AccountListItem extends React.PureComponent<
   }
 }
 
-type AccountListPropTypes = {
-  accounts: AccountStateType[]
-}
+function AccountList() {
+  const { t } = useTranslation()
+  const { accounts } = useSelector(getDecryptedAccounts)
+  const history = useHistory()
+  const [state] = useAuthenticationState()
 
-type AccountListStateTypes = {}
-
-class AccountList extends React.PureComponent<
-  AccountListPropTypes & RouteComponentProps,
-  AccountListStateTypes
-> {
-  render() {
+  if (state !== 'password') {
     return (
-      <NavigationLayout
-        title={labels.ACCOUNT_LIST}
-        renderLeft={() => <ConnectedNavigationBackButton />}
-        renderRight={() => {
-          return (
-            <AddIconButton
-              onAdd={() => this.props.history.push('/account/create')}
-            />
-          )
-        }}
-      >
-        {this.props.accounts.length ? (
-          <FlexContainer>
-            <List style={{ alignSelf: 'stretch' }}>
-              {this.props.accounts.map(account => (
-                <AccountListItem key={account.id} account={account} />
-              ))}
-            </List>
-          </FlexContainer>
-        ) : (
-          <FlexContainer justifyContent="center" alignItems="center">
-            <p>{labels.NO_ACCOUNT_AVAILABLE}</p>
-            <div>
-              <Link
-                style={{ fontSize: 16, textDecoration: 'none' }}
-                to="/account/create"
-              >
-                {labels.CREATE_NEW_ACCOUNT}
-              </Link>
-            </div>
-          </FlexContainer>
-        )}
-      </NavigationLayout>
+      <InvalidRoute message="everiSigner needs to be unlock in order to show account list." />
     )
   }
+
+  return (
+    <NavigationLayout
+      title={t('ACCOUNT_LIST')}
+      renderLeft={() => <ConnectedNavigationBackButton />}
+      renderRight={() => {
+        return <AddIconButton onAdd={() => history.push('/account/create')} />
+      }}
+    >
+      {accounts.length ? (
+        <FlexContainer>
+          <List style={{ alignSelf: 'stretch' }}>
+            {accounts.map(account => (
+              <AccountListItem key={account.id} account={account} />
+            ))}
+          </List>
+        </FlexContainer>
+      ) : (
+        <FlexContainer justifyContent="center" alignItems="center">
+          <p>{t('NO_ACCOUNT_AVAILABLE')}</p>
+          <div>
+            <Link
+              style={{ fontSize: 16, textDecoration: 'none' }}
+              to="/account/create"
+            >
+              {t('CREATE_NEW_ACCOUNT')}
+            </Link>
+          </div>
+        </FlexContainer>
+      )}
+    </NavigationLayout>
+  )
 }
 
-const ConnectedAccountList = compose(
-  withRouter,
-  connect(getDecryptedAccounts)
-)(AccountList)
-
-export default () => (
-  <WithAuthentication>
-    {({ status }) => {
-      if (status === 'password') {
-        return <ConnectedAccountList />
-      }
-
-      return (
-        <InvalidRoute message="everiSigner needs to be unlock in order to show account list." />
-      )
-    }}
-  </WithAuthentication>
-)
+export default AccountList

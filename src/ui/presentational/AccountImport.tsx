@@ -13,15 +13,15 @@ import {
 } from '@material-ui/core'
 import AccountNameComponent from './AccountNameComponent'
 import * as Evtjs from 'evtjs'
-import uuid = require('uuid')
+import * as uuid from 'uuid'
 import AlertDialog from './AlertDialog'
-import labels from '../../labels'
 import SuccessInfoLayout from './SuccessInfoLayout'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const STEPS = [
-  { step: '账户名', action: '下一步' },
-  { step: '输入私钥', action: '导入私钥' },
+  { step: 'ACCOUNT_NAME', action: 'STEP_NEXT' },
+  { step: 'INPUT_PRIVCATE_KEY', action: 'IMPORT_PRIVATE_KEY' },
 ]
 
 type StepInputPrivateKeyPropTypes = {
@@ -35,6 +35,7 @@ function StepInputPrivateKey(props: StepInputPrivateKeyPropTypes) {
   const [publicKey, setPublicKey] = React.useState('')
   const [hasError, setError] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState('')
+  const { t } = useTranslation()
 
   const handleSubmit = () => {
     const { EvtKey } = Evtjs // TODO extract to plugin system
@@ -44,7 +45,7 @@ function StepInputPrivateKey(props: StepInputPrivateKeyPropTypes) {
       const publicKey = EvtKey.privateToPublic(privateKey)
 
       if (props.publicKeys.includes(publicKey)) {
-        setErrorMessage(labels.PRIVATE_KEY_IMPORTED_ALREADY)
+        setErrorMessage(t('PRIVATE_KEY_IMPORTED_ALREADY'))
       } else {
         props.onNextClick(privateKey)
       }
@@ -149,6 +150,7 @@ function StepInputPrivateKey(props: StepInputPrivateKeyPropTypes) {
 }
 
 function StepSuccess({ history }: RouteComponentProps) {
+  const { t } = useTranslation()
   return (
     <SuccessInfoLayout>
       <p
@@ -158,14 +160,14 @@ function StepSuccess({ history }: RouteComponentProps) {
           fontSize: '1.1rem',
         }}
       >
-        {labels.ACCOUNT_IMPORT_SUCCESSFUL}
+        {t('ACCOUNT_IMPORT_SUCCESSFUL')}
       </p>
       <Button
         variant="outlined"
         color="primary"
         onClick={() => history.push('/')}
       >
-        {labels.GO_BACK}
+        {t('GO_BACK')}
       </Button>
     </SuccessInfoLayout>
   )
@@ -182,6 +184,7 @@ type AccountImportPropType = {
 function AccountImport(props: AccountImportPropType) {
   const [activeStep, setActiveStep] = React.useState(0)
   const [name, setName] = React.useState('')
+  const { t } = useTranslation()
 
   const handleNextStep = () => {
     setActiveStep(activeStep + 1)
@@ -205,7 +208,7 @@ function AccountImport(props: AccountImportPropType) {
             setName(name)
             handleNextStep()
           }}
-          buttonText={STEPS[activeStep].action}
+          buttonText={t(STEPS[activeStep].action)}
         />
       )
     } else if (activeStep === 1) {
@@ -213,7 +216,7 @@ function AccountImport(props: AccountImportPropType) {
         <StepInputPrivateKey
           publicKeys={props.publicKeys}
           onNextClick={handleImportAccount}
-          buttonText={STEPS[activeStep].action}
+          buttonText={t(STEPS[activeStep].action)}
         />
       )
     }
@@ -234,7 +237,7 @@ function AccountImport(props: AccountImportPropType) {
         <Stepper activeStep={activeStep} style={{ padding: 16 }}>
           {STEPS.map(({ step }) => (
             <Step key={step}>
-              <StepLabel>{step}</StepLabel>
+              <StepLabel>{t(step)}</StepLabel>
             </Step>
           ))}
         </Stepper>

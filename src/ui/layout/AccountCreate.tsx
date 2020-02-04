@@ -14,9 +14,9 @@ import {
 } from '../../store/getter'
 import { createAccountWithMnemonic, importAccount } from '../action'
 import AccountImport from '../presentational/AccountImport'
-import labels from '../../labels'
 import AccountMnemonicImport from '../presentational/AccountMnemonicImport'
 import useAuthenticationState from '../../hooks/useAuthenticationState'
+import { useTranslation } from 'react-i18next'
 
 function TabContainer({ children }: { children: React.ReactNode }) {
   return (
@@ -44,6 +44,7 @@ const ConnectedAccountMnemonicImport = connect(getAccountImportScreen, {
 function AccountCreate() {
   const [value, setValue] = React.useState(0)
   const [authenticationState] = useAuthenticationState()
+  const { t } = useTranslation()
 
   if (authenticationState !== 'password') {
     return (
@@ -70,9 +71,9 @@ function AccountCreate() {
           textColor="primary"
           variant="fullWidth"
         >
-          <Tab label={labels.CREATE} />
-          <Tab label={labels.PRIVATE_KEY_IMPORT} />
-          <Tab label={labels.MNEMONIC_IMPORT} />
+          <Tab label={t('CREATE')} />
+          <Tab label={t('PRIVATE_KEY_IMPORT')} />
+          <Tab label={t('MNEMONIC_IMPORT')} />
         </Tabs>
       </AppBar>
       <SwipeableViews

@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
-import labels from '../../labels'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
@@ -9,6 +8,7 @@ import ConnectedNavigationBackButton from './NavigationButtons'
 import FlexContainer from '../presentational/FlexContainer'
 import { List, ListItem, CardActionArea } from '@material-ui/core'
 import ForwardIcon from '@material-ui/icons/ChevronRight'
+import { useTranslation } from 'react-i18next'
 
 type OptionType = {
   onClick: () => void
@@ -36,10 +36,11 @@ const Option = (props: OptionType) => (
 
 function WalletDecision() {
   const history = useHistory()
+  const { t } = useTranslation()
 
   return (
     <NavigationLayout
-      title="设置新钱包"
+      title={t('SETUP_NEW_WALLET')}
       renderLeft={() => <ConnectedNavigationBackButton />}
     >
       <FlexContainer justifyContent="space-between">
@@ -47,15 +48,15 @@ function WalletDecision() {
           <ListItem>
             <Option
               onClick={() => history.push('/wallet/create')}
-              title={labels.WALLET_CREATE}
-              description={labels.WALLET_CREATE_DESCRIPTION}
+              title={t('WALLET_CREATE')}
+              description={t('WALLET_CREATE_DESCRIPTION')}
             />
           </ListItem>
           <ListItem>
             <Option
               onClick={() => history.push('/wallet/import')}
-              title={labels.IMPORT_WALLET_TITLE}
-              description={labels.IMPORT_WALLET_DESCRIPTION}
+              title={t('IMPORT_WALLET_TITLE')}
+              description={t('IMPORT_WALLET_DESCRIPTION')}
             />
           </ListItem>
         </List>

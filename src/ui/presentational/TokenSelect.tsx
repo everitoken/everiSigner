@@ -8,9 +8,9 @@ import {
   CircularProgress,
   Typography,
 } from '@material-ui/core'
-import labels from '../../labels'
 import ForwardIcon from '@material-ui/icons/ChevronRight'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 
 type TokenSelectPropTypes = {
   loading: boolean
@@ -35,6 +35,8 @@ const BALANCE_PLACEHOLDER = '--.--'
 
 function TokenSelect(props: TokenSelectPropTypes) {
   const { data } = props
+  const { t } = useTranslation()
+
   return (
     <Card>
       <CardActionArea onClick={props.onClick}>
@@ -57,7 +59,7 @@ function TokenSelect(props: TokenSelectPropTypes) {
             <FlexContainer>
               <TokenName>{`${data.name} (#${data.id})`}</TokenName>
               <Typography variant="caption" style={{ marginBottom: '8px' }}>
-                {labels.TOKEN_SELECT_SECONDARY_TEXT}
+                {t('TOKEN_SELECT_SECONDARY_TEXT')}
               </Typography>
             </FlexContainer>
             <ForwardIcon />
@@ -67,7 +69,7 @@ function TokenSelect(props: TokenSelectPropTypes) {
       <CardActions>
         <BalanceContainer>
           <Balance>
-            {labels.BALANCE_REST}:
+            {t('BALANCE_REST')}:
             {props.loading ? BALANCE_PLACEHOLDER : props.data.value}
           </Balance>
         </BalanceContainer>

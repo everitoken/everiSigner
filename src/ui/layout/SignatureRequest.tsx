@@ -121,10 +121,9 @@ class SignatureRequest extends React.PureComponent<PropTypes> {
   }
 }
 
-const ConnectedSigningScreen = connect(
-  getSigningPayload,
-  { onClick: sign }
-)(SignatureRequest)
+const ConnectedSigningScreen = connect(getSigningPayload, { onClick: sign })(
+  SignatureRequest
+)
 
 export default () => (
   <AuthenticationProtectedView>

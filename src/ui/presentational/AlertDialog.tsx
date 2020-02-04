@@ -11,14 +11,15 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle'
 import MuiDialogContent from '@material-ui/core/DialogContent'
 import MuiDialogActions from '@material-ui/core/DialogActions'
 import CloseIcon from '@material-ui/icons/Close'
-import labels from '../../labels'
+import { UNIT } from '../../style'
+import { useTranslation } from 'react-i18next'
+
 type PropTypes = {
   title: string
   children: React.ReactNode
   open: boolean
   onClose: () => void
 }
-import { UNIT } from '../../style'
 
 const DialogTitle = withStyles(theme => ({
   root: {
@@ -72,6 +73,7 @@ const DialogActions = withStyles(() => ({
 }))(MuiDialogActions)
 
 function AlertDialog(props: PropTypes) {
+  const { t } = useTranslation()
   return (
     <Dialog
       disableBackdropClick
@@ -86,7 +88,7 @@ function AlertDialog(props: PropTypes) {
       <DialogContent>{props.children}</DialogContent>
       <DialogActions>
         <Button variant="outlined" color="secondary" onClick={props.onClose}>
-          {labels.CANCEL_BUTTON_TEXT}
+          {t('CANCEL_BUTTON_TEXT')}
         </Button>
       </DialogActions>
     </Dialog>

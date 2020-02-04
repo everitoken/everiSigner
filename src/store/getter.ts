@@ -201,6 +201,7 @@ export const getForTransferFungible = (
     ...getMainAccount(state),
   }
 }
+
 export const getForTokenSelect = (scope: string) => (state: AppState) => {
   const publicKey = getMainAccount(state).account.publicKey
   const balances = get(state, `airport.balance/${scope}/${publicKey}`, [])
@@ -212,3 +213,7 @@ export const getForTokenSelect = (scope: string) => (state: AppState) => {
     fetching,
   }
 }
+
+export const getLang = (state: AppState) => ({
+  lang: state.settings.lang || navigator.language,
+})

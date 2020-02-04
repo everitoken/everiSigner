@@ -1,8 +1,8 @@
 import * as React from 'react'
+import { useTranslation } from 'react-i18next'
 import { NavigationLayout } from '../presentational/MainLayout'
 import ConnectedNavigationBackButton from './NavigationButtons'
 import FlexContainer from '../presentational/FlexContainer'
-import labels from '../../labels'
 import Logo from '../presentational/Logo'
 import styled from 'styled-components'
 
@@ -14,9 +14,10 @@ const Version = styled.p`
   margin-bottom: 2rem;
 `
 function About() {
+  const { t } = useTranslation()
   return (
     <NavigationLayout
-      title={labels.ABOUT_TITLE}
+      title={t('ABOUT_TITLE')}
       renderLeft={() => <ConnectedNavigationBackButton />}
     >
       <FlexContainer justifyContent="flex-start">

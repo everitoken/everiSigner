@@ -56,9 +56,11 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
   handleAccountMoreClicked = () => {
     this.setState({ showBalanceList: !this.state.showBalanceList })
   }
+
   handleSelect = (selectedAccount: AccountStateType) => {
     this.setState({ selectedAccount })
   }
+
   handleAuthorize = (host: string) => {
     if (this.state.selectedAccount) {
       this.props.onAuthorizeEntity({ host })
@@ -190,13 +192,10 @@ class AccountSelect extends React.PureComponent<PropTypes, StateTypes> {
   }
 }
 
-const ConnectedAccountSelect = connect(
-  getAuthenticateAccountRequest,
-  {
-    onAuthorize: uiActions.authorizeAccountAccess,
-    onAuthorizeEntity: authorizedEntityAdd,
-  }
-)(AccountSelect)
+const ConnectedAccountSelect = connect(getAuthenticateAccountRequest, {
+  onAuthorize: uiActions.authorizeAccountAccess,
+  onAuthorizeEntity: authorizedEntityAdd,
+})(AccountSelect)
 
 export default () => (
   <AuthenticationProtectedView>

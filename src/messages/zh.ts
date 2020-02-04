@@ -62,7 +62,7 @@ export default {
   CREATE_NEW_ACCOUNT: '创建新账户',
   ACCOUNT_NAME_TEXT: '输入账户名称（最多25个字符）',
   CREATE: '创建',
-  FAIL_FIND_ACCOUNT: '无找到指定账户',
+  FAIL_FIND_ACCOUNT: '找不到指定账户',
   FAILED_COPIED_TO_CLIPBOARD: '复制失败!',
   FUNGIBLE_BALANCE: '同质化通证',
   BALANCE_REST: '余额',
@@ -124,4 +124,8 @@ export default {
   TRANSFERRING: '转账进行中...',
   TRANSFER_FUNGIBLE_SUCCEED: '转账成功',
   TRANSFER_FAILED_ERROR_MSG: '转账失败',
+  BACKUP: '备份',
+  VERIFY: '验证',
+  INPUT_PRIVCATE_KEY: '输入私钥',
+  SETUP_NEW_WALLET: '设置新钱包',
 }

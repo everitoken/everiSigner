@@ -1,68 +1,71 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { getDecryptedMainAccount } from '../../store/getter'
-import { AccountStateType } from '../../store/reducer/accounts'
 import { NavigationLayout } from '../presentational/MainLayout'
 import FlexContainer from '../presentational/FlexContainer'
 import ConnectedNavigationBackButton from './NavigationButtons'
-import labels from '../../labels'
 import InfoArea from '../presentational/InfoArea'
 import { TextField } from '@material-ui/core'
 import * as Evtjs from 'evtjs'
 import Button from '../presentational/InlineButton'
+import { useTranslation } from 'react-i18next'
 
-type ConnectedProps = {
-  account: AccountStateType | null
-}
+function AccountSign() {
+  const [value, setValue] = React.useState('')
+  const [signature, setSignature] = React.useState('')
+  const { t } = useTranslation()
+  const { account } = useSelector(getDecryptedMainAccount)
 
-type StateProps = {
-  value: string
-  signature: string
-}
-
-class ConnectedAccountPayeeCode extends React.Component<
-  ConnectedProps,
-  StateProps
-> {
-  state = {
-    value: '',
-    signature: '',
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setValue(event.target.value)
   }
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ value: event.target.value, signature: '' })
-  }
-
-  handleSign = () => {
+  function handleSign() {
     const { EvtKey } = Evtjs
-    if (this.props.account) {
-      EvtKey.sign(this.state.value, this.props.account.privateKey).then(
-        (signature: string) => this.setState({ signature })
+
+    if (account) {
+      EvtKey.sign(value, account.privateKey).then((signature: string) =>
+        setSignature(signature)
       )
     }
   }
 
-  render() {
-    return (
-      <NavigationLayout
-        title={labels.SIGN}
-        renderLeft={() => <ConnectedNavigationBackButton />}
-      >
+  return (
+    <NavigationLayout
+      title={t('SIGN')}
+      renderLeft={() => <ConnectedNavigationBackButton />}
+    >
+      <FlexContainer>
         <FlexContainer>
-          <FlexContainer>
-            <div style={{ width: '100%' }}>
-              <InfoArea>
-                <p style={{ padding: 8 }}>{labels.ACCOUNT_SIGN_DESCRIPTION}</p>
-              </InfoArea>
-            </div>
-            <FlexContainer withPadding justifyContent="space-around">
+          <div style={{ width: '100%' }}>
+            <InfoArea>
+              <p style={{ padding: 8 }}>{t('ACCOUNT_SIGN_DESCRIPTION')}</p>
+            </InfoArea>
+          </div>
+          <FlexContainer withPadding justifyContent="space-around">
+            <TextField
+              label={t('DATA_TO_BE_SIGNED')}
+              multiline
+              rows="2"
+              fullWidth
+              value={value}
+              onChange={handleChange}
+              inputProps={{
+                style: {
+                  fontSize: '0.7rem',
+                  fontFamily: 'Roboto Mono',
+                },
+                spellCheck: false,
+              }}
+              variant="outlined"
+            />
+            {signature ? (
               <TextField
-                label={labels.DATA_TO_BE_SIGNED}
+                label={t('SIGNED_RESULT')}
                 multiline
                 rows="2"
                 fullWidth
-                value={this.state.value}
-                onChange={this.handleChange}
+                value={signature}
                 inputProps={{
                   style: {
                     fontSize: '0.7rem',
@@ -72,38 +75,21 @@ class ConnectedAccountPayeeCode extends React.Component<
                 }}
                 variant="outlined"
               />
-              {this.state.signature ? (
-                <TextField
-                  label={labels.SIGNED_RESULT}
-                  multiline
-                  rows="2"
-                  fullWidth
-                  value={this.state.signature}
-                  inputProps={{
-                    style: {
-                      fontSize: '0.7rem',
-                      fontFamily: 'Roboto Mono',
-                    },
-                    spellCheck: false,
-                  }}
-                  variant="outlined"
-                />
-              ) : null}
+            ) : null}
 
-              <Button
-                style={{ marginTop: 20 }}
-                variant="contained"
-                color="primary"
-                onClick={this.handleSign}
-              >
-                {labels.SIGN_DATA}
-              </Button>
-            </FlexContainer>
+            <Button
+              style={{ marginTop: 20 }}
+              variant="contained"
+              color="primary"
+              onClick={handleSign}
+            >
+              {t('SIGN_DATA')}
+            </Button>
           </FlexContainer>
         </FlexContainer>
-      </NavigationLayout>
-    )
-  }
+      </FlexContainer>
+    </NavigationLayout>
+  )
 }
 
-export default connect(getDecryptedMainAccount)(ConnectedAccountPayeeCode)
+export default AccountSign
