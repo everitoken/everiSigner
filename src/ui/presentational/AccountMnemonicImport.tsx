@@ -15,12 +15,12 @@ import FlexContainer from './FlexContainer'
 import { createAccountWithMnemonic } from '../action'
 import InfoArea from './InfoArea'
 import AccountNameComponent from './AccountNameComponent'
-import labels from '../../labels'
 import SuccessInfoLayout from './SuccessInfoLayout'
+import { useTranslation } from 'react-i18next'
 
 const STEPS = [
-  { step: labels.ACCOUNT_NAME, action: labels.STEP_NEXT },
-  { step: labels.MNEMONIC, action: labels.IMPORT_PRIVATE_KEY },
+  { step: 'ACCOUNT_NAME', action: 'STEP_NEXT' },
+  { step: 'MNEMONIC', action: 'IMPORT_PRIVATE_KEY' },
 ]
 
 type StepInputSeedPhrasesPropTypes = {
@@ -30,7 +30,7 @@ type StepInputSeedPhrasesPropTypes = {
 
 function StepInputSeedPhrases(props: StepInputSeedPhrasesPropTypes) {
   const [value, setValue] = React.useState('')
-
+  const { t } = useTranslation()
   const handleSubmit = () => {
     props.onNextClick(value.trim())
   }
@@ -45,7 +45,7 @@ function StepInputSeedPhrases(props: StepInputSeedPhrasesPropTypes) {
       <FlexContainer withPadding>
         <TextField
           id="seed-phrase-input"
-          label={labels.INPUT_MNEMONIC_WORDS}
+          label={t('INPUT_MNEMONIC_WORDS')}
           multiline
           fullWidth
           rows="5"
@@ -79,6 +79,7 @@ function StepInputSeedPhrases(props: StepInputSeedPhrasesPropTypes) {
 }
 
 function StepSuccess({ history }: RouteComponentProps) {
+  const { t } = useTranslation()
   return (
     <SuccessInfoLayout>
       <p
@@ -88,14 +89,14 @@ function StepSuccess({ history }: RouteComponentProps) {
           fontSize: '1.1rem',
         }}
       >
-        {labels.ACCOUNT_IMPORT_SUCCESSFUL}
+        {t('ACCOUNT_IMPORT_SUCCESSFUL')}
       </p>
       <Button
         variant="outlined"
         color="primary"
         onClick={() => history.push('/')}
       >
-        {labels.GO_BACK}
+        {t('GO_BACK')}
       </Button>
     </SuccessInfoLayout>
   )
@@ -112,6 +113,7 @@ type AccountImportPropType = {
 function AccountMnemonicImport(props: AccountImportPropType) {
   const [activeStep, setActiveStep] = React.useState(0)
   const [name, setName] = React.useState('')
+  const { t } = useTranslation()
 
   function handleNextStep() {
     setActiveStep(activeStep + 1)
@@ -139,13 +141,13 @@ function AccountMnemonicImport(props: AccountImportPropType) {
             setName(name)
             handleNextStep()
           }}
-          buttonText={STEPS[activeStep].action}
+          buttonText={t(STEPS[activeStep].action)}
         />
       )
     } else if (activeStep === 1) {
       return (
         <StepInputSeedPhrases
-          buttonText={STEPS[activeStep].action}
+          buttonText={t(STEPS[activeStep].action)}
           onNextClick={(words: string) => {
             handleNextStep()
             handleCreateAccount(words)
@@ -170,7 +172,7 @@ function AccountMnemonicImport(props: AccountImportPropType) {
         <Stepper activeStep={activeStep} style={{ padding: 16 }}>
           {STEPS.map(({ step }) => (
             <Step key={step}>
-              <StepLabel>{step}</StepLabel>
+              <StepLabel>{t(step)}</StepLabel>
             </Step>
           ))}
         </Stepper>

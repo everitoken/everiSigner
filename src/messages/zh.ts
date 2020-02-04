@@ -124,4 +124,8 @@ export default {
   TRANSFERRING: '转账进行中...',
   TRANSFER_FUNGIBLE_SUCCEED: '转账成功',
   TRANSFER_FAILED_ERROR_MSG: '转账失败',
+  BACKUP: '备份',
+  VERIFY: '验证',
+  INPUT_PRIVCATE_KEY: '输入私钥',
+  SETUP_NEW_WALLET: '设置新钱包',
 }

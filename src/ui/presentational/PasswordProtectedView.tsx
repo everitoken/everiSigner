@@ -11,7 +11,7 @@ import {
 
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
-import labels from '../../labels'
+import { useTranslation } from 'react-i18next'
 
 type PropTypes = {
   password: string
@@ -21,6 +21,7 @@ type PropTypes = {
 const PasswordProtectedView = (props: PropTypes) => {
   const [password, setPassword] = React.useState('')
   const [showPassword, toggleShowPassword] = React.useState(false)
+  const { t } = useTranslation()
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value)
@@ -38,7 +39,7 @@ const PasswordProtectedView = (props: PropTypes) => {
     <FlexContainer justifyContent="center" withPadding>
       <FormControl fullWidth>
         <InputLabel htmlFor="password">
-          {labels.TYPE_PASSWORD_TO_UNLOCK}
+          {t('TYPE_PASSWORD_TO_UNLOCK')}
         </InputLabel>
         <Input
           id="password"

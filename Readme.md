@@ -20,3 +20,7 @@ Official browser extension from [everiToken](https://everitoken.io) for signing.
 ## Resources
 
 - [Message passing](https://developer.chrome.com/apps/messaging)
+
+## Translation cleanup
+
+* AccountCreate

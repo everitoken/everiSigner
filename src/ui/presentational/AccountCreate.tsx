@@ -18,12 +18,12 @@ import * as uuid from 'uuid'
 import SuccessInfoLayout from './SuccessInfoLayout'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import AccountNameComponent from './AccountNameComponent'
-import labels from '../../labels'
+import { useTranslation } from 'react-i18next'
 
 const STEPS = [
-  { step: '账户名', action: '下一步' },
-  { step: '备份', action: '下一步' },
-  { step: '验证', action: '创建账户' },
+  { step: 'ACCOUNT_NAME', action: 'STEP_NEXT' },
+  { step: 'BACKUP', action: 'STEP_NEXT' },
+  { step: 'VERIFY', action: 'CREATE_NEW_ACCOUNT' },
 ]
 
 type StepDisplaySeedPhrasesPropTypes = {
@@ -90,6 +90,7 @@ type StepVerifySeedPhrasesPropTypes = {
 function StepVerifySeedPhrases(props: StepVerifySeedPhrasesPropTypes) {
   const [value, setValue] = React.useState('')
   const [hasError, setError] = React.useState(false)
+  const { t } = useTranslation()
 
   const handleSubmit = () => {
     if (value.trim() !== props.words) {
@@ -109,7 +110,7 @@ function StepVerifySeedPhrases(props: StepVerifySeedPhrasesPropTypes) {
       <FlexContainer withPadding>
         <TextField
           id="seed-phrase-verify"
-          label={labels.INPUT_MNEMONIC_WORDS}
+          label={t('INPUT_MNEMONIC_WORDS')}
           multiline
           fullWidth
           rows="5"
@@ -144,6 +145,7 @@ function StepVerifySeedPhrases(props: StepVerifySeedPhrasesPropTypes) {
 }
 
 function StepSuccess({ history }: RouteComponentProps) {
+  const { t } = useTranslation()
   return (
     <SuccessInfoLayout>
       <p
@@ -153,14 +155,14 @@ function StepSuccess({ history }: RouteComponentProps) {
           fontSize: '1.1rem',
         }}
       >
-        {labels.ACCOUNT_CREATE_SUCCESSFUL}
+        {t('ACCOUNT_CREATE_SUCCESSFUL')}
       </p>
       <Button
         variant="outlined"
         color="primary"
         onClick={() => history.push('/')}
       >
-        {labels.GO_BACK}
+        {t('GO_BACK')}
       </Button>
     </SuccessInfoLayout>
   )
@@ -181,6 +183,7 @@ function AccountCreate(props: AccountCreatePropTypes) {
     null
   )
   const [accountName, setAccountName] = React.useState('')
+  const { t } = useTranslation()
 
   const handleNextStep = () => {
     setActiveStep(activeStep + 1)
@@ -211,7 +214,7 @@ function AccountCreate(props: AccountCreatePropTypes) {
             setAccountName(accountName)
             handleNextStep()
           }}
-          buttonText={STEPS[activeStep].action}
+          buttonText={t(STEPS[activeStep].action)}
         />
       )
     } else if (activeStep === 1) {
@@ -219,14 +222,14 @@ function AccountCreate(props: AccountCreatePropTypes) {
         <StepDisplaySeedPhrases
           accountName={accountName}
           words={props.words}
-          buttonText={STEPS[activeStep].action}
+          buttonText={t(STEPS[activeStep].action)}
           onNextClick={handleNextStep}
         />
       )
     } else if (activeStep === STEPS.length - 1) {
       return (
         <StepVerifySeedPhrases
-          buttonText={STEPS[activeStep].action}
+          buttonText={t(STEPS[activeStep].action)}
           words={props.words}
           onNextClick={() => {
             handleNextStep()
@@ -277,7 +280,7 @@ function AccountCreate(props: AccountCreatePropTypes) {
         <Stepper activeStep={activeStep} style={{ padding: 16 }}>
           {STEPS.map(({ step }) => (
             <Step key={step}>
-              <StepLabel>{step}</StepLabel>
+              <StepLabel>{t(step)}</StepLabel>
             </Step>
           ))}
         </Stepper>

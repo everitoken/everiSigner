@@ -7,8 +7,15 @@ import createStore from './store'
 import saga from './store/saga/'
 import SignatureRequest from './ui/layout/SignatureRequest'
 import provider from './store/provider'
+import { getLang } from './store/getter'
+import i18n from './i18n'
 
 const { store, persistor } = createStore(saga)
+
+persistor.subscribe(() => {
+  const { lang } = getLang(store.getState())
+  i18n.changeLanguage(lang)
+})
 
 // init store provider, pass store instance
 provider.init(store)

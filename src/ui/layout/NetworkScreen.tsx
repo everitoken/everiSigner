@@ -1,11 +1,9 @@
 import * as React from 'react'
 import { NavigationLayout } from '../presentational/MainLayout'
 import ConnectedNavigationBackButton from './NavigationButtons'
-import labels from '../../labels'
 import FlexContainer from '../presentational/FlexContainer'
 import { RouteComponentProps, Route } from 'react-router-dom'
 import MoreIcon from '@material-ui/icons/MoreVert'
-import { NetworkContext } from '../../context/Network'
 import {
   List,
   ListItem,
@@ -26,8 +24,9 @@ import InfoArea from '../presentational/InfoArea'
 import { isEmpty } from 'lodash'
 import Button from '../presentational/InlineButton'
 import parseUrl from 'parse-url'
-import NetworkContextProvider from '../../context/Network'
+import NetworkContextProvider, { NetworkContext } from '../../context/Network'
 import AddIconButton from '../presentational/AddIconButton'
+import { useTranslation } from 'react-i18next'
 
 const ITEM_HEIGHT = 40
 
@@ -40,53 +39,50 @@ type NetworkItemMoreMenuPropTypes = {
   onRemoveNetwork: Function
 }
 
-class NetworkItemMoreMenu extends React.Component<
-  NetworkItemMoreMenuPropTypes
-> {
-  state = { network: this.props.network }
-  handleClose = () => {
-    this.props.onClose()
+function NetworkItemMoreMenu(props: NetworkItemMoreMenuPropTypes) {
+  const [network, setNetwork] = React.useState(props.network)
+  const { anchorEl } = props
+  const open = Boolean(anchorEl)
+  const { t } = useTranslation()
+
+  function handleClose() {
+    props.onClose()
   }
 
-  render() {
-    const { anchorEl } = this.props
-    const open = Boolean(anchorEl)
-
-    return (
-      <Menu
-        disableAutoFocusItem
-        anchorEl={anchorEl}
-        open={open}
-        onClose={this.handleClose}
-        PaperProps={{
-          style: {
-            maxHeight: ITEM_HEIGHT * 4.5,
-            width: 200,
-          },
+  return (
+    <Menu
+      disableAutoFocusItem
+      anchorEl={anchorEl}
+      open={open}
+      onClose={handleClose}
+      PaperProps={{
+        style: {
+          maxHeight: ITEM_HEIGHT * 4.5,
+          width: 200,
+        },
+      }}
+    >
+      <MenuItem
+        disabled={props.isSelected}
+        onClick={() => {
+          props.onSelectNetwork(network)
+          handleClose()
         }}
       >
-        <MenuItem
-          disabled={this.props.isSelected}
-          onClick={() => {
-            this.props.onSelectNetwork(this.state.network)
-            this.handleClose()
-          }}
-        >
-          {labels.SET_NETWORK_AS_DEFAULT}
-        </MenuItem>
+        {t('SET_NETWORK_AS_DEFAULT')}
+      </MenuItem>
 
-        <MenuItem
-          disabled={!this.props.network.isCustom}
-          onClick={() => {
-            this.props.onRemoveNetwork(this.state.network)
-            this.handleClose()
-          }}
-        >
-          {labels.REMOVE_NETWORK}
-        </MenuItem>
-      </Menu>
-    )
-  }
+      <MenuItem
+        disabled={!network.isCustom}
+        onClick={() => {
+          props.onRemoveNetwork(network)
+          handleClose()
+        }}
+      >
+        {t('REMOVE_NETWORK')}
+      </MenuItem>
+    </Menu>
+  )
 }
 
 function NetworkList() {
@@ -102,7 +98,6 @@ function NetworkList() {
     setIsSelected(isSameNetwork(currentNetwork, selected))
     setCurrentNetwork(currentNetwork)
   }
-  console.log(networks, networks.length)
 
   return (
     <div style={{ flex: '1 1 auto', height: '476px', overflow: 'scroll' }}>
@@ -116,7 +111,7 @@ function NetworkList() {
           onRemoveNetwork={() => removeNetwork(currentNetwork)}
         />
         {networks.map((network, i) => (
-          <React.Fragment>
+          <React.Fragment key={network.url}>
             <ListItem key={network.url} role={undefined} button>
               <Badge
                 variant="dot"
@@ -151,6 +146,7 @@ function NetworkCreate(props: RouteComponentProps) {
   const [errorMsg, setErrorMsg] = React.useState('')
   const [urlError, setUrlError] = React.useState(false)
   const [locationError, setLocationError] = React.useState(false)
+  const { t } = useTranslation()
 
   const handleFieldChange = (name: 'url' | 'location') => (
     event: React.ChangeEvent<HTMLInputElement>
@@ -237,7 +233,7 @@ function NetworkCreate(props: RouteComponentProps) {
       <FlexContainer withPadding justifyContent="space-around">
         <FormControl fullWidth>
           <InputLabel htmlFor="network-location">
-            {labels.NETWORK_NAME}
+            {t('NETWORK_NAME')}
           </InputLabel>
           <Input
             required
@@ -249,7 +245,7 @@ function NetworkCreate(props: RouteComponentProps) {
           />
         </FormControl>
         <FormControl fullWidth>
-          <InputLabel htmlFor="network-url">{labels.NETWORK_URL}</InputLabel>
+          <InputLabel htmlFor="network-url">{t('NETWORK_URL')}</InputLabel>
           <Input
             required
             error={urlError}
@@ -265,7 +261,7 @@ function NetworkCreate(props: RouteComponentProps) {
           variant="contained"
           onClick={handleCreateNetwork}
         >
-          {labels.CREATE_NETWORK}
+          {t('CREATE_NETWORK')}
         </Button>
       </FlexContainer>
     </FlexContainer>
@@ -278,9 +274,8 @@ export default function NetworkScreen({
   history,
 }: RouteComponentProps) {
   const isCreateNetworkScreen = location.pathname.includes('/create')
-  const title = isCreateNetworkScreen
-    ? labels.CREATE_NETWORK
-    : labels.NETWORK_LIST
+  const { t } = useTranslation()
+  const title = isCreateNetworkScreen ? t('CREATE_NETWORK') : t('NETWORK_LIST')
 
   return (
     <NetworkContextProvider>

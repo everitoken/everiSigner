@@ -21,8 +21,8 @@ import * as PasswordService from '../../service/PasswordService'
 import { NavigationLayout } from '../presentational/MainLayout'
 import ConnectedNavigationBackButton from './NavigationButtons'
 import InfoArea from '../presentational/InfoArea'
-import labels from '../../labels'
 import { importWallet } from '../action'
+import { useTranslation } from 'react-i18next'
 
 const DropZoneContainer = styled.div`
   width: 100%;
@@ -40,11 +40,12 @@ function PaperDropzone() {
   const [password, setPassword] = React.useState('')
   const dispatch = useDispatch()
   const history = useHistory()
+  const { t } = useTranslation()
   const onDrop = React.useCallback(acceptedFiles => {
     const reader = new FileReader()
 
-    reader.onabort = () => alert(labels.IMPORT_WALLET_FAILED)
-    reader.onerror = () => alert(labels.IMPORT_WALLET_FAILED)
+    reader.onabort = () => alert(t('IMPORT_WALLET_FAILED'))
+    reader.onerror = () => alert(t('IMPORT_WALLET_FAILED'))
     reader.onload = () => {
       const binaryStr = reader.result
       setFileContent(String(binaryStr))
@@ -69,7 +70,7 @@ function PaperDropzone() {
     const rst = PasswordService.decrypt(password, fileContent)
 
     if (!rst.success) {
-      alert(labels.IMPORT_WALLET_FAILED)
+      alert(t('IMPORT_WALLET_FAILED'))
       return
     }
 
@@ -100,13 +101,11 @@ function PaperDropzone() {
               >
                 <CheckCircle color="primary" />
                 <p style={{ paddingLeft: '5px' }}>
-                  {labels.WALLET_BACKUP_FILE_LOADED}
+                  {t('WALLET_BACKUP_FILE_LOADED')}
                 </p>
               </div>
             ) : (
-              <p>
-                {isDragActive ? labels.FILE_DETECTED : labels.SELECT_OR_DND}
-              </p>
+              <p>{isDragActive ? t('FILE_DETECTED') : t('SELECT_OR_DND')}</p>
             )}
           </DropZoneContainer>
         </div>
@@ -114,7 +113,7 @@ function PaperDropzone() {
         <FlexContainer withPadding alignItems="stretch">
           <FormControl>
             <InputLabel htmlFor="password">
-              {labels.INPUT_WALLET_RECOEVER_PASSWORD}
+              {t('INPUT_WALLET_RECOEVER_PASSWORD')}
             </InputLabel>
             <Input
               id="password"
@@ -141,7 +140,7 @@ function PaperDropzone() {
               color="primary"
               onClick={handleImportWallet}
             >
-              {labels.IMPORT_WALLET_BTN}
+              {t('IMPORT_WALLET_BTN')}
             </Button>
           </div>
         </FlexContainer>
@@ -151,18 +150,20 @@ function PaperDropzone() {
 }
 
 export default function WalletImportScreen() {
+  const { t } = useTranslation()
+
   return (
     <NavigationLayout
-      title={labels.IMPORT_WALLET_TITLE}
+      title={t('IMPORT_WALLET_TITLE')}
       renderLeft={() => <ConnectedNavigationBackButton />}
     >
       <FlexContainer>
         <div style={{ width: '100%' }}>
           <InfoArea>
             <ul>
-              <li>{labels.IMPORT_WALLET_DESCRIPTION_0}</li>
-              <li>{labels.IMPORT_WALLET_DESCRIPTION_1}</li>
-              <li>{labels.IMPORT_WALLET_DESCRIPTION_2}</li>
+              <li>{t('IMPORT_WALLET_DESCRIPTION_0')}</li>
+              <li>{t('IMPORT_WALLET_DESCRIPTION_1')}</li>
+              <li>{t('IMPORT_WALLET_DESCRIPTION_2')}</li>
             </ul>
           </InfoArea>
         </div>

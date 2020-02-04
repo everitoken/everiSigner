@@ -130,4 +130,8 @@ export default {
   TRANSFERRING: 'Transferring...',
   TRANSFER_FUNGIBLE_SUCCEED: 'Transfer successful',
   TRANSFER_FAILED_ERROR_MSG: 'Transfer failed',
+  BACKUP: 'Backup',
+  VERIFY: 'Verify',
+  INPUT_PRIVCATE_KEY: 'Input Private Key',
+  SETUP_NEW_WALLET: 'Set up new Wallet',
 }
