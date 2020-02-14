@@ -2,14 +2,20 @@
   "manifest_version": 2,
   "name": "everiSigner",
   "description": "Decentralized signature, identity and authentication system for everiToken.",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "browser_action": {
     "default_icon": "./asset/icon.png",
     "default_popup": "./extension/index.html"
   },
   "storage": "local",
-  "permissions": ["storage", "unlimitedStorage", "http://*/*", "https://*/*"],
+  "permissions": [
+    "activeTab",
+    "storage",
+    "unlimitedStorage",
+    "http://*/*",
+    "https://*/*"
+  ],
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
