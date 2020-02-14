@@ -23,7 +23,7 @@ function About() {
       <FlexContainer justifyContent="flex-start">
         <div style={{ padding: '2.5rem' }}>
           <Logo />
-          <Version>Version: 1.0.0</Version>
+          <Version>Version: 1.1.0</Version>
           <h2>
             Decentralized signature, identity and authentication system for
             everiToken

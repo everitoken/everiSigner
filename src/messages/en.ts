@@ -134,4 +134,6 @@ export default {
   VERIFY: 'Verify',
   INPUT_PRIVCATE_KEY: 'Input Private Key',
   SETUP_NEW_WALLET: 'Set up new Wallet',
+  WALLET_SETUP: 'Wallet Setup',
+  SET_AS_NEW_WALLET: 'Create as new wallet',
 }

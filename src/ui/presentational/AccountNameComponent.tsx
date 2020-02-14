@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core'
 import FlexContainer from './FlexContainer'
 import AlertDialog from './AlertDialog'
-import labels from '../../labels'
+import { useTranslation } from 'react-i18next'
 
 type PropTypes = {
   autoFocus?: boolean
@@ -21,6 +21,7 @@ function AccountNameComponent(props: PropTypes) {
   const autoFocus = props.autoFocus || false
   const [accountName, setAccountName] = React.useState('')
   const [errorMessage, setErrorMessage] = React.useState('')
+  const { t } = useTranslation()
 
   const handleAccountChange = ({
     target,
@@ -55,6 +56,7 @@ function AccountNameComponent(props: PropTypes) {
 
     props.onNextClick(accountName)
   }
+
   return (
     <React.Fragment>
       <AlertDialog
@@ -70,7 +72,7 @@ function AccountNameComponent(props: PropTypes) {
         <FlexContainer alignItems="stretch" justifyContent="center" withPadding>
           <FormControl>
             <InputLabel htmlFor="account-name">
-              {labels.ACCOUNT_NAME_TEXT}
+              {t('ACCOUNT_NAME_TEXT')}
             </InputLabel>
             <Input
               autoFocus={autoFocus}

@@ -128,4 +128,6 @@ export default {
   VERIFY: '验证',
   INPUT_PRIVCATE_KEY: '输入私钥',
   SETUP_NEW_WALLET: '设置新钱包',
+  WALLET_SETUP: '钱包设置',
+  SET_AS_NEW_WALLET: '设置为新钱包',
 }
