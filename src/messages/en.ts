@@ -23,7 +23,7 @@ export default {
   SELECT_OR_DND: 'Select or drag the backup file to this area',
   IMPORT_WALLET_TITLE: 'Import Wallet',
   IMPORT_WALLET_DESCRIPTION:
-    '使用钱包备份文件初始化钱包，此选项会导入备份文件中所有账户，助记词等。',
+    'Import wallet from backup files, additional password is required.',
   IMPORT_WALLET_BTN: 'Import Wallet',
   IMPORT_WALLET_DESCRIPTION_0: 'Import wallet backup file',
   IMPORT_WALLET_DESCRIPTION_1: 'Provide the password of the backup file',
