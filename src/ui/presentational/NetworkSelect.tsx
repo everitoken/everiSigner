@@ -1,4 +1,6 @@
 import * as React from 'react'
+import { useTranslation } from 'react-i18next'
+
 import { NetworkItemType } from '../../types'
 import * as style from '../../style'
 import { Chip, withStyles, StyledComponentProps } from '@material-ui/core'
@@ -6,7 +8,6 @@ import ExpandMore from '@material-ui/icons/ExpandMore'
 import { isSameNetwork } from '../util'
 import NetworkSelectionDialog from './NetworkSelectionDialog'
 import { NetworkContext } from '../../context/Network'
-import labels from '../../labels'
 
 const styles = {
   root: {
@@ -16,6 +17,7 @@ const styles = {
 }
 
 function NetworkSelect(props: StyledComponentProps) {
+  const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
   const { networks, selected, selectNetwork } = React.useContext(NetworkContext)
 
@@ -46,7 +48,7 @@ function NetworkSelect(props: StyledComponentProps) {
             className="everitoken-mono"
             style={{ fontSize: '12px', color: style.colors.headerPrimary }}
           >
-            <b>{labels.NETWORK}: </b>
+            <b>{t('NETWORK')}: </b>
             {selected.location.toUpperCase()}
           </p>
         }
