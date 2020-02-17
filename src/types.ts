@@ -2,6 +2,24 @@ export type ActionNameSupportedTypes = 'transferft'
 export type ValidAuthenticatedStatusTypes = 'password' | 'hash' | 'unknown'
 export type StartScreenNameType = 'GET_STARTED' | 'HOME' | 'LOGIN'
 
+type StringifiedNumber = string
+
+export type ValidatorType = {
+  name: string
+  current_net_value: StringifiedNumber
+  total_units: number
+  commission: StringifiedNumber
+}
+
+export type StackShareType = {
+  validator: string
+  units: number
+  net_value: StringifiedNumber
+  time: string
+  type: string
+  fixed_days: number
+}
+
 export type NFTType = {
   domain: string
   name: string

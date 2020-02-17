@@ -4,15 +4,7 @@ import { storiesOf } from '@storybook/react'
 import SeedWordsDisplay from '../src/ui/presentational/SeedWordsDisplay'
 import SuccessInfoLayout from '../src/ui/presentational/SuccessInfoLayout'
 import CustomListItem from '../src/ui/presentational/CustomListItem'
-import {
-  Button,
-  Grid,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-} from '@material-ui/core'
+import { Button, Grid, IconButton, List, ListItemText } from '@material-ui/core'
 import MonospaceText from '../src/ui/presentational/MonospaceText'
 import PasswordProtectedView from '../src/ui/presentational/PasswordProtectedView'
 import MenuIcon from '@material-ui/icons/Menu'

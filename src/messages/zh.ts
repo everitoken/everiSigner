@@ -130,4 +130,7 @@ export default {
   SETUP_NEW_WALLET: '设置新钱包',
   WALLET_SETUP: '钱包设置',
   SET_AS_NEW_WALLET: '设置为新钱包',
+  STACK_TITLE: '质押',
+  STACKING_DESCRIPTION: '质押相关操作',
+  STAKE_TOTAL_AMOUNT: '质押总量',
 }

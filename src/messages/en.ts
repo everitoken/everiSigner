@@ -136,4 +136,7 @@ export default {
   SETUP_NEW_WALLET: 'Set up new Wallet',
   WALLET_SETUP: 'Wallet Setup',
   SET_AS_NEW_WALLET: 'Create as new wallet',
+  STACK_TITLE: 'Staking',
+  STACKING_DESCRIPTION: 'Managing staking related actions',
+  STAKE_TOTAL_AMOUNT: 'Total staked',
 }
