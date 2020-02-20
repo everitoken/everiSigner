@@ -61,7 +61,7 @@ export default function StakeDetail() {
           width: '100%',
         }}
       >
-        <div style={{ height: 285, width: 368 }}>
+        <div style={{ height: 325, width: 368 }}>
           <TableContainer component={Paper}>
             <Table aria-label="Share table">
               <TableHead>
