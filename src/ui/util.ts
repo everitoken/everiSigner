@@ -33,3 +33,12 @@ export const getEmptyEvtBalance = (): TokenDetail => {
     value: '0.00000',
   }
 }
+
+export const getEvtEndpoint = (network: NetworkItemType) => ({
+  host: network.url
+    .replace(/\/$/, '')
+    .replace(/^https:\/\//, '')
+    .replace(/^http:\/\//, ''),
+  port: network.url.startsWith('https') ? 443 : 80,
+  protocol: network.url.startsWith('https') ? 'https' : 'http',
+})

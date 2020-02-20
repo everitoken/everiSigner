@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { StackShareType } from '../../types'
+import { StakeShareType } from '../../types'
 import { withStyles, makeStyles } from '@material-ui/core/styles'
 import Panel from './Panel'
 import styled from 'styled-components'
@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core'
 
 type PropTypes = {
-  shares: StackShareType[]
+  shares: StakeShareType[]
   title: string
 }
 

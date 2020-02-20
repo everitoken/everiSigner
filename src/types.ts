@@ -11,13 +11,30 @@ export type ValidatorType = {
   commission: StringifiedNumber
 }
 
-export type StackShareType = {
+export type StakeShareType = {
   validator: string
   units: number
   net_value: StringifiedNumber
   time: string
   type: string
   fixed_days: number
+}
+
+export type ValidatorRespType = {
+  period_version: number
+  period_start_num: number
+  next_period_num: nunber
+  validators: ValidatorType[]
+}
+
+export type StakeRespType = {
+  amount: number
+  frozen_amount: number
+  sym: string
+  created_at: number
+  created_index: number
+  stake_shares: StakeShareType[]
+  pending_shares: StakeShareType[]
 }
 
 export type NFTType = {

@@ -89,6 +89,7 @@ export const getAccountImportScreen = (state: AppState) => ({
   accountNames: state.accounts.map(({ name }) => name),
   publicKeys: state.accounts.map(({ publicKey }) => publicKey),
 })
+
 export const getDecryptedAccounts = (state: AppState) => {
   const password = getPassword(state)
   if (!password) {
@@ -101,6 +102,7 @@ export const getDecryptedAccounts = (state: AppState) => {
     ),
   }
 }
+
 export const getSeedAccountDecrypted = (state: AppState) => {
   const account = state.accounts.find(account => account.type === 'seed')
   const accountNames = state.accounts.map(({ name }) => name)
