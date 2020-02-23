@@ -35,7 +35,7 @@ function Overview({ stake }: { stake: StakeRespType }) {
   }))
   const pending = stake.pending_shares.map(share => ({
     ...share,
-    category: 'stake',
+    category: 'unstake',
     categoryLabel: t('STAKE_STATE_UNSTATE_PENDING'),
   }))
   const allStakings = actives.concat(pending)

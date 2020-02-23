@@ -112,7 +112,7 @@ export default function StakeCreate() {
         show({ message: t('STAKE_SUCCESSFUL') })
         setTimeout(() => {
           history.goBack()
-        }, 800)
+        }, 2000)
       })
       .catch(err => alert(err))
       .finally(() => setLoading(false))
@@ -139,17 +139,17 @@ export default function StakeCreate() {
       title={t('STACK_TITLE')}
       renderLeft={() => <ConnectedNavigationBackButton />}
     >
-      {loading ? (
-        <Loader />
-      ) : (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            padding: 16,
-            width: '100%',
-          }}
-        >
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          padding: 16,
+          width: '100%',
+        }}
+      >
+        {loading ? (
+          <Loader />
+        ) : (
           <div style={{ height: 280 }}>
             <FormControl fullWidth className={classes.formControl}>
               <InputLabel id="validator-select-label">
@@ -224,25 +224,24 @@ export default function StakeCreate() {
               />
             </FormControl>
           </div>
-
-          <div>
-            <Divider />
-            <p>
-              {`${t('AVAILABLE_TO_STAKE')}: `}
-              <span className="everitoken-mono">{stake.amount / 100000}</span>
-            </p>
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              disabled={stake.amount === 0 || loading}
-              onClick={handleSubmit}
-            >
-              {loading ? t('STAKE_STAKING_IN_PROGRESS') : t('CREATE_STAKE_BTN')}
-            </Button>
-          </div>
+        )}
+        <div>
+          <Divider />
+          <p>
+            {`${t('AVAILABLE_TO_STAKE')}: `}
+            <span className="everitoken-mono">{stake.amount / 100000}</span>
+          </p>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            disabled={stake.amount === 0 || loading}
+            onClick={handleSubmit}
+          >
+            {loading ? t('STAKE_STAKING_IN_PROGRESS') : t('CREATE_STAKE_BTN')}
+          </Button>
         </div>
-      )}
+      </div>
     </NavigationLayout>
   )
 }
