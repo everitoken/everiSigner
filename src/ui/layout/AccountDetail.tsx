@@ -18,6 +18,7 @@ import KeyIcon from '@material-ui/icons/VpnKey'
 import SendIcon from '@material-ui/icons/CallMade'
 import ReceiveIcon from '@material-ui/icons/CallReceived'
 import EncryptIcon from '@material-ui/icons/EnhancedEncryption'
+import StakeIcon from '@material-ui/icons/SwapVert'
 import { useCopyToClipboard } from '../../hooks/componentHooks'
 import { useTranslation } from 'react-i18next'
 
@@ -66,6 +67,15 @@ function AccountOverview(props: PropTypes & RouteComponentProps) {
           <ListItemText
             primary={t('PAYEE_CODE')}
             secondary={t('PAYEE_CODE_SECONDARY_TEXT')}
+          />
+        </CustomListItem>
+        <CustomListItem
+          onClick={() => props.history.push('/home/stake')}
+          LeftIcon={StakeIcon}
+        >
+          <ListItemText
+            primary={t('STACK_TITLE')}
+            secondary={t('STACKING_DESCRIPTION')}
           />
         </CustomListItem>
         <CustomListItem

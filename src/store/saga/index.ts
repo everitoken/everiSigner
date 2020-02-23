@@ -28,6 +28,7 @@ import labels from '../../labels'
 import * as Evtjs from 'evtjs'
 import * as FileSaver from 'file-saver'
 import { AppState } from '../reducer/index'
+import { getEvtEndpoint } from '../../ui/util'
 
 let backgroundPort: chrome.runtime.Port | null = null
 let chain: ChainApi | null = null
@@ -39,15 +40,7 @@ const log = (msg: string, tag: string = 'unspecified') => {
 
 function* getCurrentNetwork() {
   const network = getSelectedNetwork()
-
-  return {
-    host: network.url
-      .replace(/\/$/, '')
-      .replace(/^https:\/\//, '')
-      .replace(/^http:\/\//, ''),
-    port: network.url.startsWith('https') ? 443 : 80,
-    protocol: network.url.startsWith('https') ? 'https' : 'http',
-  }
+  return getEvtEndpoint(network)
 }
 
 function* setupChainProviders() {

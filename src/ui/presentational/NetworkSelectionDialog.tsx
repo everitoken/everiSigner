@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { NetworkItemType } from '../../types'
-import * as style from '../../style'
 import {
   Dialog,
   IconButton,
@@ -14,7 +13,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import NetworkListItem from './NetworkListItem'
 import { isSameNetwork } from '../util'
 import labels from '../../labels'
-import { APP_BAR_HEIGHT } from '../../style'
+import { APP_BAR_HEIGHT, padding } from '../../style'
 import { HeaderTitle } from './MainLayout'
 
 type NetworkSelectionModalPropTypes = {
@@ -30,7 +29,7 @@ function NetworkSelectionDialog(props: NetworkSelectionModalPropTypes) {
     <Dialog fullScreen open={props.open}>
       <div
         style={{
-          padding: `0 ${style.padding.standard}px`,
+          padding: `0 ${padding.standard}px`,
           height: APP_BAR_HEIGHT,
           display: 'flex',
           alignContent: 'space-between',
