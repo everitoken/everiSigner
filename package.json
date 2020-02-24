@@ -1,12 +1,12 @@
 {
   "name": "everisigner",
-  "version": "1.1.1",
+  "version": "1.2.1",
   "description": "Signing provider",
   "main": "index.js",
   "scripts": {
     "watch": "NODE_ENV=development parcel watch --no-hmr src/manifest.json --no-cache",
     "build:prod": "NODE_ENV=production parcel build src/manifest.json --no-cache",
-    "store-publish": "zip -r everisigner.zip dist",
+    "store-publish": "zip -r everisigner_$(cat ./package.json | jq -r \".version\").zip dist",
     "test": "jest",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
