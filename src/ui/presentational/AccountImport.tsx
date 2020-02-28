@@ -88,7 +88,7 @@ function StepInputPrivateKey(props: StepInputPrivateKeyPropTypes) {
           <FlexContainer>
             <TextField
               id="seed-phrase-verify"
-              label="输入要导入的私钥"
+              label={t('INPUT_TOBE_IMPORTED_PRTIVATE_KEY')}
               multiline
               rows="2"
               fullWidth
@@ -110,7 +110,7 @@ function StepInputPrivateKey(props: StepInputPrivateKeyPropTypes) {
             <FlexContainer>
               <TextField
                 id="seed-phrase-verify"
-                label="对应的公钥"
+                label={t('CORRESPOND_PUBLICKEY')}
                 multiline
                 rows="2"
                 fullWidth

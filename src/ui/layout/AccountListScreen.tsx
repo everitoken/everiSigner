@@ -143,6 +143,7 @@ class AccountListItem extends React.PureComponent<
     super(props)
     this.clearTimeoutHandler = null
   }
+
   componentWillUnmount() {
     if (this.clearTimeoutHandler) {
       clearTimeout(this.clearTimeoutHandler)

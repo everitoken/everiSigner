@@ -8,9 +8,11 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import AboutScreen from './AboutScreen'
 import NetworkScreen from './NetworkScreen'
+import ValidatorScreen from './ValidatorScreen'
 import InfoIcon from '@material-ui/icons/Info'
 import SaveIcon from '@material-ui/icons/SaveAlt'
 import LockIcon from '@material-ui/icons/Lock'
+import ValidatorIcon from '@material-ui/icons/VpnLock'
 import { List, ListItemText } from '@material-ui/core'
 import FlexContainer from '../presentational/FlexContainer'
 import ConnectedNavigationBackButton from './NavigationButtons'
@@ -66,6 +68,15 @@ function Settings() {
             />
           </CustomListItem>
           <CustomListItem
+            onClick={() => history.push('/settings/validator')}
+            LeftIcon={ValidatorIcon}
+          >
+            <ListItemText
+              primary={t('VALIDATOR_LIST')}
+              secondary={t('VALIDATOR_LIST_DESC')}
+            />
+          </CustomListItem>
+          <CustomListItem
             onClick={() => history.push('/settings/export')}
             LeftIcon={SaveIcon}
           >
@@ -110,6 +121,7 @@ export default function SettingsScreen({ match }: RouteComponentProps) {
       <Route exact path={`${match.path}/`} component={Settings} />
       <Route path={`${match.path}/about`} component={AboutScreen} />
       <Route path={`${match.path}/network`} component={NetworkScreen} />
+      <Route path={`${match.path}/validator`} component={ValidatorScreen} />
       <Route path={`${match.path}/export`} component={WalletExportScreen} />
       <Route path={`${match.path}/misc`} component={WalletMiscSettings} />
     </MainLayout>

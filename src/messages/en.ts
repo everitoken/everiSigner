@@ -1,7 +1,7 @@
 export default {
   SET_LANGUAGE: 'Choose language',
   LANGUAGE: 'Language',
-  LANGUAGE_DESC: 'Chnage language of the wallet',
+  LANGUAGE_DESC: 'Change language of the wallet',
   CURRENT_LANGUAGE: 'Current Language',
   ABOUT_TITLE: 'About everiSigner',
   GO_BACK: 'Back',
@@ -163,10 +163,27 @@ export default {
   TIME: 'Time',
 
   DEX_TITLE: 'Binance Dex Bridge',
-  DEX_DESCRIPTION: 'Useful tool to integrate with Binace Dex',
+  DEX_DESCRIPTION: 'Useful tool to integrate with Binance Dex',
   BINANCE_TX_INPUT: 'Binance Tx hash',
   BINANCE_CHECK_TX_BTN: 'Check Tx Detail',
   STATUS: 'Status',
   CONFIRMED_ON_EVERITOKEN: 'Confirmed on everiToken',
   UNCONFIRMED_OR_NOTFOUND: 'Unconfirmed or not found',
+
+  VALIDATOR_LIST: 'Validator List',
+  VALIDATOR_LIST_DESC: 'Shows a list of validators',
+  VALIDATOR_LIST_EMPTY: 'No validator defined.',
+  VALIDATOR_DETAIL: 'Validator detail',
+
+  VALIDATOR_DYNAMIC_NAME: 'Name',
+  VALIDATOR_DYNAMIC_CURRENT_NET_VALUE: 'Net Value',
+  VALIDATOR_DYNAMIC_TOTAL_UNITS: 'Total Units',
+  VALIDATOR_DYNAMIC_COMMISSION: 'Commission',
+  VALIDATOR_NAME: 'Validator Name',
+  VALIDATOR_COMMISSION: 'Validator Commission',
+  VALIDATOR_CREATE: 'Create Validator',
+  VALIDATOR_ADD_SUCCESSFUL: 'Successfully added validator',
+
+  INPUT_TOBE_IMPORTED_PRTIVATE_KEY: 'Import private key to import',
+  CORRESPOND_PUBLICKEY: 'Corresponding Public Key',
 }

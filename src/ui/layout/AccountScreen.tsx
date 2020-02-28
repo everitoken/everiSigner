@@ -6,14 +6,20 @@ import AccountListScreen from './AccountListScreen'
 import AccountQRScreen from './AccountQRScreen'
 import AccountBalanceScreen from './AccountBalanceScreen'
 import AccountPrivateKeyScreen from './AccountPrivateKeyScreen'
+import { useTranslation } from 'react-i18next'
 
 type PropTypes = {}
 
 export default function AccountScreen({
   match,
 }: PropTypes & RouteComponentProps) {
+  const { t } = useTranslation()
+
   return (
-    <MainLayout renderLogo renderHead={() => <HeaderTitle title="账户" />}>
+    <MainLayout
+      renderLogo
+      renderHead={() => <HeaderTitle title={t('ACCOUNT_DETAIL')} />}
+    >
       <Route path={`${match.path}/create`} component={AccountCreateScreen} />
       <Route path={`${match.path}/list`} component={AccountListScreen} />
       <Route path={`${match.path}/:id/qr`} component={AccountQRScreen} />
