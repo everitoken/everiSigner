@@ -155,4 +155,12 @@ export default {
   STACKING_DESCRIPTION: '质押相关操作',
   STAKE_TOTAL_AMOUNT: '质押总量',
   TIME: '时间',
+
+  DEX_TITLE: '币安跨链',
+  DEX_DESCRIPTION: '跨链相关工具',
+  BINANCE_TX_INPUT: 'Binance Tx Hash',
+  BINANCE_CHECK_TX_BTN: '查看Tx详情',
+  STATUS: '状态',
+  CONFIRMED_ON_EVERITOKEN: '已在everiToken上确认',
+  UNCONFIRMED_OR_NOTFOUND: '未确认或未找到',
 }

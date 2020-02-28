@@ -3,12 +3,11 @@ import { AccountStateType } from '../../store/reducer/accounts'
 import { removeAccount } from '../action'
 import styled from 'styled-components'
 import { RouteComponentProps } from 'react-router'
-import { Tooltip, List } from '@material-ui/core'
+import { ListItemText, Tooltip, List } from '@material-ui/core'
 import QR from '../presentational/QR'
 import { compose } from 'redux'
 import FlexContainer from '../presentational/FlexContainer'
 
-import { ListItemText } from '@material-ui/core'
 import CustomListItem from '../presentational/CustomListItem'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { connect } from 'react-redux'
@@ -19,6 +18,7 @@ import SendIcon from '@material-ui/icons/CallMade'
 import ReceiveIcon from '@material-ui/icons/CallReceived'
 import EncryptIcon from '@material-ui/icons/EnhancedEncryption'
 import StakeIcon from '@material-ui/icons/SwapVert'
+import DexIcon from '@material-ui/icons/CallMergeOutlined'
 import { useCopyToClipboard } from '../../hooks/componentHooks'
 import { useTranslation } from 'react-i18next'
 
@@ -76,6 +76,15 @@ function AccountOverview(props: PropTypes & RouteComponentProps) {
           <ListItemText
             primary={t('STACK_TITLE')}
             secondary={t('STACKING_DESCRIPTION')}
+          />
+        </CustomListItem>
+        <CustomListItem
+          onClick={() => props.history.push('/home/dex')}
+          LeftIcon={DexIcon}
+        >
+          <ListItemText
+            primary={t('DEX_TITLE')}
+            secondary={t('DEX_DESCRIPTION')}
           />
         </CustomListItem>
         <CustomListItem

@@ -25,6 +25,7 @@ import { useCopyToClipboard } from '../../hooks/componentHooks'
 import { setMainAccount } from '../action'
 import { useTranslation } from 'react-i18next'
 import AccountStakingScreen from './AccountStakeScreen'
+import AccountDexScreen from './AccountDexScreen'
 
 function HomeAppBar() {
   const { mainAccount, accounts } = useSelector(getForHome)
@@ -125,6 +126,7 @@ function Home(props: PropTypes) {
         <Route path={`${match.path}/detail`} component={AccountDetail} />
         <Route path={`${match.path}/payee`} component={AccountPayeeCode} />
         <Route path={`${match.path}/stake`} component={AccountStakingScreen} />
+        <Route path={`${match.path}/dex`} component={AccountDexScreen} />
         <Route
           path={`${match.path}/transferft`}
           component={TransferFungibleToken}

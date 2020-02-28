@@ -1,4 +1,5 @@
 import { SigningPayloadStateType } from '../store/reducer/signingPayload'
+import Big from 'big.js'
 import { get } from 'lodash'
 import { NetworkItemType, TokenDetail } from '../types'
 import { imageDataUriMap } from '../asset'
@@ -42,3 +43,15 @@ export const getEvtEndpoint = (network: NetworkItemType) => ({
   port: network.url.startsWith('https') ? 443 : 80,
   protocol: network.url.startsWith('https') ? 'https' : 'http',
 })
+
+export const convertBinanceAmountToEvt = (amount: string) => {
+  let converted = Big(amount).div(Big(10 ** 3))
+
+  if (converted.toString().includes('.')) {
+    converted = Big(converted.toString().split('.')[0])
+  }
+
+  return Big(converted)
+    .div(10 ** 5)
+    .toFixed(5)
+}

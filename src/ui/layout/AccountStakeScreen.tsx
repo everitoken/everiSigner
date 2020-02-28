@@ -1,15 +1,11 @@
 import * as React from 'react'
-import { useSelector } from 'react-redux'
-import { getMainAccount } from '../../store/getter'
-import { useTranslation } from 'react-i18next'
-import { Route, useRouteMatch, useHistory } from 'react-router-dom'
+import { Route, useRouteMatch } from 'react-router-dom'
 import Overview from './AccountStakeOverviewScreen'
 import StakeCreate from './AccountStakeCreateScreen'
 import StakeDetail from './AccountStakeDetailScreen'
 import Unstake from './AccountStakeUnstakeScreen'
 
 function AccountStakingScreen() {
-  const { account } = useSelector(getMainAccount)
   const match = useRouteMatch()
 
   if (!match) {

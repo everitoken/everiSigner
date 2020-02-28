@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo } from 'react'
+import * as React from 'react'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useRouteMatch, useHistory } from 'react-router-dom'
@@ -55,8 +55,8 @@ function Overview({ stake }: { stake: StakeRespType }) {
         ) : (
           <List dense>
             {allStakings.map((share, i) => (
-              <Fragment key={`${share.validator}-${i}`}>
-                <ListItem>
+              <React.Fragment key={`${share.validator}-${i}`}>
+                <ListItem dense disableGutters>
                   <ListItemText
                     primary={`${share.validator} (${share.categoryLabel})`}
                     secondary={
@@ -84,7 +84,7 @@ function Overview({ stake }: { stake: StakeRespType }) {
                   </ListItemSecondaryAction>
                 </ListItem>
                 {i < allStakings.length - 1 ? <Divider /> : null}
-              </Fragment>
+              </React.Fragment>
             ))}
           </List>
         )}
@@ -117,7 +117,7 @@ export default function StakeOverview() {
   const [, getSelected] = useNetwork([])
   const { loading, data, error } = useStaking(account, getSelected())
 
-  const content = useMemo(() => {
+  const content = React.useMemo(() => {
     if (loading) {
       return <Loader />
     }

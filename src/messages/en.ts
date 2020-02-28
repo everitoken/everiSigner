@@ -161,4 +161,12 @@ export default {
   STACKING_DESCRIPTION: 'Managing staking related actions',
   STAKE_TOTAL_AMOUNT: 'Total staked',
   TIME: 'Time',
+
+  DEX_TITLE: 'Binance Dex Bridge',
+  DEX_DESCRIPTION: 'Useful tool to integrate with Binace Dex',
+  BINANCE_TX_INPUT: 'Binance Tx hash',
+  BINANCE_CHECK_TX_BTN: 'Check Tx Detail',
+  STATUS: 'Status',
+  CONFIRMED_ON_EVERITOKEN: 'Confirmed on everiToken',
+  UNCONFIRMED_OR_NOTFOUND: 'Unconfirmed or not found',
 }
