@@ -123,8 +123,7 @@ export default function StakeOverview() {
     }
 
     if (error) {
-      alert(error)
-      return null
+      return <p style={{ margin: '0 auto', padding: '2rem' }}>Error: {error}</p>
     }
 
     if (!data) {

@@ -1,6 +1,7 @@
 import { AccountStateType } from '../store/reducer/accounts'
 import { NetworkItemType, StakeRespType } from '../types'
 import { useState, useEffect } from 'react'
+import { get } from 'lodash'
 
 function useStaking(account: AccountStateType, network: NetworkItemType) {
   const [loading, setLoading] = useState(false)
@@ -18,7 +19,12 @@ function useStaking(account: AccountStateType, network: NetworkItemType) {
     })
       .then(data => data.json())
       .then(json => {
-        setData(json)
+        const code = get(json, 'code')
+        if (code === 500) {
+          setError(get(json, 'error.what'))
+        } else {
+          setData(json)
+        }
       })
       .catch(err => setError(err))
       .finally(() => {
